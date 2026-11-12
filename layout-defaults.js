@@ -16,10 +16,10 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": 2
       },
       "decoration-12": {
-        "x": 884,
-        "y": -2669.8003540039062,
+        "x": 814,
+        "y": -2921,
         "scale": 1,
-        "rotation": 2
+        "rotation": -2
       },
       "decoration-04": {
         "x": -383,

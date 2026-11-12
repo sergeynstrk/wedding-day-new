@@ -327,7 +327,7 @@ body { background: #484644; color: #f0e9e1; }
 .decor-key { height: 320px; transform: rotate(18deg); }
 .decor-bow { top: 50px; height: 380px; width: 200px; left: -205px; transform: rotate(-10deg); }
 .decor-hearts { transform: rotate(13deg); }
-.decor-lace { top: 120px; width: 220px; left: -210px; height: 360px; transform: rotate(-8deg); }
+.decor-lace { top: 120px; width: 220px; left: -210px !important; right: auto !important; height: 360px; transform: rotate(-8deg); z-index: 10 !important; }
 .decor-scissors { transform: rotate(16deg); }
 .decor-pearls { top: 100px; height: 380px; transform: rotate(-14deg); }
 .decor-spool { top: 300px !important; height: 300px; transform: rotate(12deg); }
@@ -403,7 +403,7 @@ body { background: #484644; color: #f0e9e1; }
   .decoration-pair .decor-object + .decor-object { left: auto; right: -275px; transform: rotate(4deg); }
   .decoration-pair .decor-object.decor-secondary-left { left: -275px; right: auto; height: 300px; }
   .decoration-pair .decor-object.decor-secondary-right { left: auto; right: -275px; height: 330px; }
-  .decoration-pair .decor-lace { left: -255px; width: 295px; }
+  .decoration-pair .decor-object.decor-lace, .decoration-pair .decor-lace { left: -255px !important; right: auto !important; top: 120px !important; bottom: auto !important; width: 295px !important; height: 360px !important; z-index: 10 !important; }
 }
 @media (min-width: 781px) and (max-width: 1399px) {
   .decoration-pair { height: 280px; }
