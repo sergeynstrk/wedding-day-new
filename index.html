@@ -1190,8 +1190,47 @@
   <link rel="stylesheet" href="collage.css">
   <link rel="stylesheet" href="editorial.css">
   <link rel="stylesheet" href="layout-editor.css">
+  <link rel="stylesheet" href="envelope.css">
 </head>
 <body>
+  <!-- ==========================================
+       ИНТЕРАКТИВНЫЙ КОНВЕРТ (INTERACTIVE ENVELOPE)
+       ========================================== -->
+  <div id="envelopeOverlay" class="envelope-overlay" aria-modal="true" role="dialog" aria-label="Приглашение на свадьбу">
+    <div class="envelope-backdrop" aria-hidden="true"></div>
+
+    <div class="envelope-modal-content">
+      <div class="envelope-header">
+        <div class="scrap-clip envelope-tag" style="transform: rotate(-2.5deg);">
+          <span class="clip-body cut-scissor-3 bg-white-serif envelope-tag-text">Приглашение для вас ♡</span>
+        </div>
+      </div>
+
+      <div class="envelope-stage">
+        <div id="envelopeCard" class="envelope-box" role="button" tabindex="0" aria-label="Открыть конверт">
+          <img class="envelope-base-img" src="./assets/keepsakes/envelope.png" alt="Свадебный конверт" draggable="false">
+          <div id="waxSealBtn" class="envelope-wax-seal" title="Нажмите, чтобы открыть">
+            <img src="./assets/keepsakes/wax-seal.png" alt="Сургучная печать с сердцем" draggable="false">
+            <div class="seal-glow-ring" aria-hidden="true"></div>
+          </div>
+        </div>
+        <p class="envelope-hint">Нажмите на печать, чтобы открыть ♡</p>
+      </div>
+
+      <div class="envelope-footer">
+        <button type="button" id="envelopeSkipBtn" class="envelope-skip-btn">
+          Сразу к сайту ➔
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Плавающая кнопка повтора «✉ Конверт» -->
+  <button type="button" id="envelopeReplayBtn" class="envelope-replay-btn" aria-label="Посмотреть конверт снова" style="display: none;">
+    <span class="replay-icon">✉</span>
+    <span class="replay-text">Конверт</span>
+  </button>
+
   <a class="skip-link" href="#invitation">К приглашению</a>
 
   <main class="magazine-canvas" id="invitation" tabindex="-1">
@@ -1845,6 +1884,7 @@
       window.open(googleUrl, '_blank', 'noopener,noreferrer');
     }
   </script>
+  <script src="envelope.js" defer></script>
   <script src="layout-defaults.js" defer></script>
   <script src="layout-editor.js" defer></script>
 </body>
