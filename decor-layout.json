@@ -57,33 +57,33 @@
         "rotation": -10
       },
       "decoration-15": {
-        "x": 35,
-        "y": 21,
+        "x": -576,
+        "y": 0,
         "scale": 1,
         "rotation": 0
       },
       "decoration-19": {
-        "x": -210,
-        "y": 60,
+        "x": 911,
+        "y": -657,
         "scale": 1,
         "rotation": -15
       },
       "decoration-20": {
-        "x": 230,
-        "y": 80,
+        "x": -176,
+        "y": -1898,
         "scale": 1,
         "rotation": 8
       },
       "decoration-21": {
-        "x": -220,
-        "y": 420,
+        "x": 919,
+        "y": -3191,
         "scale": 0.95,
         "rotation": 6
       },
       "decoration-22": {
-        "x": 220,
-        "y": 440,
-        "scale": 0.9,
+        "x": -866,
+        "y": -835,
+        "scale": 1.35,
         "rotation": -12
       }
     }

@@ -288,11 +288,8 @@ body { background: #484644; color: #f0e9e1; }
 /* Bratsevo is drawn from the supplied photograph in the timing icon style. */
 .venue-illustration { background: #eee8dd; padding: 10px; }
 .venue-illustration img { height: 210px; object-fit: contain; border: 0; clip-path: none; }
-.item-1 .timing-icon-cutout { width: 120px; height: 90px; object-fit: contain; }
 @media (max-width: 780px) {
   .venue-illustration img { height: 185px; }
-  .item-1 .timing-icon-cutout { width: 78px; height: 60px; }
-  .item-1 .item-top-row { padding-right: 87px; }
 }
 /* The manor illustration sits directly on the collage, without a paper frame. */
 .venue-photo-wrapper.venue-illustration {
@@ -427,23 +424,47 @@ body { background: #484644; color: #f0e9e1; }
 }
 /* Program illustrations share the manor's linework and sit directly on the page. */
 .timing-section .sm-timing__item .timing-icon-cutout {
-  width: 140px;
-  height: 110px;
+  width: 220px;
+  height: 160px;
+  max-width: 100%;
   padding: 0 !important;
   background: transparent !important;
   border: 0 !important;
   border-radius: 0 !important;
   clip-path: none !important;
   box-shadow: none !important;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)) !important;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.28)) !important;
   object-fit: contain;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
+.timing-section .sm-timing__item.item-1 .timing-icon-cutout {
+  width: 280px;
+  height: 130px;
+}
 .timing-section .sm-timing__item.item-active .timing-icon-cutout {
-  transform: scale(1.06) rotate(0deg);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35)) !important;
+  transform: scale(1.05) rotate(0deg);
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.38)) !important;
 }
 @media (max-width: 780px) {
-  .timing-section .sm-timing__item .timing-icon-cutout { width: 85px; height: 65px; }
-  .timing-section .item-top-row { padding-right: 95px; }
+  .timing-section .sm-timing__item .timing-icon-cutout {
+    width: 170px;
+    height: 125px;
+  }
+  .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
+    width: 220px;
+    height: 100px;
+  }
+  .timing-section .item-top-row {
+    padding-right: 0;
+  }
+}
+@media (max-width: 360px) {
+  .timing-section .sm-timing__item .timing-icon-cutout {
+    width: 140px;
+    height: 105px;
+  }
+  .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
+    width: 180px;
+    height: 80px;
+  }
 }
