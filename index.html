@@ -1743,22 +1743,9 @@
     }
 
     // ==========================================
-    // 2. ОТПРАВКА RSVP АНКЕТЫ В TELEGRAM
+    // 2. ОТПРАВКА RSVP АНКЕТЫ (GOOGLE SHEETS + TELEGRAM)
     // ==========================================
-    const TG_CONFIG = {
-      botToken: '9209587675:AAEFI6Mjv7vIaONkuyJtfk-1B8rnXUMnxbw',
-      chatId: '803796526'
-    };
-
-    function escapeHtml(text) {
-      if (!text) return '';
-      return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXXWaDim-BnbZE1LP50RiGm3HlDPaO3Xl6NQSdTQbwQ-ZOKnIMvWs25O-7CkoBDPyemA/exec';
 
     document.getElementById('weddingRsvpForm').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -1774,55 +1761,34 @@
       const drinks = Array.from(form.querySelectorAll('input[name="drinks"]:checked')).map(cb => cb.value);
       const comment = (document.getElementById('guestComment').value || '').trim();
 
-      const drinksText = drinks.length ? drinks.join(', ') : 'Не выбрано / любые';
       const commentText = comment || 'Нет особых пожеланий';
-      const dateStr = new Date().toLocaleString('ru-RU', {
-        timeZone: 'Europe/Moscow',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      const payload = {
+        name,
+        attendance: attendanceText,
+        drinks,
+        comment: commentText,
+        timestamp: new Date().toISOString()
+      };
 
       // Резервное сохранение на устройстве
       try {
-        localStorage.setItem('wedding_rsvp_' + Date.now(), JSON.stringify({
-          name, attendance: attendanceText, drinks, comment, timestamp: new Date().toISOString()
-        }));
+        localStorage.setItem('wedding_rsvp_' + Date.now(), JSON.stringify(payload));
       } catch (err) {}
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'ОТПРАВЛЯЕМ... ✉';
 
-      const tgMessage =
-        `💍 <b>Новая анкета гостя!</b>\n\n` +
-        `👤 <b>Имя / Гости:</b> ${escapeHtml(name)}\n` +
-        `✨ <b>Присутствие:</b> ${escapeHtml(attendanceText)}\n` +
-        `🍷 <b>Напитки:</b> ${escapeHtml(drinksText)}\n` +
-        `💬 <b>Пожелания / трансфер:</b> ${escapeHtml(commentText)}\n\n` +
-        `📅 <i>${escapeHtml(dateStr)} (МСК)</i>`;
-
       let isSuccess = false;
       try {
-        const response = await fetch(`https://api.telegram.org/bot${TG_CONFIG.botToken}/sendMessage`, {
+        await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: TG_CONFIG.chatId,
-            text: tgMessage,
-            parse_mode: 'HTML'
-          })
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
         });
-
-        const resData = await response.json();
-        if (response.ok && resData.ok) {
-          isSuccess = true;
-        } else {
-          console.warn('Telegram API error:', resData);
-        }
+        isSuccess = true;
       } catch (err) {
-        console.warn('Network error sending to Telegram:', err);
+        console.warn('Submission error:', err);
       }
 
       const modalTitle = document.getElementById('successModalTitle');
@@ -1837,7 +1803,7 @@
       } else {
         if (modalTitle) modalTitle.textContent = 'ОТВЕТ СОХРАНЁН!';
         if (modalDesc) {
-          modalDesc.innerHTML = 'Ответ сохранён на вашем устройстве. Из-за временной неполадки связи он может не дойти в Telegram — вы также можете подтвердить участие Сергею: <a href="https://t.me/sergey_nstrk" target="_blank" rel="noopener" style="color:var(--burgundy);text-decoration:underline;font-weight:700;">@sergey_nstrk</a>.';
+          modalDesc.innerHTML = 'Ответ сохранён на вашем устройстве. Из-за временной неполадки связи он может не дойти — вы также можете подтвердить участие Сергею: <a href="https://t.me/sergey_nstrk" target="_blank" rel="noopener" style="color:var(--burgundy);text-decoration:underline;font-weight:700;">@sergey_nstrk</a>.';
         }
       }
 
