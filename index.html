@@ -1602,9 +1602,9 @@
           <input type="text" id="guestComment" aria-label="Пожелания, аллергии и трансфер" class="rsvp-input" placeholder="Вегетарианское меню / аллергия / нужен трансфер">
         </div>
 
-        <p style="font-size: 14px; margin-top: 12px;">Анкета сохраняется только на вашем устройстве. Отправка молодожёнам пока не подключена.</p>
-        <button type="submit" class="btn-submit-collage">
-          СОХРАНИТЬ ОТВЕТ ✉
+        <p style="font-size: 14px; margin-top: 12px; color: var(--ink-soft); opacity: 0.85;">Ответ сразу будет отправлен молодожёнам.</p>
+        <button type="submit" id="rsvpSubmitBtn" class="btn-submit-collage">
+          ОТПРАВИТЬ ОТВЕТ ✉
         </button>
       </form>
     </section></div>
@@ -1637,13 +1637,13 @@
   </main>
 
   <!-- Модальное окно подтверждения с печатью -->
-  <div class="modal-backdrop" id="successModal" role="dialog" aria-modal="true" aria-label="Ответ сохранён">
+  <div class="modal-backdrop" id="successModal" role="dialog" aria-modal="true" aria-label="Ответ отправлен">
     <div class="modal-box">
       <span class="scrap-clip" style="transform: rotate(-2deg); margin-bottom: 16px;">
-        <span class="clip-body cut-scissor-1 bg-burgundy-rich" style="font-size: 1.8rem; padding: 10px 22px;">ОТВЕТ СОХРАНЁН</span>
+        <span id="successModalTitle" class="clip-body cut-scissor-1 bg-burgundy-rich" style="font-size: 1.8rem; padding: 10px 22px;">ОТВЕТ ОТПРАВЛЕН!</span>
       </span>
-      <p style="font-size: 1.1rem; margin: 20px 0 26px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
-        Ответ сохранён только в этом браузере. Отправка молодожёнам пока не подключена — сообщите им о своём решении лично.
+      <p id="successModalDesc" style="font-size: 1.1rem; margin: 20px 0 26px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
+        Ваш ответ успешно доставлен Сергею и Юле! Спасибо, мы с нетерпением ждём встречи с вами.
       </p>
       <div style="margin-bottom: 22px;">
         <span class="cute-scribble" style="font-size: 1.4rem;">
@@ -1743,29 +1743,108 @@
     }
 
     // ==========================================
-    // 2. ОТПРАВКА RSVP АНКЕТЫ
+    // 2. ОТПРАВКА RSVP АНКЕТЫ В TELEGRAM
     // ==========================================
-    document.getElementById('weddingRsvpForm').addEventListener('submit', function(e) {
+    const TG_CONFIG = {
+      botToken: '9209587675:AAEFI6Mjv7vIaONkuyJtfk-1B8rnXUMnxbw',
+      chatId: '803796526'
+    };
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    document.getElementById('weddingRsvpForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const formData = {
-        name: document.getElementById('guestName').value,
-        attendance: document.querySelector('input[name="attendance"]:checked').value,
-        drinks: Array.from(document.querySelectorAll('input[name="drinks"]:checked')).map(cb => cb.value),
-        comment: document.getElementById('guestComment').value,
-        timestamp: new Date().toISOString()
-      };
+      const form = this;
+      const submitBtn = document.getElementById('rsvpSubmitBtn') || form.querySelector('button[type="submit"]');
+      const origBtnText = submitBtn.innerHTML;
 
+      const name = (document.getElementById('guestName').value || '').trim();
+      const attendanceEl = form.querySelector('input[name="attendance"]:checked');
+      const attendanceVal = attendanceEl ? attendanceEl.value : 'yes';
+      const attendanceText = attendanceVal === 'yes' ? '✔ Буду с огромной радостью!' : '✖ К сожалению, не смогу';
+      const drinks = Array.from(form.querySelectorAll('input[name="drinks"]:checked')).map(cb => cb.value);
+      const comment = (document.getElementById('guestComment').value || '').trim();
+
+      const drinksText = drinks.length ? drinks.join(', ') : 'Не выбрано / любые';
+      const commentText = comment || 'Нет особых пожеланий';
+      const dateStr = new Date().toLocaleString('ru-RU', {
+        timeZone: 'Europe/Moscow',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      // Резервное сохранение на устройстве
       try {
-        localStorage.setItem('wedding_rsvp_' + Date.now(), JSON.stringify(formData));
+        localStorage.setItem('wedding_rsvp_' + Date.now(), JSON.stringify({
+          name, attendance: attendanceText, drinks, comment, timestamp: new Date().toISOString()
+        }));
+      } catch (err) {}
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'ОТПРАВЛЯЕМ... ✉';
+
+      const tgMessage =
+        `💍 <b>Новая анкета гостя!</b>\n\n` +
+        `👤 <b>Имя / Гости:</b> ${escapeHtml(name)}\n` +
+        `✨ <b>Присутствие:</b> ${escapeHtml(attendanceText)}\n` +
+        `🍷 <b>Напитки:</b> ${escapeHtml(drinksText)}\n` +
+        `💬 <b>Пожелания / трансфер:</b> ${escapeHtml(commentText)}\n\n` +
+        `📅 <i>${escapeHtml(dateStr)} (МСК)</i>`;
+
+      let isSuccess = false;
+      try {
+        const response = await fetch(`https://api.telegram.org/bot${TG_CONFIG.botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TG_CONFIG.chatId,
+            text: tgMessage,
+            parse_mode: 'HTML'
+          })
+        });
+
+        const resData = await response.json();
+        if (response.ok && resData.ok) {
+          isSuccess = true;
+        } else {
+          console.warn('Telegram API error:', resData);
+        }
       } catch (err) {
-        alert('Не удалось сохранить ответ в браузере. Сообщите молодожёнам лично.');
-        return;
+        console.warn('Network error sending to Telegram:', err);
       }
 
+      const modalTitle = document.getElementById('successModalTitle');
+      const modalDesc = document.getElementById('successModalDesc');
+
+      if (isSuccess) {
+        if (modalTitle) modalTitle.textContent = 'ОТВЕТ ОТПРАВЛЕН!';
+        if (modalDesc) {
+          modalDesc.textContent = 'Ваш ответ успешно доставлен Сергею и Юле! Спасибо, мы с нетерпением ждём встречи с вами.';
+        }
+        form.reset();
+      } else {
+        if (modalTitle) modalTitle.textContent = 'ОТВЕТ СОХРАНЁН!';
+        if (modalDesc) {
+          modalDesc.innerHTML = 'Ответ сохранён на вашем устройстве. Из-за временной неполадки связи он может не дойти в Telegram — вы также можете подтвердить участие Сергею: <a href="https://t.me/sergey_nstrk" target="_blank" rel="noopener" style="color:var(--burgundy);text-decoration:underline;font-weight:700;">@sergey_nstrk</a>.';
+        }
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origBtnText;
       document.getElementById('successModal').style.display = 'flex';
       document.querySelector('#successModal button').focus();
-      this.reset();
     });
 
     function closeRsvpModal() {
