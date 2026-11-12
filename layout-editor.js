@@ -15,17 +15,33 @@
   items.forEach((item, i) => {
     item.dataset.layoutId ||= 'decoration-' + String(i + 1).padStart(2, '0');
     const name = Object.keys(names).find(key => item.classList.contains('decor-' + key));
-    item.dataset.layoutName = names[name] || 'Цветы с печатью';
+    let label = names[name] || 'Цветы с печатью';
+    if (item.dataset.layoutId === 'decoration-11') label = 'Кружево (левое)';
+    if (item.dataset.layoutId === 'decoration-12') label = 'Кружево (правое)';
+    item.dataset.layoutName = label;
   });
   function getState(item) {
     const raw = layouts[profile()]?.[item.dataset.layoutId] || defaults[profile()]?.[item.dataset.layoutId] || {};
     const number = (value, fallback, min, max) => typeof value === 'number' && Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : fallback;
-    return { x: number(raw.x, 0, -10000, 10000), y: number(raw.y, 0, -20000, 20000), scale: number(raw.scale, 1, .4, 2.5), rotation: number(raw.rotation, 0, -180, 180) };
+    return {
+      x: number(raw.x, 0, -10000, 10000),
+      y: number(raw.y, 0, -20000, 20000),
+      scale: number(raw.scale, 1, .4, 2.5),
+      rotation: number(raw.rotation, 0, -180, 180),
+      flipX: Boolean(raw.flipX),
+      flipY: Boolean(raw.flipY)
+    };
   }
   function render(item) {
     const state = getState(item);
     item.style.translate = `${state.x}px ${state.y}px`;
-    item.style.scale = state.scale;
+    const sx = (state.flipX ? -1 : 1) * state.scale;
+    const sy = (state.flipY ? -1 : 1) * state.scale;
+    if (state.flipX || state.flipY) {
+      item.style.scale = `${sx} ${sy}`;
+    } else {
+      item.style.scale = state.scale;
+    }
     item.style.rotate = `${state.rotation}deg`;
   }
   function update(item, next) {
@@ -48,12 +64,14 @@
       <span id="layoutSelected">Выберите предмет</span>
       <label>Размер <input id="layoutScale" type="range" min="40" max="250" value="100" step="5" disabled><output id="layoutScaleValue">100%</output></label>
       <label>Поворот <input id="layoutRotation" type="range" min="-180" max="180" value="0" step="1" disabled><output id="layoutRotationValue">0°</output></label>
+      <button type="button" id="layoutFlipX" disabled title="Отразить слева направо (клавиша H)">↔ Отразить</button>
+      <button type="button" id="layoutFlipY" disabled title="Отразить сверху вниз (клавиша V)">↕ По вертикали</button>
       <button type="button" id="layoutReset" disabled>Вернуть предмет</button>
       <button type="button" id="layoutUndo" disabled>Отменить</button>
       <button type="button" id="layoutResetAll">Сбросить экран</button>
       <button type="button" id="layoutExport">Скачать расстановку</button>
     </div>
-    <p>Положение сохраняется автоматически в этом браузере. Для телефона, планшета и компьютера — отдельные расстановки. Стрелки двигают выбранный предмет; Shift — шаг 10 px.</p>`;
+    <p>Положение сохраняется автоматически в этом браузере. Для телефона, планшета и компьютера — отдельные расстановки. Стрелки двигают выбранный предмет (Shift — шаг 10 px). Кнопки «↔ Отразить» (H) и «↕ По вертикали» (V) зеркалят предмет.</p>`;
   document.body.append(toolbar);
   const field = id => toolbar.querySelector('#' + id);
   function save() {
@@ -62,13 +80,15 @@
   }
   function remember() { undoState = JSON.stringify(layouts); field('layoutUndo').disabled = false; }
   function controls() {
-    const state = selected ? getState(selected) : {scale:1, rotation:0};
+    const state = selected ? getState(selected) : {scale:1, rotation:0, flipX:false, flipY:false};
     field('layoutSelected').textContent = selected ? selected.dataset.layoutName : 'Выберите предмет';
-    field('layoutScale').disabled = field('layoutRotation').disabled = field('layoutReset').disabled = !selected;
+    field('layoutScale').disabled = field('layoutRotation').disabled = field('layoutReset').disabled = field('layoutFlipX').disabled = field('layoutFlipY').disabled = !selected;
     field('layoutScale').value = state.scale * 100;
     field('layoutScaleValue').textContent = Math.round(state.scale * 100) + '%';
     field('layoutRotation').value = state.rotation;
     field('layoutRotationValue').textContent = state.rotation + '°';
+    field('layoutFlipX').classList.toggle('layout-btn-active', Boolean(state.flipX));
+    field('layoutFlipY').classList.toggle('layout-btn-active', Boolean(state.flipY));
   }
   function select(item) {
     selected?.classList.remove('layout-selected');
@@ -127,6 +147,22 @@
       update(selected, {[key]:Number(event.target.value) / divisor}); controls(); save();
     });
   }
+  field('layoutFlipX').addEventListener('click', () => {
+    if (!selected) return;
+    remember();
+    const state = getState(selected);
+    update(selected, { flipX: !state.flipX });
+    controls();
+    save();
+  });
+  field('layoutFlipY').addEventListener('click', () => {
+    if (!selected) return;
+    remember();
+    const state = getState(selected);
+    update(selected, { flipY: !state.flipY });
+    controls();
+    save();
+  });
   field('layoutReset').addEventListener('click', () => {
     if (!selected) return;
     remember(); delete layouts[profile()]?.[selected.dataset.layoutId]; render(selected); controls(); save();
@@ -153,7 +189,15 @@
     if (directions[event.key]) {
       event.preventDefault(); remember(); const [dx,dy] = directions[event.key]; const state=getState(selected); const step=event.shiftKey?10:1;
       update(selected, {x:state.x+dx*step,y:state.y+dy*step}); save();
-    } else if (event.key === 'Escape') { endDrag(); select(null); }
+    } else if (event.key === 'Escape') {
+      endDrag(); select(null);
+    } else if (event.key === 'h' || event.key === 'H' || event.key === 'р' || event.key === 'Р') {
+      event.preventDefault(); remember(); const state = getState(selected);
+      update(selected, { flipX: !state.flipX }); controls(); save();
+    } else if (event.key === 'v' || event.key === 'V' || event.key === 'м' || event.key === 'М') {
+      event.preventDefault(); remember(); const state = getState(selected);
+      update(selected, { flipY: !state.flipY }); controls(); save();
+    }
   });
   addEventListener('resize', () => {endDrag(); items.forEach(render); controls();});
 })();

@@ -16,6 +16,7 @@
 .layout-controls output { width: 40px; font-variant-numeric: tabular-nums; }
 .layout-controls button { padding: 9px 12px; min-height: 38px; border: 1px solid #a89c99; background: #fffaf3; color: #493139; font: inherit; cursor: pointer; }
 .layout-controls button:disabled { opacity: .45; cursor: default; }
+.layout-controls button.layout-btn-active { background: #681427 !important; color: #fff4ec !important; border-color: #681427 !important; font-weight: 600; }
 #layoutExport { background: #681427; color: #fff4ec; border-color: #681427; }
 .layout-toolbar p { margin-top: 10px; color: #6a5b5c; font-size: 11px; }
 @media (max-width: 600px) {
