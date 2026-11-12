@@ -1,6 +1,6 @@
 .layout-editing { scroll-padding-bottom: 200px; }
 .layout-editing body { padding-bottom: 210px; }
-.layout-editing .decoration-pair { z-index: 30; }
+.layout-editing .decoration-pair, .layout-editing .farewell-decor { z-index: 30; }
 .layout-editing .decor-object, .layout-editing .flatlay-bouquet { pointer-events: auto; touch-action: none; cursor: grab; user-select: none; -webkit-user-drag: none; }
 .layout-editing .layout-selected { outline: 2px dashed #bdd9ea; outline-offset: 5px; }
 .layout-editing .layout-dragging { cursor: grabbing; z-index: 100 !important; }

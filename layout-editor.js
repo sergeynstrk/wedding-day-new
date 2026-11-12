@@ -11,13 +11,14 @@
   let selected = null;
   let drag = null;
   let undoState = null;
-  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки','lace-tr':'Кружево (правый угол)','lace-br':'Кружево (нижний угол)',lace:'Кружево',scissors:'Ножницы',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы'};
+  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки','lace-tr':'Кружево (правый угол)','lace-br':'Кружево (нижний угол)',lace:'Кружево',scissors:'Ножницы',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы',cat:'Кот в шляпе'};
   items.forEach((item, i) => {
     item.dataset.layoutId ||= 'decoration-' + String(i + 1).padStart(2, '0');
     const name = Object.keys(names).find(key => item.classList.contains('decor-' + key));
     let label = names[name] || 'Цветы с печатью';
     if (item.dataset.layoutId === 'decoration-11') label = 'Кружево (левое)';
     if (item.dataset.layoutId === 'decoration-12') label = 'Кружево (правое)';
+    if (item.dataset.layoutId === 'decoration-16' || item.classList.contains('decor-cat')) label = 'Кот в шляпе (стикер)';
     item.dataset.layoutName = label;
   });
   function getState(item) {

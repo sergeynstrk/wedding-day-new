@@ -94,6 +94,14 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "y": -835,
         "scale": 1.35,
         "rotation": -12
+      },
+      "decoration-16": {
+        "x": 0,
+        "y": 0,
+        "scale": 1,
+        "rotation": 3,
+        "flipX": false,
+        "flipY": false
       }
     }
   }

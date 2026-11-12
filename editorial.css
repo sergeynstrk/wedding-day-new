@@ -317,8 +317,9 @@ body { background: #484644; color: #f0e9e1; }
 }
 /* Large tabletop objects occupy dedicated side gutters on wide screens. */
 .magazine-canvas { max-width: 900px; padding: 36px 40px 48px; }
-.hero-section, .venue-card-frame, .timing-section, .decorated-section { position: relative; }
-.decoration-pair { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.hero-section, .venue-card-frame, .timing-section, .decorated-section, .farewell-footer { position: relative; }
+.decoration-pair, .farewell-decor { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.farewell-decor { z-index: 5; }
 .decor-object { position: absolute; top: 40px; left: -185px; width: 175px; height: 260px; display: block; object-fit: contain; }
 .decor-object + .decor-object { left: auto; right: -185px; top: 160px; }
 .decor-rings { top: 120px; width: 210px; left: -210px; transform: rotate(-12deg); }
@@ -331,6 +332,7 @@ body { background: #484644; color: #f0e9e1; }
 .decor-scissors { transform: rotate(16deg); }
 .decor-pearls { top: 100px; height: 380px; transform: rotate(-14deg); }
 .decor-spool { top: 300px !important; height: 300px; transform: rotate(12deg); }
+.decor-cat { position: absolute; width: 175px !important; height: 195px !important; top: -30px !important; right: -130px !important; left: auto !important; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32)); transform-origin: center center; z-index: 10 !important; }
 .hero-details { padding-right: 0; }
 .flatlay-bouquet { width: 290px; height: 235px; top: -20px; right: 0; }
 .dresscode-section { padding-top: 190px; }
@@ -378,6 +380,10 @@ body { background: #484644; color: #f0e9e1; }
 }
 @media (max-width: 1399px) {
   .decor-secondary { display: none; }
+  .decor-cat { position: absolute !important; right: -10px !important; top: -45px !important; width: 140px !important; height: 155px !important; }
+}
+@media (max-width: 780px) {
+  .decor-cat { position: absolute !important; right: 5px !important; top: -35px !important; width: 110px !important; height: 125px !important; }
 }
 .decorated-section > .decoration-pair { z-index: auto; }
 .decor-object { z-index: 2; }
