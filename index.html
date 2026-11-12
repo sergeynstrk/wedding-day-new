@@ -1592,14 +1592,15 @@
               <div class="chip-box"> Безалкогольное</div>
             </label>
           </div>
+          <input type="text" id="customDrink" aria-label="Свой вариант напитка" class="rsvp-input" style="margin-top: 10px;" placeholder="Или напишите свой вариант (например: джин, виски, сидр)...">
         </div>
 
         <!-- Пожелания / Аллергии -->
         <div class="rsvp-group">
           <span class="scrap-clip" style="transform: rotate(1deg);">
-            <span class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ / ТРАНСФЕР:</span>
+            <span class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
           </span>
-          <input type="text" id="guestComment" aria-label="Пожелания, аллергии и трансфер" class="rsvp-input" placeholder="Вегетарианское меню / аллергия / нужен трансфер">
+          <input type="text" id="guestComment" aria-label="Особые пожелания и аллергии" class="rsvp-input" placeholder="Вегетарианское меню / аллергия / любимая музыка">
         </div>
 
         <p style="font-size: 14px; margin-top: 12px; color: var(--ink-soft); opacity: 0.85;">Ответ сразу будет отправлен молодожёнам.</p>
@@ -1759,6 +1760,10 @@
       const attendanceVal = attendanceEl ? attendanceEl.value : 'yes';
       const attendanceText = attendanceVal === 'yes' ? '✔ Буду с огромной радостью!' : '✖ К сожалению, не смогу';
       const drinks = Array.from(form.querySelectorAll('input[name="drinks"]:checked')).map(cb => cb.value);
+      const customDrink = (document.getElementById('customDrink')?.value || '').trim();
+      if (customDrink) {
+        drinks.push(customDrink);
+      }
       const comment = (document.getElementById('guestComment').value || '').trim();
 
       const commentText = comment || 'Нет особых пожеланий';
