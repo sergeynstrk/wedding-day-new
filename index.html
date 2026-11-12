@@ -1194,34 +1194,111 @@
 </head>
 <body>
   <!-- ==========================================
-       ИНТЕРАКТИВНЫЙ КОНВЕРТ (INTERACTIVE ENVELOPE)
+       ИНТЕРАКТИВНЫЙ 3D КОНВЕРТ (INTERACTIVE ENVELOPE)
+       Перенесён из репозитория sergeynstrk/wedding-day
        ========================================== -->
-  <div id="envelopeOverlay" class="envelope-overlay" aria-modal="true" role="dialog" aria-label="Приглашение на свадьбу">
-    <div class="envelope-backdrop" aria-hidden="true"></div>
+  <div id="envelopeScreen" class="envelope-screen" aria-modal="true" role="dialog" aria-label="Свадебное приглашение">
+    <!-- Кнопка быстрого перехода сразу к сайту -->
+    <button type="button" id="envelopeSkipBtn" class="envelope-quick-skip-btn" aria-label="Сразу к сайту">
+      Сразу к сайту ➔
+    </button>
 
-    <div class="envelope-modal-content">
-      <div class="envelope-header">
-        <div class="scrap-clip envelope-tag" style="transform: rotate(-2.5deg);">
-          <span class="clip-body cut-scissor-3 bg-white-serif envelope-tag-text">Приглашение для вас ♡</span>
-        </div>
-      </div>
+    <div id="envelopeBox" class="envelope-box">
+      <!-- 1. Задняя стенка конверта (z-0) -->
+      <div class="envelope-back paper-texture-back"></div>
+      
+      <!-- 1.1 Внутренний шелковый/золоченый лайнер кармана конверта (z-1) -->
+      <div class="envelope-liner paper-texture-liner"></div>
 
-      <div class="envelope-stage">
-        <div id="envelopeCard" class="envelope-box" role="button" tabindex="0" aria-label="Открыть конверт">
-          <img class="envelope-base-img" src="./assets/keepsakes/envelope.png" alt="Свадебный конверт" draggable="false">
-          <div id="waxSealBtn" class="envelope-wax-seal" title="Нажмите, чтобы открыть">
-            <img src="./assets/keepsakes/wax-seal.png" alt="Сургучная печать с сердцем" draggable="false">
-            <div class="seal-glow-ring" aria-hidden="true"></div>
+      <!-- 2. Исходная карточка-приглашение со скругленными уголками (z-10) -->
+      <div class="envelope-letter">
+        <!-- Декоративная тонкая рамка со скруглениями и золотыми уголочками ✦ -->
+        <div class="letter-inner-frame">
+          <div class="frame-stars-row">
+            <span>✦</span>
+            <span>✦</span>
+          </div>
+          <div class="frame-stars-row">
+            <span>✦</span>
+            <span>✦</span>
           </div>
         </div>
-        <p class="envelope-hint">Нажмите на печать, чтобы открыть ♡</p>
+
+        <div class="letter-top-label">
+          <span>Свадебное приглашение</span>
+        </div>
+
+        <div class="letter-couple">
+          <h3 class="letter-names">
+            Сергей <span class="letter-amp">&amp;</span> Юлия
+          </h3>
+          <p class="letter-date">
+            19 ноября 2026
+          </p>
+        </div>
+
+        <div class="letter-monogram-wrap">
+          <div class="letter-line"></div>
+          <span class="letter-monogram">S &amp; Y</span>
+        </div>
       </div>
 
-      <div class="envelope-footer">
-        <button type="button" id="envelopeSkipBtn" class="envelope-skip-btn">
-          Сразу к сайту ➔
+      <!-- 3. Передние карманы конверта - плотная непрозрачная бумага с единым контуром (z-20) -->
+      <div class="envelope-front">
+        <!-- Сплошная плотная подложка кармана -->
+        <div class="envelope-front-side paper-texture-side"></div>
+
+        <!-- Нижний клапан для рельефа швов -->
+        <div class="envelope-front-bottom paper-texture-bottom"></div>
+        
+        <!-- Единые сплошные швы конверта в точном стиле рамки приглашения (#D6C7B8, 1px) -->
+        <svg class="envelope-seams-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <line x1="0" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
+          <line x1="100" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
+          <polyline points="0,100 50,54 100,100" fill="none" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
+        </svg>
+      </div>
+
+      <!-- 4. Верхний крышка-клапан с V-линией в едином стиле с рамкой письма (z-30) -->
+      <div class="envelope-flap paper-texture-flap">
+        <!-- Внутренняя шелковая подкладка клапана при открывании -->
+        <div class="envelope-flap-liner paper-texture-liner"></div>
+
+        <!-- Золотисто-бежевая V-линия в едином стиле с рамкой письма (#D6C7B8, 1px) -->
+        <svg class="envelope-flap-svg" viewBox="0 0 100 68" preserveAspectRatio="none">
+          <line x1="0" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
+          <line x1="100" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
+        </svg>
+      </div>
+
+      <!-- 5. Главная непрерывная золотисто-бежевая рамочная каемка в едином стиле с рамкой письма (z-35) -->
+      <div class="envelope-border"></div>
+
+      <!-- 6. Элегантная печать "Пыльная Роза" с двумя сердцами без веточек и без пунктиров (z-50) -->
+      <div class="envelope-btn">
+        <button type="button" id="waxSealBtn" class="wax-seal" title="Открыть приглашение">
+          <!-- Изящная SVG-печать оттенка Пыльной Розы -->
+          <svg viewBox="0 0 200 200" class="wax-seal-svg">
+            <!-- 1. Матовый силуэт воска оттенка Пыльной Розы (--c-accent #B57E78) -->
+            <path d="M 100,12 C 126,9 146,18 163,35 C 180,52 194,74 191,101 C 188,128 177,153 158,171 C 139,189 113,194 88,189 C 63,184 41,173 25,153 C 9,133 6,108 12,83 C 18,58 35,36 57,23 C 74,12 82,14 100,12 Z" fill="#B57E78" class="wax-seal-bg" />
+            <!-- 2. Чистая сплошная окантовка воска (без пунктира) -->
+            <circle cx="100" cy="103" r="58" fill="none" stroke="#D6C7B8" stroke-width="1.2" opacity="0.85" class="wax-seal-ring" />
+            <!-- 3. Матовый центральный оттиск -->
+            <circle cx="100" cy="103" r="53" fill="#A36D67" class="wax-seal-core" />
+            <!-- 4. Два лаконичных тисненых сердца (БЕЗ веточек) -->
+            <g stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 83,71 C 74,56 56,58 52,75 C 47,96 70,116 83,130 C 93,117 114,96 109,75 C 105,57 89,55 83,71 Z" fill="none" stroke="#FFF5F3" stroke-width="2.2" opacity="0.95" />
+              <path d="M 124,83 C 117,72 104,74 101,86 C 98,100 114,114 124,124 C 131,114 145,100 142,86 C 139,73 128,72 124,83 Z" fill="none" stroke="#E4C88A" stroke-width="2" opacity="0.9" />
+            </g>
+          </svg>
+
+          <!-- Подпись "Нажмите, чтобы открыть" -->
+          <div class="wax-seal-hint">
+            <span>Нажмите, чтобы открыть</span>
+          </div>
         </button>
       </div>
+
     </div>
   </div>
 
@@ -1884,6 +1961,9 @@
       window.open(googleUrl, '_blank', 'noopener,noreferrer');
     }
   </script>
+  <!-- Вспомогательные библиотеки для 3D-анимации конверта и салюта конфетти -->
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/confetti.browser.js"></script>
   <script src="envelope.js" defer></script>
   <script src="layout-defaults.js" defer></script>
   <script src="layout-editor.js" defer></script>
