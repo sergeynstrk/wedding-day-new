@@ -1,0 +1,47 @@
+.ct-gc-dialog{width:min(640px,calc(100vw - 40px));height:min(800px,calc(100dvh - 48px));max-width:none;max-height:none;padding:0;margin:auto;background:#fff;color:#252525;border:0;outline:0;box-shadow:none;border-radius:14px;overflow:hidden;font:14px/1.45 'Open Sans',sans-serif}
+.ct-gc-dialog::backdrop{background:rgba(27,23,25,.38)}
+.ct-gc-dialog *{box-sizing:border-box}
+.ct-gc-dialog button,.ct-gc-dialog input,.ct-gc-dialog textarea{font:inherit;color:inherit;border:0;outline:0;box-shadow:none}
+.ct-gc-dialog button{cursor:pointer;min-height:42px;border-radius:7px}
+.ct-gc-form{height:100%;display:flex;flex-direction:column;min-height:0}
+.ct-gc-header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:24px 26px 18px;flex:none}
+.ct-gc-header h2{font-size:23px;line-height:1.25;font-weight:600;margin:0;outline:0}
+.ct-gc-dialog .ct-gc-close{font:28px/1 Arial;width:42px;flex:none;padding:0;background:#f4f4f5;color:#787d87}
+.ct-gc-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 26px 24px;scrollbar-width:thin;scrollbar-color:#cfcfd3 transparent}
+.ct-gc-selected{display:flex;gap:16px;align-items:center;background:#f7f7f7;border-radius:9px;padding:14px;margin-bottom:24px;min-height:78px}
+.ct-gc-selected img{width:52px;height:104px;object-fit:cover;background:#eeece8;border-radius:5px;flex:none}
+.ct-gc-selected strong{font-weight:600;font-size:15px;overflow-wrap:anywhere}
+.ct-gc-help{font-size:12px;color:#777d84;margin:6px 0 0}
+.ct-gc-fields{display:flex;flex-direction:column;gap:20px}
+.ct-gc-field,.ct-gc-label{display:block}
+.ct-gc-label{font-size:13px;font-weight:600;margin-bottom:8px}
+.ct-gc-field textarea{width:100%;display:block;resize:vertical;min-height:72px;max-height:260px;padding:12px 14px;border-radius:7px;background:#f5f5f6;line-height:1.55}
+.ct-gc-field textarea:focus{background:#fff0f3}
+.ct-gc-upload{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:42px;max-width:100%;padding:0 16px;background:#f0f0f2;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;overflow:hidden;margin-top:10px}
+.ct-gc-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.ct-gc-upload:focus-within,.ct-gc-upload:hover{background:#ffe8ee;color:#ca2c51}
+.ct-gc-upload:focus-within{text-decoration:underline;text-underline-offset:4px}
+.ct-gc-media-preview{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.ct-gc-media-preview img{width:66px;height:80px;object-fit:contain;background:#f5f5f6;border-radius:6px}
+.ct-gc-media-preview video{width:100%;max-height:220px;background:#f5f5f6;border-radius:7px}
+.ct-gc-media-preview .ct-gc-help{margin:0}
+.ct-gc-filename{flex:1;min-width:0;font-size:12px;color:#747980;overflow-wrap:anywhere}
+.ct-gc-dialog .ct-gc-remove{padding:0 10px;font-size:12px;text-decoration:underline;text-underline-offset:3px;background:#f7f7f7}
+.ct-gc-effect{display:flex;align-items:center;gap:12px;cursor:pointer;min-height:42px}
+.ct-gc-effect input{appearance:none;-webkit-appearance:none;width:36px;height:22px;margin:0;flex:none;padding:3px;border-radius:20px;background:#e4e4e6;cursor:pointer}
+.ct-gc-effect input::before{content:'';display:block;width:16px;height:16px;background:white;border-radius:50%}
+.ct-gc-effect input:checked{background:#ff416c}
+.ct-gc-effect input:checked::before{transform:translateX(14px)}
+.ct-gc-effect:has(input:focus-visible){background:#fff0f3;text-decoration:underline;text-underline-offset:4px;border-radius:7px}
+.ct-gc-status{font-size:12px;color:#bf2e50;margin:18px 0 0}
+.ct-gc-status:empty{display:none}
+.ct-gc-footer{display:flex;justify-content:flex-end;gap:12px;padding:16px 26px;background:#fafafa;flex:none}
+.ct-gc-dialog .ct-gc-cancel{padding:0 22px;background:#f0f0f2;color:#53535d}
+.ct-gc-dialog .ct-gc-save{padding:0 28px;background:#ff416c;color:white;font-weight:600;min-height:44px}
+.ct-gc-dialog button:hover,.ct-gc-dialog button:focus-visible{background:#ffe8ee;color:#ca2c51}
+.ct-gc-dialog button:focus-visible{text-decoration:underline;text-underline-offset:4px}
+.ct-gc-dialog .ct-gc-save:hover,.ct-gc-dialog .ct-gc-save:focus-visible{background:#dc2a53;color:white}
+.ct-gc-dialog button:disabled{cursor:default;opacity:.55}
+@media(max-width:700px){.ct-gc-dialog{width:100vw;height:100dvh;border-radius:0}.ct-gc-header{padding:20px 18px 16px}.ct-gc-header h2{font-size:21px}.ct-gc-scroll{padding:0 18px 24px}.ct-gc-footer{padding:14px 18px max(14px,env(safe-area-inset-bottom))}.ct-gc-footer .ct-gc-save{flex:1}.ct-gc-selected{margin-bottom:22px}}
+
+.ct-gc-selected img[src$="/zaglu7.webp"]{object-position:center bottom}

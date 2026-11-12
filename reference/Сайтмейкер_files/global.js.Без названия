@@ -1,0 +1,3601 @@
+// var inp;
+//
+// var cursect = 0;
+// var sections = [];
+// var offsections = [];
+// let template_val = {};
+// let template_data = {};
+// var data_value = {};
+// var iframe = $('iframe');
+// var tplwrapper = $('.ct-template_wrapper');
+// var ifh = iframe.height();
+// var ifw = iframe.width();
+var cursort_template = 0;
+// var grayscales = {};
+var pres_timer;
+var pre_sect = 0;
+var current_own = -1;
+var pers_block_available = 0;
+var maxUserPadding = ($('body').width()>768 && !$('.ct-template_wrapper').hasClass('ct-iphone-wrapper')) ? 400 : 200;
+// var dweeks = constr_terms['ln-dweeks'];
+// var dweeks_short = constr_terms['ln-dweeks-short'];
+// var tmonths = constr_terms['ln-months'];
+// var tmonthsr = constr_terms['ln-months-rod'];
+// var tmonths_ln = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+// var template_config = {};
+
+// var image_fields = ['COVER_PHOTO', 'BRIDE_PHOTO', 'GROOM_PHOTO', 'TIMING_PHOTO', 'SPLASH', 'STORY_PHOTO', 'HELLO_PHOTO_ONE', 'LOCATION_PHOTO', 'PHOTO_ONE', 'TIMING_PHOTO', 'DATETIME_PHOTO_ONE', 'WISH_PHOTO_ONE', 'HELLO_PHOTO', 'TIMER_PHOTO_ONE', 'CONTACTS_PHOTO_ONE', 'ANKETA_PHOTO_ONE', 'BYE_PHOTO_ONE', 'BYE_PHOTO2_ONE'];  //Одно фото
+// var galleries = ['MAIN_GALLERY', 'DRESSCODE_GIRLS_GALLERY', 'DRESSCODE_GUYS_GALLERY', 'LOCATION_GALLERY', 'CONTACT_PHOTO'];  // галлереи в сетки
+// var gallery_items = ['MAIN_GALLERY_ITEMS', 'DRESSCODE_GIRLS_GALLERY_ITEMS', 'DRESSCODE_GUYS_GALLERY_ITEMS', 'LOCATION_GALLERY_ITEMS', 'HELLO_PHOTO_ITEMS', 'CONTACT_PHOTO_ITEMS', 'LOCATION_PHOTO_ITEMS', 'COVER_PHOTO_ITEMS', 'STORY_PHOTO_ITEMS', 'ANKETA_PHOTO_ITEMS', 'OWN_IMAGES', 'NEW_OWN_IMAGES'];  //Одиночные в галлереи
+// var text_items = ['WISH_TEXT_ITEMS', 'TIMING_1', 'TIMING_2', 'TIMING_3', 'TIMING_4', 'TIMING_DESC', 'ANKETA_DRINKS', 'LOCATION_TIMING'];
+
+var bltpl = '';
+var questfilled = false;
+var dweeks_short_init = false;
+var imageUpdater = -1; // для загру
+
+// var tmonths_de = [
+//     "Januar",
+//     "Februar",
+//     "März",
+//     "April",
+//     "Mai",
+//     "Juni",
+//     "Juli",
+//     "August",
+//     "September",
+//     "Oktober",
+//     "November",
+//     "Dezember"
+// ];
+
+
+// Определяем, является ли браузер Safari
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) || (window.safari !== undefined);
+if (isSafari) {
+    document.body.classList.add('is-safari');
+}
+
+function user_gesture() {
+    $.post(ajax_url, {action: 'user_gesture'});
+}
+//конструктор (?) не вижу ни одного ct-phone_check в коде
+$(document).on('input', '.ct-phone_check', function () {
+    this.value = this.value.replace(/[^0-9()+\-]/gi, '');
+    //var phone = this.value;
+})
+
+//конструктор, но элемент скрыт
+$('.ct-switch_template').click(user_gesture).click(function () {
+    $('.ct-panel_settings-page').removeClass('active')
+    $('#mainPanel').toggleClass('active', true);
+    $('#selectTpl').toggleClass('active', true);
+})
+
+
+$(window).on('resize', function () {
+    ifresize()
+})
+
+
+//  И конструктор и просмотр. Надо делить
+function ifresize() {
+
+    tplwrapper.css('transform', 'scale(1)')
+    iframe.css('transform', 'scale(1)').css('height', '100%').css('width', '100%').css('margin-top', 0).css('margin-left', 0);
+    var ifh = 875;
+    var ifw = 425;
+    var mw = 390;
+    maxUserPadding = ($('body').width()>768 && !$('.ct-template_wrapper').hasClass('ct-iphone-wrapper')) ? 400 : 200;
+
+    if (!tplwrapper.hasClass('ct-iphone-wrapper')) {
+        if ($(window).innerWidth() > 768) {
+            mw = 1920;
+        }
+        ifw = iframe.width();
+        ifh = iframe.height();
+    }
+
+    var is1 = $('.ct-template_container').innerWidth() / mw
+    var nifw = ifw / is1;
+    var nifh = ifh / is1;
+    var mt = (ifh - nifh) / 2
+    var ml = (ifw - nifw) / 2
+    if (!tplwrapper.hasClass('ct-iphone-wrapper')) {
+        if ($(window).innerWidth() <= 768) {
+            nifw = mw;
+            nifh = Math.ceil(ifh / is1);
+            mt = Math.ceil((ifh - nifh) / 2)
+            ml = Math.ceil((ifw - nifw) / 2)
+        }
+
+        iframe.css('transform', 'scale(' + is1 + ')').css('height', nifh).css('width', mw).css('transform-origin', 'top, left').css('margin-top', mt).css('margin-left', ml)
+    } else {
+        is1 = $(window).innerHeight() / (885 * 1.25);
+        $('.ct-iphone-wrapper').css('transform', 'scale(' + is1 + ')').css('transform-origin', 'center');
+    }
+
+    if (typeof ($('[name="contact_link"]')) != 'undefined' && $('[name="contact_link"]').parents('.ct-panel_settings-page.active').length > 0) {
+        if ((data_value['CONTACTS_LINK'].value == '' || data_value['CONTACTS_LINK'].value == 'wedwed_ru') && data_value['CONTACTS_LINK'].type != '5') {
+            $('[name="contact_link"]').val('');
+            $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+        }
+    }
+
+    if ($('.ct-image_uploader-info_alt[data-for="OWN_IMAGES_5"] .ct-image_uploader-preview_examples.slick-initialized').length > 0) {
+        $('.ct-image_uploader-info_alt[data-for="OWN_IMAGES_5"] .ct-image_uploader-preview_examples').slick('setPosition');
+    }
+
+    if ($('.ct-image_uploader-info_alt[data-for="NEW_OWN_IMAGES_5"] .ct-image_uploader-preview_examples.slick-initialized').length > 0) {
+        $('.ct-image_uploader-info_alt[data-for="NEW_OWN_IMAGES_5"] .ct-image_uploader-preview_examples').slick('setPosition');
+    }
+    $('.ct-modal-quests-slider .swiper-wrapper').css('height',($('.ct-modal-quests-slider .swiper-slide-active').height()+60)+'px');
+
+    // setTimeout(function () {
+    setFontSize();
+    autoResizeText();
+    refreshOwnGroupMarginControls();
+    // }, 200);
+}
+
+
+//конструктор. Используется ifresize (!)
+$('.ct-edit_template').click(user_gesture).click(function () {
+    if ($(this).hasClass('ct-mob-menu-icon')) {
+        if ($('#secondPanel.active').length > 0) {
+            applyPendingOwnTypographyRangePreview();
+            $('#secondPanel').removeClass('active')
+            $('.ct-panel_sub').removeClass('active');
+            $('.ct-panel_settings-page').removeClass('active');
+        } else {
+            $('#mainPanel').toggleClass('active', true);
+            $('#mainPanel .ct-panel_settings-page').toggleClass('active', false);
+            $('#mainSettings').toggleClass('active', true);
+        }
+        $('#mainPanel').scrollTop(0);
+    } else {
+        applyPendingOwnTypographyRangePreview();
+        $('#mainPanel').toggleClass('active', true);
+        $('#secondPanel').toggleClass('active', false);
+        $('.ct-panel_settings-page').removeClass('active');
+        $('#mainSettings').toggleClass('active', true);
+        ifresize();
+    }
+})
+
+
+// конструктор. Используется ifresize (!)
+$(document).on('click', '.ct-panel_close', function () {
+    user_gesture();
+    $('body').removeAttr('data-pers');
+    if($(this).closest('.ct-modal').attr('data-modal')!="what_modal") {
+        if ($(this).parents('.ct-pleasepay').length > 0) {
+            $('.ct-pleasepay').removeClass('active');
+        } else {
+            if ($(this).closest('#secondPanel').length > 0 || $(this).closest('.ct-panel_settings-page[data-section]').length > 0) {
+                applyPendingOwnTypographyRangePreview();
+            }
+            $(this).parents('.ct-panel:first').removeClass('active');
+            if ($(this).closest('.ct-panel_settings-page').length > 0) {
+                $(this).closest('.ct-panel_settings-page').removeClass('active');
+            }
+            $('.ct-panel_sub').removeClass('active');
+            ifresize();
+        }
+    }
+})
+
+
+// конструктор
+$(document).on('click', '.ct-color-wrapper .ct-color-remove', function () {
+    user_gesture();
+    var p = $(this).parents('.ct-color-wrapper');
+    var parent = $(this).parents('.ct-colors-wrapper');
+    if (parent.find('.ct-color-wrapper').length > 1) {
+        p.remove();
+        $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+    }
+    parent.find('.ct-color-remove').toggleClass('ct-hidden', parent.find('.ct-color-wrapper').length <= 1)
+})
+
+// конструктор
+$(document).on('click', '.ct-color-wrapper .ct-color-add', function () {
+    user_gesture();
+    var $newColor = $(this).parent().clone();
+    $(this).parents('.ct-colors-wrapper').append($newColor)
+    var parent = $(this).parents('.ct-colors_wrapper');
+    parent.find('.ct-color-remove').toggleClass('ct-hidden', parent.find('.ct-color_wrapper').length <= 1)
+    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+    $newColor.find('input[type="color"]')[0].click();
+    $newColor.addClass('ct-color-new');
+})
+
+// конструктор
+$(document).on('input', 'input[type="color"]', function (event) {
+    $(this).parent().find('span.ct-color').removeClass('empty').css('background-color', $(this).val());
+    if($(this).parent().hasClass('ct-color-new')){
+        $(this).parent().removeClass('ct-color-new')
+    }
+    $('.ct-colors-wrapper .ct-color-new').remove();
+});
+
+
+
+// конструктор. Используется ifresize (!)
+$('input[name="ct-device"]').on('change', function () {
+    tplwrapper.toggleClass('ct-iphone-wrapper', $(this).val() > 0)
+    ifresize();
+})
+
+
+//конструктор, но в просмотр seo должно попадать
+var seo_timer
+$('input[name="seo_description"], input[name="seo_title"]').on('input', function () {
+
+    clearTimeout(seo_timer);
+    seo_timer = setTimeout(function () {
+        var set = $('input[name="seo_title"]').val();
+        var des = $('input[name="seo_description"]').val();
+        $.post(ajax_url, {project: project, action: 'setseo', set: set, des: des}, function () {
+
+        })
+    })
+
+})
+
+// см. выше
+ifresize();
+
+
+// конструктор
+$('#setupBlock').click(user_gesture).click(function () {
+    $('#secondPanel').toggleClass('active', true);
+    $('#secondPanel .ct-panel_settings-page').removeClass('active')
+    //console.log('close-panel-4');
+    $('#secondPanel .ct-panel_settings-page[data-section="' + (cursect + 1) + '"]').addClass('active')
+    $('#mainPanel').toggleClass('active', false);
+    ifresize();
+})
+
+// конструктор
+$(document).on('input', '.ct-input', function () {
+    var p = $(this).parents('.ct-panel_settings-page[data-section]')
+    if($(this).attr('type')!='color') {
+        if (p.length > 0) {
+            p.find('.submit_current').toggleClass('active', true);
+        }
+    }else{
+        if(p.hasClass('active')){
+            p.find('.submit_current').toggleClass('active', true);
+        }
+    }
+})
+
+// ползунки начало
+var activeCtInputRange = null;
+var ctInputRangeReleaseTimer = null;
+function getCtRangeValueInput(range) {
+    return range.closest('.ct-input_range-wrapper').find('.ct-input_range-value[name="' + range.data('for') + '"]');
+}
+function unlockCtInputRange(range) {
+    range.removeAttr('data-ct-range-touch-released data-ct-range-released-value');
+}
+function releaseCtInputRange(range) {
+    range = $(range);
+    if (range.length === 0) {
+        return;
+    }
+
+    var value = range.val();
+    var input = getCtRangeValueInput(range);
+
+    if (input.length > 0 && input.val() != value) {
+        input.val(value).trigger('input');
+    }
+
+    range.attr('data-ct-range-touch-released', '1');
+    range.attr('data-ct-range-released-value', value);
+
+    if (document.activeElement === range[0] && typeof range[0].blur == 'function') {
+        range[0].blur();
+    }
+}
+function releaseActiveCtInputRange() {
+    if (activeCtInputRange !== null) {
+        releaseCtInputRange(activeCtInputRange);
+        activeCtInputRange = null;
+    }
+}
+function scheduleReleaseActiveCtInputRange() {
+    clearTimeout(ctInputRangeReleaseTimer);
+    ctInputRangeReleaseTimer = setTimeout(function () {
+        releaseActiveCtInputRange();
+    }, 0);
+}
+$(document).on('touchstart mousedown', '.ct-input_range', function (event) {
+    clearTimeout(ctInputRangeReleaseTimer);
+    unlockCtInputRange($(this));
+    activeCtInputRange = event.type == 'touchstart' ? this : null;
+})
+$(document).on('touchend touchcancel', function () {
+    scheduleReleaseActiveCtInputRange();
+})
+if (document.addEventListener) {
+    document.addEventListener('touchend', scheduleReleaseActiveCtInputRange, true);
+    document.addEventListener('touchcancel', scheduleReleaseActiveCtInputRange, true);
+}
+$(document).on('input', '.ct-input_range', function (event) {
+    if ($(this).attr('data-ct-range-touch-released') == '1') {
+        var releasedValue = $(this).attr('data-ct-range-released-value');
+        var releasedInput = getCtRangeValueInput($(this));
+
+        if (typeof releasedValue != 'undefined') {
+            $(this).val(releasedValue);
+            releasedInput.val(releasedValue);
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return false;
+    }
+
+    var input = $(this).closest('.ct-input_range-wrapper').find('.ct-input_range-value[name="' + $(this).data('for') + '"]');
+    input.val($(this).val()).trigger('input');
+})
+var ownTypographyRangeFields = [
+    'own_title_font_size',
+    'own_title_font_size_mobile',
+    'own_title_line_height',
+    'own_text_font_size',
+    'own_text_font_size_mobile',
+    'own_text_line_height'
+];
+function applyPendingOwnTypographyRangePreview() {
+    var pendingPanels = $('#secondPanel .ct-panel_settings-page[data-own-typography-changed="1"]');
+
+    if (pendingPanels.length === 0) {
+        return;
+    }
+
+    pendingPanels.removeAttr('data-own-typography-changed');
+
+    if (typeof setFontSize == 'function') {
+        setFontSize();
+    }
+
+    pendingPanels.each(function () {
+        var section = Number($(this).attr('data-section'));
+
+        if (!isNaN(section) && section >= 1001) {
+            positionOwnGroupMarginControlsAfterLayout(section);
+        }
+    });
+}
+function updateOwnRangePreview(input) {
+    var name = input.attr('name');
+    var section = Number(input.closest('.ct-panel_settings-page').attr('data-section'));
+    var groupMarginMatch = name ? name.match(/^own_group_margin_(\d+)_(top|bottom|top_mobile|bottom_mobile)$/) : null;
+    var sectionPaddingMatch = name ? name.match(/^own_padding_(top|bottom)(_mobile)?$/) : null;
+    var ownStyleFields = [
+        'own_title_font_size',
+        'own_title_font_size_mobile',
+        'own_title_line_height',
+        'own_text_font_size',
+        'own_text_font_size_mobile',
+        'own_text_line_height',
+        'own_padding_top',
+        'own_padding_top_mobile',
+        'own_padding_bottom',
+        'own_padding_bottom_mobile'
+    ];
+
+    if (!name || name.indexOf('own_') !== 0 || isNaN(section) || section < 1001 || typeof data_value['OWN_BLOCKS'] == 'undefined') {
+        return;
+    }
+
+    if (sectionPaddingMatch) {
+        setOwnSectionPaddingValueFromLanding(section, sectionPaddingMatch[1], sectionPaddingMatch[2] == '_mobile', input.val());
+        positionOwnGroupMarginControlsAfterLayout(section);
+        return;
+    }
+
+    if (groupMarginMatch) {
+        var groupId = groupMarginMatch[1];
+        var fieldType = groupMarginMatch[2];
+
+        if (typeof data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'] == 'undefined' || data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'] == null) {
+            data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'] = {};
+        }
+        if (typeof data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'][groupId] == 'undefined') {
+            data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'][groupId] = [[0, 0], [0, 0]];
+        }
+
+        var marginValue = input.val() === '' ? 0 : input.val();
+        if (fieldType == 'top') {
+            data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'][groupId][0][0] = marginValue;
+        } else if (fieldType == 'bottom') {
+            data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'][groupId][0][1] = marginValue;
+        } else if (fieldType == 'top_mobile') {
+            data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'][groupId][1][0] = marginValue;
+        } else if (fieldType == 'bottom_mobile') {
+            data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'][groupId][1][1] = marginValue;
+        }
+
+        if (typeof setFontSize == 'function') {
+            setFontSize();
+        }
+        positionOwnGroupMarginControlsAfterLayout(section);
+        return;
+    }
+
+    data_value['OWN_BLOCKS'][section - 1001][name.toUpperCase()] = input.val();
+
+    if ($.inArray(name, ownTypographyRangeFields) !== -1 && $(window).innerWidth() <= 676) {
+        input.closest('.ct-panel_settings-page[data-section]').attr('data-own-typography-changed', '1');
+        return;
+    }
+
+    if ($.inArray(name, ownStyleFields) !== -1 && typeof setFontSize == 'function') {
+        setFontSize();
+        positionOwnGroupMarginControlsAfterLayout(section);
+    }
+}
+function getActiveOwnBlockSection() {
+    var activePanel = $('#secondPanel .ct-panel_settings-page.active[data-section]');
+    var section = Number(activePanel.attr('data-section'));
+
+    if (activePanel.length === 0 || isNaN(section) || section < 1001) {
+        return null;
+    }
+
+    return section;
+}
+function isOwnMobilePreview() {
+    if (typeof iframe == 'undefined' || iframe.length === 0 || typeof iframe[0].contentWindow == 'undefined') {
+        return false;
+    }
+
+    return tplwrapper.hasClass('ct-iphone-wrapper') || $('input[name="ct-device"]:checked').val() > 0 || iframe[0].contentWindow.innerWidth < 500;
+}
+var ownGroupMarginApplyRaf = null;
+var ownGroupMarginDragActive = false;
+var ownSectionPaddingBase = 10;
+function ensureOwnGroupMarginControlStyles() {
+}
+function requestOwnGroupMarginFrame(callback) {
+    var raf = window.requestAnimationFrame || function (callback) {
+        return setTimeout(callback, 16);
+    };
+
+    return raf(callback);
+}
+function positionOwnGroupMarginControlsAfterLayout(section) {
+    requestOwnGroupMarginFrame(function () {
+        positionOwnGroupMarginControls(section);
+        refreshOwnSectionPaddingPatterns();
+    });
+}
+function getOwnSectionElement(section) {
+    var ic = iframe.contents();
+    var sectionElement = ic.find('section.sm-own[data-type="' + section + '"]').first();
+
+    if (sectionElement.length === 0) {
+        sectionElement = ic.find('.sm-own[data-type="' + section + '"]').first();
+    }
+    if (sectionElement.length === 0) {
+        sectionElement = ic.find('section[data-type="' + section + '"]').first();
+    }
+    if (sectionElement.length === 0) {
+        sectionElement = ic.find('[data-type="' + section + '"]').first();
+    }
+
+    return sectionElement;
+}
+function isOwnElementHidden(element) {
+    return element.length === 0 || element.hasClass('sm-hidden') || element.parents('.sm-hidden').length > 0;
+}
+
+
+// function getOwnBlockData(section) {
+//     // достает то, что лежит в data_value по перс блоку. На вход id
+//     if (typeof data_value == 'undefined' || typeof data_value['OWN_BLOCKS'] == 'undefined' || typeof data_value['OWN_BLOCKS'][section - 1001] == 'undefined') {
+//         return null;
+//     }
+//
+//     return data_value['OWN_BLOCKS'][section - 1001];
+// }
+function clampOwnSpacingValue(value) {
+    value = Math.round(Number(value));
+
+    if (isNaN(value)) {
+        value = 0;
+    }
+
+    return Math.max(0, Math.min(maxUserPadding, value));
+}
+function setOwnSpacingControlArrow(control, value, inverted) {
+    value = clampOwnSpacingValue(value);
+    control.removeClass('ct-own-spacing-arrow-up ct-own-spacing-arrow-down ct-own-spacing-arrow-both');
+
+    if (value <= 0) {
+        control.addClass(inverted ? 'ct-own-spacing-arrow-up' : 'ct-own-spacing-arrow-down');
+    } else if (value >= maxUserPadding) {
+        control.addClass(inverted ? 'ct-own-spacing-arrow-down' : 'ct-own-spacing-arrow-up');
+    } else {
+        control.addClass('ct-own-spacing-arrow-both');
+    }
+}
+function setOwnSpacingInputValue(section, fieldName, value) {
+    var panel = $('#secondPanel [data-section="' + section + '"]');
+    var input = panel.find('[name="' + fieldName + '"]');
+
+    input.val(value);
+    input.closest('.ct-input_wrapper').find('.ct-input_range[data-for="' + fieldName + '"]').val(value);
+
+    if (panel.length > 0) {
+        panel.find('.submit_current').addClass('active');
+    }
+}
+// function ensureOwnGroupMarginData(section, groupId) {
+//     var ownBlock = data_value['OWN_BLOCKS'][section - 1001];
+//
+//     if (ownBlock === null) {
+//         return null;
+//     }
+//
+//     if (typeof ownBlock['OWN_BLOCK_GROUP_MARGIN'] == 'undefined' || ownBlock['OWN_BLOCK_GROUP_MARGIN'] == null) {
+//         ownBlock['OWN_BLOCK_GROUP_MARGIN'] = {};
+//     }
+//     if (typeof ownBlock['OWN_BLOCK_GROUP_MARGIN'][groupId] == 'undefined') {
+//         ownBlock['OWN_BLOCK_GROUP_MARGIN'][groupId] = [[0, 0], [0, 0]];
+//     }
+//
+//     return ownBlock['OWN_BLOCK_GROUP_MARGIN'][groupId];
+// }
+function getOwnGroupMarginValue(section, groupId, fieldType, isMobile) {
+    var fieldName = 'own_group_margin_' + groupId + '_' + fieldType + (isMobile ? '_mobile' : '');
+    var input = $('#secondPanel [data-section="' + section + '"] [name="' + fieldName + '"]');
+    var value = input.length > 0 ? input.val() : '';
+    var ownBlock = data_value['OWN_BLOCKS'][section - 1001];
+
+    if (value === '' && ownBlock !== null) {
+        var groupMargin = ownBlock['OWN_BLOCK_GROUP_MARGIN'];
+        var groupValues = (typeof groupMargin != 'undefined' && typeof groupMargin[groupId] != 'undefined') ? groupMargin[groupId] : [[0, 0], [0, 0]];
+        var deviceValues = isMobile ? groupValues[1] : groupValues[0];
+        var valueIndex = fieldType == 'top' ? 0 : 1;
+        value = (typeof deviceValues != 'undefined' && typeof deviceValues[valueIndex] != 'undefined') ? deviceValues[valueIndex] : 0;
+    }
+
+    return value === '' ? 0 : value;
+}
+function setOwnGroupMarginValueFromLanding(section, groupId, fieldType, isMobile, value) {
+    var fieldName = 'own_group_margin_' + groupId + '_' + fieldType + (isMobile ? '_mobile' : '');
+    var groupMargin = data_value['OWN_BLOCKS'][section - 1001]['OWN_BLOCK_GROUP_MARGIN'][groupId];
+
+    if (groupMargin === null) {
+        return 0;
+    }
+
+    value = clampOwnSpacingValue(value);
+    setOwnSpacingInputValue(section, fieldName, value);
+
+    if (fieldType == 'top') {
+        groupMargin[isMobile ? 1 : 0][0] = value;
+    } else {
+        groupMargin[isMobile ? 1 : 0][1] = value;
+    }
+
+    scheduleOwnGroupMarginApply(section);
+
+    return value;
+}
+// function getOwnSectionPaddingKey(edge, isMobile) {
+//     return 'OWN_PADDING_' + edge.toUpperCase() + (isMobile ? '_MOBILE' : '');
+// }
+// function getOwnSectionPaddingField(edge, isMobile) {
+//     return 'own_padding_' + edge + (isMobile ? '_mobile' : '');
+// }
+function getOwnSectionPaddingStyleSelector(section, edge) {
+    var selector = 'section.sm-own[data-type="' + section + '"]';
+
+    return edge == 'bottom' ? selector + '.sm-own' : selector;
+}
+function getOwnSectionPaddingStyleTag(isMobile) {
+    var ic = iframe.contents();
+    var className = isMobile ? 'colors-styles-mobile' : 'colors-styles-desktop';
+    var style = ic.find('head .' + className);
+
+    if (style.length === 0) {
+        ic.find('head').append('<style class="' + className + '"></style>');
+        style = ic.find('head .' + className);
+    }
+
+    return style;
+}
+function getOwnSectionPaddingCssValue(value) {
+    return clampOwnSpacingValue(value) + ownSectionPaddingBase;
+}
+function getOwnSectionPaddingEditorValue(value) {
+    value = Math.round(Number(value));
+
+    if (isNaN(value)) {
+        value = 0;
+    }
+
+    return clampOwnSpacingValue(value - ownSectionPaddingBase);
+}
+function applyOwnSectionPaddingEdgeStyle(section, edge, isMobile, value) {
+    var selector = getOwnSectionPaddingStyleSelector(section, edge);
+    var property = 'padding-' + edge;
+    var cssValue = getOwnSectionPaddingCssValue(value) + 'px';
+    var sectionElement = getOwnSectionElement(section);
+
+    if (sectionElement.length > 0) {
+        sectionElement.css(property, '');
+    }
+
+    if (typeof updateStyleRule != 'function') {
+        return;
+    }
+
+    updateStyleRule(getOwnSectionPaddingStyleTag(isMobile), selector, property + ':' + cssValue + ';');
+}
+function getOwnRenderedSectionPaddingValue(section, edge) {
+    var sectionElement = getOwnSectionElement(section);
+    var value;
+
+    if (sectionElement.length === 0) {
+        return 0;
+    }
+
+    value = parseFloat(sectionElement.css('padding-' + edge));
+
+    return getOwnSectionPaddingEditorValue(isNaN(value) ? 0 : value);
+}
+function compensateOwnSectionBottomPaddingScroll(section, targetBottom) {
+    if (typeof iframe == 'undefined' || iframe.length === 0 || typeof iframe[0].contentWindow == 'undefined' || targetBottom === null) {
+        return;
+    }
+
+    var sectionRect = getOwnElementRect(getOwnSectionElement(section));
+    var win = iframe[0].contentWindow;
+    var delta;
+
+    if (sectionRect === null) {
+        return;
+    }
+
+    delta = sectionRect.bottom - targetBottom;
+    if (Math.abs(delta) < 1) {
+        return;
+    }
+
+    win.scrollTo(win.pageXOffset || 0, (win.pageYOffset || 0) + delta);
+}
+function updateOwnSectionPaddingAreaSize(section, edge, value) {
+    var area = iframe.contents().find('.ct-own-section-padding-area[data-section="' + section + '"][data-edge="' + edge + '"]');
+
+    value = clampOwnSpacingValue(value);
+    area.css('height', value + 'px');
+}
+function getOwnSectionPaddingValue(section, edge, isMobile) {
+    var fieldName = 'own_padding_' + edge + (isMobile ? '_mobile' : '');
+    var input = $('#secondPanel [data-section="' + section + '"] [name="' + fieldName + '"]');
+    var value = input.length > 0 ? input.val() : '';
+    var ownBlock = data_value['OWN_BLOCKS'][section - 1001];
+    var key = 'OWN_PADDING_' + edge.toUpperCase() + (isMobile ? '_MOBILE' : '')
+
+    if (value === '' && ownBlock !== null && typeof ownBlock[key] != 'undefined' && ownBlock[key] !== null && ownBlock[key] !== '') {
+        value = ownBlock[key];
+    }
+
+    return value === '' ? 0 : value;
+}
+function setOwnSectionPaddingValueFromLanding(section, edge, isMobile, value) {
+    var ownBlock = data_value['OWN_BLOCKS'][section - 1001];
+    var key = 'OWN_PADDING_' + edge.toUpperCase() + (isMobile ? '_MOBILE' : '')
+    var fieldName = key.toLowerCase()
+
+    if (ownBlock === null) {
+        return 0;
+    }
+
+    value = clampOwnSpacingValue(value);
+    ownBlock[key] = value;
+    setOwnSpacingInputValue(section, fieldName, value);
+    applyOwnSectionPaddingEdgeStyle(section, edge, isMobile, value);
+    updateOwnSectionPaddingAreaSize(section, edge, value);
+    positionOwnGroupMarginControls(section);
+    if (isMobile) {
+        positionVisibleOwnSectionPaddingControls();
+    } else {
+        positionOwnSectionPaddingControls(section);
+    }
+
+    return value;
+}
+function getOwnBlockPaddingData(section) {
+    var ownBlock = data_value['OWN_BLOCKS'][section - 1001];
+    var padding = {};
+
+    if (ownBlock === null) {
+        return padding;
+    }
+
+    $.each(['OWN_PADDING_TOP', 'OWN_PADDING_TOP_MOBILE', 'OWN_PADDING_BOTTOM', 'OWN_PADDING_BOTTOM_MOBILE'], function (index, key) {
+        padding[key] = (typeof ownBlock[key] != 'undefined' && ownBlock[key] !== null) ? ownBlock[key] : '';
+    });
+
+    return padding;
+}
+function saveOwnGroupMarginToUserJson(section) {
+    var ownBlock = data_value['OWN_BLOCKS'][section - 1001];
+
+    if (typeof ajax_url == 'undefined' || ownBlock === null) {
+        return;
+    }
+
+    $.post(ajax_url, {
+        action: 'setOwnGroupMargin',
+        project: (typeof project != 'undefined') ? project : '',
+        block_id: section,
+        group_margin: JSON.stringify(ownBlock['OWN_BLOCK_GROUP_MARGIN'] || {}),
+        padding: JSON.stringify(getOwnBlockPaddingData(section))
+    });
+}
+function getOwnSpacingCssValue(value) {
+    if (typeof value == 'undefined' || value === null || value === '') {
+        return '';
+    }
+
+    return clampOwnSpacingValue(value) + 'px';
+}
+function addOwnLiveSpacingRule(rules, selector, props) {
+    if (props.length > 0) {
+        rules.push(selector + '{' + props.join('') + '}');
+    }
+}
+function buildOwnLiveSpacingRules(section, isMobile) {
+    var rules = [];
+
+    $.each(template_val.pers_groups_info, function (groupId, groupInfo) {
+        var groupSelectors = (typeof groupInfo != 'undefined' && $.isArray(groupInfo[4])) ? groupInfo[4] : [];
+        var marginTop = getOwnSpacingCssValue(getOwnGroupMarginValue(section, groupId, 'top', isMobile));
+
+        if (groupSelectors.length === 0) {
+            return true;
+        }
+
+        $.each(groupSelectors, function (selectorIndex, groupSelector) {
+            if (groupSelector == '') {
+                return true;
+            }
+
+            if (marginTop !== '') {
+                addOwnLiveSpacingRule(rules, '[data-type="' + section + '"] ' + groupSelector, ['margin-top:' + marginTop + ';']);
+            }
+        });
+    });
+
+    return rules.join('');
+}
+function applyOwnLiveSpacingStyles(section) {
+    if (typeof iframe == 'undefined' || iframe.length === 0 || typeof template_val == 'undefined' || typeof template_val.pers_groups_info == 'undefined') {
+        return;
+    }
+
+    var ic = iframe.contents();
+    var style = ic.find('head .ct-own-spacing-live-styles');
+    var css = '@media (min-width:500px){' + buildOwnLiveSpacingRules(section, false) + '}@media (max-width:500px){' + buildOwnLiveSpacingRules(section, true) + '}';
+
+    if (style.length === 0) {
+        ic.find('head').append('<style class="ct-own-spacing-live-styles"></style>');
+        style = ic.find('head .ct-own-spacing-live-styles');
+    }
+
+    style.html(css);
+}
+function removeOwnLiveSpacingStyles() {
+    if (typeof iframe == 'undefined' || iframe.length === 0) {
+        return;
+    }
+
+    iframe.contents().find('head .ct-own-spacing-live-styles').remove();
+}
+function scheduleOwnGroupMarginApply(section) {
+    if (ownGroupMarginApplyRaf !== null) {
+        return;
+    }
+
+    ownGroupMarginApplyRaf = requestOwnGroupMarginFrame(function () {
+        ownGroupMarginApplyRaf = null;
+        if (ownGroupMarginDragActive) {
+            applyOwnLiveSpacingStyles(section);
+        } else if (typeof setFontSize == 'function') {
+            setFontSize();
+        }
+        positionOwnGroupMarginControlsAfterLayout(section);
+    });
+}
+function getOwnGroupMarginTarget(section, groupSelectors, includeHidden) {
+    var sectionElement = getOwnSectionElement(section);
+    var target = $();
+
+    if (sectionElement.length === 0) {
+        return target;
+    }
+
+    $.each(groupSelectors, function (selectorIndex, groupSelector) {
+        var found = sectionElement.find(groupSelector);
+
+        if (!includeHidden) {
+            found = found.filter(function () {
+                return !isOwnElementHidden($(this));
+            });
+        }
+
+        found = found.first();
+
+        if (found.length > 0) {
+            target = found;
+            return false;
+        }
+    });
+
+    return target;
+}
+function getOwnElementRect(element) {
+    if (element.length === 0 || typeof element[0].getBoundingClientRect == 'undefined') {
+        return null;
+    }
+
+    return element[0].getBoundingClientRect();
+}
+function getOwnElementDocumentRect(element) {
+    var rect = getOwnElementRect(element);
+    var win;
+
+    if (rect === null || typeof iframe == 'undefined' || iframe.length === 0 || typeof iframe[0].contentWindow == 'undefined') {
+        return null;
+    }
+
+    win = iframe[0].contentWindow;
+
+    return {
+        left: rect.left + (win.pageXOffset || 0),
+        top: rect.top + (win.pageYOffset || 0),
+        width: rect.width,
+        height: rect.height
+    };
+}
+function getOwnElementRelativeTop(element, parentElement) {
+    var elementRect = getOwnElementRect(element);
+    var parentRect = getOwnElementRect(parentElement);
+    var elementOffset;
+    var parentOffset;
+
+    if (elementRect !== null && parentRect !== null) {
+        return elementRect.top - parentRect.top;
+    }
+
+    elementOffset = element.offset();
+    parentOffset = parentElement.offset();
+    if (typeof elementOffset != 'undefined' && elementOffset !== null && typeof parentOffset != 'undefined' && parentOffset !== null) {
+        return elementOffset.top - parentOffset.top;
+    }
+
+    return null;
+}
+function getOwnSectionPaddingControlsLayer(ic) {
+    var layer = ic.find('body > .ct-own-section-padding-controls-layer');
+
+    if (layer.length === 0) {
+        ic.find('body').append('<div class="ct-own-section-padding-controls-layer"></div>');
+        layer = ic.find('body > .ct-own-section-padding-controls-layer');
+    }
+
+    return layer;
+}
+function ensureOwnSectionPaddingControl(layer, section, edge) {
+    var control = layer.children('.ct-own-section-padding-control[data-section="' + section + '"][data-edge="' + edge + '"]');
+
+    if (control.length === 0) {
+        layer.append('<div class="ct-own-section-padding-control ct-own-section-padding-control-' + edge + '" data-section="' + section + '" data-edge="' + edge + '" data-log-id="'+section+'-padding-'+ edge +'"></div>');
+        control = layer.children('.ct-own-section-padding-control[data-section="' + section + '"][data-edge="' + edge + '"]');
+    }
+    if (control.length > 1) {
+        control.slice(1).remove();
+        control = control.first();
+    }
+
+    return control;
+}
+function positionOwnSectionPaddingControl(section, edge, value) {
+    if (typeof iframe == 'undefined' || iframe.length === 0) {
+        return;
+    }
+
+    var ic = iframe.contents();
+    var layer = getOwnSectionPaddingControlsLayer(ic);
+    var control = layer.children('.ct-own-section-padding-control[data-section="' + section + '"][data-edge="' + edge + '"]');
+    var sectionElement = getOwnSectionElement(section);
+    var sectionRect = getOwnElementDocumentRect(sectionElement);
+    var controlOffset = 15;
+    var controlTop;
+
+    if (control.length === 0 || sectionRect === null || isOwnElementHidden(sectionElement)) {
+        control.hide();
+        return;
+    }
+
+    value = clampOwnSpacingValue(value);
+    setOwnSpacingControlArrow(control, value, edge == 'bottom');
+    if (edge == 'bottom') {
+        controlTop = sectionRect.top + sectionRect.height - value + controlOffset;
+    } else {
+        controlTop = sectionRect.top + value - controlOffset;
+    }
+
+    control.css({
+        left: (sectionRect.left + sectionRect.width / 2) + 'px',
+        top: controlTop + 'px'
+    }).show();
+}
+function positionOwnSectionPaddingControls(section) {
+    positionOwnSectionPaddingControl(section, 'top', getOwnRenderedSectionPaddingValue(section, 'top'));
+    positionOwnSectionPaddingControl(section, 'bottom', getOwnRenderedSectionPaddingValue(section, 'bottom'));
+}
+function positionVisibleOwnSectionPaddingControls() {
+    $.each(getOwnSectionPaddingControlSections(), function (sectionIndex, section) {
+        positionOwnSectionPaddingControls(section);
+    });
+}
+function positionOwnSpacingControls(section) {
+    positionOwnGroupMarginControls(section);
+    positionOwnSectionPaddingControls(section);
+}
+function getOwnSectionPaddingControlSections() {
+    var sections = [];
+    var activeSection = getActiveOwnBlockSection();
+
+    if (typeof data_value == 'undefined' || typeof data_value['OWN_BLOCKS'] == 'undefined') {
+        return sections;
+    }
+
+    if (!isOwnMobilePreview()) {
+        if (activeSection !== null) {
+            sections.push(activeSection);
+        }
+
+        return sections;
+    }
+
+    $.each(data_value['OWN_BLOCKS'], function (blockIndex, ownBlock) {
+        if (typeof ownBlock == 'undefined' || typeof ownBlock['ID'] == 'undefined') {
+            return true;
+        }
+
+        var section = Number(ownBlock['ID']);
+        var sectionElement = getOwnSectionElement(section);
+
+        if (isNaN(section) || section < 1001 || sectionElement.length === 0 || isOwnElementHidden(sectionElement)) {
+            return true;
+        }
+
+        sections.push(section);
+    });
+
+    return sections;
+}
+function hasOwnSectionInList(sections, section) {
+    return $.inArray(Number(section), sections) !== -1;
+}
+function syncOwnSectionPaddingPattern(section, controlsLayer) {
+    var sectionElement = getOwnSectionElement(section);
+    var topArea;
+    var bottomArea;
+    var paddingTop;
+    var paddingBottom;
+
+    if (sectionElement.length === 0 || isOwnElementHidden(sectionElement)) {
+        return;
+    }
+
+    paddingTop = getOwnRenderedSectionPaddingValue(section, 'top');
+    paddingBottom = getOwnRenderedSectionPaddingValue(section, 'bottom');
+
+    sectionElement.addClass('ct-own-section-padding-host');
+
+    topArea = sectionElement.children('.ct-own-section-padding-area[data-edge="top"][data-section="' + section + '"]');
+    if (topArea.length === 0) {
+        sectionElement.append('<div class="ct-own-section-padding-area ct-own-section-padding-area-top" data-section="' + section + '" data-edge="top"></div>');
+        topArea = sectionElement.children('.ct-own-section-padding-area[data-edge="top"][data-section="' + section + '"]');
+    }
+    if (topArea.length > 1) {
+        topArea.slice(1).remove();
+        topArea = topArea.first();
+    }
+    topArea.css('height', paddingTop + 'px');
+
+    bottomArea = sectionElement.children('.ct-own-section-padding-area[data-edge="bottom"][data-section="' + section + '"]');
+    if (bottomArea.length === 0) {
+        sectionElement.append('<div class="ct-own-section-padding-area ct-own-section-padding-area-bottom" data-section="' + section + '" data-edge="bottom"></div>');
+        bottomArea = sectionElement.children('.ct-own-section-padding-area[data-edge="bottom"][data-section="' + section + '"]');
+    }
+    if (bottomArea.length > 1) {
+        bottomArea.slice(1).remove();
+        bottomArea = bottomArea.first();
+    }
+    bottomArea.css('height', paddingBottom + 'px');
+
+    ensureOwnSectionPaddingControl(controlsLayer, section, 'top');
+    ensureOwnSectionPaddingControl(controlsLayer, section, 'bottom');
+    positionOwnSectionPaddingControl(section, 'top', paddingTop);
+    positionOwnSectionPaddingControl(section, 'bottom', paddingBottom);
+}
+function refreshOwnSectionPaddingPatterns() {
+    if (typeof iframe == 'undefined' || iframe === null || iframe.length === 0) {
+        return;
+    }
+
+    var ic = iframe.contents();
+    var sections = getOwnSectionPaddingControlSections();
+    var controlsLayer;
+
+    if ($('body').hasClass('ct-demonstration')) {
+        ic.find('.ct-own-section-padding-area').remove();
+        ic.find('.ct-own-section-padding-controls-layer').remove();
+        ic.find('.ct-own-section-padding-host').removeClass('ct-own-section-padding-host');
+        return;
+    }
+
+    if (sections.length === 0) {
+        ic.find('.ct-own-section-padding-area').remove();
+        ic.find('.ct-own-section-padding-controls-layer').remove();
+        ic.find('.ct-own-section-padding-host').removeClass('ct-own-section-padding-host');
+        return;
+    }
+
+    ic.find('.ct-own-section-padding-area').filter(function () {
+        var section = Number($(this).attr('data-section'));
+        var sectionElement = getOwnSectionElement(section);
+
+        return !hasOwnSectionInList(sections, section) || sectionElement.length === 0 || this.parentNode !== sectionElement[0];
+    }).remove();
+    ic.find('.ct-own-section-padding-host').filter(function () {
+        return !hasOwnSectionInList(sections, Number($(this).attr('data-type')));
+    }).removeClass('ct-own-section-padding-host');
+    controlsLayer = getOwnSectionPaddingControlsLayer(ic);
+    controlsLayer.children('.ct-own-section-padding-control').filter(function () {
+        return !hasOwnSectionInList(sections, Number($(this).attr('data-section')));
+    }).remove();
+
+    $.each(sections, function (sectionIndex, section) {
+        syncOwnSectionPaddingPattern(section, controlsLayer);
+    });
+    bindOwnSectionPaddingControls(ic);
+}
+function bindOwnSectionPaddingControls(ic) {
+    ic.find('.ct-own-section-padding-control').off('mousedown touchstart').on('mousedown touchstart', function (event) {
+        var control = $(this);
+        var doc = ic;
+        var isTouchDrag = event.type == 'touchstart';
+        var moveEvent = isTouchDrag ? 'touchmove.ctOwnSectionPadding' : 'mousemove.ctOwnSectionPadding';
+        var endEvent = isTouchDrag ? 'touchend.ctOwnSectionPadding touchcancel.ctOwnSectionPadding' : 'mouseup.ctOwnSectionPadding';
+        var nativeDoc = doc[0];
+        var nativeMoveHandler = null;
+        var nativeEndHandler = null;
+        var cancelDragEvent = function (dragEvent) {
+            var originalEvent = dragEvent.originalEvent || dragEvent;
+
+            if (originalEvent && originalEvent.cancelable !== false && typeof originalEvent.preventDefault == 'function') {
+                originalEvent.preventDefault();
+            }
+            if (typeof dragEvent.preventDefault == 'function') {
+                dragEvent.preventDefault();
+            }
+            if (typeof dragEvent.stopPropagation == 'function') {
+                dragEvent.stopPropagation();
+            }
+        };
+        var getPageY = function (dragEvent) {
+            var originalEvent = dragEvent.originalEvent || dragEvent;
+
+            if (originalEvent.touches && originalEvent.touches.length > 0) {
+                return originalEvent.touches[0].clientY;
+            }
+            if (originalEvent.changedTouches && originalEvent.changedTouches.length > 0) {
+                return originalEvent.changedTouches[0].clientY;
+            }
+
+            return (typeof dragEvent.clientY != 'undefined') ? dragEvent.clientY : dragEvent.pageY;
+        };
+        var syncPaddingBaseline = function () {
+            if (paddingBaselineSynced) {
+                return;
+            }
+
+            setOwnSectionPaddingValueFromLanding(section, oppositeEdge, isMobile, startOppositeValue);
+            paddingBaselineSynced = true;
+        };
+        var setValueFromEvent = function (dragEvent) {
+            cancelDragEvent(dragEvent);
+
+            var pageY = getPageY(dragEvent);
+            var delta = pageY - lastPageY;
+            var currentValue = getOwnRenderedSectionPaddingValue(section, edge);
+            var value = edge == 'bottom' ? currentValue - delta : currentValue + delta;
+
+            paddingChanged = true;
+            syncPaddingBaseline();
+            setOwnSectionPaddingValueFromLanding(section, edge, isMobile, value);
+            if (edge == 'bottom') {
+                compensateOwnSectionBottomPaddingScroll(section, startSectionBottom);
+            }
+            lastPageY = pageY;
+        };
+        var section = Number(control.attr('data-section'));
+        var edge = control.attr('data-edge');
+        var oppositeEdge = edge == 'bottom' ? 'top' : 'bottom';
+        var isMobile = isOwnMobilePreview();
+        var startPageY = getPageY(event);
+        var lastPageY = startPageY;
+        var startOppositeValue = getOwnRenderedSectionPaddingValue(section, oppositeEdge);
+        var startSectionRect = edge == 'bottom' ? getOwnElementRect(getOwnSectionElement(section)) : null;
+        var startSectionBottom = startSectionRect === null ? null : startSectionRect.bottom;
+        var paddingChanged = false;
+        var paddingBaselineSynced = false;
+
+        if (isNaN(section) || section < 1001 || (edge != 'top' && edge != 'bottom')) {
+            return;
+        }
+
+        control.addClass('active');
+        var stopDrag = function () {
+            control.removeClass('active');
+            doc.off('.ctOwnSectionPadding');
+            if (isTouchDrag && nativeDoc) {
+                nativeDoc.removeEventListener('touchmove', nativeMoveHandler);
+                nativeDoc.removeEventListener('touchend', nativeEndHandler);
+                nativeDoc.removeEventListener('touchcancel', nativeEndHandler);
+            }
+            if (paddingChanged) {
+                positionOwnGroupMarginControlsAfterLayout(section);
+                saveOwnGroupMarginToUserJson(section);
+            }
+        };
+
+        doc.off('.ctOwnSectionPadding');
+        if (isTouchDrag && nativeDoc) {
+            nativeMoveHandler = setValueFromEvent;
+            nativeEndHandler = stopDrag;
+            nativeDoc.addEventListener('touchmove', nativeMoveHandler, { passive: false });
+            nativeDoc.addEventListener('touchend', nativeEndHandler);
+            nativeDoc.addEventListener('touchcancel', nativeEndHandler);
+        } else {
+            doc.on(moveEvent, setValueFromEvent).on(endEvent, stopDrag);
+        }
+        cancelDragEvent(event);
+    });
+}
+function positionOwnGroupMarginControls(section) {
+    var ic = iframe.contents();
+    var activeSection = getActiveOwnBlockSection();
+    var isMobile = isOwnMobilePreview();
+    var controls = (typeof section == 'undefined' || section === null) ? ic.find('.ct-own-group-margin-control') : ic.find('.ct-own-group-margin-control[data-section="' + section + '"]');
+
+    controls.each(function () {
+        var control = $(this);
+        var controlSection = Number(control.attr('data-section'));
+        var sectionElement = getOwnSectionElement(controlSection);
+        var sectionHidden = isOwnElementHidden(sectionElement);
+        var groupId = String(control.attr('data-group-id'));
+        var fieldType = control.attr('data-field');
+        var groupInfo = template_val.pers_groups_info[groupId];
+        var groupSelectors = (typeof groupInfo != 'undefined' && $.isArray(groupInfo[4])) ? groupInfo[4] : [];
+        var target = getOwnGroupMarginTarget(controlSection, groupSelectors, false);
+        var controlVisible = isMobile || activeSection == controlSection;
+
+        if (sectionElement.length === 0 || sectionHidden || target.length === 0 || !controlVisible) {
+            control.addClass('ct-own-group-margin-hidden').removeAttr('data-mode data-next-group-id').hide();
+            return true;
+        }
+
+        var value = Number(getOwnGroupMarginValue(controlSection, groupId, fieldType, isMobile));
+        var targetTop = getOwnElementRelativeTop(target, sectionElement);
+        var controlTop = targetTop;
+
+        if (targetTop === null) {
+            control.addClass('ct-own-group-margin-hidden').removeAttr('data-mode data-next-group-id').hide();
+            return true;
+        }
+
+        control.removeClass('ct-own-group-margin-hidden')
+            .attr('data-value', value)
+            .attr('data-mode', 'group-top')
+            .removeAttr('data-next-group-id')
+            .css('top', Math.max(0, controlTop) + 'px')
+            .show();
+        setOwnSpacingControlArrow(control, value, false);
+    });
+}
+function refreshOwnGroupMarginControls() {
+    if (typeof iframe == 'undefined' || iframe.length === 0 || typeof template_val == 'undefined' || typeof template_val.pers_groups_info == 'undefined') {
+        return;
+    }
+
+    var ic = iframe.contents();
+
+    ic.find('.ct-own-group-margin-control').remove();
+    ic.find('.ct-own-group-margin-host').removeClass('ct-own-group-margin-host');
+    if ($('body').hasClass('ct-demonstration')) {
+        ic.find('.ct-own-section-padding-area').remove();
+        ic.find('.ct-own-section-padding-controls-layer').remove();
+        ic.find('.ct-own-section-padding-host').removeClass('ct-own-section-padding-host');
+        return;
+    }
+
+    if (typeof data_value['OWN_BLOCKS'] == 'undefined') {
+        return;
+    }
+
+    ensureOwnGroupMarginControlStyles();
+
+    $.each(data_value['OWN_BLOCKS'], function (blockIndex, ownBlock) {
+        if (typeof ownBlock == 'undefined' || typeof ownBlock['ID'] == 'undefined') {
+            return true;
+        }
+
+        var section = ownBlock['ID'];
+        var sectionElement = getOwnSectionElement(section);
+
+        if (sectionElement.length === 0) {
+            return true;
+        }
+
+        $.each(template_val.pers_groups_info, function (groupId, groupInfo) {
+            var groupSelectors = (typeof groupInfo != 'undefined' && $.isArray(groupInfo[4])) ? groupInfo[4] : [];
+
+            if (groupSelectors.length === 0) {
+                return true;
+            }
+
+            var target = getOwnGroupMarginTarget(section, groupSelectors, true);
+
+            if (target.length === 0) {
+                return true;
+            }
+
+            sectionElement.addClass('ct-own-group-margin-host');
+            sectionElement.append('<div class="ct-own-group-margin-control ct-own-group-margin-control-top" data-section="' + section + '" data-group-id="' + groupId + '" data-field="top" data-log-id="'+section+'-margin-'+groupId+'"></div>');
+        });
+    });
+
+    positionOwnGroupMarginControls();
+    refreshOwnSectionPaddingPatterns();
+
+    ic.find('.ct-own-group-margin-control').off('mousedown touchstart').on('mousedown touchstart', function (event) {
+        var control = $(this);
+        var doc = ic;
+        var moveEvent = event.type == 'touchstart' ? 'touchmove.ctOwnMargin' : 'mousemove.ctOwnMargin';
+        var endEvent = event.type == 'touchstart' ? 'touchend.ctOwnMargin touchcancel.ctOwnMargin' : 'mouseup.ctOwnMargin';
+        //gолучаем координату относительно видимой области
+        var getPageY = function (dragEvent) {
+            var originalEvent = dragEvent.originalEvent || dragEvent;
+
+            if (originalEvent.touches && originalEvent.touches.length > 0) {
+                return originalEvent.touches[0].clientY;
+            }
+            if (originalEvent.changedTouches && originalEvent.changedTouches.length > 0) {
+                return originalEvent.changedTouches[0].clientY;
+            }
+
+            return (typeof dragEvent.clientY != 'undefined') ? dragEvent.clientY : dragEvent.pageY;
+        };
+
+        var setValueFromEvent = function (dragEvent) {
+            var pageY = getPageY(dragEvent);
+            var delta = pageY - startPageY;
+            var value = startCurrentTop + delta;
+
+            marginChanged = true;
+            setOwnGroupMarginValueFromLanding(section, groupId, 'top', isMobile, value);
+            dragEvent.preventDefault();
+        };
+        var section = Number(control.attr('data-section'));
+        var groupId = String(control.attr('data-group-id'));
+        var mode = control.attr('data-mode');
+        var isMobile = isOwnMobilePreview();
+        var startPageY = getPageY(event);
+        var startCurrentTop = Number(getOwnGroupMarginValue(section, groupId, 'top', isMobile));
+        var marginChanged = false;
+
+        if (!mode) {
+            return;
+        }
+
+        ownGroupMarginDragActive = true;
+        control.addClass('active');
+        doc.off('.ctOwnMargin').on(moveEvent, setValueFromEvent).on(endEvent, function () {
+            ownGroupMarginDragActive = false;
+            control.removeClass('active');
+            doc.off('.ctOwnMargin');
+            if (marginChanged) {
+                if (typeof setFontSize == 'function') {
+                    setFontSize();
+                }
+                removeOwnLiveSpacingStyles();
+                positionOwnGroupMarginControlsAfterLayout(section);
+                saveOwnGroupMarginToUserJson(section);
+            }
+        });
+        event.preventDefault();
+    });
+
+}
+$(document).on('input change', '.ct-input_range-value', function () {
+    var range = $(this).closest('.ct-input_range-wrapper').find('.ct-input_range[data-for="' + $(this).attr('name') + '"]');
+    if (range.length === 0) {
+        return;
+    }
+
+    unlockCtInputRange(range);
+
+    var value = Number($(this).val());
+    var min = Number(range.attr('min'));
+    var max = Number(range.attr('max'));
+
+    if ($(this).val() === '' || isNaN(value)) {
+        range.val(min);
+        updateOwnRangePreview($(this));
+        return;
+    }
+
+    value = Math.max(min, Math.min(max, value));
+    $(this).val(value);
+    range.val(value);
+    updateOwnRangePreview($(this));
+})
+$(document).on('click', '.ct-input_range-button', function () {
+    user_gesture();
+    var wrapper = $(this).closest('.ct-input_range-wrapper');
+    var input = wrapper.find('.ct-input_range-value');
+    var range = wrapper.find('.ct-input_range');
+    var currentValue = Number(input.val());
+    var min = Number(range.attr('min'));
+    var max = Number(range.attr('max'));
+    var step = Number($(this).data('step'));
+
+    if (isNaN(currentValue)) {
+        currentValue = min;
+    }
+    if (isNaN(step)) {
+        step = 0;
+    }
+
+    var nextValue = Math.max(min, Math.min(max, currentValue + step));
+    input.val(nextValue).trigger('input');
+})
+//ползунки конец
+
+
+$(document).on('keydown','.ct-panel_settings-page .ct-panel_header .ct-title input', function(){
+    $(this).parents('.ct-panel_settings-page[data-section]').find('.submit_current').toggleClass('active', true);
+})
+
+// коструктор
+$('.ct-button_ask').click(user_gesture).click(function () {
+    if ($(this).hasClass('ct-modal_open')) {
+        return;
+    }
+    modalOpen($('.ct-modal[data-modal="ask_support"]'));
+})
+
+// конструктор
+$('.ct-menu li').click(user_gesture).click(function () {
+    $('body').removeAttr('data-pers');
+    if ($(this).hasClass('ct-menu-icon_active')) {
+        $(this).removeClass('ct-menu-icon_active')
+    }
+    var sect = $(this).data('item');
+    $('#mainPanel .ct-panel_settings-page').removeClass('active');
+    $('#' + sect).toggleClass('active', true)
+    if (sect == 'customizeView') {
+        if ($('.ct-hello_wrapper').length > 0 && !$('.ct-hello_items').hasClass('swiper-initialized')) {
+            var h = $('.ct-hello_items').attr('data-current');
+            h = (h == '') ? 0 : h;
+            // var helloInit = $('.ct-hello_item[data-id="' + h + '"]').index();
+            var helloInit = $('.swiper-slide:has(.ct-hello_item[data-id="' + h + '"])').index();
+
+            // $('.ct-hello_items').slick({
+            //     slidesToShow: 3,
+            //     variableWidth: true,
+            //     infinite: false,
+            //     swipeToSlide: true,
+            //     touchMove: false,
+            //     initialSlide: helloInit,
+            //     centerMode: true,
+            // }).on('setPosition', function () {
+            //     var did = $('.ct-hello_items .slick-current .ct-hello_item').attr('data-id');
+            //     $('.ct-hello_edit').toggleClass('ct-hidden', did == '0');
+            //     if (h != did) {
+            //         h = did;
+            //         resetIntro()
+            //         checkIntroData();
+            //     }
+            // });
+
+            const swiper = new Swiper('.ct-hello_items', {
+                // Количество слайдов
+                slidesPerView: 2.5,
+                direction: 'horizontal',
+                loop: false,
+                centeredSlides: true,
+                initialSlide: helloInit,
+                navigation: {
+                    nextEl: '.hello-swiper-but-next',
+                    prevEl: '.hello-swiper-but-prev',
+                },
+                on: {
+                    // Срабатывает при каждой смене слайда (после анимации)
+                    slideChangeTransitionEnd: function () {
+                        var did = $('.ct-hello_items .swiper-slide-active .ct-hello_item').attr('data-id');
+                        $('.ct-hello_edit').toggleClass('ct-hidden', did == '0');
+                        if (h != did) {
+                            h = did;
+                            resetIntro()
+                            checkIntroData();
+                        }
+                    },
+                    init: function () {
+                        var activeSlide = $('.ct-hello_items .swiper-slide-active .ct-hello_item');
+                        var hwrapper = $('.ct-hello_items');
+                        // Добавляем data-атрибуты к активному слайду
+                        // console.log(hwrapper.attr('data-current-str1'));
+                        activeSlide.attr('data-current-string-1',hwrapper.attr('data-current-str1'));
+                        activeSlide.attr('data-current-string-2',hwrapper.attr('data-current-str2'));
+                        if(hwrapper.attr('data-current-str3')!='' && hwrapper.attr('data-current-str3')!=null){
+                            activeSlide.attr('data-current-string-3',hwrapper.attr('data-current-str3'));
+                        }
+                        activeSlide.attr('data-current-dark',hwrapper.attr('data-current-dark'));
+                        activeSlide.attr('data-current-blur',hwrapper.attr('data-current-blur'));
+                    }
+                }
+            });
+        }
+    }
+})
+
+// конструктор
+$('.ct-hello_edit').click(user_gesture).click(function (e) {
+    e.preventDefault();
+    $(this).toggleClass('active');
+    if ($(this).hasClass('active')) {
+        checkIntroData();
+    } else {
+        $('.ct-hello_data').toggleClass('active', false);
+    }
+    return false;
+})
+
+// конструктор
+$('#intro_reset').click(user_gesture).click(function () {
+    clearIntroInfo();
+    resetIntro()
+    checkIntroData();
+})
+
+// конструктор (уточнить не здесь ли приветствие собирается, вряд ли, но все-таки)
+$('#intro_save').click(user_gesture).click(function () {
+    saveIntro(true);
+})
+
+// конструктор (уточнить не здесь ли приветствие собирается, вряд ли, но все-таки)
+$('.ct-hello_submit').click(user_gesture).click(function (e) {
+    e.preventDefault();
+    resetIntro()
+    checkIntroData();
+    saveIntro(true);
+    return false;
+})
+
+// конструктор
+$('.ct-panel_back').click(user_gesture).click(function () {
+    if (typeof ($('body').attr('data-pers')) != 'undefined') {
+        var pers_sect = $('body').data('pers');
+        $('#mainPanel').toggleClass('active', false);
+        $('#editSections').toggleClass('active', false);
+        $('#secondPanel').toggleClass('active', true);
+        $('.ct-panel_settings-page[data-section="' + pers_sect + '"]').toggleClass('active', true);
+        $('body').removeAttr('data-pers');
+        ifresize();
+    } else {
+        if ($(this).parents('#filterTpl').length > 0) {
+            $('#filterTpl').toggleClass('active', false);
+            $('#selectTpl').toggleClass('active', true)
+        } else {
+            $('#mainPanel .ct-panel_settings-page').removeClass('active');
+            $('#mainSettings').toggleClass('active', true)
+        }
+    }
+})
+
+// конструктор
+$(document).on('click', '.ct-input_select', function () {
+    var select = $(this);
+
+    select.toggleClass('active');
+    if (select.hasClass('ct-own-font-family-select') && select.hasClass('active')) {
+        var panel = select.closest('.ct-panel_settings-page');
+        var fieldName = select.attr('data-for');
+        var value = panel.find('[name="' + fieldName + '"]').val() || select.find('li.ct-input_select-current').attr('data-id') || '';
+
+        if (fieldName && typeof updateOwnFontSelectState == 'function') {
+            updateOwnFontSelectState(panel, fieldName, value);
+        }
+
+        select.find('ul').scrollTop(0);
+        setTimeout(function () {
+            select.find('ul').scrollTop(0);
+        }, 0);
+    }
+    if ((select.attr('id') == 'hfont' || select.attr('id') == 'tfont') && !select.hasClass('inited')) {
+        select.addClass('inited')
+        $.each(select.find('li'), function () {
+            var svg = $(this).attr('data-file');
+            $(this).append('<img src="/sitemaker/css/fontcss/' + svg + '.svg">');
+        })
+    }
+})
+
+// конструктор
+$(document).on('click', '.ct-input_select li', function () {
+    user_gesture();
+    $(this).parents('ul').find('li').removeClass('ct-input_select-current');
+    $(this).addClass('ct-input_select-current');
+    $(this).parents('.ct-input_select').children('span').text($(this).text());
+
+    if ($(this).parents('.ct-input_select').prop('id') == 'introd') {
+        var did = $(this).attr('data-id');
+        // console.log('ct-input-select click');
+        $.post(ajax_url, {action: 'setintro', iid: did, project: project}, function (data) {
+            console.log(data)
+        })
+    }
+
+    if ($(this).parents('.ct-input_select').prop('id') == 'music') {
+        var did = $(this).attr('data-id');
+        $.post(ajax_url, {action: 'setmus', mid: did, project: project}, function (data) {
+            if (data != '1') {
+                alert(constr_terms['ln-notify-error']);
+            }
+        }).fail(function () {
+            alert(constr_terms['ln-notify-error']);
+        })
+    }
+
+    if ($(this).parents('.ct-input_select').attr('data-type') == 'question') {
+        var dtype = $(this).attr('data-type');
+        var did = $(this).parents('.ct-input_select').attr('data-id');
+        switchQuestionType(dtype, did);
+    }
+
+    if ($.inArray($(this).parents('.ct-input_select').prop('id'), ['hfont', 'tfont', 'anim_speed', 'anim_type']) !== -1) {
+        var selectId = $(this).parents('.ct-input_select').prop('id');
+        var key = '';
+
+        if (selectId == 'hfont') {
+            key = 'headerStyle';
+        } else if (selectId == 'tfont') {
+            key = 'textStyle'
+        }
+
+        if (key != '') {
+            iframe.contents().find('#' + key).remove();
+            var css = $(this).attr('data-file');
+            const linkElement = document.createElement('link');
+            linkElement.setAttribute('rel', 'stylesheet');
+            linkElement.setAttribute('id', key)
+            linkElement.setAttribute('href', '/sitemaker/css/fontcss/' + css + '.min.css' + ((css === 'wedwed-vow' || css === 'berlinerins') ? '?v=vow-0.3' : ''));
+            iframe.contents().find('head').append(linkElement);
+        }
+        if ((selectId == 'hfont' || selectId == 'tfont') && typeof fillOwnFontSelectOptions == 'function') {
+            fillOwnFontSelectOptions($('#secondPanel'));
+        }
+        saveSettings();
+    }
+
+// шрифты перс блока начало
+    if ($(this).parents('.ct-input_select').hasClass('ct-own-font-family-select')) {
+        var ownFontSelect = $(this).parents('.ct-input_select');
+        var ownFontPanel = ownFontSelect.closest('.ct-panel_settings-page');
+        var ownFontSection = Number(ownFontPanel.attr('data-section'));
+        var ownFontField = ownFontSelect.attr('data-for');
+        var ownFontKey = ownFontField == 'own_title_font_family' ? 'TITLE_FONT_FAMILY' : 'TEXT_FONT_FAMILY';
+        var ownFontValue = $(this).attr('data-id');
+
+        ownFontPanel.find('[name="' + ownFontField + '"]').val(ownFontValue);
+        if (typeof updateOwnFontSelectState == 'function') {
+            updateOwnFontSelectState(ownFontPanel, ownFontField, ownFontValue);
+        }
+
+        if (!isNaN(ownFontSection) && ownFontSection >= 1001 && typeof data_value['OWN_BLOCKS'] != 'undefined' && typeof data_value['OWN_BLOCKS'][ownFontSection - 1001] != 'undefined') {
+            data_value['OWN_BLOCKS'][ownFontSection - 1001][ownFontKey] = ownFontValue;
+            ownFontPanel.find('.submit_current').addClass('active');
+
+            if (typeof syncOwnBlockFontFiles == 'function') {
+                syncOwnBlockFontFiles();
+            }
+            if (typeof setFontSize == 'function') {
+                setFontSize();
+            }
+        }
+    }
+
+
+
+    else
+        // шрифты перс блока конец
+    if ($(this).parents('.ct-own_block-setting_select').length > 0) {
+
+        if ($('.ct-own_block-setting[data-sect]').length > 0) {
+            if ($(this).parents('.ct-own_block-setting').attr('data-sect')) {
+                // if($(this).attr('data-id')==0){
+                //     let pre = ($(this).parents('.ct-own_block-setting').attr('data-sect')==211) ? 'NEW_' : '';
+                //     console.log('remove '+pre+'OWN')
+                //     data_value[pre+'OWN_SHOW'] = [];
+                // }
+                rebuildStructure($(this).attr('data-id'), $(this).parents('.ct-own_block-setting').attr('data-sect'));
+            } else {
+                rebuildStructure($(this).attr('data-id'), $(this).parents('.ct-panel_settings-page').attr('data-section'));
+
+            }
+        } else {
+            rebuildStructure($(this).attr('data-id'));
+        }
+
+    } else if ($(this).parents('.ct-input_select').attr('id') == 'own_align') {
+        $('[name="own_align"]').val($(this).attr('data-id')).trigger('input', typeof data_value['OWN_ALIGN'] == 'undefined' || data_value['OWN_ALIGN'] != $(this).attr('data-id'));
+    } else if ($(this).parents('.ct-input_select').attr('id') == 'new_own_align') {
+        $('[name="new_own_align"]').val($(this).attr('data-id')).trigger('input', typeof data_value['NEW_OWN_ALIGN'] == 'undefined' || data_value['NEW_OWN_ALIGN'] != $(this).attr('data-id'));
+    }
+})
+
+
+// конструктор
+$(document).on('input', '#secondPanel [name="location_map"]', function () {
+    checkUrl($(this).next('span'), $(this).val())
+})
+
+
+// конструктор
+$(document).on('click', '.ct-image_preview i', function () {
+    user_gesture();
+    $(this).toggleClass('active')
+    $(this).parents('.ct-image_preview').attr('data-filter', ($(this).hasClass('active') ? 'black' : ''));
+    var cat = $(this).parents('.ct-image_uploader-info').attr('data-for');
+    var ind = $(this).parents('.ct-image_preview').index();
+    var objindex = grayscales.findIndex((obj => obj.name == cat));
+    if (objindex === -1) {
+        grayscales.push({name: cat, data: []});
+    }
+
+    objindex = grayscales.findIndex((obj => obj.name == cat));
+    if ($(this).hasClass('active')) {
+        grayscales[objindex].data.push(ind)
+    } else {
+        var index = grayscales[objindex].data.indexOf(ind);
+        if (index !== -1) {
+            grayscales[objindex].data.splice(index, 1);
+        }
+    }
+
+    $.post(ajax_url, {action: 'grayscales', data: JSON.stringify(grayscales), project: project}, function (data) {
+        doGrayscales();
+    });
+})
+
+// конструктор
+$(document).on('click', '.ct-image_uploader', function () {
+    user_gesture();
+    if($(this).closest('.ct-panel_settings-page').attr('data-section')<1000){
+        $(this).closest('input[type="file"]').click();
+    }
+})
+
+// конструктор
+$(document).on('change', 'input[type="file"]:not(.ct-music_file):not(.ct-video_file)', function () {
+    var data = new FormData();
+    var that = $(this);
+    var cont = that.parents('.ct-image_uploader')
+    var upinfo = that.parents('.ct-image_uploader-info')
+    data.append('action', 'images');
+    data.append('project', project)
+    var name = $(this).attr('name').toUpperCase();
+    if (typeof cropInit !== "undefined" && iframe.contents().find('.ct-photo_cropper').length === 0) {
+        preCrop(that[0].files[0], cont, upinfo);
+    } else {
+        $.each(that[0].files, function (i, file) {
+            data.append(name, file);
+        });
+
+        cont.find('.ct-image_upload-status div').css('width', 0);
+        cont.find('.ct-image_upload-status').toggleClass('active', true);
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        cont.find('.ct-image_upload-status div').css('width', percentComplete);
+
+                        if (percentComplete === 100) {
+                            cont.find('.ct-image_upload-status').toggleClass('active', false);
+                        }
+                    }
+                }, false);
+                return xhr;
+            },
+            type: 'POST',
+            url: ajax_url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                if (result != '' && result != 'ok') {
+                    var res = JSON.parse(result);
+
+                    if (typeof (that.attr('multiple')) == 'undefined' && cont.hasClass('ct-image_uploader-single')) {
+                        if (res[0] && res[0] != '') {
+                            var preview = upinfo.find('.ct-image_preview:not(.ct-image_uploader)');
+                            if (upinfo.data('for') === 'INTRO_PHOTO_ITEMS' && !preview.length) {
+                                preview = $('<li class="ct-image_preview ct-image_cropper" data-photos="tmp"><span></span></li>')
+                                    .attr('data-photos-k', upinfo.closest('.ct-intro-photo-21-item').attr('data-intro-photo-index'))
+                                    .insertBefore(cont);
+                            }
+                            preview.css('background-image', 'url(' + res[0] + ')').attr('data-url', res[0].split('/sitemaker/').join('/'));
+                        }
+                    } else {
+                        var ko = upinfo.find('.ct-image_preview:not(.ct-image_uploader)').length;
+                        var rlen = res.length;
+                        var cnt = that.data('count');
+                        if (cnt > 0) {
+                            if (rlen >= cnt) {
+                                ko = 0;
+                                upinfo.find('.ct-image_preview:not(.ct-image_uploader-origin)').remove();
+                            } else if (rlen > cnt - ko) {
+                                ko = cnt - rlen;
+                                $.each(upinfo.find('.ct-image_preview:not(.ct-image_uploader-origin)'), function (ki, vi) {
+                                    if (ki >= ko) {
+                                        $(this).remove();
+                                    }
+                                })
+                            }
+                        }
+
+
+                        if (res.length == 1 && !cont.hasClass('ct-image_uploader-origin')) {
+                            cont.replaceWith('<li class="ct-image_preview" data-url="' + res[0].split('/sitemaker/').join('/') + '" style="background-image: url(' + res[0] + ')"><span></span><i></i></li>');
+                        } else {
+                            $.each(res, function (k, v) {
+                                if (upinfo.find('.ct-image_preview:not(.ct-image_uploader-origin)').length < cnt) {
+                                    that.parents('.ct-image_uploader').before('<li class="ct-image_preview" data-photos="tmp" data-photos-k="' + (Number(ko) + Number(k)) + '" data-url="' + v.split('/sitemaker/').join('/') + '" style="background-image: url(' + v + ')"><span></span></li>')
+                                }
+                            })
+                        }
+
+
+                    }
+
+                    if (!upinfo.parents('.ct-panel_settings-page').hasClass('active') && !$('#secondPanel').hasClass('active')) {
+                        upinfo.parents('.ct-panel_settings-page').find('.submit_current').click();
+                    }
+                }
+
+                checkUploader(upinfo)
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+});
+
+// конструктор
+$(document).on('mouseover', '[data-hint]', function () {
+    $(this).append('<div class="ct-input_helper">' + $(this).data('hint') + '</div>')
+})
+
+// конструктор
+$(document).on('mouseout', '[data-hint]', function () {
+    $('.ct-input_helper').remove();
+})
+
+function isSupportEmailValid(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+function setSupportFormError(form, message) {
+    form.find('.ct-support-modal__form-error').text(message).toggleClass('active', message != '');
+}
+function clearSupportFormErrors(form) {
+    form.find('.ct-input').removeClass('ct-input_error');
+    setSupportFormError(form, '');
+}
+
+// конструктор
+$('.ct-send').click(user_gesture).click(function () {
+    if (!$(this).hasClass('ct-support-send')) {
+        return;
+    }
+    var form = $(this).closest('.ct-support-modal').find('.ct-support-form');
+    var nameInput = form.find('input[name="uname"]');
+    var emailInput = form.find('input[name="uemail"]');
+    var textInput = form.find('[name="utext"]');
+    var uname = $.trim(nameInput.val());
+    var uemail = $.trim(emailInput.val());
+    var utext = $.trim(textInput.val());
+    var emptyFields = [];
+
+    clearSupportFormErrors(form);
+
+    if (uname == '') {
+        nameInput.addClass('ct-input_error');
+        emptyFields.push(smT('ln-editor-support-name'));
+    }
+    if (uemail == '') {
+        emailInput.addClass('ct-input_error');
+        emptyFields.push(smT('ln-editor-support-email'));
+    }
+    if (utext == '') {
+        textInput.addClass('ct-input_error');
+        emptyFields.push(smT('ln-editor-support-issue'));
+    }
+    if (emptyFields.length > 0) {
+        setSupportFormError(form, smT('ln-editor-support-required') + emptyFields.join(', ') + '.');
+        form.find('.ct-input_error:first').focus();
+        return;
+    }
+    if (!isSupportEmailValid(uemail)) {
+        emailInput.addClass('ct-input_error');
+        setSupportFormError(form, smT('ln-editor-support-invalid-email'));
+        emailInput.focus();
+        return;
+    }
+
+    $.post(ajax_url, {
+        action: 'support',
+        uname: uname,
+        uemail: uemail,
+        utext: utext,
+        project: project
+    }, function (data) {
+        form.find('input[name="uname"]').val('');
+        form.find('input[name="uemail"]').val('');
+        form.find('[name="utext"]').val('');
+        clearSupportFormErrors(form);
+        alert(constr_terms['ln-notify-support'])
+        $('.ct-modal[data-modal="ask_support"]').removeClass('active');
+        $('#mainPanel').removeClass('active');
+        ifresize();
+    })
+})
+
+$(document).on('input', '.ct-support-form .ct-input', function () {
+    var form = $(this).closest('.ct-support-form');
+
+    $(this).removeClass('ct-input_error');
+    if (form.find('.ct-input_error').length == 0) {
+        setSupportFormError(form, '');
+    }
+})
+function isSupportFaqMobile() {
+    return $(window).innerWidth() <= 767;
+}
+function refreshSupportFaqMaxHeight(faq) {
+    var scroll = faq.find('.ct-support-modal__faq-scroll');
+
+    if (!isSupportFaqMobile()) {
+        scroll.css('max-height', '');
+        return;
+    }
+
+    if (faq.hasClass('open')) {
+        scroll.css('max-height', scroll.prop('scrollHeight') + 'px');
+    } else {
+        scroll.css('max-height', '0px');
+    }
+}
+function toggleSupportFaq(faq) {
+    if (!isSupportFaqMobile()) {
+        return;
+    }
+
+    var scroll = faq.find('.ct-support-modal__faq-scroll');
+
+    if (faq.hasClass('open')) {
+        scroll.css('max-height', scroll.prop('scrollHeight') + 'px');
+        requestAnimationFrame(function () {
+            faq.removeClass('open');
+            scroll.css('max-height', '0px');
+        });
+    } else {
+        faq.addClass('open');
+        scroll.css('max-height', scroll.prop('scrollHeight') + 'px');
+    }
+}
+function scheduleSupportFaqRefresh(faq) {
+    requestAnimationFrame(function () {
+        refreshSupportFaqMaxHeight(faq);
+        setTimeout(function () {
+            refreshSupportFaqMaxHeight(faq);
+        }, 420);
+    });
+}
+
+$(document).on('click', '.ct-support-modal__faq-title', function () {
+    user_gesture();
+    toggleSupportFaq($(this).closest('.ct-support-modal__faq-card'));
+})
+
+$(document).on('click', '.ct-support-modal .ct-accordion', function () {
+    user_gesture();
+    var faq = $(this).closest('.ct-support-modal__faq-card.open');
+
+    if (faq.length > 0) {
+        scheduleSupportFaqRefresh(faq);
+    }
+})
+
+$(document).on('click', '.ct-modal_open[data-target="ask_support"], .ct-button_ask', function () {
+    user_gesture();
+    setTimeout(function () {
+        $('.ct-modal[data-modal="ask_support"] .ct-support-modal__faq-card').each(function () {
+            refreshSupportFaqMaxHeight($(this));
+        });
+    }, 0);
+})
+
+$(window).on('resize', function () {
+    $('.ct-modal[data-modal="ask_support"] .ct-support-modal__faq-card').each(function () {
+        refreshSupportFaqMaxHeight($(this));
+    });
+})
+
+// конструктор
+$(document).on('click', '.ct-image_preview span', function () {
+    user_gesture();
+    if (confirm(constr_terms['ln-notify-image-remove'])) {
+        if ($(this).closest('.ct-intro-photos-21').length) {
+            $(this).closest('.ct-image_preview').remove();
+            return;
+        }
+        if($(this).closest('.ct-image_preview').attr('data-photos-k')!='OWN_BACKGROUND_IMAGE') {
+            // var p = $(this).parents('.ct-image_uploader-info');
+            // $(this).parent().remove();
+            // checkUploader(p)
+            if ($(this).closest('.ct-image_uploader-info_alt').length > 0) {
+
+                var sect = $(this).closest('.ct-panel_settings-page').data('section');
+
+                data_value['OWN_BLOCKS'][sect - 1001]['OWN_GALLERY_TYPE'] = 0;
+                data_value['OWN_BLOCKS'][sect - 1001]['OWN_IMAGES'] = [];
+                console.log(data_value['OWN_BLOCKS'][sect - 1001]['OWN_IMAGES'])
+
+                data_value['OWN_BLOCKS'][sect - 1001]['OWN_VIDEO'] = '';
+
+                // deleteOwnVideo(v == 'NEW_' ? 3 : 2);
+
+                var ownImagesUploader = $('[data-section="' + sect + '"] .ct-image_uploader-info[data-for="OWN_IMAGES"]');
+                ownImagesUploader.find('.ct-image_preview:not(.ct-image_uploader-origin)').remove();
+                checkUploader(ownImagesUploader);
+
+                console.log('set gallery from image preview span')
+                iframe.contents().find('[data-type="' + sect + '"] .sm-own_wrapper-img').css('display', 'none');
+                setActiveOwnGalleryItem(0, true, sect);
+                setActiveOwnGalleryItemConstr(0, true, sect);
+
+            }
+
+            // console.log($(this).attr('data-photos-k'))
+            // if($(this).attr('data-photos-k')=='OWN_BACKGROUND_IMAGE'){
+            //     var sect = $(this).closest('.ct-panel_settings-page').data('section');
+            //     $('[data-section="' + sect + '"] .ct-image_preview:not(.ct-image_uploader)').toggleClass('ct-hidden', true);
+            // }
+
+            var p = $(this).closest('.ct-image_uploader-info');
+            var pt = $(this).parent();
+            if (p.find('.ct-image_uploader-origin').find('.ct-input').data('slider') != 1) {
+                var iu = p.find('.ct-image_uploader-origin').clone()
+                iu.find('input').removeAttr('multiple')
+                pt.replaceWith(iu.removeClass('ct-image_uploader-origin').removeClass('ct-hidden'));
+
+                if (iu.find('input').attr('name') === 'own_images[]' || iu.find('input').attr('name') === 'new_own_images[]') {
+                    // клик на нее только из редакта, так что допустимо по active
+                    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+                }
+            } else {
+                pt.remove();
+                $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+            }
+
+
+            if($(this).closest('.ct-image_preview').attr('data-photos-k')=='MENU_IMAGE'){
+                saveMenuImage('');
+            }
+
+
+        }else{
+            var sect = $(this).closest('.ct-panel_settings-page').data('section');
+            data_value['OWN_BLOCKS'][sect - 1001]['OWN_BACKGROUND_IMAGE'] = '';
+            iframe.contents().find('section.sm-own[data-type="' + sect + '"]').css({
+                'background-image': '',
+                'background-size': '',
+                'background-position': '',
+                'background-repeat': ''
+            }).removeClass('sm-own-background-image sm-own-background-blur sm-own-background-dark');
+            $('[data-section="' + sect + '"] [data-for*="OWN_BACKGROUND_IMAGE"] .ct-image_preview:not(.ct-image_uploader)').attr('data-url','');
+            $('[data-section="' + sect + '"] [data-for*="OWN_BACKGROUND_IMAGE"] .ct-image_preview:not(.ct-image_uploader)').toggleClass('ct-hidden', true);
+            $('[data-section="' + sect + '"] [data-for*="OWN_BACKGROUND_IMAGE"] .ct-image_preview.ct-image_uploader').contents().filter(function () {
+                return this.nodeType == 3;
+            }).remove();
+            $('[data-section="' + sect + '"] [data-for*="OWN_BACKGROUND_IMAGE"] .ct-image_preview.ct-image_uploader img').after(constr_terms['ln-image-add']);
+            $('[data-section="' + sect + '"] [data-for*="OWN_BACKGROUND_IMAGE"] .submit_current').toggleClass('active',true)
+        }
+
+        checkUploader(p)
+         if ($(this).closest('.ct-image_preview').attr('data-photos-k')!='OWN_BACKGROUND_IMAGE' && $(this).closest('.ct-image_uploader-info_alt').length > 0) {
+             $('[data-section="' + sect + '"] .submit_current').click();
+        }
+    }
+})
+
+// конструктор (добавить варианты ответа в опросах)
+$(document).on('click', '.ct-input-dynamic_multiplier', function () {
+    user_gesture();
+    var toclone = $(this).prev();
+    if (toclone.hasClass('ct-toclone')) {
+        toclone.removeClass('ct-toclone').show()
+    } else {
+        var tcl = toclone.clone()
+        if (toclone.find('.ct-input_answer').length > 0 && project != '') {
+            var tclname = toclone.parents('.ct-addquests-item').find('.ct-panel_header').attr('for');
+            tcl.find('.ct-input_answer').attr('name', tclname + '_answer[]');
+        }
+        toclone.after(tcl)
+    }
+    var wrapper = $(this).parent();
+    $(this).prev().find('input').val('');
+    $(this).prev().find('.ct-input_label span').text(wrapper.find('.ct-input_wrapper.ct-input-dynamic').length)
+})
+
+// конструктор (удалить вариант ответа в опросе)
+$(document).on('click', '.ct-input_remover', function () {
+    user_gesture();
+    var wrapper = $(this).parents('.ct-input_wrapper').parent();
+    var l = wrapper.find('.ct-input_wrapper.ct-input-dynamic').length;
+    if (l > 1) {
+        $(this).parents('.ct-input_wrapper').remove();
+    } else {
+        $(this).parents('.ct-input_wrapper').addClass('ct-toclone').hide();
+    }
+
+
+    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+
+    $.each(wrapper.find('.ct-input_wrapper.ct-input-dynamic'), function (k, v) {
+        $(this).find('.ct-input_label span').text(k + 1);
+    })
+})
+
+// конструктор
+$(document).on('click', '.ct-examples_toggle', function () {
+    user_gesture();
+    var ex = $(this).data('example');
+    $('.ct-panel_sub .ct-panel_settings-page').removeClass('active');
+    $('.ct-panel_sub .ct-panel_settings-page[data-ex=' + ex + ']').attr('data-for', $(this).data('for')).addClass('active')
+    $('.ct-panel_sub').toggleClass('active')
+})
+
+//конструктор
+$(document).on('click', '.ct-ai_button', function () {
+    user_gesture();
+    var that = $(this);
+    var fo = that.attr('data-for');
+    var ty = that.attr('data-type');
+    var pa = 0;
+    if (typeof that.attr('data-part') != 'undefined') {
+        pa = that.attr('data-part');
+    }
+
+    var fi = $('#secondPanel').find('[name="' + fo + '"]');
+    var iw = fi.parents('.ct-input_wrapper');
+    if (iw.find('textarea').length > 0) {
+        iw.find('.ck-editor').toggleClass('ck-loader', true);
+    }
+    that.toggleClass('active', true)
+    $.post(ajax_url, {action: 'gentext', type: ty, part: pa, project: project}, function (data) {
+        that.toggleClass('active', false)
+        if (data != '0') {
+            if (iw.find('textarea').length > 0) {
+                iw.find('.ck-editor').toggleClass('ck-loader', false);
+                var ck = iw.find('.ck-editor').attr('aria-labelledby');
+                const domEditableElement = document.querySelector('[aria-labelledby="' + ck + '"] .ck-editor__editable_inline');
+                const editorInstance = domEditableElement.ckeditorInstance;
+                editorInstance.setData(data);
+            } else {
+                iw.find('input[type="text"]').val(data);
+            }
+        } else {
+            alert(smT('ln-editor-story-failed'));
+            if (iw.find('textarea').length > 0) {
+                iw.find('.ck-editor').toggleClass('ck-loader', false);
+            }
+        }
+    })
+})
+
+
+
+// ai lovestory весь клик, который ниже
+$(document).on('click', '.ct-ai_button_form-open', function () {
+    user_gesture();
+    if($(this).attr('data-quiz')!=null){
+        var quiz_id = $(this).attr('data-quiz');
+        $.post(ajax_url, {action: 'getquiz', quiz_id: $(this).attr('data-quiz')}, function (data) {
+            data = $.parseJSON(data);
+            genQuestsModal(data,quiz_id);
+        })
+    }else{
+        console.error('Quiz not found')
+    }
+})
+// ai lovestory весь клик, который ниже
+$(document).on('click', '.quest-slide-answer input', function (e) {
+    user_gesture();
+    $(this).closest('.quest-slide-inputs').find('.result_answer').val($(this).val());
+    console.log('try to click');
+    var currentSlide = $(this).closest('.ct-modal-quests-slide');
+    var canGoNext = currentSlide.find('.quest-slide-inputs').length <= 1;
+    if(!canGoNext){
+        canGoNext = true;
+        currentSlide.find('input[name^="answ-"]').each(function(){
+            if($(this).val() == ''){
+                canGoNext = false;
+            }
+        })
+    }
+    if(canGoNext){
+        setTimeout(function(){
+            $('.ct-modal_content').find('.ct-modal-quests-next:not(.ct-modal-quests-next-full)').click();
+        }, 500);
+    }
+
+})
+
+
+
+// ai lovestory весь клик, который ниже
+$(document).on('click', '.send-quiz', function () {
+    user_gesture();
+    // if($(this).hasClass('active')) {
+    $('.ct-modal-loading').css('display','block');
+    const quiz_id = $(this).attr('data-type');
+    console.log($(this));
+    console.log(quiz_id);
+    // console.log($(".ct-modal[data-modal=quest_modal] .quest_modal-form"));
+    var questText = '';
+    let index = 0;
+    var questions = {};
+    var answers = {};
+    $.each($(".ct-modal[data-modal=quest_modal] .quest_modal-form input:not([type=radio])"), function () {
+        // console.log($(this)[0]);
+        var fieldName = $(this).attr('name');
+        var fieldValue = $(this).val();
+        if (fieldName.indexOf('quest') !== -1) {
+            let fieldIndex = parseInt(fieldName.replace('quest-', ''));
+            // console.log('fieldIndex=' + fieldName.replace('quest-', ''));
+            questions[fieldIndex] = fieldValue;
+        }
+        if (fieldName.indexOf('answ') !== -1) {
+            let fieldIndex = parseInt(fieldName.replace('answ-', ''));
+            // console.log('fieldIndex=' + fieldName.replace("answ-", ""));
+            answers[fieldIndex] = fieldValue;
+        }
+    });
+
+    console.log(questions);
+    console.log(answers);
+
+    while (index < $(".ct-modal.active").attr('data-quests-count')) {
+        if(answers[index].replace(/['`´‘’‚‛′‹›«»„“”]/g, '"')!="") {
+            questText = questText + smT('ln-editor-story-question-prefix') + questions[index].replace(/['`´‘’‚‛′‹›«»„“”]/g, '"') + smT('ln-editor-story-answer-prefix') + answers[index].replace(/['`´‘’‚‛′‹›«»„“”]/g, '"') + '»; ';
+        }
+        index++;
+    }
+    var questTextNew = questText.slice(0, -2);
+    questText = questTextNew + '.';
+    console.log(questText);
+    if(questText != '.') {
+        $.post(ajax_url, {action: 'gentext', type: 'q' + quiz_id, project: project, dop: questText}, function (data) {
+            if (data != '0') {
+                console.log(data)
+                $('[data-modal="quest_modal"] .ct-panel_close').click();
+                $('.ct-modal-loading').css('display','none');
+                var blockName = $('.ct-modal_open[data-quiz=' + quiz_id + ']').attr('data-for');
+
+                if ($('.ct-modal_open[data-quiz=' + quiz_id + ']').closest('.ct-menu_wrapper').find('.ct-input_wrapper textarea[name="' + blockName + '"]').length > 0) {
+                    var iw = $('.ct-modal_open[data-quiz=' + quiz_id + ']').closest('.ct-menu_wrapper').find('textarea[name="' + blockName + '"]').closest('.ct-input_wrapper');
+                    iw.find('.ck-editor').toggleClass('ck-loader', false);
+                    var ck = iw.find('.ck-editor').attr('aria-labelledby');
+                    const domEditableElement = document.querySelector('[aria-labelledby="' + ck + '"] .ck-editor__editable_inline');
+                    const editorInstance = domEditableElement.ckeditorInstance;
+                    editorInstance.setData(data);
+                    console.log('found');
+                } else {
+                    var iw = $('.ct-modal_open[data-quiz=' + quiz_id + ']').closest('.ct-menu_wrapper').find('[name="' + blockName + '"]').closest('.ct-input_wrapper');
+                    iw.find('input[type="text"]').val(data);
+                    console.log('not found');
+                }
+
+
+                //вернуть форму в первоначальное состояние
+                $('[data-modal="quest_modal"] .ct-modal_content').remove();
+                $('[data-modal="quest_modal"] .ct-modal_wrapper').append(
+                    '               <div class="ct-modal_content">\n' +
+                    '                <div class="ct-panel_close"></div>\n' +
+                    '                <div class="ct-modal_content-wrapper">\n' +
+                    '                    <h3>' + smT('ln-editor-story-questions') + '</h3>\n' +
+                    '                    <div class="">\n' +
+                    '                        <form class="quest_modal-form">\n' +
+                    '                            <div class="quest_modal-slider-steps">' + smT('ln-editor-story-loading') + '</div>\n' +
+                    '                            <div class="ct-modal-quests-slider">\n' +
+                    '                                <div class="swiper-wrapper">\n' +
+                    '\n' +
+                    '                                </div>\n' +
+                    '                            </div>\n' +
+                    '                        </form>\n' +
+                    '                    </div>\n' +
+                    '                </div>\n' +
+                    '                <div class="quest-form-part-progress first-active">\n' +
+                    '                    <div class="quest-right__stage__progress">\n' +
+                    '                        <div class="quest-right__stage__progress__container">\n' +
+                    '                            <div class="quest-right__stage__progress-bar" style="width: 20px;"></div>\n' +
+                    '                        </div>\n' +
+                    '                    </div>\n' +
+                    '                    <div class="quest-section-btns">\n' +
+                    '                        <div class="ct-modal-quests-prev" data-nav="prev"><span>' + smT('buttons_back') + '</span></div>\n' +
+                    '                        <div class="ct-modal-quests-next" data-nav="next">' + smT('ln-editor-next') + '</div>\n' +
+                    '                    </div>\n' +
+                    '                    <div class="ct-modal-quests-next ct-modal-quests-next-full " data-nav="next">' + smT('ln-editor-story-generate') + '</div>\n' +
+                    '                </div>\n' +
+                    '<!--                <div data-type="0" class="ct-button ct-pointer ct-button_full send-quiz">Отправить ответ</div>-->\n' +
+                    '            </div>');
+
+
+            } else {
+                alert(smT('ln-editor-story-failed'));
+            }
+        })
+    }else{
+        alert(smT('ln-editor-story-answer-required'));
+        $('.ct-modal-loading').css('display','none');
+    }
+    // }else{
+    //     alert('Нужно ответить на все вопросы');
+    // }
+})
+// ai lovestory весь клик, который ниже
+$(document).on('click', '.ct-modal-answ', function () {
+    if($(this).hasClass('active')){
+        // $('.ct-modal-quests-next').click();
+    }
+});
+// ai lovestory весь клик, который ниже
+$(document).on('keyup', '.ct-modal-quests-slide input[type="text"]', function () {
+    if($(this).val()!='' && $(this).closest('.ct-modal-quests-slide').hasClass('swiper-slide-active')){
+        $(this).closest('.ct-modal-quests-slide').find('.ct-modal-answ').addClass('active');
+        $('.ct-modal-answ-mobile').addClass('active');
+        // console.log('val');
+    }else if($(this).val()==''){
+        $(this).closest('.ct-modal-quests-slide').find('.ct-modal-answ').removeClass('active');
+        $('.ct-modal-answ-mobile').removeClass('active');
+        // console.log('no val');
+    }
+    allFilled = true;
+    $('.quest_modal-form input[type="text"]').each(function() {
+        if ($(this).val() == '') {
+            allFilled = false;
+            return false;
+        }
+    });
+    if (allFilled) {
+        $('.send-quiz').addClass('active');
+    } else {
+        $('.send-quiz').removeClass('active');
+    }
+});
+
+
+
+
+// конструктор (тут дофига всего, надо вернуться)
+$(document).on('change', '.ct-switcher:not(.ct-can-hide-swicher):not(.ct-own-hidden):not(.ct-own-background-switcher) input', function (event) {
+    if ($(this).data('target')) {
+        var _that = $(this).prop('checked');
+        var _target = $(this).data('target');
+        $('#' + _target).toggleClass('active', _that)
+        if (_target == 'alco') {
+            $.post(ajax_url, {action: 'setalco', alco: (_that ? 1 : 0), project: project}, function (data) {
+                iframe.contents().find('[data-sm-anketa-toggle] > [data-sm-text="ANKETA_DRINKS_QUESTION"]:not([data-forq])').toggleClass('sm-hidden', !_that);
+                iframe.contents().find('[data-sm-anketa-toggle] [data-sm-anketa="1"]').toggleClass('sm-hidden', !_that);
+                iframe.contents().find('[data-sm-anketa-toggle] > [data-sm-anketa]:not([data-forq])').toggleClass('sm-hidden', !_that);
+                d_alco = (_that ? 1 : 0);
+            })
+        } else if (_target == 'palette') {
+            var paletteValue = (_that ? 1 : 0);
+            setPaletteState(_that);
+            if (event.originalEvent && Number(d_palette) !== paletteValue) {
+                d_palette = paletteValue;
+                $.post(ajax_url, {action: 'setpalette', palette: paletteValue, project: project});
+            }
+        } else if (_target == 'sput') {
+            $.post(ajax_url, {action: 'setsput', sput: (_that ? 1 : 0), project: project}, function (data) {
+                var sputnik = iframe.contents().find('[data-sm-anketa-company]');
+                if (sputnik.parents('.sm-form__block').length > 0) {
+                    sputnik = sputnik.parents('.sm-form__block');
+                } else if (sputnik.parents('.sm-form__input-wrapp').length > 0) {
+                    sputnik = sputnik.parents('.sm-form__input-wrapp');
+                } else if (sputnik.parents('.sm-form__row').length > 0) {
+                    sputnik = sputnik.parents('.sm-form__row');
+                } else if (sputnik.parents('.sm-form-inner').length > 0) {
+                    sputnik = sputnik.parents('.sm-form-inner');
+                } else if (sputnik.prev('.sm-mgb40').length > 0) {
+                    sputnik.prev('.sm-mgb40').toggle(_that)
+                } else if (sputnik.prev('.text-20px').length > 0) {
+                    sputnik.prev('.text-20px').toggle(_that)
+                } else if (sputnik.parents('.sm-wrapper_block-anketa_question').length > 0) {
+                    sputnik = sputnik.parents('.sm-wrapper_block-anketa_question');
+                } else if (sputnik.parents('.sm-questionnaire__form-inner').length > 0) {
+                    sputnik = sputnik.parents('.sm-questionnaire__form-inner');
+                } else if (sputnik.parents('.sm-wrapper-input').length > 0) {
+                    sputnik = sputnik.parents('.sm-company_wrapper');
+                }
+                sputnik.toggle(_that);
+                d_sput = (_that ? 1 : 0);
+            })
+        } else if (_target == 'menu') {
+            $.post(ajax_url, {action: 'setmenu', toggle: (_that ? 1 : 0), project: project}, function (data) {
+
+            })
+        }
+    } else {
+        if ($(this).parents('#secondPanel').length > 0) {
+            var sect = $(this).parents('.ct-panel_settings-page').data('section');
+            // if (sect === 165) {
+            //     if (!$(this).prop('checked')) {
+            //         pre_sect = data_value['OWN_AFTER'];
+            //         rebuildStructure(0);
+            //     } else {
+            //         rebuildStructure(pre_sect);
+            //     }
+            // } else if (sect === 210) {
+            //     if (!$(this).prop('checked')) {
+            //         pre_sect = data_value['NEW_OWN_AFTER'];
+            //         rebuildStructure(0, 211);
+            //     } else {
+            //         rebuildStructure(pre_sect, 211);
+            //     }
+            // } else {
+            if (!$(this).prop('checked')) {
+                offsections.push(sect-1)
+                $($('.ct-sections_setup li[data-section-id="'+sect+'"]')).find('input').prop('checked', false);
+            } else {
+                var removeItem = sect-1;
+                offsections = $.grep(offsections, function (value) {
+                    return value != removeItem;
+                });
+
+                $($('.ct-sections_setup li[data-section-id="'+sect+'"]')).find('input').prop('checked', true);
+            }
+            setSect();
+            checkSect();
+            // }
+        }
+
+        if ($(this).parents('#editSections').length > 0) {
+            var ind = $(this).parents('li').attr('data-section-id');
+
+            if (!$(this).prop('checked')) {
+                offsections.push(ind-1)
+                $('.ct-panel_settings-page[data-section="' + (ind) + '"] .ct-switcher:not(.ct-own-background-switcher) input').prop('checked', false)
+            } else {
+                var removeItem = ind-1;
+                offsections = $.grep(offsections, function (value) {
+                    return value != removeItem;
+                });
+                $('.ct-panel_settings-page[data-section="' + (ind) + '"] .ct-switcher:not(.ct-own-background-switcher) input').prop('checked', true)
+            }
+            setSect();
+            checkSect();
+        }
+    }
+})
+
+$(document).on('change', '.ct-own-background-switcher input', function () {
+    var panel = $(this).closest('.ct-panel_settings-page');
+    var section = Number(panel.attr('data-section'));
+    var name = $(this).attr('name');
+
+    if (isNaN(section) || section < 1001 || !name || typeof data_value['OWN_BLOCKS'] == 'undefined' || typeof data_value['OWN_BLOCKS'][section - 1001] == 'undefined') {
+        return;
+    }
+
+    data_value['OWN_BLOCKS'][section - 1001][name.toUpperCase()] = $(this).prop('checked') ? '1' : 0;
+    iframe.contents().find('section.sm-own[data-type="' + section + '"]')
+        .toggleClass('sm-own-background-blur', data_value['OWN_BLOCKS'][section - 1001]['OWN_BACKGROUND_BLUR'] == '1' || data_value['OWN_BLOCKS'][section - 1001]['OWN_BACKGROUND_BLUR'] == 1)
+        .toggleClass('sm-own-background-dark', data_value['OWN_BLOCKS'][section - 1001]['OWN_BACKGROUND_DARK'] == '1' || data_value['OWN_BLOCKS'][section - 1001]['OWN_BACKGROUND_DARK'] == 1);
+    panel.find('.submit_current').addClass('active');
+})
+
+// стили заголовка перс блока начало
+$(document).on('click', '.ct-title-decor-button', function (event) {
+
+    event.preventDefault();
+    user_gesture();
+    var button = $(this);
+    var panel = button.closest('.ct-panel_settings-page');
+    var section = Number(panel.attr('data-section'));
+    var decor = button.attr('data-decor');
+    var inputName = decor == 'weight' ? 'own_title_weight' : 'own_title_cursive';
+    var value;
+
+    if (isNaN(section) || section < 1001 || typeof data_value['OWN_BLOCKS'] == 'undefined' || typeof data_value['OWN_BLOCKS'][section - 1001] == 'undefined') {
+        return;
+    }
+
+    value = button.hasClass('active') ? 0 : 1;
+    panel.find('[name="' + inputName + '"]').val(value);
+    button.toggleClass('active', value == 1);
+    data_value['OWN_BLOCKS'][section - 1001][inputName.toUpperCase()] = value;
+    panel.find('.submit_current').addClass('active');
+
+    if (typeof setFontSize == 'function') {
+        setFontSize();
+    }
+})
+// стили заголовка перс блока конец
+
+// конструктор
+$(document).on('change', '.ct-switcher.ct-can-hide-swicher input', function () {
+    //если скрываем
+    if($(this).is(':checked')) {
+        //если показываем элемент, удаляем из hide
+        let index = data_value['HIDE'].indexOf($(this).attr('data-for-value'));
+        while(index !== -1) {
+            data_value['HIDE'].splice(index, 1);
+            let hideKey = $(this).attr('data-for-value');
+            index = data_value['HIDE'].indexOf(hideKey);
+            iframe.contents().find(template_config['HIDE'][hideKey]).toggleClass('sm-hidden',false);
+        }
+    }else{
+        //может это и не надо, но если hide = null, объявляем пустой массив
+        if (data_value['HIDE'] == null || data_value['HIDE'].length == 0) {
+            data_value['HIDE'] = [];
+            let hideKey = $(this).attr('data-for-value');
+            data_value['HIDE'].push(hideKey);
+            // console.log(template_config['HIDE'][hideKey]);
+            iframe.contents().find(template_config['HIDE'][hideKey]).toggleClass('sm-hidden',true);
+        } else {
+            //проверка на дубли
+            if (!data_value['HIDE'].includes($(this).attr('data-for-value'))) {
+                let hideKey = $(this).attr('data-for-value');
+                data_value['HIDE'].push($(this).attr('data-for-value'));
+                // console.log(template_config['HIDE'][hideKey]);
+                iframe.contents().find(template_config['HIDE'][hideKey]).toggleClass('sm-hidden',true);
+            }
+        }
+    }
+
+    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+    refreshOwnGroupMarginControls();
+})
+
+
+$(document).on('change', '.ct-switcher.ct-own-hidden input', function () {
+
+    var blockDataType = $(this).closest('.ct-panel_settings-page').attr('data-section');
+
+    var group = $(this).attr('data-group-id');
+
+    if($(this).is(':checked')) {//если показываем
+        data_value['OWN_BLOCKS'][blockDataType-1001]['OWN_SHOW'][group-1] = 1;
+        if(group==6){ //если карта, то ее надо создать
+            insertOwnMap(data_value['OWN_BLOCKS'][blockDataType-1001]['ID'], data_value['OWN_BLOCKS'][blockDataType-1001]['OWN_MAP_LINK'], data_value['OWN_BLOCKS'][blockDataType-1001]['OWN_MAP_WIDTH'], data_value['OWN_BLOCKS'][blockDataType-1001]['OWN_MAP_HEIGHT'])
+        }
+        $.each(template_val.pers_groups_info[group][4], function(i3,v3){
+            iframe.contents().find('[data-type=' + blockDataType + '] '+v3).toggleClass('sm-hidden',false);
+        })
+
+        //разворачиваем редакт
+        if(!($(this).closest('.ct-group_wrapper').hasClass('open'))){
+            $(this).closest('.ct-group_wrapper').find('.ct-group-head-right').click();
+        }
+    }else{//если скрываем
+        data_value['OWN_BLOCKS'][blockDataType-1001]['OWN_SHOW'][group-1] = 0;
+        $.each(template_val.pers_groups_info[group][4], function(i3,v3){
+            iframe.contents().find('[data-type=' + blockDataType + '] '+v3).toggleClass('sm-hidden',true);
+            $('.ct-panel_settings-page.active .submit_current').toggleClass('active', false);
+        })
+        if(group==6){ //если карта, то ее надо удалить
+            iframe.contents().find('[data-type="'+blockDataType+'"] [data-sm-href="OWN_MAP_LINK"]').remove();
+        }
+        //cворачиваем редакт
+        if(($(this).closest('.ct-group_wrapper').hasClass('open'))){
+            $(this).closest('.ct-group_wrapper').find('.ct-group-head-right').click();
+        }
+
+    }
+
+    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+    refreshOwnGroupMarginControls();
+})
+
+
+// конструктор
+$(document).on('click', '.ct-colors_switcher li', function () {
+    user_gesture();
+    $('.ct-colors_switcher li').removeClass('active');
+    $('.ct-tpl_selector-item.active .ct-tpl_selector-item_footer-colors li').removeClass('active');
+    var cin = $(this).index();
+    $($('.ct-tpl_selector-item.active .ct-tpl_selector-item_footer-colors li')[cin]).toggleClass('active', true);
+    $($('.ct-footer_colors li')[cin]).toggleClass('active', true);
+    $($('.ct-header_colors li')[cin]).toggleClass('active', true);
+    $($('#customizeView .ct-colors_switcher li')[cin]).toggleClass('active', true);
+    saveSettings()
+})
+
+$(document).on('click', '.ct-color-panel-title', function () {
+    user_gesture();
+    $(this).toggleClass('active');
+    $(this).closest('.ct-group_wrapper').css('max-height','none')
+})
+
+// конструктор
+$(document).on('click', '.ct-panel_examples-item', function () {
+    user_gesture();
+    $('.ct-panel_examples-item').removeClass('active');
+    $(this).addClass('active');
+})
+
+// конструктор
+$(document).on('click', '.ct-icon_library-item_remove', function () {
+    user_gesture();
+    var inp = $(this).parent().next('.ct-input_wrapper').find('input');
+    var da = inp.attr('name').toUpperCase();
+    inp.val('');
+    data_value[da] = '';
+    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+    setIcons();
+})
+
+// конструктор
+$(document).on('click', '.ct-icons_library-item', function () {
+    user_gesture();
+    var im = $(this).find('img').attr('src')
+    var inp = $('.ct-icon_library-active').prev('.ct-input_wrapper').find('input');
+    var da = inp.attr('name').toUpperCase();
+    inp.val(im);
+    data_value[da] = im;
+
+    $('.ct-icon_library').toggleClass('.ct-icon_library-active', false);
+    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+    $('[data-modal="modal_icons-library"] .ct-panel_close').click();
+
+    setIcons();
+})
+
+// конструктор
+$(document).on('click', '.ct-icon_library', function () {
+    user_gesture();
+    $('.ct-icon_library').toggleClass('ct-icon_library-active', false)
+    $(this).toggleClass('ct-icon_library-active', true)
+})
+
+
+
+
+
+
+$(document).on('click', '.submit_current', function () {
+    user_gesture();
+    if ($(this).parents('.ct-panel_sub').length > 0) {
+        if ($('.ct-panel_settings-page.active .ct-panel_examples-item.active').length > 0) {
+            var ex = $('.ct-panel_sub .ct-panel_settings-page.active').attr('data-for')
+            var d = $('.ct-panel_settings-page.active .ct-panel_examples-item.active').html();
+            var dt = $('.ct-panel_settings-page.active .ct-panel_examples-item.active').text();
+            var iw = $('.ct-examples_toggle[data-for="' + ex + '"]').prev('.ct-input_wrapper');
+            if (iw.find('textarea').length > 0) {
+                var ck = iw.find('.ck-editor').attr('aria-labelledby');
+                const domEditableElement = document.querySelector('[aria-labelledby="' + ck + '"] .ck-editor__editable_inline');
+                const editorInstance = domEditableElement.ckeditorInstance;
+                editorInstance.setData(d);
+            } else {
+                iw.find('input[type="text"]').val(dt);
+            }
+            $('.ct-panel_sub').removeClass('active');
+        }
+    } else {
+        if ( typeof guestTemplatePreview != 'undefined' && guestTemplatePreview ) {
+            openGuestRegistrationModal();
+            return false;
+        }
+
+        var parwrap = $('.ct-panel_settings-page.active');
+        var imwrap = parwrap.find('.ct-image_uploader-info');
+        var problem = false;
+        if (imwrap.length > 0) {
+            $.each(imwrap, function (im, vm) {
+                var inputup = $(vm).find('.ct-image_uploader-origin');
+                var inputup_size = inputup.find('.ct-input').attr('data-count');
+                var inputim = $(vm).find('li:not(.ct-image_uploader)').length;
+                if (inputim < inputup_size) {
+                    if (inputup.find('.ct-input').attr('name') != 'own_images[]' && inputup.find('.ct-input').attr('name') != 'new_own_images[]' && inputup.find('.ct-input').data('slider') != "1") {
+                        problem = true;
+                    }
+                }
+            })
+        }
+
+        $('.ct-error').removeClass('ct-error');
+
+        var reqwrap = parwrap.find('.ct-required');
+        if (reqwrap.length > 0) {
+            $.each(reqwrap, function () {
+                $(this).parents('.ct-input_wrapper').toggleClass('ct-error', $(this).val() == '')
+            })
+        }
+
+        //проверяем включено ли содержимое перс блока
+        console.log($(this).closest('.ct-panel_settings-page').find('.ct-group_wrapper').length)
+        if($(this).closest('.ct-panel_settings-page').find('.ct-group_wrapper').length > 0) {
+            console.log($(this).closest('.ct-panel_settings-page').find('.ct-own-hidden input:not([data_group_id="1"]):checked'))
+            if($(this).closest('.ct-panel_settings-page').find('.ct-own-hidden input:not([data_group_id="1"]):checked').length==0){
+                if (confirm(smT('ln-editor-hidden-block-confirm'))) {
+                    let remSect =  $(this).closest('.ct-panel_settings-page').attr('data-section');
+                    deleteOwnBlock(remSect);
+                    return;
+                } else {
+                    return;
+                }
+            }
+        }
+
+
+        if (problem) {
+            alert(constr_terms['ln-notify-photo-error'] + '!');
+        } else if ($('.ct-error').length > 0 || $('.new_own_map_link_err').length > 0) {
+            // alert('');
+        } else {
+            $(this).removeClass('active');
+            var par = $(this).parents('.ct-menu_wrapper');
+            var collectOwnGroupMargins = function (panel, sect) {
+                var groupMargins = {};
+
+                panel.find('[name^="own_group_margin_"]').each(function () {
+                    var match = $(this).attr('name').match(/^own_group_margin_(\d+)_(top|bottom|top_mobile|bottom_mobile)$/);
+                    if (!match) {
+                        return true;
+                    }
+
+                    var groupId = match[1];
+                    var fieldType = match[2];
+                    var value = $(this).val() === '' ? 0 : $(this).val();
+
+                    if (typeof groupMargins[groupId] == 'undefined') {
+                        groupMargins[groupId] = [[0, 0], [0, 0]];
+                    }
+                    if (fieldType == 'top') {
+                        groupMargins[groupId][0][0] = value;
+                    } else if (fieldType == 'bottom') {
+                        groupMargins[groupId][0][1] = value;
+                    } else if (fieldType == 'top_mobile') {
+                        groupMargins[groupId][1][0] = value;
+                    } else if (fieldType == 'bottom_mobile') {
+                        groupMargins[groupId][1][1] = value;
+                    }
+                });
+
+                if (sect >= 1001) {
+                    data_value['OWN_BLOCKS'][sect - 1001]['OWN_BLOCK_GROUP_MARGIN'] = groupMargins;
+                }
+            };
+            collectOwnGroupMargins(par, Number(par.closest('.ct-panel_settings-page').attr('data-section')));
+            var inp = par.find('.ct-input_wrapper:not(.ct-switcher):not(.ct-ignore)');
+            $.each(inp, function (k, v) {
+                var sect = $(this).closest('.ct-panel_settings-page').attr('data-section');
+                var ip = $(this).find('.ct-input:not(#own_align):not(#new_own_align):not(.ct-own-font-family-select)');
+
+                var name = ip.prop('name');
+                if (!name) {
+                    return true;
+                }
+                if (name && name.match(/^own_group_margin_(\d+)_(top|bottom|top_mobile|bottom_mobile)$/)) {
+                    return true;
+                }
+                // шрифты перс блока начало
+                if (name == 'own_title_font_family' || name == 'own_text_font_family') {
+                    var ownFontSaveKey = name == 'own_title_font_family' ? 'TITLE_FONT_FAMILY' : 'TEXT_FONT_FAMILY';
+                    data_value['OWN_BLOCKS'][sect - 1001][ownFontSaveKey] = ip.val();
+                    return true;
+                }
+                // шрифты перс блока конец
+                console.log('======processing input======')
+                console.log(name)
+                var nnm = name.split('[]')
+                var pc = name.split('personal_color');
+                if (pc.length > 1) {
+                    // console.log('save 1')
+                    var emp = $(this).find('.ct-empty').css('background-color');
+                    if (emp === 'rgba(0, 0, 0, 0)' || emp === 'transparent') {
+                        data_value[name.toUpperCase()] = '';
+                    } else {
+                        data_value[name.toUpperCase()] = ip.val();
+                    }
+                }
+                else{
+                    var oc = name.split('personal_button_colors');
+                    if(oc.length > 1){
+                        // console.log('save 2')
+                        data_value[nnm[0].toUpperCase()] = ['none','none','none','none','none','none'];
+                        $.each(ip, function (k, v) {
+                            var ocIndex = $(this).parent('.ct-color-wrapper').attr('data-type');
+                            if ($(this).hasClass('ct-empty')) {
+                                data_value[nnm[0].toUpperCase()][ocIndex - 3] = 'none';
+                            } else {
+                                data_value[nnm[0].toUpperCase()][ocIndex - 3] = $(this).val();
+                            }
+                        })
+                    }else {
+                        var oc = name.split('own_color');
+                        if (oc.length > 1) {
+                            // console.log('save 3')
+                            $.each(ip, function (k, v) {
+                                var ocIndex = $(this).parent('.ct-color-wrapper').attr('data-type');
+                                if ($(this).hasClass('ct-empty')) {
+                                    data_value['OWN_BLOCKS'][sect-1001][nnm[0].toUpperCase()][ocIndex - 1] = 'none';
+                                } else {
+                                    data_value['OWN_BLOCKS'][sect-1001][nnm[0].toUpperCase()][ocIndex - 1] = $(this).val();
+                                }
+                            })
+                        } else {
+                            var oc = name.split('own_button_colors');
+                            if (oc.length > 1) {
+                                // console.log('save 4')
+                                $.each(ip, function (k, v) {
+                                    var ocIndex = $(this).parent('.ct-color-wrapper').attr('data-type');
+                                    if ($(this).hasClass('ct-empty')) {
+                                        data_value['OWN_BLOCKS'][sect-1001][nnm[0].toUpperCase()][ocIndex - 3] = 'none';
+                                    } else {
+                                        data_value['OWN_BLOCKS'][sect-1001][nnm[0].toUpperCase()][ocIndex - 3] = $(this).val();
+                                    }
+                                })
+                            } else {
+                                // console.log('save 5')
+                                if ($.inArray(nnm[0].toUpperCase(), galleries) === -1 && $.inArray(nnm[0].toUpperCase(), gallery_items) === -1) {
+                                    // console.log('save 6')
+                                    var field = $(par).find('[name="' + name + '"]');
+                                    if (nnm.length > 1) {
+                                        // console.log('save 7')
+                                        var nm = name.split('[]').join('').toUpperCase();
+                                        console.log(nm)
+                                        if(name.split('own_').length > 1) {
+                                            // console.log('save 8')
+                                            data_value['OWN_BLOCKS'][sect-1001][nm] = [];
+                                        }else{
+                                            // console.log('save 9')
+                                            data_value[nm] = [];
+                                        }
+                                        $.each(field, function (k, v) {
+                                            // console.log('save 10')
+                                            if ($(this).val() !== '') {
+                                                if(name.split('own_').length > 1) {
+                                                    // console.log('save 11')
+                                                    data_value['OWN_BLOCKS'][sect-1001][nm].push($(this).val())
+                                                }else{
+                                                    // console.log('save 12')
+                                                    data_value[nm].push($(this).val())
+                                                }
+                                            }
+                                        })
+                                    } else {
+                                        // console.log('save 13')
+                                        if (ip.attr('type') == 'file') {
+                                            console.log('save 14')
+                                            var image = $('.ct-image_uploader-info[data-for="' + name.toUpperCase() + '"] .ct-image_preview:not(.ct-image_uploader)');
+                                            if(name.split('own_').length > 1) {
+                                                console.log('save 15')
+                                                console.log(sect-1001)
+                                                console.log(data_value['OWN_BLOCKS'][sect-1001][name.toUpperCase()]);
+                                                image = $('.ct-panel_settings-page[data-section='+sect+'] .ct-image_uploader-info[data-for="' + name.toUpperCase() + '-'+sect+'"] .ct-image_preview:not(.ct-image_uploader)');
+                                                data_value['OWN_BLOCKS'][sect-1001][name.toUpperCase()] = image.attr('data-url');
+                                            }else{
+                                                // console.log('save 16')
+                                                data_value[name.toUpperCase()] = image.attr('data-url');
+                                            }
+                                        } else {
+                                            if(name.split('own_').length > 1) {
+                                                // console.log('save 17')
+                                                data_value['OWN_BLOCKS'][sect-1001][name.toUpperCase()] = ip.val();
+                                            }else{
+                                                // console.log('save 18')
+                                                data_value[name.toUpperCase()] = ip.val();
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    // console.log('save 18')
+                                    nm = name.split('[]').join('').toUpperCase();
+                                    if(name.split('own_').length > 1) {
+                                        data_value['OWN_BLOCKS'][sect-1001][nm] = [];
+                                    }else{
+                                        data_value[nm] = [];
+                                    }
+                                    var images = par.find('.ct-image_uploader-info[data-for="' + nm + '"] .ct-image_preview:not(.ct-image_uploader)');
+
+                                    //если слайдер, пересобираем галерею
+                                    if ($('input[name*="' + nm.toLowerCase() + '"]').data('slider') == 1) {
+                                        // console.log('is slides');
+                                        var iframe = document.querySelector('iframe');
+                                        var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                        var galleryItem = $(innerDoc).find('.slick-initialized').find('[data-sm-src*="' + nm.toUpperCase() + '_0"]');
+                                        var gallery = galleryItem.closest('.slick-initialized');
+                                        if (gallery.length) {
+                                            var slidesCount = gallery.slick('getSlick').slideCount;
+                                            var slideNum = 0;
+                                            //удаляем слайды кроме последнего
+                                            let c = 1;
+                                            while (c < slidesCount) {
+                                                gallery.slick("slickRemove", 0);
+                                                c++;
+                                            }
+
+                                            c = 1;
+
+                                            //перебираем все картинки по референсу последнего слайда добавляем слайды
+                                            var slideInner = gallery.find('.slick-slide').eq(0)[0].outerHTML;
+                                            var nmrep = nm.toUpperCase() + '_';
+                                            var regex = new RegExp(`(${nmrep})(\\d+)`);
+                                            while (c < images.length) {
+                                                slideInner = slideInner.replace(regex, nmrep + slideNum);
+                                                slideNum++;
+                                                gallery.slick("slickAdd", slideInner);
+                                                c++;
+                                            }
+
+                                            //пересоздаем последний слайд
+                                            gallery.slick("slickRemove", 0);
+                                            slideInner = slideInner.replace(regex, nmrep + slideNum);
+                                            gallery.slick("slickAdd", slideInner)
+                                        }
+                                    }
+
+                                    if (images.length > 0) {
+                                        $.each(images, function (k, v) {
+                                            if(name.split('own_').length > 1) {
+                                                data_value['OWN_BLOCKS'][sect-1001][nm].push($(this).attr('data-url'));
+                                            }else{
+                                                data_value[nm].push($(this).attr('data-url'));
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                console.log('======end processing======')
+            })
+
+            if($(this).closest('.ct-panel_settings-page').find('.ct-panel_header .ct-title input').length != 0){
+                var sect = $(this).closest('.ct-panel_settings-page').attr('data-section');
+                data_value['OWN_BLOCKS'][sect-1001]['OWN_NAME'] = $(this).closest('.ct-panel_settings-page').find('.ct-panel_header .ct-title input').val();
+            }
+
+            //правки для опросов
+            var aq = $('.ct-addquests_wrapper');
+            inp = aq.find('.ct-input_wrapper:not(.ct-switcher):not(.ct-ignore)');
+            var question_up = false;
+
+            $.each(inp, function (k, v) {
+                question_up = true;
+                var ip = $(this).find('.ct-input');
+                var name = ip.prop('name');
+                var nnm = name.split('[]')
+
+                var field = $(aq).find('[name="' + name + '"]');
+                if (nnm.length > 1) {
+                    var nm = name.split('[]').join('').toUpperCase();
+                    data_value[nm] = [];
+
+                    $.each(field, function (k, v) {
+                        if ($(this).val() !== '') {
+                            data_value[nm].push($(this).val())
+                        }
+                    })
+                } else {
+                    data_value[name.toUpperCase()] = ip.val();
+                }
+            })
+
+// new pers start
+            // пока что проверяем перс блок по наличию групп
+            if($(this).closest('.ct-panel_settings-page').find('.ct-group_wrapper').length > 0) {
+                // console.log('saved pers')
+                let sectionId = $(this).closest('.ct-panel_settings-page').attr('data-section');
+                var groupIds = [];
+                $(this).closest('.ct-panel_settings-page').find('.ct-menu_wrapper .ct-panel_personal_content_menu .ct-group_wrapper').each(function() {
+                    groupIds.push($(this).attr('data-wrap-group-id'));
+                });
+                data_value['OWN_BLOCKS'][sectionId-1001]['OWN_BLOCK_SORT'] = groupIds ;
+            }else{
+                // console.log('saved not pers')
+            }
+            // new pers end
+
+            console.log('saving')
+            console.log(data_value);
+            console.log('saved')
+            removeColorStyles();
+            saveTemp(question_up);
+        }
+    }
+});
+
+
+
+// просмотр
+var tloaded = false;
+$(iframe).on('load', function () {
+    if ($(iframe).attr('src') != '' && typeof ($(iframe).attr('src')) != 'undefined' && !tloaded) {
+        // console.log(' no loadSections from global')
+        // loadSections();
+        // loadColors();
+        tloaded = true;
+    }
+})
+
+// просмотр
+// $(function () {
+//     if (project != '') {
+//         console.log('global1');
+//         loadTemplateData()
+//     } else {
+//         if (d_groom != '' && d_bride != '' && d_email != '' && d_mdate != '') {
+//             console.log('global2');
+//             loadTemplateData()
+//         } else {
+//             console.log('global3');
+//             var splash_date = $('.ct-splash input[name="main_date"]')
+//             var cnt = splash_date.next('.ct-calcontainer')
+//             splash_date.Zebra_DatePicker({
+//                 direction: 1,
+//                 format: 'd.m.Y',
+//                 show_clear_date: false,
+//                 container: cnt,
+//                 lang_clear_date: constr_terms["buttons_clean"],
+//                 readonly_element: false,
+//                 days_abbr: dweeks_short,
+//                 months: tmonths,
+//                 months_abbr: constr_terms['ln-months-short'],
+//                 days: dweeks,
+//             });
+//             CheckConfirmChangeOperation();
+//         }
+//     }
+// })
+
+// конструктор
+$(document).on('click', '.ct-video_remove', function () {
+    user_gesture();
+    if (confirm(constr_terms['ln-video-remove'])) {
+        var par = $(this).parents('.ct-input_wrapper');
+        var video_type = (par.attr('id') == 'video_uploader' ? 0 : 1);
+        var vid_name = $(this).parents('.ct-input_wrapper').find('[type="file"]').attr('name').split('_upload').join('');
+
+        $.post(ajax_url, {action: 'remvideo', project: project, type: video_type}, function (e) {
+            if (video_type == 0) {
+                $('#secondPanel').toggleClass('active', false);
+                ifresize();
+                console.log('loadTemplateData from global')
+                loadTemplateData();
+            } else {
+                par.find('.ct-video_remove').toggleClass('ct-hidden', true);
+                par.find('.ct-video_uploader').toggleClass('ct-hidden', false);
+            }
+        });
+    }
+})
+
+// конструктор
+$(document).on('change', 'input[type="file"].ct-video_file', function (event) {
+    var vid_name = $(this).attr('name').split('_upload').join('');
+    var par = $(this).parents('.ct-input_wrapper');
+    var video_type = par.attr('id') == 'video_uploader' ? 0 : 1;
+    var that = $(this);
+    let sect = $(this).closest('.ct-panel_settings-page').attr('data-section');
+
+    if (that.attr('name') == 'own_video_upload') {
+        video_type = sect; // personal #1
+    }
+    var data = new FormData();
+
+    var err = false;
+    data.append('project', project);
+    data.append('action', 'video');
+    var maxSize = 30 * 1024 * 1024;
+    $.each(that[0].files, function (i, file) {
+        if (file.size > maxSize) {
+            alert(constr_terms['ln-video-file-limit']);
+            err = true;
+        } else {
+            data.append('video', file);
+            data.append('type', video_type);
+        }
+    });
+    if (!err) {
+        $('body').toggleClass('ct-preloader', true)
+        $('body').append('<div class="ct-preloader_row-wrapper"><div class="ct-preloader_row"></div><div class="ct-preloader_data"></div></div>')
+
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        $('.ct-preloader_row').css('width', 288 / 100 * percentComplete);
+                        $('.ct-preloader_data').text(constr_terms['ln-video-uploading'] + ' ' + Math.ceil(percentComplete) + '%')
+                        if (percentComplete >= 100) {
+                            $('.ct-preloader_row').css('width', 288);
+                            $('.ct-preloader_data').text(constr_terms['ln-video-upload-success'])
+                        }
+                    }
+                }, false);
+                return xhr;
+            },
+            type: 'POST',
+            url: ajax_url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                // console.log('=====video upload=====')
+                // console.log(result)
+                $('.ct-preloader_row-wrapper').remove();
+                $('body').toggleClass('ct-preloader', false);
+                var r = $.parseJSON(result);
+                if (r.error) {
+                    alert(constr_terms['ln-notify-error'] + "\r\n" + r.error)
+                } else {
+
+
+                    par.find('.ct-video_remove').toggleClass('ct-hidden', false);
+                    par.find('.ct-video_uploader').toggleClass('ct-hidden', true);
+                    $('.ct-panel_settings-page.active .submit_current').toggleClass('active', true);
+
+                    if (vid_name == 'head_video') {
+                        $('.ct-video_uploader [name="' + vid_name + '"]').val(r.filePath)
+                        $.each(iframe.contents().find('[data-sm-video]'), function () {
+                            $(this).attr('src', r.filePath);
+                            $(this).attr('poster', '');
+                            $(this).parent().css('filter', 'none');
+                            $(this).parents('video')[0].load();
+                        });
+                        $('.ct-panel_settings-page.active .submit_current').click();
+                    }
+
+                    if (vid_name == 'own_video') {
+
+                        $('[data-section="'+sect+'"] [name="own_gallery_type"]').val(6)
+                        $('[data-section="'+sect+'"] [name="' + vid_name + '"]').val(r.filePath);
+
+                        console.log(sect)
+                        console.log(typeof sect)
+                        console.log(data_value['OWN_BLOCKS'][sect-1001])
+                        console.log(data_value['OWN_BLOCKS'][sect-1001]['OWN_VIDEO'])
+                        console.log(r.filePath)
+
+                        data_value['OWN_BLOCKS'][sect-1001]['OWN_VIDEO'] = r.filePath;
+                        data_value['OWN_BLOCKS'][sect-1001]['OWN_GALLERY_TYPE'] = 6;
+                        data_value['OWN_BLOCKS'][sect-1001]['OWN_IMAGES'] = [];
+
+                        $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] .ct-image_cropper').remove();
+                        iframe.contents().find('[data-section="'+sect+'"] [data-type="' + sect + '"] .sm-own_wrapper-img').remove();
+                        console.log('set gallery from ct video')
+                        setActiveOwnGalleryItem(6, false, sect);
+                        setActiveOwnGalleryItemConstr(6, true, sect);
+                    }
+                    alert(constr_terms['ln-notify-upload-success']);
+
+                }
+                // console.log('===============')
+
+            }
+        })
+    }
+})
+
+
+
+
+
+// from own_block
+
+$(document).on('input', '#secondPanel [name="own_colors[]"]', function () {
+    console.log('color selected')
+    var n = $(this).parents('.ct-panel_settings-page').attr('data-section');
+    var c = $(this).val();
+    var b = $(this).parents('.ct-color-wrapper').index();
+    if (b == 0) {
+        iframe.contents().find('.sm-own[data-type="' + n + '"]').css('background-color', c)
+        paintBlock('.sm-own[data-type="' + n + '"]',c,1);
+        $(this).parents('.ct-color-wrapper').find('.ct-color-remove-own').css('display','block');
+        $(this).removeClass('ct-empty');
+    } else {
+        iframe.contents().find('[data-type="' + n + '"] [data-sm-text="OWN_TITLE"]').css('color', c);
+        iframe.contents().find('[data-type="' + n + '"] [data-sm-text="OWN_TEXT"]').css('color', c);
+        $(this).parents('.ct-color-wrapper').find('.ct-color-remove-own').css('display','block');
+        $(this).removeClass('ct-empty');
+        //iframe.contents().find('[data-sm-href="'+add+'OWN_BUTTON_LINK"]').css({'color':c,'border-color':c});
+    }
+    setTimeout(function () {
+        autoResizeText();
+    }, 500)
+})
+
+$(document).on('input', '#secondPanel [name="own_button_colors[]"], #secondPanel [name*="personal_button_colors"]', function () {
+    // console.log('color selected 1')
+    var n = $(this).parents('.ct-panel_settings-page').attr('data-section');
+    var c = $(this).val();
+    var b = $(this).parents('.ct-color-wrapper').index();
+    if (b == 0) {
+        // iframe.contents().find('.sm-own[data-type="' + n + '"]').css('background-color', c)
+        // paintBlock('.sm-own[data-type="' + n + '"]',c,1);
+        $(this).parents('.ct-color-wrapper').find('.ct-color-remove-own').css('display','block');
+        $(this).removeClass('ct-empty');
+    } else {
+        // iframe.contents().find('[data-sm-text="' + add + 'OWN_TITLE"]').css('color', c);
+        // iframe.contents().find('[data-sm-text="' + add + 'OWN_TEXT"]').css('color', c);
+        $(this).parents('.ct-color-wrapper').find('.ct-color-remove-own').css('display','block');
+        $(this).removeClass('ct-empty');
+        //iframe.contents().find('[data-sm-href="'+add+'OWN_BUTTON_LINK"]').css({'color':c,'border-color':c});
+    }
+    let colorArr = [];
+    $.each($(this).closest('.ct-color-panel').find('.ct-input[type="color"]'),function(){
+        if(!$(this).hasClass('ct-empty')) {
+            colorArr.push($(this).val());
+        }else{
+            colorArr.push('none');
+        }
+    })
+    // console.log('paintButton from input')
+    if(n>1000) {
+        paintButton("[data-type='" + n + "'] [data-sm-href='OWN_BUTTON_LINK']", colorArr);
+    }else{
+        // let buttonSelector = '';
+        // // console.log(button_items);
+        // $.each(button_items, function(i,item){
+        //     // console.log('[data-type="' + n + '"] [data-sm-href="'+item+'"]');
+        //     if(iframe.contents().find('[data-type="' + n + '"]').find('[data-sm-href="'+item+'"]').length > 0){
+        //         buttonSelector = '[data-type="' + n + '"] [data-sm-href="'+item+'"]';
+        //     }
+        // })
+        let buttonSelector = '';
+        if($('[name="personal_button_selector_colors[' + n + ']"]').val()!=null && $('[name="personal_button_selector_colors[' + n + ']"]').val()!=''){
+            buttonSelector = "[data-type='" + n + "'] "+$('[name="personal_button_selector_colors[' + n + ']"]').val();
+        }
+
+        if(buttonSelector!='') {
+            // console.log(buttonSelector)
+            paintButton(buttonSelector, colorArr);
+        }
+    }
+
+
+})
+
+$(document).on('click', '#setupAddBlock', function (e) {
+    e.preventDefault();
+    user_gesture();
+    var blockId = (typeof data_value['OWN_BLOCKS'] != 'undefined') ? data_value['OWN_BLOCKS'].length+1001 : 1001;
+    var ownBlockGroupMargin = {};
+    var defaultOwnSectionPadding = 90;
+    // шрифты перс блока начало
+    var defaultOwnTitleFont = (typeof getOwnFontDefaultValue == 'function') ? getOwnFontDefaultValue('title') : ($('#hfont .ct-input_select-current').attr('data-id') || template_val.hfont || '');
+    var defaultOwnTextFont = (typeof getOwnFontDefaultValue == 'function') ? getOwnFontDefaultValue('text') : ($('#tfont .ct-input_select-current').attr('data-id') || template_val.tfont || '');
+    // шрифты перс блока конец
+
+    $.each(template_val.pers_groups_info, function (groupId, groupInfo) {
+        if (typeof groupInfo != 'undefined' && (groupInfo[4] == 1 || ($.isArray(groupInfo[4]) && groupInfo[4].length > 0))) {
+            ownBlockGroupMargin[groupId] = [[0, 0], [0, 0]];
+        }
+    });
+
+    var empty_pers_block = {
+        ID: blockId,
+        OWN_NAME: smT('ln-editor-own-block-prefix') + (blockId - 1000),
+        OWN_ALIGN: 1,
+        OWN_BACKGROUND_IMAGE: "",
+        OWN_BACKGROUND_BLUR: 0,
+        OWN_BACKGROUND_DARK: 0,
+        // шрифты перс блока начало
+        TITLE_FONT_FAMILY: defaultOwnTitleFont,
+        TEXT_FONT_FAMILY: defaultOwnTextFont,
+        // шрифты перс блока конец
+        OWN_BLOCK_SORT: ["2", "3", "4", "5", "6"],
+        OWN_BUTTON_COLORS: ["none", "none", "none", "none", "none", "none"],
+        OWN_COLORS: ["none", "none", "#ffffff", "#000000", "#000000"],
+        OWN_GALLERY_TYPE: 0,
+        OWN_IMAGES: [],
+        OWN_BLOCK_GROUP_MARGIN: ownBlockGroupMargin,
+        OWN_PADDING_TOP: defaultOwnSectionPadding,
+        OWN_PADDING_TOP_MOBILE: defaultOwnSectionPadding,
+        OWN_PADDING_BOTTOM: defaultOwnSectionPadding,
+        OWN_PADDING_BOTTOM_MOBILE: defaultOwnSectionPadding,
+        OWN_SHOW: [1, 1, 0, 1, 0, 0, 0],
+        OWN_TEXT: smT('ln-own-text'),
+        OWN_TITLE: smT('ln-own-title'),
+        OWN_VIDEO: ""
+    }
+
+    if (typeof data_value['OWN_BLOCKS'] == 'undefined'){
+        data_value['OWN_BLOCKS'] = [];
+    }
+
+    data_value['OWN_BLOCKS'].push(empty_pers_block)
+
+    sections[blockId - 1] = smT('ln-editor-own-block-prefix') + (blockId - 1000);
+
+    let index = data_value['SECTIONS_SORT'].indexOf((Number($(this).attr('data-sect')) + 1));
+    // console.log(index)
+    if (index !== -1) {
+        data_value['SECTIONS_SORT'].splice(index + 1, 0, blockId);
+        // console.log('.ct-sections_setup li[data-section-id="'+($(this).attr('data-sect') + 1)+'"]')
+        // console.log($('.ct-sections_setup li[data-section-id="'+(Number($(this).attr('data-sect')) + 1)+'"]'));
+        $('.ct-sections_setup li[data-section-id="' + (Number($(this).attr('data-sect')) + 1) + '"]').after('<li data-section-id="' + blockId + '"><span>' + smT('ln-editor-own-block-prefix') + (blockId - 1000) + '</span><div class="ct-sortable-handler"></div></li>');
+    }
+
+    $.post(ajax_url, {project: project, action: 'setown', own_blocks: data_value['OWN_BLOCKS'], sections_sort: data_value['SECTIONS_SORT']}, function (data) {console.log(data)})
+
+    createEmptyOwnFields(blockId);
+
+    var prevBlockID = (typeof data_value['SECTIONS_SORT'][data_value['SECTIONS_SORT'].indexOf(Number(blockId))-1] != 'undefined') ? data_value['SECTIONS_SORT'][data_value['SECTIONS_SORT'].indexOf(Number(blockId))-1] : 0 ;
+
+    let ownTemplate = ownBlockTemplateNew.replace("{%OWN_ID%}", blockId);
+    if(prevBlockID==0){
+        iframe.contents().find('.sm-edit[data-type="1"]').before(ownTemplate);
+    }else{
+        iframe.contents().find('.sm-edit[data-type="'+prevBlockID+'"]').after(ownTemplate);
+    }
+
+    insertOwnBlock(empty_pers_block);
+
+
+    // console.log('rebuilt structure 1')
+    //tplwrapper.
+    setTimeout(function () {
+        scrollToBlock(blockId)
+    }, 500)
+
+    loadCKEditor();
+    closeMain();
+    ifresize();
+    return false;
+})
+function scrollToBlock(sect) {
+    var sc = iframe.contents().find('.sm-edit[data-type="' + sect + '"]').position().top;
+    // console.log(sc);
+    iframe.contents().find('html,body').animate({scrollTop: sc}, 500);
+}
+
+
+$(document).on('click', '.ct-panel_settings-page[data-section^="10"]:not([data-section="1"]):not([data-section="10"]) .ct-image_uploader-info_alt:not([data-for="OWN_VIDEO_UPLOAD"]) .ct-image_uploader-preview_examples-item', function (e) {
+    e.preventDefault();
+    user_gesture();
+    imageUpdater = '';
+    let ownImgExamples = (this).closest('.ct-image_uploader-preview_examples');
+    let ownImgExample = ownImgExamples.querySelectorAll('.ct-image_uploader-preview_examples-item');
+    let index = Array.from(ownImgExample).indexOf(this);
+    var sect = $(this).parents('.ct-panel_settings-page').data('section');
+    var t = $(this).parents('.ct-image_uploader-info_alt').attr('data-for').replace('OWN_IMAGES_', '');
+    $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"]').attr('data-asp', t);
+    if (data_value['OWN_BLOCKS'][sect-1001]['OWN_GALLERY_TYPE'] != t) {
+        $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] li:not(.ct-image_uploader-origin)').remove(); // делаем всегда одну картинку
+        if (t == 5) {
+            $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] .ct-image_uploader.ct-image_uploader-origin input').click();
+        } else {
+            if (t == 4 || t == 7) {
+                $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] .ct-image_uploader.ct-image_uploader-origin input').click()
+            } else {
+                $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] input').click();
+            }
+        }
+    } else if (t == 4 || t == 7) {
+        var imin = $(this).index();
+        var ucurr = $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] .ct-image_preview:not(.ct-image_uploader-origin)').length;
+        var umax = $('[data-section="'+sect+'"] [data-for="OWN_IMAGES_'+t+'"] .ct-image_uploader-preview_examples .ct-image_uploader-preview_examples-item').length;
+        // if (upin > 2) {
+        //     $.each($('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] .ct-image_cropper'), function (k, v) {
+        //         if (k > 1) {
+        //             $(this).remove();
+        //         }
+        //     })
+        // }
+
+        if (umax <= ucurr) {
+            iframe.contents().find('[data-type="'+sect+'"] [data-sm-src="OWN_IMAGES_' + imin + '"]').click();
+        } else {
+            $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] .ct-image_uploader.ct-image_uploader-origin input').click();
+        }
+    } else if (t == 5) {
+        $('[data-section="'+sect+'"] [data-for="OWN_IMAGES"] .ct-image_uploader.ct-image_uploader-origin input').click()
+    }
+    return false;
+})
+
+// шо-то непонятное в просмотр на всякий
+$(document).on('click', '.ct-modal .ct-panel_close', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    user_gesture();
+    console.log($(this).closest('.ct-modal').attr('data-modal'))
+    if($(this).closest('.ct-modal').attr('data-modal')=="what_modal"){
+        console.log('close modal 1');
+        $('.ct-modal[data-modal="what_modal"]').removeClass('active');
+        if($(this).closest('.ct-modal').attr('data-back-modal')!='' && $(this).closest('.ct-modal').attr('data-back-modal')!=null) {
+            $('.ct-modal[data-modal="' + $(this).closest('.ct-modal').attr('data-back-modal') + '"]').addClass('active');
+            $(this).closest('.ct-modal').attr('data-back-modal', '');
+        }
+    }else {
+        console.log('close modal 2');
+        modalClose();
+    }
+    if($(this).parent('.ct-modal').attr('data-modal')=='modal_endlogin'){
+        window.location.href = '/invitations/';
+    }
+    return false;
+})
+$(document).on('click', '.ct-modal_open', function () {
+    user_gesture();
+    var mtarget = $(this).data('target');
+    modalOpen($('[data-modal="' + mtarget + '"]'));
+    $('[data-modal="' + mtarget + '"]').attr('data-back-modal',$(this).closest('.ct-modal').attr('data-modal'))
+})
+$(document).on('click', '.personal_colors .ct-color-remove', function () {
+    user_gesture();
+    //поведение поля выбора цвета
+    $(this).parents('.ct-color-wrapper').toggleClass('personal_empty', true);
+    $(this).parents('.ct-color-wrapper').find('input').val('');
+    $(this).parents('.ct-color-wrapper').find('.ct-color').css('cssText', '');
+
+    // номер блока
+    var sid = $(this).parents('.ct-panel_settings-page').attr('data-section');
+    // тип выбранного цвета 1-фон, 2-текст
+    var type = $(this).parents('.ct-color-wrapper').attr('data-type');
+
+
+    removeColorBlock('[data-type="' + sid + '"]',type);
+
+    //переменная для записи текущего сssText
+    let currentCssText = '';
+
+    //если покрашен блок анкеты, красим модалки
+    if (iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-questionnaire') || iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-form') || iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-feedback')) {
+
+
+        if(iframe.contents().find('.sm-modal').length > 0){
+            removeColorBlock('.sm-modal',type);
+            if(type==2) {
+                removeStyleForm(iframe.contents().find('head').find('.colors-styles'),'.sm-modal');
+            }
+        }
+        if(iframe.contents().find('.sm-quest-modal').length > 0){
+            removeColorBlock('.sm-quest-modal',type);
+            if(type==2) {
+                removeStyleForm(iframe.contents().find('head').find('.colors-styles'), '.sm-quest-modal');
+            }
+        }
+        if(iframe.contents().find('div#sm-mod').length > 0){
+            removeColorBlock('div#sm-mod',type);
+            if(type==2) {
+                removeStyleForm(iframe.contents().find('head').find('.colors-styles'), 'div#sm-mod');
+            }
+        }
+        if(iframe.contents().find('.sm-feedback').length > 0){
+            removeColorBlock('.sm-feedback',type);
+            if(type==2) {
+                removeStyleForm(iframe.contents().find('head').find('.colors-styles'), '.sm-feedback');
+            }
+        }
+
+        if(type==2) {
+            removeStyleForm(iframe.contents().find('head').find('.colors-styles'), '[data-type="' + sid + '"]' );
+        }
+
+    }
+})
+
+$(document).on('input', '.personal_color', function () {
+
+    //создание блока для дополнительных стилей, если он еще не был создан
+    if(iframe.contents().find('head').find('.colors-styles').length==0){
+        iframe.contents().find('head').append('<style class="colors-styles"></style>');
+    }
+    if(iframe.contents().find('head').find('.colors-styles-desktop').length==0){
+        iframe.contents().find('head').append('<style class="colors-styles-desktop">@media (min-width:500px){}</style>');
+    }
+    if(iframe.contents().find('head').find('.colors-styles-mobile').length==0){
+        iframe.contents().find('head').append('<style class="colors-styles-mobile">@media (max-width:500px){}</style>');
+    }
+    //поведение поля с выбором цвета
+    $(this).parents('.ct-color-wrapper').removeClass('personal_empty');
+    var sid = $(this).parents('.ct-panel_settings-page').attr('data-section');
+    var type = $(this).parents('.ct-color-wrapper').attr('data-type');
+    var color = $(this).val();
+
+    paintBlock('[data-type="' + sid + '"]',color,type);
+
+    //переменная для записи текущего сssText
+    let currentCssText = '';
+
+    //если покрашен блок анкеты, красим модалки
+    if (iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-questionnaire') || iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-form') || iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-feedback')) {
+
+
+        if(iframe.contents().find('.sm-modal').length > 0){
+            paintBlock('.sm-modal',color,type);
+            if(type==2) {
+                updateStyleForm(iframe.contents().find('head').find('.colors-styles'), '.sm-modal', color);
+            }
+        }
+        if(iframe.contents().find('.sm-quest-modal').length > 0){
+            paintBlock('.sm-quest-modal',color,type);
+            if(type==2) {
+                updateStyleForm(iframe.contents().find('head').find('.colors-styles'), '.sm-quest-modal', color);
+            }
+        }
+        if(iframe.contents().find('div#sm-mod').length > 0){
+            paintBlock('div#sm-mod',color,type);
+            if(type==2) {
+                updateStyleForm(iframe.contents().find('head').find('.colors-styles'), 'div#sm-mod', color);
+            }
+        }
+        if(iframe.contents().find('.sm-feedback').length > 0){
+            paintBlock('.sm-feedback',color,type);
+            if(type==2) {
+                updateStyleForm(iframe.contents().find('head').find('.colors-styles'), '.sm-feedback', color);
+            }
+        }
+
+        if(type==2) {
+            updateStyleForm(iframe.contents().find('head').find('.colors-styles'), '[data-type="' + sid + '"]', color);
+        }
+
+    }
+
+    setTimeout(function () {
+        autoResizeText();
+    }, 500)
+
+})
+
+// конструктор
+$(document).on('click', '.ct-color-remove-own', function () {
+    user_gesture();
+    // console.log('remove own');
+    $(this).closest('.ct-menu_wrapper').find('.submit_current').addClass('active');
+    $(this).css('display','none');
+    //поведение поля выбора цвета
+    // $(this).parents('.ct-color-wrapper').toggleClass('personal_empty', true);
+    // console.log($(this).parents('.ct-color-wrapper').find('input'));
+    $(this).parents('.ct-color-wrapper').find('input').val('transparent');
+    $(this).parents('.ct-color-wrapper').find('input').addClass('ct-empty');
+    // console.log($(this).parents('.ct-color-wrapper').find('input').val());
+    $(this).parents('.ct-color-wrapper').find('.ct-color').css('cssText', '');
+
+    // номер блока
+    var sid = $(this).parents('.ct-panel_settings-page').attr('data-section');
+    // тип выбранного цвета 1-фон, 2-текст
+    var type = $(this).parents('.ct-color-wrapper').attr('data-type');
+
+
+    removeColorBlock('[data-type="' + sid + '"]',type);
+
+    //переменная для записи текущего сssText
+    let currentCssText = '';
+
+    // //если покрашен блок анкеты, красим модалки
+    // if (iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-questionnaire') || iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-form') || iframe.contents().find('[data-type="' + sid + '"]').hasClass('sm-feedback')) {
+    //
+    //
+    //     if(iframe.contents().find('.sm-modal').length > 0){
+    //         removeColorBlock('.sm-modal',type);
+    //         if(type==2) {
+    //             removeStyleForm(iframe.contents().find('head').find('.colors-styles'),'.sm-modal');
+    //         }
+    //     }
+    //     if(iframe.contents().find('.sm-quest-modal').length > 0){
+    //         removeColorBlock('.sm-quest-modal',type);
+    //         if(type==2) {
+    //             removeStyleForm(iframe.contents().find('head').find('.colors-styles'), '.sm-quest-modal');
+    //         }
+    //     }
+    //     if(iframe.contents().find('div#sm-mod').length > 0){
+    //         removeColorBlock('div#sm-mod',type);
+    //         if(type==2) {
+    //             removeStyleForm(iframe.contents().find('head').find('.colors-styles'), 'div#sm-mod');
+    //         }
+    //     }
+    //     if(iframe.contents().find('.sm-feedback').length > 0){
+    //         removeColorBlock('.sm-feedback',type);
+    //         if(type==2) {
+    //             removeStyleForm(iframe.contents().find('head').find('.colors-styles'), '.sm-feedback');
+    //         }
+    //     }
+    //
+    //     if(type==2) {
+    //         removeStyleForm(iframe.contents().find('head').find('.colors-styles'), '[data-type="' + sid + '"]' );
+    //     }
+    //
+    // }
+    autoResizeText();
+});
+
+$(document).on('click', '.ct-small_edit-button', function () {
+    user_gesture();
+    var s = $(this).parents('.ct-own_block-setting').attr('data-sect');
+
+    $('#secondPanel').toggleClass('active', true);
+    $('#secondPanel .ct-panel_settings-page').removeClass('active');
+    $('.ct-panel_settings-page[data-section="' + s + '"]').toggleClass('active', true);
+    closeMain();
+    ifresize();
+})
+
+$(document).on('click','.open-block-sort', function(){
+    user_gesture();
+    $(this).closest('.ct-panel_settings-page').find('.ct-panel_close').click();
+
+    var pers_sect = $(this).closest('.ct-panel_settings-page').data('section');
+
+    $('body').attr('data-pers', pers_sect);
+
+    $('#mainPanel').addClass('active');
+    $('#editSections').addClass('active');
+    ifresize();
+})
+
+$(document).on('click', '.remove-own-block', function () {
+    user_gesture();
+    let remSect = $(this).attr('data-section-id');
+    if (confirm(smT('ln-editor-own-block-remove-confirm'))) {
+        deleteOwnBlock(remSect)
+    } else {
+        console.log(smT('ln-editor-log-001'));
+    }
+})
+
+
+$('.ct-reset').click(user_gesture).click(function () {
+    if (!confirm(smT('ln-editor-reset-confirm'))) {
+        e.preventDefault();
+    } else {
+        $.post(ajax_url,{action:'reset'},function(data){
+            loadTemplateData();
+        });
+    }
+
+})

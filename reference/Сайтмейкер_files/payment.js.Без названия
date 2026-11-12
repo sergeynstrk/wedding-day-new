@@ -1,0 +1,76 @@
+function setPrice() {
+
+    var cur_price = $('.ct-tpl_selector-item.active').find('.ct-tpl_selector-item_footer-price')
+    if (cur_price.length > 0 && payed == 0) {
+        if (Number(paypcid) > 0) {
+            $('.ct-current_template-price').html(constr_terms['ln-payments-template-more'] + ' <b>' + cur_price.text() + '</b>');
+        } else {
+            $('.ct-current_template-price').html(constr_terms['ln-payments-template'] + ' <b>' + cur_price.text() + '</b>');
+        }
+
+        $('.ct-pay').text(constr_terms['ln-button-pay']);
+        $('.ct-modal_content .ct-pay').text(constr_terms['ln-button-pay']);
+        $('.ct-header .ct-pay').text((Number(paypcid) > 0) ? constr_terms['ln-button-pay-short'] : constr_terms['ln-button-publish'])
+    } else {
+        $('.ct-current_template-price').html('');
+        $('.ct-pay').text(constr_terms['ln-button-publish'])
+    }
+
+    if ($('.ct-type_switcher').length > 0) {
+        var template_type = $('.ct-tpl_selector-item.active').attr('data-template_type');
+        if (template_type) {
+            template_type = (template_type > 1 && template_type != 5) ? 3 : template_type;
+            $('.ct-type_switcher-item[data-type="' + template_type + '"]').click();
+        }
+        $('.ct-present').toggleClass('ct-hidden', template_val.type_id > 1 && template_val.type_id != 5)
+    }
+}
+
+function normalizePaymentDomain(value) {
+    value = String(value || '').trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+    var parts = value.split('/').filter(Boolean);
+    value = parts.length > 1 ? parts[parts.length - 1] : (parts[0] || '');
+    return value.split('.')[0].replace(/[^a-z0-9-]/gi, '').toLowerCase();
+}
+
+function paymentAction(data) {
+    if (typeof (_ym) != 'undefined' && _ym != 0) {
+        ym(_ym, 'reachGoal', 'sitemakerBuyTry')
+    }
+    window.location.href = data;
+}
+
+$(document).on('click', '#pay_more', function () {
+    var pleasepay = $('.ct-pleasepay_more');
+    smCheckPaymentAddress($('#domain_check-more').val()).then(function (result) {
+        if (String(result[0]) !== '1') {
+            pleasepay.find('[name="domain"]').addClass('ct-input_error').focus();
+            return;
+        }
+        var domain = pleasepay.find('[name="domain"]').val();
+        var email = pleasepay.find('[name="email"]').val();
+        if (!paymentCheckEmail(email)) {
+            pleasepay.find('[name="email"]').addClass('ct-input_error').focus();
+            pleasepay.find('.ct-pay').addClass('ct-disabled');
+            return;
+        }
+        return $.post(ajax_url, {action: 'pay_more', domain: domain, email: email}).then(function (data) {
+            if (data != 0) window.location.href = data;
+            else alert(smT('ln-notify-pleasepay-fail'));
+        });
+    }).catch(function () { alert(smT('ln-notify-pleasepay-fail')); });
+});
+
+$(document).on('input', '.ct-pleasepay_more [name="email"]', function () {
+    $('.ct-pleasepay_more .ct-pay').removeClass('ct-disabled');
+    $(this).removeClass('ct-input_error');
+});
+
+function smPublishPaidProject() {
+    var tvid = (template_val.type_id > 1 && template_val.type_id != 5) ? 2 : template_val.type_id;
+    if (typeof template_user_type == 'undefined' || template_user_type == tvid || (template_user_type == 1 && tvid == 2) || template_user_type == 5) {
+        saveProject();
+    } else {
+        $('.ct-modal[data-modal="modal_error"]').addClass('active');
+    }
+}

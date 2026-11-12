@@ -1,0 +1,185 @@
+(function () {
+    'use strict';
+
+    var addressTimer;
+    var addressRevision = 0;
+    var requestQueue = Promise.resolve();
+    var paying = false;
+
+    // Serialize address writes and checkout creation for the current draft.
+    function request(fields, dataType) {
+        var next = requestQueue.catch(function () {}).then(function () {
+            return $.ajax({type: 'POST', url: ajax_url, data: fields, dataType: dataType || 'text'});
+        });
+        requestQueue = next;
+        return next;
+    }
+
+    window.paymentCheckEmail = function (email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
+    };
+
+    window.smCheckPaymentAddress = function (value) {
+        return request({action: 'whois', domain: normalizePaymentDomain(value)}, 'json');
+    };
+
+    function addressState(result, value) {
+        var available = String(result[0]) === '1';
+        $('.ct-domain_check').each(function () {
+            $(this).val(value).closest('.ct-input_wrapper')
+                .removeClass('ct-loading').toggleClass('ct-success', available).toggleClass('ct-error', !available)
+                .find('.ct-input_hint').text((result[1] || value) + ' ' + smT(available ? 'ln-domain-available' : 'ln-domain-not-available'));
+        });
+        $('.ct-pleasepay [data-payment-submit]').toggleClass('ct-disabled', !available || paying);
+        if (available) d_domain = value;
+    }
+
+    window.domainCheckHandler = function (value) {
+        clearTimeout(addressTimer);
+        var revision = ++addressRevision;
+        value = normalizePaymentDomain(value);
+        $('.ct-domain_check').val(value).closest('.ct-input_wrapper')
+            .removeClass('ct-loading ct-error ct-success').find('.ct-input_hint').text(smT('ln-checkout-address-minimum'));
+        $('.ct-pleasepay [data-payment-submit]').addClass('ct-disabled');
+        if (paying || value.length < 3 || value.length > 63) return;
+        addressTimer = setTimeout(function () {
+            value = value.replace(/-+$/, '');
+            $('.ct-domain_check').closest('.ct-input_wrapper').addClass('ct-loading')
+                .find('.ct-input_hint').text(smT('ln-domain-checking'));
+            smCheckPaymentAddress(value).then(function (result) {
+                if (revision === addressRevision && !paying) addressState(result, value);
+            }).catch(function () {
+                if (revision === addressRevision && !paying) {
+                    $('.ct-domain_check').closest('.ct-input_wrapper').removeClass('ct-loading').addClass('ct-error')
+                        .find('.ct-input_hint').text(smT('ln-notify-pleasepay-fail'));
+                }
+            });
+        }, 500);
+    };
+
+    // Candidate generation is shared; the local PHP handler decides availability.
+    window.checkDomain = function (domains, iter) {
+        if (paying || !domains || !domains[iter]) return;
+        var current = $('#domain_check').val();
+        if (current) {
+            if (Number(payed) === 0) domainCheckHandler(current);
+            return;
+        }
+        var revision = addressRevision;
+        smCheckPaymentAddress(domains[iter]).then(function (result) {
+            if (revision !== addressRevision || paying) return;
+            if (String(result[0]) !== '1' && iter + 1 < domains.length) {
+                checkDomain(domains, iter + 1);
+            } else {
+                addressState(result, normalizePaymentDomain(domains[iter]));
+            }
+        }).catch(function () {
+            if (revision === addressRevision) {
+                $('.ct-domain_check').closest('.ct-input_wrapper').removeClass('ct-loading').addClass('ct-error');
+            }
+        });
+    };
+
+    window.resetPleasePay = function () {
+        var selected = $('#selectTpl .ct-tpl_selector-item.active').first();
+        function preview(source, target, mobile) {
+            target.empty().css('background', '');
+            if (source.css('background-image') && source.css('background-image') !== 'none') {
+                target.css('background', source.css('background'));
+            } else if (source.find('video').length) {
+                target.css('background', 'none');
+                if (mobile) target.append($('<div class="ct-video_button">').text(smT('ln-default-confirm')));
+                target.append(source.find('video').first().clone());
+            }
+        }
+        preview(selected.find('.ct-tpl_selector-item_body'), $('.ct-pp-template-image-desk'), false);
+        preview(selected.find('.ct-tpl_selector-item_body-mobile'), $('.ct-pp-template-image-mob'), true);
+        var price = selected.find('.ct-tpl_selector-item_footer-price').first().html();
+        if (!price) price = $('.ct-current_template-price b').first().html() || '';
+        $('.ct-ppprice').html(price);
+        $('[data-modal="what_modal"]').attr('data-back-modal', '');
+    };
+
+    function openPaymentDialog() {
+        var dialog = $('.ct-pleasepay_publish').first();
+        if (!dialog.length) return;
+        resetPleasePay();
+        $('.ct-pleasepay').removeClass('active');
+        modalOpen(dialog);
+        domainCheckHandler($('#domain_check').val() || dialog.find('[name="domain"]').val() || '');
+    }
+
+    function busy(value) {
+        paying = value;
+        $('.ct-domain_check').prop('readOnly', value);
+        $('.ct-pleasepay [name="email"]').prop('readOnly', value);
+        $('.ct-pleasepay [data-payment-submit]').toggleClass('ct-disabled', value).attr('aria-busy', String(value));
+    }
+
+    $(document).on('input.smPaymentDialogs', '.ct-domain_check', function () {
+        if (!paying) domainCheckHandler(this.value);
+    });
+    $(document).on('input.smPaymentDialogs', '.ct-pleasepay [name="email"]', function () {
+        $(this).removeClass('ct-input_error');
+    });
+
+    $(document).on('click.smPaymentDialogs', '.ct-pay', async function (event) {
+        if (this.id === 'pay_more') return;
+        event.preventDefault();
+        if (paying) return;
+        $('.ct-mob-menu').removeClass('active');
+        if (Number(payed) > 0) {
+            smPublishPaidProject();
+            return;
+        }
+        var button = $(this);
+        if (!button.is('[data-payment-submit]')) {
+            openPaymentDialog();
+            return;
+        }
+        if (button.hasClass('ct-disabled')) return;
+        var dialog = button.closest('.ct-pleasepay');
+        var domain = normalizePaymentDomain(dialog.find('[name="domain"]').val());
+        var email = String(dialog.find('[name="email"]').val() || '').trim();
+        if (domain.length < 3 || domain.length > 63) {
+            domainCheckHandler(domain);
+            dialog.find('[name="domain"]').focus();
+            return;
+        }
+        if (!paymentCheckEmail(email)) {
+            dialog.find('[name="email"]').addClass('ct-input_error').focus();
+            return;
+        }
+        clearTimeout(addressTimer);
+        ++addressRevision;
+        busy(true);
+        var redirecting = false;
+        try {
+            // The local payment handler validates and saves this exact address.
+            var response = await request({action: 'payment', domain: domain, email: email});
+            var details;
+            try { details = JSON.parse(response); } catch (error) { details = null; }
+            if (details && details.error) {
+                if (details.error === 'domain') {
+                    addressState(['0', details.address || domain], domain);
+                    dialog.find('[name="domain"]').focus();
+                } else if (details.error === 'email') {
+                    dialog.find('[name="email"]').addClass('ct-input_error').focus();
+                } else {
+                    alert(smT('ln-notify-pleasepay-fail'));
+                }
+                return;
+            }
+            if (!String(response).trim() || response == '0' || response == '-1') throw new Error('Checkout failed');
+            await paymentAction(response);
+            redirecting = true;
+        } catch (error) {
+            alert(smT('ln-notify-pleasepay-fail'));
+        } finally {
+            if (!redirecting) {
+                busy(false);
+                $('.ct-pleasepay [data-payment-submit]').toggleClass('ct-disabled', !!(details && details.error === 'domain'));
+            }
+        }
+    });
+})();

@@ -1,0 +1,30 @@
+.layout-editing { scroll-padding-bottom: 200px; }
+.layout-editing body { padding-bottom: 210px; }
+.layout-editing .decoration-pair { z-index: 30; }
+.layout-editing .decor-object, .layout-editing .flatlay-bouquet { pointer-events: auto; touch-action: none; cursor: grab; user-select: none; -webkit-user-drag: none; }
+.layout-editing .layout-selected { outline: 2px dashed #bdd9ea; outline-offset: 5px; }
+.layout-editing .layout-dragging { cursor: grabbing; z-index: 100 !important; }
+.layout-toolbar { position: fixed; z-index: 2000; inset: auto 16px 16px; max-width: 1240px; margin-inline: auto; padding: 15px 18px; background: #f2ede5; color: #382b30; border: 1px solid #bcb2ad; box-shadow: 0 5px 35px #160b1460; font: 13px/1.5 'Montserrat', sans-serif; }
+.layout-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 10px; }
+.layout-heading strong { font-size: 16px; }
+.layout-heading a { margin-left: auto; color: #643e49; }
+#layoutStatus { color: #5a625a; }
+.layout-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+#layoutSelected { min-width: 95px; font-weight: 600; }
+.layout-controls label { display: flex; align-items: center; gap: 7px; }
+.layout-controls input { width: 110px; accent-color: #681427; }
+.layout-controls output { width: 40px; font-variant-numeric: tabular-nums; }
+.layout-controls button { padding: 9px 12px; min-height: 38px; border: 1px solid #a89c99; background: #fffaf3; color: #493139; font: inherit; cursor: pointer; }
+.layout-controls button:disabled { opacity: .45; cursor: default; }
+#layoutExport { background: #681427; color: #fff4ec; border-color: #681427; }
+.layout-toolbar p { margin-top: 10px; color: #6a5b5c; font-size: 11px; }
+@media (max-width: 600px) {
+  .layout-toolbar { inset: auto 6px 6px; padding: 10px 12px; max-height: 45vh; overflow: auto; }
+  .layout-heading { gap: 4px 12px; }
+  .layout-heading a { margin-left: 0; font-size: 11px; }
+  .layout-controls { gap: 7px; }
+  .layout-controls input { width: 85px; }
+  .layout-controls button { padding: 7px 9px; font-size: 11px; }
+  .layout-toolbar p { display: none; }
+  .layout-editing body { padding-bottom: 240px; }
+}

@@ -1,0 +1,61 @@
+section:not(.sm-open) .item-animation {
+    transition-property: transform, opacity, translate, color, background-color;
+    transition-duration: 2s, 2s, 2s, .5s,.5s;
+    transition-timing-function: ease-in-out;
+}
+section:not(.sm-open) .item-aleft:not(.item-active) {
+    translate: 100px 0px;
+    opacity: 0;
+}
+section:not(.sm-open) .item-aright:not(.item-active) {
+    opacity: 0;
+    translate: -100px 0px;
+}
+section:not(.sm-open) .item-abottom:not(.item-active) {
+    opacity: 0;
+    translate: 0px -100px;
+}
+section:not(.sm-open) .item-atop:not(.item-active) {
+    opacity: 0;
+    translate: 0px 100px;
+}
+section:not(.sm-open) .sm-open .item-atop:not(.item-active){
+    opacity: 1!important;
+    translate: 0 0;
+}
+
+@media (max-width:500px)
+{
+
+    body.sm-template13 section:not(.sm-open) .item-animation,
+    body.sm-template53 section:not(.sm-open) .item-animation{
+        transition-property: transform, opacity, translate, color, background-color;
+        transition-duration: 1.5s, 1.5s, 1.5s, .4s,.4s;
+        transition-timing-function: ease-in-out;
+    }
+    body.sm-template13 section:not(.sm-open) .item-aleft:not(.item-active),
+    body.sm-template53 section:not(.sm-open) .item-aleft:not(.item-active) {
+        translate: 80px 0px;
+        opacity: 0;
+    }
+    body.sm-template13 section:not(.sm-open) .item-aright:not(.item-active),
+    body.sm-template53 section:not(.sm-open) .item-aright:not(.item-active) {
+        opacity: 0;
+        translate: -80px 0px;
+    }
+    body.sm-template13 section:not(.sm-open) .item-abottom:not(.item-active),
+    body.sm-template53 section:not(.sm-open) .item-abottom:not(.item-active) {
+        opacity: 0;
+        translate: 0px -80px;
+    }
+    body.sm-template13 section:not(.sm-open) .item-atop:not(.item-active),
+    body.sm-template53 section:not(.sm-open) .item-atop:not(.item-active) {
+        opacity: 0;
+        translate: 0px 80px;
+    }
+    body.sm-template13 section:not(.sm-open) .sm-open .item-atop:not(.item-active),
+    body.sm-template53 section:not(.sm-open) .sm-open .item-atop:not(.item-active){
+        opacity: 1!important;
+        translate: 0 0;
+    }
+}

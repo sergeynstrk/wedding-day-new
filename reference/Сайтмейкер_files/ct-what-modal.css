@@ -1,0 +1,3010 @@
+/* Shared semantic roles are read from the host, with approved v3 fallbacks.
+   This component never writes global tokens or changes the page shell. */
+#ct-what-modal {
+    --ct-what-base-color-accent: var(--color-accent, #FF416C);
+    --ct-what-base-color-status-success: var(--color-status-success, #32B782);
+    --ct-what-base-color-surface: var(--color-surface, #fff);
+    --ct-what-base-color-surface-highlight: var(--color-surface-highlight, #FFE9E5);
+    --ct-what-base-color-surface-positive: var(--color-surface-positive, #E2F4D4);
+    --ct-what-base-color-surface-subtle: var(--color-surface-subtle, #F7F7F7);
+    --ct-what-base-color-text: var(--color-text, #252525);
+    --ct-what-base-color-text-inverse: var(--color-text-inverse, #fff);
+    --ct-what-base-invitations-font-body: 'CTWhatGraphik', Tahoma, sans-serif;
+    --ct-what-base-radius-action: var(--radius-action, 10px);
+}
+
+
+/* Component roles extend the shared WedWed tokens; artwork palettes are separate. */
+#ct-what-modal {
+    --ct-what-color-text-muted: #716b73;
+    --ct-what-color-icon: #88828c;
+    --ct-what-color-icon-muted: #c4bdc7;
+    --ct-what-color-focus: #3c73b5;
+    --ct-what-color-border: color-mix(in srgb, var(--ct-what-base-color-text) 8%, var(--ct-what-base-color-surface));
+    --ct-what-color-border-strong: color-mix(in srgb, var(--ct-what-base-color-text) 16%, var(--ct-what-base-color-surface));
+    --ct-what-color-surface-control-hover: color-mix(in srgb, var(--ct-what-base-color-text) 8%, var(--ct-what-base-color-surface));
+    --ct-what-color-border-hover: color-mix(in srgb, var(--ct-what-base-color-accent) 40%, var(--ct-what-base-color-surface));
+    --ct-what-color-border-selected: color-mix(in srgb, var(--ct-what-base-color-accent) 38%, var(--ct-what-base-color-surface));
+    --ct-what-color-surface-hover: color-mix(in srgb, var(--ct-what-base-color-accent) 2%, var(--ct-what-base-color-surface));
+    --ct-what-color-surface-selected: color-mix(in srgb, var(--ct-what-base-color-accent) 7%, var(--ct-what-base-color-surface));
+    --ct-what-color-surface-icon-selected: color-mix(in srgb, var(--ct-what-base-color-accent) 16%, var(--ct-what-base-color-surface));
+    --ct-what-color-hint-dot: color-mix(in srgb, var(--ct-what-base-color-accent) 34%, var(--ct-what-base-color-surface));
+    --ct-what-color-shadow: color-mix(in srgb, var(--ct-what-base-color-text) 14%, transparent);
+    --ct-what-color-shadow-selected: color-mix(in srgb, var(--ct-what-base-color-accent) 4%, transparent);
+    --ct-what-color-shadow-action: color-mix(in srgb, var(--ct-what-base-color-accent) 10%, transparent);
+    --ct-what-color-backdrop: color-mix(in srgb, var(--ct-what-base-color-text) 31%, transparent);
+    /* Shared brand hue, darkened for small white action text (>= 4.5:1). */
+    --ct-what-color-text-accent: color-mix(in srgb, var(--ct-what-base-color-accent) 80%, var(--ct-what-base-color-text));
+    --ct-what-color-action: color-mix(in srgb, var(--ct-what-base-color-accent) 80%, var(--ct-what-base-color-text));
+    --ct-what-color-action-hover: color-mix(in srgb, var(--ct-what-base-color-accent) 70%, var(--ct-what-base-color-text));
+    /* Status icon/text needs contrast on pale surfaces; do not use the raw status color. */
+    --ct-what-color-success-text: color-mix(in srgb, var(--ct-what-base-color-status-success) 60%, var(--ct-what-base-color-text));
+    --ct-what-color-surface-success: color-mix(in srgb, var(--ct-what-base-color-surface-positive) 35%, var(--ct-what-base-color-surface));
+    --ct-what-layout-max-width: 1120px;
+    --ct-what-space-viewport-inline-inset: 48px;
+    --ct-what-space-viewport-block-inset: 48px;
+
+    --ct-what-radius-reopen: 14px;
+    --ct-what-radius-dialog: 24px;
+    --ct-what-space-header-gap: 20px;
+    --ct-what-space-header-inset: 27px 32px 23px;
+    --ct-what-font-size-eyebrow: 10px;
+    --ct-what-tracking-eyebrow: 1.6px;
+    --ct-what-space-eyebrow-after: 10px;
+    --ct-what-font-size-title: 30px;
+    --ct-what-line-height-title: 1.22;
+    --ct-what-tracking-title: -1.15px;
+    --ct-what-font-size-intro: 13px;
+    --ct-what-line-height-intro: 1.5;
+    --ct-what-space-intro-before: 9px;
+    --ct-what-space-columns-gap: 24px;
+    --ct-what-space-body-inset: 0 32px 24px;
+    --ct-what-font-size-list-heading: 12px;
+    --ct-what-font-size-included-label: 10px;
+    --ct-what-space-feature-gap: 8px;
+    --ct-what-space-feature-content-gap: 10px;
+    --ct-what-size-feature-min-height: 64px;
+    --ct-what-radius-feature: 12px;
+    --ct-what-space-feature-inset: 12px 11px;
+    --ct-what-radius-feature-icon: 9px;
+    --ct-what-font-size-feature-title: 14px;
+    --ct-what-font-size-feature-caption: 12px;
+    --ct-what-line-height-feature-caption: 1.4;
+    --ct-what-space-feature-caption-before: 4px;
+    --ct-what-font-size-hint: 11px;
+    --ct-what-radius-detail: 17px;
+    --ct-what-size-visual-height: 250px;
+    --ct-what-space-detail-inset: 21px 21px 20px;
+    --ct-what-font-size-detail-kicker: 7px;
+    --ct-what-tracking-detail-kicker: 1.2px;
+    --ct-what-font-size-detail-title: 19px;
+    --ct-what-font-size-detail-body: 13px;
+    --ct-what-line-height-detail-body: 1.65;
+    --ct-what-space-footer-inset: 21px 32px;
+    --ct-what-space-footer-gap: 20px;
+    --ct-what-space-payment-copy-gap: 12px;
+    --ct-what-font-size-payment-title: 13px;
+    --ct-what-font-size-payment-caption: 11px;
+    --ct-what-space-action-content-gap: 57px;
+    --ct-what-font-size-action: 14px;
+    --ct-what-space-action-inset: 17px 23px;
+    --ct-what-size-action-min-height: 51px;
+    --ct-what-font-size-action-arrow: 21px;
+}
+
+
+/* Semantic palette for the invitation illustrations and their preview controls. */
+#ct-what-modal {
+    --ct-what-scene-font-body: var(--ct-what-base-invitations-font-body);
+    --ct-what-scene-font-weight-title: 600;
+    --ct-what-scene-font-weight-label: 500;
+    --ct-what-scene-font-weight-body: 400;
+    --ct-what-scene-layout-max-width: 480px;
+    --ct-what-scene-color-ink: #202121;
+    --ct-what-scene-color-text-inverse: var(--ct-what-base-color-text-inverse);
+    --ct-what-scene-color-surface: var(--ct-what-base-color-surface);
+    --ct-what-scene-color-canvas: #dedaff;
+    --ct-what-site-color-canvas: var(--ct-what-scene-color-canvas);
+    --ct-what-site-color-page: #e5ff79;
+    --ct-what-site-color-browser: #fafafa;
+    --ct-what-site-color-browser-depth: #b6afde;
+    --ct-what-site-color-browser-shadow: #51457918;
+    --ct-what-site-color-browser-dots: #747474;
+    --ct-what-site-color-phone-shadow: #251e4733;
+    --ct-what-domain-color-canvas: #fff0a8;
+    --ct-what-domain-color-page: #f8accb;
+    --ct-what-domain-color-page-depth: #d7c778;
+    --ct-what-domain-color-toolbar: #fff7d3;
+    --ct-what-domain-color-address: #3050ff;
+    --ct-what-domain-color-address-suffix: #fff0a8;
+    --ct-what-domain-color-sticker: #fafafa;
+    --ct-what-music-color-canvas: #ffaed0;
+    --ct-what-music-color-player-depth: #dc759f;
+    --ct-what-music-color-cover-shade: #0008;
+    --ct-what-music-color-cover-title: #e5ff79;
+    --ct-what-music-color-label: #d4d4d4;
+    --ct-what-music-color-artist: #c2c2c2;
+    --ct-what-music-color-waveform: #e5ff79;
+    --ct-what-music-color-progress-track: #ffffff3d;
+    --ct-what-music-color-progress-fill: #ffaed0;
+    --ct-what-music-color-timestamp: #d2d2d2;
+    --ct-what-music-color-sticker: #e5ff79;
+    --ct-what-video-color-canvas: #3350ff;
+    --ct-what-video-color-recording: #ffb0d5;
+    --ct-what-video-color-frame-depth: #142aaf;
+    --ct-what-video-color-image-shade-start: #0004;
+    --ct-what-video-color-image-shade-end: #0009;
+    --ct-what-video-color-play: #ff8fc7;
+    --ct-what-video-color-play-halo: #ff8fc726;
+    --ct-what-video-color-progress-track: #ffffff5c;
+    --ct-what-video-color-progress-fill: #ff8fc7;
+    --ct-what-video-color-sticker: #ff8fc7;
+    --ct-what-video-color-caption: #e4e8ff;
+    --ct-what-guests-color-canvas: #ffdbbb;
+    --ct-what-guests-color-badge: #4655ed;
+    --ct-what-guests-color-dashboard: #fffdfa;
+    --ct-what-guests-color-dashboard-depth: #dfa774;
+    --ct-what-guests-color-stat-trend: #4655dc;
+    --ct-what-guests-color-stat-label: #626b67;
+    --ct-what-guests-color-chart: #6570ef;
+    --ct-what-guests-color-divider: #e3e8e4;
+    --ct-what-guests-color-avatar: #ffd5e6;
+    --ct-what-guests-color-response-caption: #747975;
+    --ct-what-guests-color-response-status-surface: #e4e8ff;
+    --ct-what-guests-color-response-status-text: #3843a3;
+    --ct-what-guests-color-notification-shadow: #7841241a;
+    --ct-what-guests-color-telegram-icon: #71cfff;
+    --ct-what-guests-color-notification-label: #c2d0ca;
+    --ct-what-guests-color-notification-time: #b8c0bd;
+    --ct-what-personal-color-canvas: #ffc8df;
+    --ct-what-personal-color-card-back: #fff7e9;
+    --ct-what-personal-color-card-text: #fff9e8;
+    --ct-what-personal-color-card: #f34d37;
+    --ct-what-personal-color-sticker: #e7ff7b;
+    --ct-what-blocks-color-canvas: #9bd7ff;
+    --ct-what-blocks-color-dress-card: #e3fc72;
+    --ct-what-blocks-color-dress-swatch-primary: #d1bfff;
+    --ct-what-blocks-color-dress-swatch-secondary: #ff6b93;
+    --ct-what-blocks-color-dress-swatch-accent: #4471f8;
+    --ct-what-blocks-color-dress-swatch-highlight: #ff9947;
+    --ct-what-blocks-color-photo-caption: #faffed;
+    --ct-what-blocks-color-plan-card: #cab9ff;
+    --ct-what-blocks-color-add-symbol: #d5eaff;
+    --ct-what-pdf-color-canvas: #b9b7fc;
+    --ct-what-pdf-color-page-back: #ecff79;
+    --ct-what-pdf-color-page-back-depth: #8d87d9;
+    --ct-what-pdf-color-page: #fffbef;
+    --ct-what-pdf-color-download-depth: #8983ca;
+    --ct-what-gifts-color-canvas: #ff925c;
+    --ct-what-gifts-color-card: #fffaf0;
+    --ct-what-gifts-color-music-tile: #ffb5e2;
+    --ct-what-gifts-color-travel-tile: #e5ff79;
+    --ct-what-gifts-color-travel-symbol: #3e45c0;
+    --ct-what-gifts-color-sticker: #faacd4;
+    --ct-what-welcome-color-canvas: var(--ct-what-base-color-surface);
+    --ct-what-welcome-color-greeting-fallback: #3e201f;
+    --ct-what-welcome-color-action: #e5ff79;
+    --ct-what-welcome-color-action-hover: #eeffaf;
+    --ct-what-welcome-color-action-text: var(--ct-what-scene-color-ink);
+    --ct-what-welcome-color-action-border: var(--ct-what-scene-color-ink);
+    --ct-what-welcome-color-action-shadow: #20212144;
+    --ct-what-welcome-color-action-hover-shadow: #20212155;
+    --ct-what-welcome-color-focus-ring: #fff;
+    --ct-what-welcome-color-label: #e5ff79;
+    --ct-what-welcome-color-control-shadow: #20212133;
+    --ct-what-welcome-radius-action: 9px;
+    --ct-what-welcome-radius-action-icon: 5px;
+    --ct-what-welcome-radius-label: 4px;
+    --ct-what-welcome-radius-control: 7px;
+}
+
+@font-face {
+    font-family: CTWhatGraphik;
+    src: url("/sitemaker/fonts/ct-what-graphik-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: CTWhatGraphik;
+    src: url("/sitemaker/fonts/ct-what-graphik-medium.woff2") format("woff2");
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: CTWhatGraphik;
+    src: url("/sitemaker/fonts/ct-what-graphik-semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-display: swap;
+}
+
+#ct-what-modal *:focus,
+#ct-what-modal *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#ct-what-modal * {
+    box-sizing: border-box;
+}
+
+#ct-what-modal button {
+    font: inherit;
+    cursor: pointer;
+}
+
+#ct-what-modal button,
+#ct-what-modal dialog {
+    -webkit-tap-highlight-color: transparent;
+}
+
+#ct-what-modal svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+#ct-what-modal button:focus-visible {
+    outline: 3px solid var(--ct-what-color-focus);
+    outline-offset: 3px;
+}
+
+#ct-what-modal button:disabled {
+    cursor: default;
+}
+
+#ct-what-modal p,
+#ct-what-modal h1,
+#ct-what-modal h2 {
+    margin: 0;
+}
+
+#ct-what-modal .ct-what-icon-definitions {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+#ct-what-modal {
+    position: relative;
+    border: 0;
+    background: var(--ct-what-base-color-surface);
+    color: var(--ct-what-base-color-text);
+    border-radius: var(--ct-what-radius-dialog);
+    padding: 0;
+    width: min(var(--ct-what-layout-max-width), calc(100% - var(--ct-what-space-viewport-inline-inset)));
+    max-width: none;
+    max-height: calc(100dvh - var(--ct-what-space-viewport-block-inset));
+    margin: auto;
+    overflow: hidden;
+    box-shadow: 0 24px 90px var(--ct-what-color-shadow);
+}
+
+#ct-what-modal[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+#ct-what-modal::backdrop {
+    background: color-mix(in srgb, var(--color-text, #252525) 31%, transparent);
+    backdrop-filter: blur(6px);
+}
+
+#ct-what-modal .ct-what-included-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ct-what-space-header-gap);
+    padding: var(--ct-what-space-header-inset);
+    flex-shrink: 0;
+}
+
+#ct-what-modal .ct-what-eyebrow {
+    font-size: var(--ct-what-font-size-eyebrow);
+    letter-spacing: var(--ct-what-tracking-eyebrow);
+    color: var(--ct-what-color-text-accent);
+    font-weight: 500;
+    margin-bottom: var(--ct-what-space-eyebrow-after);
+}
+
+#ct-what-modal .ct-what-included-header h1 {
+    font-size: var(--ct-what-font-size-title);
+    line-height: var(--ct-what-line-height-title);
+    letter-spacing: var(--ct-what-tracking-title);
+    font-weight: 600;
+}
+
+#ct-what-modal .ct-what-included-intro {
+    font-size: var(--ct-what-font-size-intro);
+    line-height: var(--ct-what-line-height-intro);
+    color: var(--ct-what-color-text-muted);
+    margin-top: var(--ct-what-space-intro-before);
+}
+
+#ct-what-modal .ct-what-close-button {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ct-what-base-color-surface-subtle);
+    color: var(--ct-what-color-icon);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    margin-top: -4px;
+    margin-right: -8px;
+}
+
+#ct-what-modal .ct-what-close-button:hover {
+    background: var(--ct-what-color-surface-control-hover);
+    color: var(--ct-what-base-color-text);
+}
+
+#ct-what-modal .ct-what-close-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+#ct-what-modal .ct-what-included-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--ct-what-space-columns-gap);
+    padding: var(--ct-what-space-body-inset);
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+#ct-what-modal .ct-what-features-section {
+    min-width: 0;
+}
+
+#ct-what-modal .ct-what-list-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--ct-what-font-size-list-heading);
+    font-weight: 500;
+    padding: 1px 1px 14px;
+}
+
+#ct-what-modal .ct-what-included-label {
+    font-size: var(--ct-what-font-size-included-label);
+    color: var(--ct-what-color-success-text);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#ct-what-modal .ct-what-included-label svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 2;
+}
+
+#ct-what-modal .ct-what-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(5, minmax(64px, 1fr));
+    grid-auto-flow: column;
+    gap: var(--ct-what-space-feature-gap);
+}
+
+#ct-what-modal .ct-what-feature-item {
+    min-width: 0;
+}
+
+#ct-what-modal .ct-what-feature-button {
+    display: flex;
+    align-items: center;
+    gap: var(--ct-what-space-feature-content-gap);
+    position: relative;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+    min-height: var(--ct-what-size-feature-min-height);
+    border: 1px solid var(--ct-what-color-border);
+    border-radius: var(--ct-what-radius-feature);
+    padding: var(--ct-what-space-feature-inset);
+    background: var(--ct-what-base-color-surface);
+    transition: border-color .16s, background .16s, box-shadow .16s;
+    color: var(--ct-what-base-color-text);
+}
+
+#ct-what-modal .ct-what-feature-button:hover {
+    border-color: var(--ct-what-color-border-hover);
+    background: var(--ct-what-color-surface-hover);
+}
+
+#ct-what-modal .ct-what-feature-button.ct-what-is-active {
+    border-color: var(--ct-what-color-border-selected);
+    background: var(--ct-what-color-surface-selected);
+    box-shadow: 0 2px 6px var(--ct-what-color-shadow-selected);
+}
+
+#ct-what-modal .ct-what-feature-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--ct-what-radius-feature-icon);
+    background: var(--ct-what-base-color-surface-subtle);
+    color: var(--ct-what-color-icon);
+    flex-shrink: 0;
+    transition: color .15s, background .15s;
+}
+
+#ct-what-modal .ct-what-feature-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+#ct-what-modal .ct-what-is-active .ct-what-feature-icon {
+    background: var(--ct-what-color-surface-icon-selected);
+    color: var(--ct-what-base-color-accent);
+}
+
+#ct-what-modal .ct-what-feature-copy {
+    display: block;
+    min-width: 0;
+}
+
+#ct-what-modal .ct-what-feature-copy strong {
+    display: block;
+    font-weight: 500;
+    font-size: var(--ct-what-font-size-feature-title);
+    line-height: 1.3;
+    letter-spacing: -.14px;
+}
+
+#ct-what-modal .ct-what-feature-copy > span {
+    display: block;
+    font-size: var(--ct-what-font-size-feature-caption);
+    line-height: var(--ct-what-line-height-feature-caption);
+    color: var(--ct-what-color-text-muted);
+    margin-top: var(--ct-what-space-feature-caption-before);
+    letter-spacing: -.08px;
+}
+
+#ct-what-modal .ct-what-feature-arrow {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ct-what-base-color-accent);
+    opacity: 0;
+}
+
+#ct-what-modal .ct-what-is-active .ct-what-feature-arrow {
+    opacity: 1;
+}
+
+#ct-what-modal .ct-what-feature-button.ct-what-is-active {
+    padding-right: 19px;
+}
+
+#ct-what-modal .ct-what-interaction-hint {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--ct-what-color-text-muted);
+    font-size: var(--ct-what-font-size-hint);
+    line-height: 1.45;
+    margin: 13px 2px 0;
+}
+
+#ct-what-modal .ct-what-hint-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--ct-what-color-hint-dot);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+#ct-what-modal .ct-what-mobile-hint {
+    display: none;
+}
+
+#ct-what-modal .ct-what-details-stage {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+}
+
+#ct-what-modal .ct-what-feature-detail {
+    height: 100%;
+    border: 1px solid var(--ct-what-color-border);
+    border-radius: var(--ct-what-radius-detail);
+    overflow: hidden;
+    background: var(--ct-what-base-color-surface-subtle);
+    min-width: 0;
+}
+
+#ct-what-modal .ct-what-feature-detail[hidden] {
+    display: none;
+}
+
+#ct-what-modal .ct-what-feature-visual {
+    height: var(--ct-what-size-visual-height);
+    position: relative;
+    overflow: hidden;
+    background: var(--ct-what-base-color-surface-highlight);
+    isolation: isolate;
+}
+
+#ct-what-modal .ct-what-detail-copy {
+    padding: var(--ct-what-space-detail-inset);
+}
+
+#ct-what-modal .ct-what-detail-kicker {
+    display: block;
+    color: var(--ct-what-color-text-muted);
+    font-size: var(--ct-what-font-size-detail-kicker);
+    letter-spacing: var(--ct-what-tracking-detail-kicker);
+    line-height: 1.4;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+#ct-what-modal .ct-what-detail-copy h2 {
+    font-size: var(--ct-what-font-size-detail-title);
+    font-weight: 500;
+    line-height: 1.24;
+    letter-spacing: -.55px;
+}
+
+#ct-what-modal .ct-what-detail-copy p {
+    font-size: var(--ct-what-font-size-detail-body);
+    line-height: var(--ct-what-line-height-detail-body);
+    color: var(--ct-what-color-text-muted);
+    margin-top: 9px;
+}
+
+#ct-what-modal .ct-what-included-footer {
+    padding: var(--ct-what-space-footer-inset);
+    border-top: 1px solid var(--ct-what-color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ct-what-space-footer-gap);
+    background: var(--ct-what-base-color-surface);
+    flex-shrink: 0;
+}
+
+#ct-what-modal .ct-what-payment-copy {
+    display: flex;
+    align-items: center;
+    gap: var(--ct-what-space-payment-copy-gap);
+}
+
+#ct-what-modal .ct-what-payment-check {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--ct-what-color-surface-success);
+    color: var(--ct-what-color-success-text);
+    flex-shrink: 0;
+}
+
+#ct-what-modal .ct-what-payment-check svg {
+    width: 18px;
+    height: 18px;
+}
+
+#ct-what-modal .ct-what-payment-copy strong {
+    display: block;
+    font-size: var(--ct-what-font-size-payment-title);
+    font-weight: 500;
+    letter-spacing: -.2px;
+}
+
+#ct-what-modal .ct-what-payment-copy p {
+    margin-top: 5px;
+    color: var(--ct-what-color-text-muted);
+    font-size: var(--ct-what-font-size-payment-caption);
+    line-height: 1.4;
+}
+
+#ct-what-modal .ct-what-payment-copy p.ct-what-demo-feedback {
+    color: var(--ct-what-color-text-muted);
+}
+
+#ct-what-modal .ct-what-payment-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ct-what-space-action-content-gap);
+    border: 0;
+    border-radius: var(--ct-what-base-radius-action);
+    background: var(--ct-what-color-action);
+    color: var(--ct-what-base-color-text-inverse);
+    font-size: var(--ct-what-font-size-action);
+    font-weight: 500;
+    padding: var(--ct-what-space-action-inset);
+    min-height: var(--ct-what-size-action-min-height);
+    flex-shrink: 0;
+    box-shadow: 0 5px 15px var(--ct-what-color-shadow-action);
+    transition: background .16s, transform .16s;
+}
+
+#ct-what-modal .ct-what-payment-button:hover {
+    background: var(--ct-what-color-action-hover);
+    transform: translateY(-1px);
+}
+
+#ct-what-modal .ct-what-payment-button:active {
+    transform: translateY(0);
+}
+
+#ct-what-modal .ct-what-payment-button span {
+    font-size: var(--ct-what-font-size-action-arrow);
+    font-weight: 400;
+    line-height: 1;
+}
+
+@media (min-width: 991px) and (max-height: 760px) {
+    #ct-what-modal .ct-what-included-header {
+        padding-top: 23px;
+        padding-bottom: 21px;
+    }
+
+    #ct-what-modal .ct-what-feature-visual {
+        --ct-what-size-visual-height: 228px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy {
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy h2 {
+        --ct-what-font-size-detail-title: 19px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy p {
+        --ct-what-font-size-detail-body: 13px;
+    }
+
+    #ct-what-modal .ct-what-included-footer {
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+
+}
+
+@media (max-width: 1100px) and (min-width: 991px) {
+    #ct-what-modal {
+        --ct-what-space-viewport-inline-inset: 32px;
+        width: calc(100% - var(--ct-what-space-viewport-inline-inset));
+    }
+
+    #ct-what-modal .ct-what-included-header {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    #ct-what-modal .ct-what-included-body {
+        padding-left: 25px;
+        padding-right: 25px;
+        --ct-what-space-columns-gap: 18px;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    }
+
+    #ct-what-modal .ct-what-included-footer {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    #ct-what-modal .ct-what-feature-button {
+        --ct-what-space-feature-content-gap: 7px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    #ct-what-modal .ct-what-feature-copy strong {
+        --ct-what-font-size-feature-title: 14px;
+    }
+
+    #ct-what-modal .ct-what-feature-copy > span {
+        --ct-what-font-size-feature-caption: 12px;
+    }
+
+    #ct-what-modal .ct-what-feature-icon {
+        width: 27px;
+        height: 29px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+}
+
+@media (max-width: 990px) {
+    #ct-what-modal {
+        --ct-what-layout-max-width: 640px;
+        --ct-what-space-viewport-inline-inset: 32px;
+        --ct-what-space-viewport-block-inset: 32px;
+        max-height: calc(100dvh - var(--ct-what-space-viewport-block-inset));
+        --ct-what-radius-dialog: 22px;
+    }
+
+    #ct-what-modal .ct-what-included-header {
+        --ct-what-space-header-inset: 24px 24px 20px;
+    }
+
+    #ct-what-modal .ct-what-included-header h1 {
+        --ct-what-font-size-title: 25px;
+        --ct-what-tracking-title: -1px;
+    }
+
+    #ct-what-modal .ct-what-included-intro {
+        --ct-what-font-size-intro: 12px;
+        max-width: 370px;
+    }
+
+    #ct-what-modal .ct-what-included-body {
+        display: block;
+        --ct-what-space-body-inset: 0 24px 20px;
+        overflow-y: auto;
+    }
+
+    #ct-what-modal .ct-what-list-heading {
+        --ct-what-font-size-list-heading: 12px;
+        padding-bottom: 12px;
+    }
+
+    #ct-what-modal .ct-what-features-grid {
+        display: flex;
+        flex-direction: column;
+        --ct-what-space-feature-gap: 8px;
+    }
+
+    #ct-what-modal .ct-what-feature-button {
+        --ct-what-space-feature-inset: 13px 14px;
+        --ct-what-size-feature-min-height: 70px;
+        --ct-what-space-feature-content-gap: 12px;
+    }
+
+    #ct-what-modal .ct-what-feature-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    #ct-what-modal .ct-what-feature-icon svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    #ct-what-modal .ct-what-feature-copy strong {
+        --ct-what-font-size-feature-title: 14px;
+    }
+
+    #ct-what-modal .ct-what-feature-copy > span {
+        --ct-what-font-size-feature-caption: 12px;
+        --ct-what-space-feature-caption-before: 5px;
+    }
+
+    #ct-what-modal .ct-what-feature-arrow {
+        width: 15px;
+        height: 15px;
+        right: 16px;
+        opacity: 1;
+        color: var(--ct-what-color-icon-muted);
+    }
+
+    #ct-what-modal .ct-what-is-active .ct-what-feature-arrow {
+        transform: translateY(-50%) rotate(90deg);
+        color: var(--ct-what-base-color-accent);
+    }
+
+    #ct-what-modal .ct-what-feature-button.ct-what-is-active {
+        padding-right: 36px;
+    }
+
+    #ct-what-modal .ct-what-details-stage {
+        display: none;
+    }
+
+    #ct-what-modal .ct-what-feature-item > .ct-what-feature-detail {
+        margin-top: 8px;
+        height: auto;
+    }
+
+    #ct-what-modal .ct-what-feature-item > .ct-what-feature-detail .ct-what-feature-visual {
+        height: 250px;
+        max-width: 390px;
+        margin: auto;
+    }
+
+    #ct-what-modal .ct-what-feature-item > .ct-what-feature-detail {
+        background: var(--ct-what-base-color-surface-subtle);
+    }
+
+    #ct-what-modal .ct-what-detail-copy {
+        --ct-what-space-detail-inset: 20px;
+    }
+
+    #ct-what-modal .ct-what-detail-kicker {
+        --ct-what-font-size-detail-kicker: 8px;
+        --ct-what-tracking-detail-kicker: 1px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy h2 {
+        --ct-what-font-size-detail-title: 19px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy p {
+        --ct-what-font-size-detail-body: 13px;
+        --ct-what-line-height-detail-body: 1.65;
+    }
+
+    #ct-what-modal .ct-what-desktop-hint {
+        display: none;
+    }
+
+    #ct-what-modal .ct-what-mobile-hint {
+        display: inline;
+    }
+
+    #ct-what-modal .ct-what-interaction-hint {
+        --ct-what-font-size-hint: 11px;
+        margin-top: 14px;
+    }
+
+    #ct-what-modal .ct-what-included-footer {
+        --ct-what-space-footer-inset: 19px 24px;
+        --ct-what-space-footer-gap: 16px;
+    }
+
+    #ct-what-modal .ct-what-payment-copy {
+        --ct-what-space-payment-copy-gap: 9px;
+    }
+
+    #ct-what-modal .ct-what-payment-check {
+        width: 30px;
+        height: 30px;
+    }
+
+    #ct-what-modal .ct-what-payment-copy strong {
+        --ct-what-font-size-payment-title: 13px;
+    }
+
+    #ct-what-modal .ct-what-payment-copy p {
+        --ct-what-font-size-payment-caption: 11px;
+    }
+
+    #ct-what-modal .ct-what-payment-button {
+        --ct-what-font-size-action: 14px;
+        --ct-what-space-action-inset: 16px 18px;
+        --ct-what-space-action-content-gap: 30px;
+        --ct-what-size-action-min-height: 48px;
+    }
+
+    #ct-what-modal .ct-what-feature-detail {
+        scroll-margin-top: 12px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    #ct-what-modal {
+        --ct-what-space-viewport-inline-inset: 20px;
+        --ct-what-space-viewport-block-inset: 20px;
+        width: 100%;
+        max-height: calc(100dvh - var(--ct-what-space-viewport-block-inset));
+        --ct-what-radius-dialog: 19px;
+    }
+
+    #ct-what-modal .ct-what-included-header {
+        --ct-what-space-header-inset: 23px 18px 19px;
+        --ct-what-space-header-gap: 8px;
+    }
+
+    #ct-what-modal .ct-what-eyebrow {
+        --ct-what-font-size-eyebrow: 8px;
+        --ct-what-tracking-eyebrow: 1.2px;
+        --ct-what-space-eyebrow-after: 9px;
+    }
+
+    #ct-what-modal .ct-what-included-header h1 {
+        --ct-what-font-size-title: 24px;
+        --ct-what-line-height-title: 1.14;
+        max-width: 270px;
+        --ct-what-tracking-title: -.85px;
+    }
+
+    #ct-what-modal .ct-what-included-intro {
+        --ct-what-font-size-intro: 11px;
+        --ct-what-line-height-intro: 1.6;
+        --ct-what-space-intro-before: 10px;
+    }
+
+    #ct-what-modal .ct-what-close-button {
+        width: 31px;
+        height: 31px;
+        margin-right: -3px;
+        margin-top: -7px;
+    }
+
+    #ct-what-modal .ct-what-close-button svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    #ct-what-modal .ct-what-included-body {
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-bottom: 17px;
+    }
+
+    #ct-what-modal .ct-what-list-heading {
+        --ct-what-font-size-list-heading: 10px;
+        padding-left: 3px;
+        padding-right: 3px;
+        gap: 5px;
+    }
+
+    #ct-what-modal .ct-what-included-label {
+        --ct-what-font-size-included-label: 9px;
+    }
+
+    #ct-what-modal .ct-what-features-grid {
+        --ct-what-space-feature-gap: 7px;
+    }
+
+    #ct-what-modal .ct-what-feature-button {
+        --ct-what-size-feature-min-height: 66px;
+        --ct-what-space-feature-inset: 11px 12px;
+        --ct-what-space-feature-content-gap: 10px;
+    }
+
+    #ct-what-modal .ct-what-feature-icon {
+        width: 33px;
+        height: 33px;
+    }
+
+    #ct-what-modal .ct-what-feature-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    #ct-what-modal .ct-what-feature-copy strong {
+        --ct-what-font-size-feature-title: 14px;
+    }
+
+    #ct-what-modal .ct-what-feature-copy > span {
+        --ct-what-font-size-feature-caption: 12px;
+        --ct-what-line-height-feature-caption: 1.4;
+        --ct-what-space-feature-caption-before: 4px;
+    }
+
+    #ct-what-modal .ct-what-feature-item > .ct-what-feature-detail .ct-what-feature-visual {
+        height: 245px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy {
+        --ct-what-space-detail-inset: 19px 17px 21px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy h2 {
+        --ct-what-font-size-detail-title: 19px;
+    }
+
+    #ct-what-modal .ct-what-detail-copy p {
+        --ct-what-font-size-detail-body: 13px;
+    }
+
+    #ct-what-modal .ct-what-detail-kicker {
+        --ct-what-font-size-detail-kicker: 7px;
+    }
+
+    #ct-what-modal .ct-what-interaction-hint {
+        --ct-what-font-size-hint: 11px;
+    }
+
+    #ct-what-modal .ct-what-included-footer {
+        --ct-what-space-footer-inset: 15px 17px max(15px, env(safe-area-inset-bottom));
+        flex-wrap: wrap;
+        --ct-what-space-footer-gap: 13px;
+    }
+
+    #ct-what-modal .ct-what-payment-copy {
+        --ct-what-space-payment-copy-gap: 8px;
+    }
+
+    #ct-what-modal .ct-what-payment-check {
+        width: 27px;
+        height: 27px;
+    }
+
+    #ct-what-modal .ct-what-payment-check svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    #ct-what-modal .ct-what-payment-copy strong {
+        --ct-what-font-size-payment-title: 13px;
+    }
+
+    #ct-what-modal .ct-what-payment-copy p {
+        --ct-what-font-size-payment-caption: 11px;
+        margin-top: 4px;
+    }
+
+    #ct-what-modal .ct-what-payment-button {
+        width: 100%;
+        --ct-what-font-size-action: 14px;
+        --ct-what-space-action-inset: 15px 20px;
+        justify-content: space-between;
+        --ct-what-size-action-min-height: 47px;
+    }
+
+    #ct-what-modal .ct-what-payment-button span {
+        --ct-what-font-size-action-arrow: 20px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    #ct-what-modal .ct-what-included-header {
+        --ct-what-space-header-inset: 20px 18px 14px;
+    }
+
+    #ct-what-modal .ct-what-included-header h1 {
+        --ct-what-font-size-title: 22px;
+    }
+
+    #ct-what-modal .ct-what-included-intro {
+        --ct-what-space-intro-before: 8px;
+    }
+
+    #ct-what-modal .ct-what-close-button {
+        width: 44px;
+        height: 44px;
+        margin-top: -8px;
+        margin-right: -8px;
+        flex-shrink: 0;
+    }
+
+    #ct-what-modal .ct-what-features-grid {
+        --ct-what-space-feature-gap: 4px;
+    }
+
+    #ct-what-modal .ct-what-feature-button {
+        --ct-what-size-feature-min-height: 44px;
+        --ct-what-space-feature-inset: 7px 11px;
+        --ct-what-radius-feature: 10px;
+    }
+
+    #ct-what-modal .ct-what-feature-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    #ct-what-modal .ct-what-feature-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    #ct-what-modal .ct-what-feature-copy > span {
+        display: none;
+    }
+
+    #ct-what-modal .ct-what-list-heading {
+        padding-bottom: 10px;
+    }
+
+    #ct-what-modal .ct-what-interaction-hint {
+        margin-top: 10px;
+        --ct-what-font-size-hint: 10px;
+    }
+
+    #ct-what-modal .ct-what-included-footer {
+        padding-top: 12px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+        --ct-what-space-footer-gap: 9px;
+    }
+
+    #ct-what-modal .ct-what-payment-button {
+        --ct-what-size-action-min-height: 44px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #ct-what-modal *,
+    #ct-what-modal *:before,
+    #ct-what-modal *:after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+}
+
+/* Component-local normalization, independent of host resets. */
+#ct-what-modal {
+    color-scheme: light;
+    font-family: var(--ct-what-base-invitations-font-body);
+    font-size: 16px;
+    line-height: normal;
+    font-weight: 400;
+    font-synthesis: none;
+    text-align: left;
+    letter-spacing: normal;
+}
+
+#ct-what-modal, #ct-what-modal *, #ct-what-modal *::before, #ct-what-modal *::after {
+    box-sizing: border-box;
+}
+
+#ct-what-modal:not([open]) {
+    display: none;
+}
+
+#ct-what-modal button {
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+#ct-what-modal img {
+    border: 0;
+}
+
+#ct-what-modal [hidden] {
+    display: none !important;
+}
+
+#ct-what-modal button:disabled {
+    cursor: not-allowed;
+}
+
+#ct-what-modal .ct-what-payment-button:disabled:hover {
+    transform: none;
+    background: var(--ct-what-color-action);
+}
+
+#ct-what-modal .ct-what-payment-button[aria-busy="true"] {
+    cursor: progress;
+}
+
+#ct-what-fallback {
+    font: 400 16px/1.6 var(--invitations-font-body, 'CTWhatGraphik', Tahoma, sans-serif);
+    color: var(--color-text, #252525);
+    background: var(--color-surface, #fff);
+    margin: 24px auto;
+    max-width: 1000px;
+    padding: 20px;
+    border: 1px solid currentColor;
+    border-radius: 12px;
+}
+
+#ct-what-fallback[hidden] {
+    display: none !important;
+}
+
+#ct-what-fallback summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#ct-what-fallback h2 {
+    font: inherit;
+    font-weight: 600;
+    margin: 20px 0 8px;
+}
+
+#ct-what-fallback p {
+    margin: 0;
+}
+
+#ct-what-modal .ct-what-feature-visual.ct-what-fresh-site {
+    background: var(--ct-what-site-color-canvas);
+    color: var(--ct-what-scene-color-ink);
+    font-family: var(--ct-what-scene-font-body);
+    container-type: inline-size;
+}
+
+#ct-what-modal .ct-what-fresh-site-composition {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: var(--ct-what-scene-layout-max-width);
+    margin: 0 auto;
+    container-type: inline-size;
+}
+
+#ct-what-modal .ct-what-fresh-site-heading {
+    position: absolute;
+    left: 6%;
+    top: 7%;
+    font-size: clamp(20px, 6.5cqi, 29px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    line-height: 1;
+    letter-spacing: -1.1px;
+}
+
+#ct-what-modal .ct-what-fresh-site-spark {
+    position: absolute;
+    top: 6%;
+    right: 7%;
+    width: 27px;
+    height: 27px;
+    stroke-width: 2.5;
+    transform: rotate(12deg);
+}
+
+#ct-what-modal .ct-what-fresh-browser {
+    position: absolute;
+    left: 6%;
+    top: 27%;
+    width: 76%;
+    height: 59%;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 7px;
+    overflow: hidden;
+    background: var(--ct-what-site-color-browser);
+    box-shadow: 0 8px 0 var(--ct-what-site-color-browser-depth), 0 15px 22px var(--ct-what-site-color-browser-shadow);
+}
+
+#ct-what-modal .ct-what-fresh-browser-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 17px;
+    padding: 0 7px;
+    border-bottom: 1px solid var(--ct-what-scene-color-ink);
+    font-size: 5px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: 1px;
+}
+
+#ct-what-modal .ct-what-fresh-browser-dots {
+    display: flex;
+    gap: 3px;
+}
+
+#ct-what-modal .ct-what-fresh-browser-dots i {
+    width: 3px;
+    height: 3px;
+    border: 1px solid var(--ct-what-site-color-browser-dots);
+    border-radius: 50%;
+}
+
+#ct-what-modal .ct-what-fresh-browser-bar > span:last-child {
+    font-size: 10px;
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-fresh-desktop-page {
+    display: grid;
+    grid-template-columns: 46% 54%;
+    height: calc(100% - 17px);
+    background: var(--ct-what-site-color-page);
+}
+
+#ct-what-modal .ct-what-fresh-invite-type {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 9% 7% 8% 9%;
+}
+
+#ct-what-modal .ct-what-fresh-micro {
+    font-size: 4.6px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: .7px;
+    line-height: 1.4;
+}
+
+#ct-what-modal .ct-what-fresh-invite-type strong {
+    font-size: clamp(17px, 5.6cqi, 27px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: -.9px;
+    line-height: .99;
+    white-space: nowrap;
+}
+
+#ct-what-modal .ct-what-fresh-invite-type strong > span {
+    font-weight: var(--ct-what-scene-font-weight-body);
+}
+
+#ct-what-modal .ct-what-fresh-invite-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 6px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: .45px;
+}
+
+#ct-what-modal .ct-what-fresh-invite-date > span {
+    font-size: 14px;
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-fresh-desktop-page > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    object-position: 51% 42%;
+}
+
+#ct-what-modal .ct-what-fresh-phone {
+    position: absolute;
+    top: 22%;
+    right: 6%;
+    width: 24%;
+    height: 70%;
+    overflow: hidden;
+    border: 3px solid var(--ct-what-scene-color-ink);
+    border-radius: 16px;
+    background: var(--ct-what-site-color-page);
+    transform: rotate(7deg);
+    box-shadow: 0 9px 17px var(--ct-what-site-color-phone-shadow);
+}
+
+#ct-what-modal .ct-what-fresh-phone-camera {
+    position: absolute;
+    z-index: 1;
+    top: 4px;
+    left: 37%;
+    width: 26%;
+    height: 5px;
+    background: var(--ct-what-scene-color-ink);
+    border-radius: 8px;
+}
+
+#ct-what-modal .ct-what-fresh-phone > img {
+    display: block;
+    width: 100%;
+    height: 56%;
+    object-fit: cover;
+    object-position: 50% 35%;
+}
+
+#ct-what-modal .ct-what-fresh-phone-type {
+    height: 44%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 7% 8% 9%;
+}
+
+#ct-what-modal .ct-what-fresh-phone-type .ct-what-fresh-micro {
+    font-size: 3.3px;
+    letter-spacing: .35px;
+}
+
+#ct-what-modal .ct-what-fresh-phone-type strong {
+    font-weight: var(--ct-what-scene-font-weight-title);
+    font-size: clamp(12px, 4cqi, 18px);
+    line-height: .98;
+    letter-spacing: -.5px;
+}
+
+#ct-what-modal .ct-what-fresh-phone-date {
+    display: flex;
+    justify-content: space-between;
+    font-size: 4.5px;
+    letter-spacing: .2px;
+}
+
+#ct-what-modal .ct-what-fresh-phone-date > span {
+    font-size: 8px;
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-fresh-site-caption {
+    position: absolute;
+    left: 6%;
+    bottom: 4%;
+    font-size: 5.6px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: 1px;
+}
+
+@media (max-width: 990px) {
+    #ct-what-modal .ct-what-feature-item > .ct-what-feature-detail .ct-what-feature-visual.ct-what-fresh-site {
+        max-width: none;
+        height: clamp(245px, 62vw, 300px);
+    }
+
+}
+
+@container (max-width: 320px) {
+    #ct-what-modal .ct-what-fresh-site-heading {
+        font-size: 20px;
+    }
+
+    #ct-what-modal .ct-what-fresh-browser {
+        left: 5%;
+        width: 79%;
+    }
+
+    #ct-what-modal .ct-what-fresh-phone {
+        right: 4%;
+        width: 26%;
+    }
+
+    #ct-what-modal .ct-what-fresh-site-spark {
+        width: 23px;
+        height: 23px;
+    }
+
+    #ct-what-modal .ct-what-fresh-invite-type strong {
+        font-size: 17px;
+    }
+
+}
+
+#ct-what-modal .ct-what-wave-demo {
+    --ct-what-wave-scale: .3472222;
+    --ct-what-wave-left: calc(50% - 222.2222px);
+    --ct-what-wave-open-y: 155.56px;
+    background: var(--ct-what-welcome-color-canvas);
+    color: var(--ct-what-scene-color-text-inverse);
+    font-family: var(--ct-what-scene-font-body);
+}
+
+#ct-what-modal .ct-what-wave-site-viewport,
+#ct-what-modal .ct-what-wave-welcome {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+#ct-what-modal .ct-what-wave-welcome {
+    z-index: 2;
+    background: var(--ct-what-welcome-color-greeting-fallback);
+    cursor: pointer;
+}
+
+#ct-what-modal .ct-what-wave-welcome[hidden] {
+    display: none;
+}
+
+#ct-what-modal .ct-what-wave-site-canvas {
+    position: absolute;
+    left: var(--ct-what-wave-left);
+    top: 0;
+    width: 1280px;
+    height: 1200px;
+    transform: scale(var(--ct-what-wave-scale));
+    transform-origin: top left;
+}
+
+#ct-what-modal .ct-what-wave-site-strip {
+    position: relative;
+    width: 1280px;
+    height: 1200px;
+}
+
+#ct-what-modal .ct-what-wave-site-strip img {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 1280px;
+    height: 720px;
+    max-width: none;
+}
+
+#ct-what-modal .ct-what-wave-site-top {
+    top: 0;
+}
+
+#ct-what-modal .ct-what-wave-site-middle {
+    top: 480px;
+}
+
+#ct-what-modal .ct-what-wave-welcome-image {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: var(--ct-what-wave-left);
+    width: 1280px;
+    height: 720px;
+    max-width: none;
+    transform: scale(var(--ct-what-wave-scale));
+    transform-origin: top left;
+}
+
+#ct-what-modal .ct-what-wave-open-button {
+    position: absolute;
+    left: 50%;
+    top: var(--ct-what-wave-open-y);
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 42px;
+    padding: 5px 17px 5px 6px;
+    white-space: nowrap;
+    background: var(--ct-what-welcome-color-action);
+    border: 1px solid var(--ct-what-welcome-color-action-border);
+    border-radius: var(--ct-what-welcome-radius-action);
+    color: var(--ct-what-welcome-color-action-text);
+    font-size: 10px;
+    font-weight: var(--ct-what-scene-font-weight-title);
+    box-shadow: 0 4px 0 var(--ct-what-welcome-color-action-shadow);
+    transition: background .16s, box-shadow .16s;
+}
+
+#ct-what-modal .ct-what-wave-open-button:not(:disabled):hover {
+    background: var(--ct-what-welcome-color-action-hover);
+    box-shadow: 0 4px 0 var(--ct-what-welcome-color-action-hover-shadow);
+}
+
+#ct-what-modal .ct-what-wave-open-button:focus-visible {
+    outline: 3px solid var(--ct-what-welcome-color-focus-ring);
+    outline-offset: 4px;
+}
+
+#ct-what-modal .ct-what-wave-open-arrow {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    background: var(--ct-what-welcome-color-action-text);
+    color: var(--ct-what-welcome-color-action);
+    border-radius: var(--ct-what-welcome-radius-action-icon);
+    font-size: 20px;
+    font-weight: var(--ct-what-scene-font-weight-body);
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-wave-template-label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 3;
+    padding: 5px 8px;
+    border: 1px solid var(--ct-what-welcome-color-action-border);
+    border-radius: var(--ct-what-welcome-radius-label);
+    background: var(--ct-what-welcome-color-label);
+    color: var(--ct-what-welcome-color-action-text);
+    font-weight: var(--ct-what-scene-font-weight-label);
+    font-size: 8px;
+    line-height: 1.2;
+    letter-spacing: .1px;
+    pointer-events: none;
+}
+
+#ct-what-modal .ct-what-wave-demo:not([data-wave-state="closed"]) .ct-what-wave-template-label {
+    background: var(--ct-what-welcome-color-label);
+    border-color: var(--ct-what-welcome-color-action-border);
+    color: var(--ct-what-welcome-color-action-text);
+}
+
+#ct-what-modal .ct-what-wave-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    z-index: 4;
+}
+
+#ct-what-modal .ct-what-wave-controls button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 7px 10px;
+    color: var(--ct-what-welcome-color-action-text);
+    background: var(--ct-what-welcome-color-action);
+    border: 1px solid var(--ct-what-welcome-color-action-border);
+    border-radius: var(--ct-what-welcome-radius-control);
+    font-weight: var(--ct-what-scene-font-weight-label);
+    font-size: 9px;
+    line-height: 1.2;
+    box-shadow: 0 3px 0 var(--ct-what-welcome-color-control-shadow);
+}
+
+#ct-what-modal .ct-what-wave-controls button[hidden] {
+    display: none;
+}
+
+#ct-what-modal .ct-what-wave-controls button:hover {
+    background: var(--ct-what-welcome-color-action-hover);
+    border-color: var(--ct-what-welcome-color-action-border);
+}
+
+#ct-what-modal .ct-what-wave-replay-button > span {
+    font-size: 17px;
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-wave-next-button > span {
+    font-size: 14px;
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-wave-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #ct-what-modal .ct-what-wave-open-button {
+        transition: none;
+    }
+
+}
+
+#ct-what-modal .ct-what-feature-visual.ct-what-fv-scene {
+    color: var(--ct-what-scene-color-ink);
+    background: var(--ct-what-scene-surface, var(--ct-what-scene-color-canvas));
+    font-family: var(--ct-what-scene-font-body);
+    container-type: inline-size;
+}
+
+#ct-what-modal .ct-what-fv-canvas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: var(--ct-what-scene-layout-max-width);
+    margin: 0 auto;
+    container-type: inline-size;
+}
+
+#ct-what-modal .ct-what-fv-title {
+    position: absolute;
+    left: 6%;
+    top: 7%;
+    font-size: clamp(20px, 6cqi, 28px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    line-height: 1.06;
+    letter-spacing: -.9px;
+}
+
+#ct-what-modal .ct-what-fv-caption {
+    position: absolute;
+    left: 6%;
+    bottom: 4%;
+    font-size: 6px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    line-height: 1.3;
+    letter-spacing: 1px;
+}
+
+#ct-what-modal .ct-what-fv-scene img {
+    display: block;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+#ct-what-modal .ct-what-fv-scene strong {
+    font-weight: var(--ct-what-scene-font-weight-title);
+}
+
+@media (max-width: 990px) {
+    #ct-what-modal .ct-what-feature-item > .ct-what-feature-detail .ct-what-feature-visual.ct-what-fv-scene,
+    #ct-what-modal .ct-what-feature-item > .ct-what-feature-detail .ct-what-feature-visual.ct-what-wave-demo {
+        max-width: none;
+        height: clamp(245px, 62vw, 300px);
+    }
+
+}
+
+#ct-what-modal .ct-what-fv-domain {
+    --ct-what-scene-surface: var(--ct-what-domain-color-canvas);
+}
+
+#ct-what-modal .ct-what-fv-domain-page {
+    position: absolute;
+    left: 13%;
+    top: 28%;
+    width: 62%;
+    height: 56%;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 7px;
+    background: var(--ct-what-domain-color-page);
+    transform: rotate(-5deg);
+    overflow: hidden;
+    box-shadow: 6px 7px 0 var(--ct-what-domain-color-page-depth);
+}
+
+#ct-what-modal .ct-what-fv-domain-page-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7px;
+    height: 17px;
+    background: var(--ct-what-domain-color-toolbar);
+    border-bottom: 1px solid var(--ct-what-scene-color-ink);
+    font-size: 5px;
+    letter-spacing: 1px;
+}
+
+#ct-what-modal .ct-what-fv-domain-page-body {
+    height: calc(100% - 17px);
+    padding: 6% 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#ct-what-modal .ct-what-fv-domain-page-body > span {
+    font-size: 5.6px;
+    letter-spacing: .8px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+}
+
+#ct-what-modal .ct-what-fv-domain-page-body strong {
+    font-size: clamp(20px, 7cqi, 32px);
+    letter-spacing: -1.2px;
+    font-weight: var(--ct-what-scene-font-weight-title);
+    line-height: .95;
+}
+
+#ct-what-modal .ct-what-fv-domain-heart {
+    position: absolute;
+    right: 8%;
+    top: 38%;
+    width: 18%;
+    height: 35%;
+    stroke-width: 1.1;
+}
+
+#ct-what-modal .ct-what-fv-domain-address {
+    position: absolute;
+    left: 9%;
+    top: 49%;
+    z-index: 2;
+    width: 83%;
+    height: 23%;
+    display: flex;
+    align-items: center;
+    gap: 4%;
+    padding: 0 5%;
+    color: var(--ct-what-scene-color-text-inverse);
+    background: var(--ct-what-domain-color-address);
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 9px;
+    transform: rotate(3deg);
+    box-shadow: 3px 5px 0 var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-domain-address > svg {
+    width: 6%;
+    height: 19px;
+    flex-shrink: 0;
+}
+
+#ct-what-modal .ct-what-fv-domain-address > span {
+    font-size: clamp(17px, 6cqi, 28px);
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: -.9px;
+    white-space: nowrap;
+}
+
+#ct-what-modal .ct-what-fv-domain-address > span > span {
+    color: var(--ct-what-domain-color-address-suffix);
+}
+
+#ct-what-modal .ct-what-fv-domain-address > i {
+    margin-left: auto;
+    font-size: clamp(22px, 7cqi, 32px);
+    font-style: normal;
+    font-weight: var(--ct-what-scene-font-weight-body);
+}
+
+#ct-what-modal .ct-what-fv-domain-sticker {
+    position: absolute;
+    top: 26%;
+    right: 8%;
+    display: grid;
+    place-content: center;
+    width: 16%;
+    aspect-ratio: 1;
+    border: 1px solid var(--ct-what-scene-color-ink);
+    border-radius: 50%;
+    background: var(--ct-what-domain-color-sticker);
+    transform: rotate(14deg);
+    font-size: clamp(7px, 2.6cqi, 12px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: -.3px;
+    line-height: 1.1;
+    text-align: center;
+}
+
+#ct-what-modal .ct-what-fv-music {
+    --ct-what-scene-surface: var(--ct-what-music-color-canvas);
+}
+
+#ct-what-modal .ct-what-fv-music-note {
+    position: absolute;
+    top: 7%;
+    right: 7%;
+    width: 7%;
+    height: 13%;
+    transform: rotate(13deg);
+    stroke-width: 2;
+}
+
+#ct-what-modal .ct-what-fv-music-player {
+    position: absolute;
+    left: 6%;
+    top: 28%;
+    width: 88%;
+    height: 55%;
+    display: grid;
+    grid-template-columns: 41% 59%;
+    padding: 3%;
+    background: var(--ct-what-scene-color-ink);
+    color: var(--ct-what-scene-color-text-inverse);
+    border-radius: 11px;
+    transform: rotate(-3deg);
+    box-shadow: 6px 7px 0 var(--ct-what-music-color-player-depth);
+}
+
+#ct-what-modal .ct-what-fv-music-cover {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+#ct-what-modal .ct-what-fv-music-cover > img {
+    width: 100%;
+    height: 100%;
+    object-position: 47% 30%;
+}
+
+#ct-what-modal .ct-what-fv-music-cover::after {
+    content: "";
+    position: absolute;
+    inset: 45% 0 0;
+    background: linear-gradient(transparent, var(--ct-what-music-color-cover-shade));
+}
+
+#ct-what-modal .ct-what-fv-music-cover > span {
+    position: absolute;
+    z-index: 1;
+    left: 8%;
+    bottom: 8%;
+    font-weight: var(--ct-what-scene-font-weight-title);
+    font-size: clamp(20px, 6cqi, 28px);
+    line-height: .86;
+    letter-spacing: -1px;
+    color: var(--ct-what-music-color-cover-title);
+}
+
+#ct-what-modal .ct-what-fv-music-track {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: 0 0 0 9%;
+}
+
+#ct-what-modal .ct-what-fv-music-label {
+    font-size: clamp(4px, 1.1cqi, 5.3px);
+    letter-spacing: .65px;
+    color: var(--ct-what-music-color-label);
+}
+
+#ct-what-modal .ct-what-fv-music-track > strong {
+    margin-top: 7%;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    font-size: clamp(13px, 4.4cqi, 21px);
+    line-height: 1.05;
+    letter-spacing: -.6px;
+}
+
+#ct-what-modal .ct-what-fv-music-artist {
+    margin-top: 3%;
+    color: var(--ct-what-music-color-artist);
+    font-size: clamp(6px, 1.6cqi, 7.5px);
+}
+
+#ct-what-modal .ct-what-fv-music-wave {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 22%;
+    gap: 2%;
+    margin-top: 4%;
+}
+
+#ct-what-modal .ct-what-fv-music-wave > i {
+    width: 3%;
+    height: 34%;
+    min-height: 4px;
+    border-radius: 3px;
+    background: var(--ct-what-music-color-waveform);
+}
+
+#ct-what-modal .ct-what-fv-music-wave > i:nth-child(3n) {
+    height: 66%;
+}
+
+#ct-what-modal .ct-what-fv-music-wave > i:nth-child(4n + 1) {
+    height: 90%;
+}
+
+#ct-what-modal .ct-what-fv-music-wave > i:nth-child(5n) {
+    height: 46%;
+}
+
+#ct-what-modal .ct-what-fv-music-progress {
+    height: 2px;
+    margin-top: 4%;
+    border-radius: 5px;
+    background: var(--ct-what-music-color-progress-track);
+}
+
+#ct-what-modal .ct-what-fv-music-progress > i {
+    display: block;
+    width: 29%;
+    height: 100%;
+    background: var(--ct-what-music-color-progress-fill);
+    border-radius: inherit;
+}
+
+#ct-what-modal .ct-what-fv-music-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4%;
+    font-size: 5.5px;
+    color: var(--ct-what-music-color-timestamp);
+}
+
+#ct-what-modal .ct-what-fv-music-play {
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--ct-what-scene-color-surface);
+    color: var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-music-play > svg {
+    width: 10px;
+    height: 10px;
+    fill: currentColor;
+    stroke-width: 1.2;
+    transform: translateX(-1px);
+}
+
+#ct-what-modal .ct-what-fv-music-sticker {
+    position: absolute;
+    right: 7%;
+    bottom: 9%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 11px;
+    border: 1px solid var(--ct-what-scene-color-ink);
+    border-radius: 5px;
+    color: var(--ct-what-scene-color-ink);
+    background: var(--ct-what-music-color-sticker);
+    font-size: clamp(5px, 1.5cqi, 7px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: .5px;
+    transform: rotate(4deg);
+}
+
+#ct-what-modal .ct-what-fv-music-sticker > svg {
+    width: 13px;
+    height: 13px;
+}
+
+#ct-what-modal .ct-what-feature-visual.ct-what-fv-video {
+    --ct-what-scene-surface: var(--ct-what-video-color-canvas);
+    color: var(--ct-what-scene-color-text-inverse);
+}
+
+#ct-what-modal .ct-what-fv-video .ct-what-fv-title {
+    top: 11%;
+    font-size: clamp(25px, 7.1cqi, 34px);
+    line-height: .98;
+    letter-spacing: -1.1px;
+}
+
+#ct-what-modal .ct-what-fv-video-take {
+    position: absolute;
+    left: 6%;
+    top: 75%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 5.5px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: .7px;
+}
+
+#ct-what-modal .ct-what-fv-video-take > i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ct-what-video-color-recording);
+}
+
+#ct-what-modal .ct-what-fv-video-frame {
+    position: absolute;
+    left: 48%;
+    top: 10%;
+    width: 43%;
+    height: 78%;
+    overflow: hidden;
+    border: 2px solid var(--ct-what-scene-color-ink);
+    border-radius: 7px;
+    background: var(--ct-what-scene-color-ink);
+    transform: rotate(5deg);
+    box-shadow: 6px 6px 0 var(--ct-what-video-color-frame-depth);
+}
+
+#ct-what-modal .ct-what-fv-video-frame > img {
+    width: 100%;
+    height: 100%;
+    object-position: 46% 40%;
+}
+
+#ct-what-modal .ct-what-fv-video-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(var(--ct-what-video-color-image-shade-start), transparent 28%, transparent 60%, var(--ct-what-video-color-image-shade-end));
+}
+
+#ct-what-modal .ct-what-fv-video-frame-title {
+    position: absolute;
+    top: 7%;
+    left: 9%;
+    z-index: 1;
+    font-size: 5px;
+    letter-spacing: 1px;
+}
+
+#ct-what-modal .ct-what-fv-video-play {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 48%;
+    display: grid;
+    place-items: center;
+    width: 30%;
+    aspect-ratio: 1;
+    background: var(--ct-what-video-color-play);
+    color: var(--ct-what-scene-color-ink);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 5px var(--ct-what-video-color-play-halo);
+}
+
+#ct-what-modal .ct-what-fv-video-play > svg {
+    width: 43%;
+    height: 43%;
+    fill: currentColor;
+    stroke-width: 1;
+    transform: translateX(-2px);
+}
+
+#ct-what-modal .ct-what-fv-video-controls {
+    position: absolute;
+    z-index: 1;
+    bottom: 8%;
+    left: 9%;
+    width: 82%;
+}
+
+#ct-what-modal .ct-what-fv-video-progress {
+    height: 2px;
+    background: var(--ct-what-video-color-progress-track);
+    border-radius: 3px;
+}
+
+#ct-what-modal .ct-what-fv-video-progress > i {
+    display: block;
+    height: 100%;
+    width: 28%;
+    border-radius: inherit;
+    background: var(--ct-what-video-color-progress-fill);
+}
+
+#ct-what-modal .ct-what-fv-video-controls > span {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 5px;
+    letter-spacing: .2px;
+}
+
+#ct-what-modal .ct-what-fv-video-tag {
+    position: absolute;
+    right: 4%;
+    bottom: 12%;
+    z-index: 2;
+    padding: 7px 9px;
+    background: var(--ct-what-video-color-sticker);
+    border: 1px solid var(--ct-what-scene-color-ink);
+    border-radius: 4px;
+    transform: rotate(-6deg);
+    color: var(--ct-what-scene-color-ink);
+    font-size: clamp(6px, 1.9cqi, 9px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: .4px;
+}
+
+#ct-what-modal .ct-what-fv-video .ct-what-fv-caption {
+    color: var(--ct-what-video-color-caption);
+}
+
+#ct-what-modal .ct-what-fv-guests {
+    --ct-what-scene-surface: var(--ct-what-guests-color-canvas);
+}
+
+#ct-what-modal .ct-what-fv-guests .ct-what-fv-title {
+    font-size: clamp(20px, 5.7cqi, 27px);
+}
+
+#ct-what-modal .ct-what-fv-guests-badge {
+    position: absolute;
+    top: 10%;
+    right: 8%;
+    display: grid;
+    place-items: center;
+    width: 12%;
+    aspect-ratio: 1;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 50%;
+    background: var(--ct-what-guests-color-badge);
+    color: var(--ct-what-scene-color-text-inverse);
+    transform: rotate(-9deg);
+}
+
+#ct-what-modal .ct-what-fv-guests-badge > svg {
+    width: 52%;
+    height: 52%;
+    stroke-width: 2;
+}
+
+#ct-what-modal .ct-what-fv-guests-dashboard {
+    position: absolute;
+    top: 34%;
+    left: 8%;
+    width: 79%;
+    height: 46%;
+    padding: 4% 5%;
+    background: var(--ct-what-guests-color-dashboard);
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 10px;
+    transform: rotate(-3deg);
+    box-shadow: 5px 6px 0 var(--ct-what-guests-color-dashboard-depth);
+}
+
+#ct-what-modal .ct-what-fv-guests-stats {
+    display: grid;
+    grid-template-columns: 30% 35% 35%;
+    align-items: center;
+    height: 54%;
+}
+
+#ct-what-modal .ct-what-fv-guests-stats > div:not(.ct-what-fv-guests-mini-chart) {
+    display: flex;
+    flex-direction: column;
+}
+
+#ct-what-modal .ct-what-fv-guests-stats strong {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: clamp(22px, 7.5cqi, 35px);
+    line-height: 1;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: -1px;
+}
+
+#ct-what-modal .ct-what-fv-guests-stats strong > span {
+    font-size: 15px;
+    color: var(--ct-what-guests-color-stat-trend);
+}
+
+#ct-what-modal .ct-what-fv-guests-stats > div > span {
+    margin-top: 4px;
+    font-size: clamp(6px, 1.7cqi, 8px);
+    color: var(--ct-what-guests-color-stat-label);
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 70%;
+    gap: 4px;
+    padding-left: 12%;
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart > i {
+    flex: 1;
+    height: 24%;
+    background: var(--ct-what-guests-color-chart);
+    border-radius: 2px 2px 0 0;
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart > i:nth-child(2) {
+    height: 34%;
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart > i:nth-child(3) {
+    height: 49%;
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart > i:nth-child(4) {
+    height: 41%;
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart > i:nth-child(5) {
+    height: 70%;
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart > i:nth-child(6) {
+    height: 83%;
+}
+
+#ct-what-modal .ct-what-fv-guests-mini-chart > i:nth-child(7) {
+    height: 100%;
+    background: var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-guests-response {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 42%;
+    margin-top: 5%;
+    border-top: 1px solid var(--ct-what-guests-color-divider);
+    padding-top: 4%;
+}
+
+#ct-what-modal .ct-what-fv-guests-avatar {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--ct-what-guests-color-avatar);
+    font-size: 10px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+}
+
+#ct-what-modal .ct-what-fv-guests-response > span:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+#ct-what-modal .ct-what-fv-guests-response strong {
+    font-size: clamp(7px, 2.2cqi, 10px);
+    font-weight: var(--ct-what-scene-font-weight-label);
+}
+
+#ct-what-modal .ct-what-fv-guests-response small {
+    font-size: clamp(5px, 1.5cqi, 7px);
+    color: var(--ct-what-guests-color-response-caption);
+}
+
+#ct-what-modal .ct-what-fv-guests-yes {
+    margin-left: auto;
+    padding: 5px 6px;
+    border-radius: 4px;
+    background: var(--ct-what-guests-color-response-status-surface);
+    color: var(--ct-what-guests-color-response-status-text);
+    font-size: clamp(4px, 1.35cqi, 6px);
+    font-weight: var(--ct-what-scene-font-weight-label);
+    white-space: nowrap;
+}
+
+#ct-what-modal .ct-what-fv-guests-telegram {
+    position: absolute;
+    top: 75%;
+    right: 5%;
+    width: 76%;
+    height: 17%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 4%;
+    border: 1px solid var(--ct-what-scene-color-ink);
+    border-radius: 9px;
+    background: var(--ct-what-scene-color-ink);
+    color: var(--ct-what-scene-color-text-inverse);
+    transform: rotate(3deg);
+    box-shadow: 0 4px 8px var(--ct-what-guests-color-notification-shadow);
+}
+
+#ct-what-modal .ct-what-fv-guests-telegram-icon {
+    display: grid;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--ct-what-guests-color-telegram-icon);
+    color: var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-guests-telegram-icon > svg {
+    width: 15px;
+    height: 15px;
+}
+
+#ct-what-modal .ct-what-fv-guests-telegram > span:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#ct-what-modal .ct-what-fv-guests-telegram small {
+    font-size: 5px;
+    letter-spacing: .8px;
+    color: var(--ct-what-guests-color-notification-label);
+}
+
+#ct-what-modal .ct-what-fv-guests-telegram strong {
+    font-size: clamp(7px, 2.2cqi, 10px);
+    font-weight: var(--ct-what-scene-font-weight-label);
+    white-space: nowrap;
+}
+
+#ct-what-modal .ct-what-fv-guests-now {
+    margin-left: auto;
+    font-size: 5px;
+    color: var(--ct-what-guests-color-notification-time);
+    align-self: flex-start;
+    margin-top: 9px;
+}
+
+@container (max-width: 320px) {
+    #ct-what-modal .ct-what-fv-domain-address {
+        left: 7%;
+        width: 87%;
+        padding-inline: 4%;
+    }
+
+    #ct-what-modal .ct-what-fv-domain-address > span {
+        font-size: 17px;
+    }
+
+    #ct-what-modal .ct-what-fv-music-sticker {
+        padding: 6px 8px;
+    }
+
+    #ct-what-modal .ct-what-fv-video .ct-what-fv-title {
+        font-size: 24px;
+    }
+
+    #ct-what-modal .ct-what-fv-guests-telegram {
+        width: 83%;
+        right: 4%;
+        gap: 5px;
+        padding-inline: 3%;
+    }
+
+    #ct-what-modal .ct-what-fv-guests-telegram-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    #ct-what-modal .ct-what-fv-guests-now {
+        display: none;
+    }
+
+}
+
+#ct-what-modal .ct-what-fv-personal {
+    --ct-what-scene-surface: var(--ct-what-personal-color-canvas);
+}
+
+#ct-what-modal .ct-what-fv-personal-back {
+    position: absolute;
+    left: 18%;
+    top: 30%;
+    width: 66%;
+    height: 56%;
+    padding: 5%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 9px;
+    background: var(--ct-what-personal-color-card-back);
+    transform: rotate(9deg);
+    font-size: 5px;
+    letter-spacing: .7px;
+}
+
+#ct-what-modal .ct-what-fv-personal-back > span:last-child {
+    font-size: 25px;
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-fv-personal-card {
+    position: absolute;
+    left: 9%;
+    top: 29%;
+    width: 71%;
+    height: 55%;
+    padding: 4% 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--ct-what-personal-color-card-text);
+    background: var(--ct-what-personal-color-card);
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 9px;
+    transform: rotate(-5deg);
+    box-shadow: 0 7px 0 var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-personal-eyebrow {
+    font-size: 5.5px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: .8px;
+}
+
+#ct-what-modal .ct-what-fv-personal-card > strong {
+    font-size: clamp(26px, 9cqi, 42px);
+    line-height: .95;
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: -1.1px;
+}
+
+#ct-what-modal .ct-what-fv-personal-card > strong > span {
+    font-weight: var(--ct-what-scene-font-weight-body);
+}
+
+#ct-what-modal .ct-what-fv-personal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 5.5px;
+    letter-spacing: .65px;
+}
+
+#ct-what-modal .ct-what-fv-personal-footer > span {
+    font-size: 17px;
+    line-height: .6;
+}
+
+#ct-what-modal .ct-what-fv-personal-sticker {
+    position: absolute;
+    right: 7%;
+    top: 49%;
+    width: 24%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 50%;
+    background: var(--ct-what-personal-color-sticker);
+    font-size: clamp(11px, 3.6cqi, 16px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    line-height: 1.05;
+    letter-spacing: -.5px;
+    text-align: center;
+    transform: rotate(11deg);
+    box-shadow: 3px 3px 0 var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-personal-sticker > svg {
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+}
+
+#ct-what-modal .ct-what-fv-blocks {
+    --ct-what-scene-surface: var(--ct-what-blocks-color-canvas);
+}
+
+#ct-what-modal .ct-what-fv-blocks .ct-what-fv-title {
+    font-size: clamp(19px, 5.6cqi, 27px);
+    letter-spacing: -1px;
+}
+
+#ct-what-modal .ct-what-fv-blocks-grid {
+    position: absolute;
+    inset: 27% 6% 12%;
+    display: grid;
+    grid-template-columns: 1.13fr 1fr 1.05fr;
+    gap: 3%;
+    transform: rotate(-2deg);
+}
+
+#ct-what-modal .ct-what-fv-blocks-grid > div {
+    position: relative;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 9px;
+    overflow: hidden;
+    box-shadow: 0 5px 0 var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-blocks-dress {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: var(--ct-what-blocks-color-dress-card);
+    padding: 12% 10%;
+}
+
+#ct-what-modal .ct-what-fv-blocks-dress > span,
+#ct-what-modal .ct-what-fv-blocks-plan > span {
+    font-size: 5px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: .55px;
+}
+
+#ct-what-modal .ct-what-fv-blocks-dress > strong {
+    font-size: clamp(18px, 6.2cqi, 28px);
+    line-height: .99;
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: -1px;
+}
+
+#ct-what-modal .ct-what-fv-blocks-palette {
+    display: flex;
+    padding-left: 2px;
+}
+
+#ct-what-modal .ct-what-fv-blocks-palette > i {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--ct-what-scene-color-ink);
+    border-radius: 50%;
+    margin-left: -2px;
+    background: var(--ct-what-blocks-color-dress-swatch-primary);
+}
+
+#ct-what-modal .ct-what-fv-blocks-palette > i:nth-child(2) {
+    background: var(--ct-what-blocks-color-dress-swatch-secondary);
+}
+
+#ct-what-modal .ct-what-fv-blocks-palette > i:nth-child(3) {
+    background: var(--ct-what-blocks-color-dress-swatch-accent);
+}
+
+#ct-what-modal .ct-what-fv-blocks-palette > i:nth-child(4) {
+    background: var(--ct-what-blocks-color-dress-swatch-highlight);
+}
+
+#ct-what-modal .ct-what-fv-blocks-photo > img {
+    width: 100%;
+    height: 100%;
+    object-position: 48% 36%;
+}
+
+#ct-what-modal .ct-what-fv-blocks-photo > span {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 8% 4%;
+    background: var(--ct-what-blocks-color-photo-caption);
+    font-size: 4.2px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: .4px;
+    text-align: center;
+}
+
+#ct-what-modal .ct-what-fv-blocks-plan {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--ct-what-blocks-color-plan-card);
+    padding: 12% 9%;
+}
+
+#ct-what-modal .ct-what-fv-blocks-plan > strong {
+    font-size: clamp(12px, 4.15cqi, 19px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: -.65px;
+    line-height: 1.05;
+}
+
+#ct-what-modal .ct-what-fv-blocks-plan > svg {
+    width: 25px;
+    height: 25px;
+    stroke-width: 2.5px;
+    align-self: flex-end;
+}
+
+#ct-what-modal .ct-what-fv-blocks-plus {
+    position: absolute;
+    right: 6%;
+    bottom: 9%;
+    display: grid;
+    place-items: center;
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    background: var(--ct-what-scene-color-ink);
+    color: var(--ct-what-blocks-color-add-symbol);
+    font-size: 29px;
+    font-weight: var(--ct-what-scene-font-weight-body);
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-fv-pdf {
+    --ct-what-scene-surface: var(--ct-what-pdf-color-canvas);
+}
+
+#ct-what-modal .ct-what-fv-pdf-back {
+    position: absolute;
+    left: 17%;
+    top: 30%;
+    width: 46%;
+    height: 55%;
+    padding: 6% 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--ct-what-pdf-color-page-back);
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    transform: rotate(-11deg);
+    box-shadow: 4px 4px 0 var(--ct-what-pdf-color-page-back-depth);
+}
+
+#ct-what-modal .ct-what-fv-pdf-back > span {
+    font-size: clamp(14px, 4.8cqi, 23px);
+    line-height: 1.02;
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: -.6px;
+}
+
+#ct-what-modal .ct-what-fv-pdf-back > svg {
+    width: 22px;
+    height: 22px;
+}
+
+#ct-what-modal .ct-what-fv-pdf-page {
+    position: absolute;
+    left: 37%;
+    top: 26%;
+    width: 43%;
+    height: 65%;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    background: var(--ct-what-pdf-color-page);
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    transform: rotate(8deg);
+    box-shadow: 4px 5px 0 var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-pdf-page-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    font-size: 3.8px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+    letter-spacing: .2px;
+    white-space: nowrap;
+}
+
+#ct-what-modal .ct-what-fv-pdf-page > strong {
+    font-size: clamp(15px, 5cqi, 23px);
+    line-height: .99;
+    letter-spacing: -.6px;
+    font-weight: var(--ct-what-scene-font-weight-title);
+    padding: 5% 0 6%;
+}
+
+#ct-what-modal .ct-what-fv-pdf-page > img {
+    width: 100%;
+    min-height: 0;
+    flex: 1;
+    object-position: 48% 39%;
+}
+
+#ct-what-modal .ct-what-fv-pdf-page-bottom {
+    font-size: 3.3px;
+    letter-spacing: .3px;
+    padding-top: 6%;
+    white-space: nowrap;
+}
+
+#ct-what-modal .ct-what-fv-pdf-format {
+    position: absolute;
+    top: 28%;
+    right: 7%;
+    padding: 2.5% 3%;
+    background: var(--ct-what-scene-color-ink);
+    color: var(--ct-what-scene-color-text-inverse);
+    border-radius: 50px;
+    font-size: clamp(11px, 3.5cqi, 16px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    transform: rotate(8deg);
+}
+
+#ct-what-modal .ct-what-fv-pdf-download {
+    position: absolute;
+    left: 10%;
+    bottom: 8%;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 3.3% 4%;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 8px;
+    background: var(--ct-what-scene-color-surface);
+    box-shadow: 0 4px 0 var(--ct-what-pdf-color-download-depth);
+    transform: rotate(-3deg);
+}
+
+#ct-what-modal .ct-what-fv-pdf-download > svg {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
+}
+
+#ct-what-modal .ct-what-fv-pdf-download > span {
+    font-size: clamp(6px, 2cqi, 9px);
+    font-weight: var(--ct-what-scene-font-weight-label);
+    white-space: nowrap;
+}
+
+#ct-what-modal .ct-what-fv-pdf-download-arrow {
+    margin-left: auto;
+}
+
+#ct-what-modal .ct-what-fv-gifts {
+    --ct-what-scene-surface: var(--ct-what-gifts-color-canvas);
+}
+
+#ct-what-modal .ct-what-fv-gifts-card {
+    position: absolute;
+    left: 7%;
+    top: 28%;
+    width: 70%;
+    height: 56%;
+    padding: 3.5% 4%;
+    display: flex;
+    flex-direction: column;
+    gap: 8%;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 10px;
+    background: var(--ct-what-gifts-color-card);
+    transform: rotate(-4deg);
+    box-shadow: 0 6px 0 var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-gifts-card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#ct-what-modal .ct-what-fv-gifts-card-title > strong {
+    font-size: clamp(12px, 4cqi, 19px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    letter-spacing: -.6px;
+}
+
+#ct-what-modal .ct-what-fv-gifts-card-title > span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+#ct-what-modal .ct-what-fv-gifts-previews {
+    min-height: 0;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7%;
+}
+
+#ct-what-modal .ct-what-fv-gifts-previews > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: 5px;
+}
+
+#ct-what-modal .ct-what-fv-gifts-music {
+    background: var(--ct-what-gifts-color-music-tile);
+}
+
+#ct-what-modal .ct-what-fv-gifts-travel {
+    background: var(--ct-what-gifts-color-travel-tile);
+}
+
+#ct-what-modal .ct-what-fv-gifts-previews svg {
+    width: 42px;
+    height: 42px;
+    stroke-width: 3;
+}
+
+#ct-what-modal .ct-what-fv-gifts-travel > svg {
+    color: var(--ct-what-gifts-color-travel-symbol);
+    fill: var(--ct-what-gifts-color-travel-symbol);
+    stroke-width: 1;
+}
+
+#ct-what-modal .ct-what-fv-gifts-previews span {
+    font-size: 5px;
+    font-weight: var(--ct-what-scene-font-weight-label);
+}
+
+#ct-what-modal .ct-what-fv-gifts-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: clamp(6px, 2cqi, 9px);
+    font-weight: var(--ct-what-scene-font-weight-label);
+}
+
+#ct-what-modal .ct-what-fv-gifts-link > svg {
+    width: 13px;
+    height: 13px;
+}
+
+#ct-what-modal .ct-what-fv-gifts-sticker {
+    position: absolute;
+    right: 6%;
+    top: 45%;
+    width: 26%;
+    aspect-ratio: 1;
+    padding: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1.5px solid var(--ct-what-scene-color-ink);
+    border-radius: 50%;
+    background: var(--ct-what-gifts-color-sticker);
+    transform: rotate(12deg);
+    box-shadow: 3px 3px 0 var(--ct-what-scene-color-ink);
+}
+
+#ct-what-modal .ct-what-fv-gifts-sticker > svg {
+    width: 23px;
+    height: 23px;
+}
+
+#ct-what-modal .ct-what-fv-gifts-sticker > span {
+    margin-top: 3px;
+    font-size: clamp(16px, 5cqi, 23px);
+    font-weight: var(--ct-what-scene-font-weight-title);
+    line-height: .9;
+    letter-spacing: -.8px;
+    text-align: center;
+}
+
+@container (max-width: 330px) {
+    #ct-what-modal .ct-what-fv-blocks-palette > i {
+        width: 14px;
+        height: 14px;
+    }
+
+    #ct-what-modal .ct-what-fv-blocks-dress > span,
+    #ct-what-modal .ct-what-fv-blocks-plan > span {
+        font-size: 4px;
+    }
+
+    #ct-what-modal .ct-what-fv-blocks-photo > span {
+        font-size: 3.5px;
+    }
+
+    #ct-what-modal .ct-what-fv-blocks-grid {
+        gap: 2.5%;
+    }
+
+    #ct-what-modal .ct-what-fv-pdf-page-top {
+        font-size: 3.1px;
+    }
+
+    #ct-what-modal .ct-what-fv-pdf-page-bottom {
+        font-size: 2.8px;
+    }
+
+    #ct-what-modal .ct-what-fv-pdf-download {
+        gap: 4px;
+    }
+
+    #ct-what-modal .ct-what-fv-pdf-download > svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    #ct-what-modal .ct-what-fv-gifts-previews svg {
+        width: 35px;
+        height: 35px;
+    }
+
+}
+
+/* Integration with the existing ct-modal overlay in /sitemaker/index5.php. */
+.ct-modal[data-modal="what_modal"] {
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, #252525 31%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    overflow: hidden;
+}
+
+.ct-modal[data-modal="what_modal"].active {
+    display: flex;
+}
+
+#ct-what-modal,
+#ct-what-modal:not([open]) {
+    display: flex !important;
+    flex-direction: column;
+}
+
+#ct-what-modal .ct-what-close-button.ct-panel_close {
+    position: static;
+    top: auto;
+    right: auto;
+    background: var(--ct-what-base-color-surface-subtle);
+    filter: none;
+    -webkit-filter: none;
+}
+
+#ct-what-modal .ct-what-close-button.ct-panel_close::before {
+    content: none;
+}
+
+#ct-what-modal .ct-what-payment-button {
+    background: linear-gradient(90deg, #ff416c 0%, #fc927b 100%);
+    box-shadow: 0 8px 22px rgb(255 65 108 / 22%);
+}
+
+#ct-what-modal .ct-what-payment-button:hover {
+    background: linear-gradient(90deg, #f52f60 0%, #f7836c 100%);
+}
+
+@media (max-width: 990px) {
+    .ct-modal[data-modal="what_modal"] {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ct-modal[data-modal="what_modal"] {
+        padding: 10px;
+        align-items: stretch;
+    }
+}

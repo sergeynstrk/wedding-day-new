@@ -1,0 +1,428 @@
+var checkCook;
+var psending = false;
+
+function checkEmail(email) {
+    var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(email);
+}
+
+$(function() {
+    $('.ct-tgauth').click(function(){
+        initTelegramAuth();
+    })
+});
+
+$('.ct-toconstr input').on('input', function () {
+    $(this).removeClass('ct-input_error');
+});
+
+/* Telegram Auth */
+function CheckConfirmChangeOperation() {
+    clearTimeout(checkCook);
+    var formData = new FormData();
+    formData.append('action', 'checkCook');
+    formData.append('auth_flow', 'index');
+    $.ajax({
+        url: "/ixml/tgapism.php",
+        data: formData,
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function (result) {
+            console.log('checkCook: '+result);
+            if (result == 'nocook') {
+                // alert('NO COOKIE!')
+            } else if (result != '1' && result != '0') {
+                // alert(result)
+                window.location.href = '/sitemaker/?tginit=1&tauth=' + result;
+            } else {
+                checkCook = setTimeout(function () {
+                    CheckConfirmChangeOperation()
+                }, 5000);
+            }
+        },
+        error: function (jqXHR, exception) {
+            if (jqXHR.status !== 0)
+                alert(constr_terms['ln-notify-unknown-error'] + " status:" + ' ' + jqXHR.status + ', exception: ' + exception, 'error');
+        }
+    });
+}
+
+
+function MakeHashStr(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+
+    for (var i = 0; i < length; i++)
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+
+    return result;
+}
+
+function GetCookieValueByName(cookiename) {
+    var cookiestring = RegExp(cookiename + "=[^;]+").exec(document.cookie);
+    return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./, "") : "");
+}
+
+function GetCookie(name) {
+    var dc = document.cookie;
+    var prefix = name + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+    } else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+            end = dc.length;
+        }
+    }
+
+    return decodeURI(dc.substring(begin + prefix.length, end));
+}
+
+function setAddCookie(c_name, value, exdays = 1) {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value = escape(value) + ((exdays == null)
+            ? "" : "; expires=" + exdate.toUTCString())
+        + "; path=/";
+    document.cookie = c_name + "=" + c_value;
+}
+
+function initTelegramAuth(d) {
+    if ($('.tghelper').hasClass('active')) {
+        return;
+    }
+    clearTimeout(checkCook)
+    $('.tghelper').toggleClass('active', true);
+    $('.tghelper-registration-fallback').toggleClass('active', d === 'registration');
+    const confirm_code = MakeHashStr(22);
+
+    const tglink = 'tg://resolve?domain=wedding_website_wedwed_bot&start=sitemaker-' + confirm_code;
+    $('.qrcode').html('');
+
+    setAddCookie('qr_cookie', confirm_code);
+
+    var launchTelegram = function () {
+        $('.qrcode').qrcode({
+            render: 'image',
+            quiet: 1,
+            size: 200,
+            fill: '#1d1d1d',
+            minVersion: 6,
+            radius: .5,
+            maxVersion: 40,
+            ecLevel: 'H',
+            background: '#fff',
+            mode: 4,
+            mSize: 0.3,
+            mPosX: 0.5,
+            mPosY: 0.5,
+            image: img_buffer,
+            text: tglink,
+        }).attr('title', tglink);
+
+        document.location.replace(tglink);
+        checkCook = setTimeout(function () {
+            CheckConfirmChangeOperation()
+        }, 5000);
+    };
+
+    // Keep the current index.php behavior: associate the pending project before
+    // starting Telegram whenever temp_tga is present, including the login button.
+    $.post(ajax_url, {action: 'subtg', telegram_code: confirm_code})
+        .done(function (result) {
+            if (d === 'registration' && $.trim(result) !== 'ok') {
+                alert(constr_terms['ln-notify-unknown-error']);
+                return;
+            }
+
+            launchTelegram();
+        })
+        .fail(function () {
+            if (d === 'registration') {
+                alert(constr_terms['ln-notify-unknown-error']);
+                return;
+            }
+
+            // The current index proceeds with Telegram auth if subtg is not
+            // applicable to this login attempt.
+            launchTelegram();
+        });
+}
+
+$(document).on('click', '.tghelper-no-telegram', function (e) {
+    e.preventDefault();
+
+    clearTimeout(checkCook);
+    $('#tlg-switcher').prop('checked', false).trigger('change');
+    $('.tghelper').removeClass('active');
+    $('body').removeClass('sending');
+
+    $('.ct-splash.active .ct-form_foot .ct-toconstr:visible').first().trigger('click');
+});
+
+$('.ct-resetpassword').click(function (e) {
+
+    e.preventDefault();
+    $.each($('.ct-splash input'), function () {
+        if (!$(this).parents('.ct-input_wrapper').hasClass('ct-hidden')) {
+            $(this).toggleClass('ct-input_error', $(this).val() === '' && $(this).attr('name') !== 'password');
+        }
+    });
+
+    var ehash = '';
+
+    if ($('.ct-splash input[name="ehash"]').length > 0) {
+        ehash = $('.ct-splash input[name="ehash"]').val();
+    }
+
+    var email = $('.ct-splash input[name="email"]').val();
+    if ($('.ct-splash input.ct-input_error').length === 0) {
+        if (!psending) {
+            psending = true;
+            $.post(ajax_url, {
+                action: 'reset',
+                ehash: ehash,
+                email: email
+            }, function (data) {
+                psending = false;
+                if (data == 'auth') {
+                    alert(constr_terms['ln-notify-error']);
+                } else {
+                    if (data != '0') {
+                        alert(constr_terms['ln-notify-error']);
+                    } else {
+                        alert(constr_terms['ln-auth-email-sent']);
+                    }
+                }
+            })
+        }
+    }
+
+    return false;
+})
+
+$('.ct-toauth').click(function (e) {
+    e.preventDefault();
+    $(this).toggleClass('ct-hidden', true);
+    $('.ct-toconstr').after('<div class="ct-pointer ct-tomain">' + constr_terms['ln-auth-back'] + '</div>')
+    $('.ct-form_intro').text(constr_terms['ln-auth-email-code']);
+    $('.ct-small').hide();
+    $('.ct-toconstr').text(constr_terms['ln-auth-receive-code']);
+    $.each($('.ct-splash input'), function () {
+        $(this).parents('.ct-input_wrapper').toggleClass('ct-hidden', $(this).attr('name') != 'email')
+    })
+    return false;
+})
+
+
+$(document).on('click', '.ct-tomain', function (e) {
+    e.preventDefault();
+    $(this).remove();
+    $('.ct-form_intro').text(constr_terms['ln-auth-fields']);
+    $('.ct-small').show();
+    $('.ct-toconstr').text(constr_terms['ln-auth-toconstr']);
+    $('.ct-toauth').removeClass('ct-hidden')
+    $.each($('.ct-splash input'), function () {
+        $(this).parents('.ct-input_wrapper').toggleClass('ct-hidden', false)
+    })
+    return false;
+})
+
+
+async function validateEmailDomain(input) {
+
+    $(input).on('input', function () {
+        this.setCustomValidity('');
+    });
+
+    const $input = $(input);
+
+    if (!checkEmail($input.val())) {
+        $input.addClass('ct-input_error');
+        return false;
+    }
+
+    try {
+        const response = await $.ajax({
+            url: '/api/checkEmailDomain/',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                email: $input.val()
+            }
+        });
+
+        if (!response.valid) {
+            input.setCustomValidity('Указанный домен электронной почты не существует');
+            $input.focus();
+
+            setTimeout(() => {
+                input.reportValidity();
+            }, 0);
+
+            $input.addClass('ct-input_error');
+            return false;
+        }
+
+        input.setCustomValidity('');
+        $input.removeClass('ct-input_error');
+
+        return true;
+
+    } catch (e) {
+        console.error('Ошибка проверки домена email', e);
+        alert('Ошибка проверки домена email');
+        return false;
+    }
+}
+
+$('.ct-toconstr').click(async function (e) {
+    e.preventDefault();
+    var policyPanel=$(this).closest('.ct-planner-creation').find('[data-registration-policy]')[0];
+    var policy=policyPanel&&policyPanel.querySelector('input[name="policy"]');
+    if(policyPanel&&!policyPanel.hidden&&policy&&!policy.checked){
+        policy.setAttribute('aria-invalid','true');
+        policyPanel.querySelector('[role="alert"]').hidden=false;
+        policy.focus();
+        return false;
+    }
+    var groom = $('.ct-splash input[name="groom"]').val();
+    var bride = $('.ct-splash input[name="bride"]').val();
+    var main_date = $('.ct-splash input[name="main_date"]').val();
+    var email = $('.ct-splash input[name="email"]').val();
+
+    var ehash = '';
+    if ($('.ct-splash input[name="ehash"]').length > 0) {
+        ehash = $('.ct-splash input[name="ehash"]').val();
+    }
+
+    var pass = '';
+    if ($('input[name="password"]').length > 0) {
+        pass = $('input[name="password"]').val();
+    }
+
+    $.each($('.ct-splash input'),async function () {
+        $(this).toggleClass('ct-input_error', !$(this).parents('.ct-input_wrapper').hasClass('ct-hidden') && $(this).val() === '');
+        // console.log($(this).attr('name'))
+    })
+
+
+    var emailDomainValid=await validateEmailDomain($('input[name="email"]')[0]);
+    if(typeof plannerCreation==='object'&&plannerCreation&&!emailDomainValid)return false;
+
+    if ($('.ct-splash input.ct-input_error').length === 0) {
+        // 28.10.2026: owned Planner entry fills the existing project form, never registers another account.
+        if(typeof plannerCreation==='object'&&plannerCreation){
+            if(psending)return false;
+            psending=true;$('body').addClass('sending');
+            try{
+                if(plannerCreation.needsEmail){
+                    var completion=await $.ajax({url:'/register/',type:'POST',dataType:'json',data:{submit:'true',usertype:'client',noemail:'1',planner_partial:'1',planner_csrf:plannerCreation.csrf,firstname:bride,email:email,client_name_wedding:groom+' и '+bride,datewedding:main_date,lost:'',uid:'',profile:''}});
+                    if(!completion||completion.register!=='ok')throw Error(completion&&completion.error||'Не удалось сохранить почту. Проверьте, не занята ли она другим аккаунтом.');
+                    plannerCreation.needsEmail=false;
+                }
+                var created=await $.post(ajax_url,{action:'start',groom:groom,bride:bride,main_date:main_date,email:email,planner_creation:'1',planner_csrf:plannerCreation.csrf});
+                if(String(created).trim()!=='ok')throw Error('Не удалось сохранить приглашение. Проверьте данные и попробуйте снова.');
+                window.location.href='/sitemaker/?planner=1';
+            }catch(failure){alert(failure&&failure.message||'Не удалось создать приглашение. Попробуйте снова.');}
+            finally{psending=false;$('body').removeClass('sending');}
+            return false;
+        }
+        $('body').toggleClass('sending', true);
+        if (pass != '') {
+            if (!psending) {
+                psending = true;
+                console.log({
+                    action: 'auth',
+                    password: pass,
+                    ehash: ehash,
+                    email: email
+                })
+                $.post(ajax_url, {
+                    action: 'auth',
+                    password: pass,
+                    ehash: ehash,
+                    email: email
+                }, function (data) {
+                    if (data == 'auth') {
+                        $('body').toggleClass('sending', false);
+                        psending = false;
+                        alert(constr_terms['ln-notify-error']);
+                    } else {
+                        var d = $.parseJSON(data);
+                        if (d[0] == 'ok' && d.length > 1) {
+                            if (d[1] == '/sitemaker/' && typeof (_ym) != 'undefined' && _ym != 0) {
+                                ym(_ym, 'reachGoal', 'sitemakerReg');
+                            }
+
+                            window.location.href = d[1];
+                        }
+                    }
+                })
+            }
+        } else {    // первый этап
+            var oper = 'start';
+            var wtg = 0;
+            if ($('.ct-splash input[name="bride"]').parents('.ct-input_wrapper').hasClass('ct-hidden')) {
+                oper = 'restart';
+            } else {
+                wtg = $('.ct-telegram').length > 0 && $('.ct-telegram input').is(':checked');
+            }
+            console.log(wtg)
+            console.log(oper);
+
+            if (!psending) {
+                psending = true;
+                console.log(oper)
+                $.post(ajax_url,
+                    {
+                        action: oper,
+                        groom: groom,
+                        wtg: Number(wtg),
+                        bride: bride,
+                        main_date: main_date,
+                        email: email
+                    }, function (data) {
+                        if (data == 'auth') {
+                            psending = false;
+                            $('body').toggleClass('sending', false);
+                            alert(constr_terms['ln-notify-error']);
+                        } else {
+                            $('body').toggleClass('sending', false);
+                            if (wtg) {
+                                initTelegramAuth('registration');
+                                psending = false;
+                                return false;
+                            } else {
+                                if (data == 'ok') {
+                                    window.location.href = '/sitemaker/';
+                                } else if (data == 'newuser') {
+                                    $('.ct-splash').removeClass('active');
+                                    window.location.href = '/sitemaker/';
+                                } else if (data == 'nouser') {
+                                    alert(constr_terms['ln-auth-email-error']);
+                                } else {
+                                    window.location.href = '/sitemaker/?e=' + data;
+                                }
+                            }
+                        }
+                    })
+            }
+        }
+    }
+
+    return false;
+
+})
+
+$(document).on('change','[data-registration-policy] input[name="policy"]',function(){
+    if(this.checked){
+        this.removeAttribute('aria-invalid');
+        $(this).closest('[data-registration-policy]').find('[role="alert"]').prop('hidden',true);
+    }
+});

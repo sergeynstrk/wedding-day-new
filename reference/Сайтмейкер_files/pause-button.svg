@@ -1,0 +1,16 @@
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="602" width="802" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="ÐÐ¾ÑÐ¿ÑÐ¾Ð¸Ð·Ð²ÐµÑÑÐ¸ Â· play">
+   <path fill-opacity="0.8" fill="#292722" d="m16,31c8.2843,0 15,-6.7157 15,-15c0,-8.28427 -6.7157,-15 -15,-15c-8.28427,0 -15,6.71573 -15,15c0,8.2843 6.71573,15 15,15z" id="Vector"/>
+   <line stroke-linecap="null" stroke-linejoin="null" id="svg_1" y2="22.17855" x2="11.09943" y1="9.81326" x1="11.09943" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="none"/>
+   <line stroke="#ffffff" stroke-linecap="null" stroke-linejoin="null" id="svg_2" y2="21.17689" x2="12.66193" y1="10.94962" x1="12.66193" stroke-opacity="null" stroke-width="2" fill="none"/>
+   <line stroke="#ffffff" stroke-linecap="null" stroke-linejoin="null" id="svg_3" y2="21.17689" x2="19.19602" y1="10.94962" x1="19.19602" stroke-opacity="null" stroke-width="2" fill="none"/>
+  </g>
+ </g>
+</svg>

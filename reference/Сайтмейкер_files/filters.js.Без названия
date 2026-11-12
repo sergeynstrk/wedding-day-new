@@ -1,0 +1,241 @@
+/* Shared constructor filters. Keep native template selection and sorting. */
+(function () {
+    'use strict';
+    function init() {
+        var root = document.getElementById('filterTpl');
+        var configNode = document.getElementById('sm-template-filters-config');
+        var grid = document.querySelector('#selectTpl .ct-tpl_selector');
+        if (!root || !configNode || !grid) return;
+        var config = JSON.parse(configNode.textContent), words = config.dictionary;
+        var selected = {collections: new Set(), colors: new Set()}, items = new Map();
+        Object.keys(config.groups).forEach(function (group) {
+            config.groups[group].forEach(function (item) { items.set(String(item.id), item); });
+        });
+        var plural = new Intl.PluralRules(words.locale), number = new Intl.NumberFormat(words.locale);
+        var controls = root.querySelector('#sm-filters-controls'), chips = root.querySelector('[data-sm-chips]');
+        var expanded = false, collapsed = false, scheduled = false;
+        var designs = root.querySelector('[data-sm-designs]'), designCards = new Map();
+        function countLabel(count) {
+            return number.format(count) + ' ' + (words.designs[plural.select(count)] || words.designs.other);
+        }
+        function hasGroup(card, group) {
+            return !selected[group].size || Array.from(selected[group]).some(function (id) { return card.hasAttribute('data-f' + id); });
+        }
+        function baseCards() {
+            return Array.from(grid.querySelectorAll('.ct-tpl_selector-item')).filter(function (card) { return !card.classList.contains('ct-hidden'); });
+        }
+        function makeDesign(card) {
+            var article = document.createElement('article'); article.className = 'sm-design-card';
+            article.dataset.smTemplate = card.dataset.tpl;
+            var title = card.dataset.smTitle || Array.from(card.querySelector('.ct-tpl_selector-item_footer > span').childNodes)
+                .filter(function (node) { return node.nodeType === 3; }).map(function (node) { return node.textContent; }).join('').trim();
+            var thumb = document.createElement('button'); thumb.type = 'button'; thumb.className = 'sm-design-thumb';
+            thumb.dataset.smSelect = card.dataset.tpl; thumb.setAttribute('aria-label', words.select + ': ' + title);
+            var nativeMedia = card.querySelector('.ct-tpl_selector-item_body-mobile') || card.querySelector('.ct-tpl_selector-item_body');
+            var nativeVideo = nativeMedia && nativeMedia.querySelector('video'), media;
+            if (nativeVideo) {
+                media = document.createElement('video'); media.dataset.smCoverSrc = nativeVideo.dataset.smCoverSrc || nativeVideo.getAttribute('src');
+                media.muted = true; media.loop = true; media.playsInline = true; media.preload = 'none'; media.dataset.video = media.dataset.smCoverSrc;
+            } else {
+                media = document.createElement('img'); media.alt = ''; media.loading = 'lazy'; media.decoding = 'async';
+                var background = nativeMedia ? nativeMedia.style.backgroundImage : '';
+                var match = background.match(/^url\(["']?(.*?)["']?\)$/);
+                if (card.dataset.smCover || match) media.dataset.smCoverSrc = card.dataset.smCover || match[1];
+            }
+            thumb.appendChild(media);
+            if (card.querySelector('.ct-label.ct-purple')) {
+                var badge = document.createElement('span'); badge.className = 'sm-design-premium'; badge.textContent = 'PREMIUM'; thumb.appendChild(badge);
+            }
+            article.appendChild(thumb);
+            var name = document.createElement('h4'); name.className = 'sm-design-name'; var titleButton = document.createElement('button'); titleButton.type = 'button'; titleButton.dataset.smSelect = card.dataset.tpl; titleButton.textContent = title; name.appendChild(titleButton); article.appendChild(name);
+            var nativeSwatches = card.querySelectorAll('.ct-tpl_selector-item_footer-colors li');
+            var swatches = window.smDesignPreview ? window.smDesignPreview.variantsFor(card.dataset.tpl) : [];
+            if (!swatches.length) swatches = Array.from(nativeSwatches).map(function (swatch, index) { return {id:index + 1, swatch:swatch.style.backgroundColor}; });
+            if (swatches.length > 1) {
+                var variants = document.createElement('div'); variants.className = 'sm-design-swatches';
+                swatches.forEach(function (swatch) {
+                    var index = swatch.id - 1;
+                    var button = document.createElement('button'); button.type = 'button'; button.dataset.smVariant = index;
+                    button.style.setProperty('--swatch', swatch.swatch);
+                    var label = words.variant_colors && words.variant_colors[swatch.label] || words.preview_color + ' ' + swatch.id;
+                    button.setAttribute('aria-label', label); button.title = label;
+                    var dot = document.createElement('span'); dot.className = 'sm-swatch-dot'; button.appendChild(dot);
+                    button.setAttribute('aria-pressed', String(!!nativeSwatches[index] && nativeSwatches[index].classList.contains('active'))); variants.appendChild(button);
+                });
+                article.appendChild(variants);
+            }
+            var labels = config.groups.collections.filter(function (item) { return card.hasAttribute('data-f' + item.id); });
+            var meta = document.createElement('p'); meta.className = 'sm-design-meta';
+            meta.textContent = labels.slice(0, 2).map(function (item) { return item.title; }).join(' \u00b7 '); article.appendChild(meta);
+            return article;
+        }
+        function refresh() {
+            scheduled = false;
+            var base = baseCards(), visible = 0, fragment = document.createDocumentFragment();
+            base.forEach(function (card) {
+                if (!designCards.has(card)) designCards.set(card, makeDesign(card));
+                var design = designCards.get(card);
+                var matches = hasGroup(card, 'collections') && hasGroup(card, 'colors');
+                design.hidden = !matches; design.classList.toggle('is-active', card.classList.contains('active'));
+                if (!design.hasAttribute('data-sm-variant-pending')) {
+                    card.querySelectorAll('.ct-tpl_selector-item_footer-colors li').forEach(function (swatch, index) {
+                        var button = design.querySelector('[data-sm-variant="' + index + '"]');
+                        if (button) button.setAttribute('aria-pressed', String(swatch.classList.contains('active')));
+                    });
+                }
+                if (matches) visible++;
+                fragment.appendChild(design);
+            });
+            designs.replaceChildren(fragment);
+            root.querySelectorAll('[data-sm-filter]').forEach(function (button) {
+                var group = button.dataset.smGroup, id = button.dataset.smFilter;
+                var pressed = selected[group].has(id);
+                button.setAttribute('aria-pressed', String(pressed));
+                var other = group === 'collections' ? 'colors' : 'collections';
+                var count = base.filter(function (card) { return card.hasAttribute('data-f' + id) && hasGroup(card, other); }).length;
+                var label = items.get(id).title;
+                button.setAttribute('aria-label', label + ', ' + countLabel(count));
+                var counter = button.querySelector('[data-sm-count]');
+                if (counter) counter.textContent = countLabel(count);
+            });
+            var chipFragment = document.createDocumentFragment();
+            Object.keys(selected).forEach(function (group) {
+                selected[group].forEach(function (id) {
+                    var button = document.createElement('button');
+                    button.type = 'button'; button.dataset.smRemove = id; button.dataset.smGroup = group;
+                    button.setAttribute('aria-label', words.remove + ': ' + items.get(id).title);
+                    button.textContent = items.get(id).title + ' ×'; chipFragment.appendChild(button);
+                });
+            });
+            var any = selected.collections.size + selected.colors.size > 0;
+            if (any) {
+                var reset = document.createElement('button'); reset.type = 'button'; reset.dataset.smReset = '';
+                reset.textContent = words.reset; chipFragment.appendChild(reset);
+            }
+            chips.replaceChildren(chipFragment);
+            root.querySelector('[data-sm-results]').textContent = countLabel(visible);
+            root.querySelector('[data-sm-results-title]').textContent = selected.collections.size === 1
+                ? items.get(Array.from(selected.collections)[0]).title : (any ? words.matching : words.all);
+            root.querySelector('[data-sm-empty]').hidden = visible !== 0;
+            root.querySelector('[data-sm-color-note]').hidden = selected.colors.size === 0;
+            syncRails();
+            observeCovers();
+        }
+        function schedule() {
+            if (!scheduled) { scheduled = true; requestAnimationFrame(refresh); }
+        }
+        function syncRails() {
+            root.querySelectorAll('[data-sm-scroll]').forEach(function (button) {
+                var rail = document.getElementById(button.dataset.smRail);
+                button.hidden = rail.id === 'sm-collections' && expanded;
+                var offset = Math.abs(rail.scrollLeft), max = rail.scrollWidth - rail.clientWidth;
+                button.disabled = Number(button.dataset.smScroll) < 0 ? offset < 2 : offset >= max - 2;
+                button.style.opacity = button.disabled ? '.4' : '1';
+            });
+        }
+        root.addEventListener('click', function (event) {
+            var button = event.target.closest('button');
+            if (!button || !root.contains(button)) return;
+            if (button.hasAttribute('data-sm-select')) {
+                var original = grid.querySelector('[data-tpl="' + button.dataset.smSelect + '"]');
+                var design = button.closest('.sm-design-card');
+                var variant = design.querySelector('[data-sm-variant][aria-pressed="true"]');
+                if (window.smDesignPreview) { window.smDesignPreview.open(original, button, variant ? Number(variant.dataset.smVariant) + 1 : undefined); return; }
+                if (variant) original.querySelectorAll('.ct-tpl_selector-item_footer-colors li').forEach(function (swatch, index) {
+                    swatch.classList.toggle('active', index === Number(variant.dataset.smVariant));
+                });
+                // Use the existing guest/editor selection handler and its confirmation/save flow.
+                original.querySelector('.ct-tpl_selector-item_footer .ct-button').click();
+                design.removeAttribute('data-sm-variant-pending');
+                return;
+            } else if (button.hasAttribute('data-sm-variant')) {
+                button.closest('.sm-design-card').setAttribute('data-sm-variant-pending', '');
+                button.parentNode.querySelectorAll('button').forEach(function (swatch) { swatch.setAttribute('aria-pressed', String(swatch === button)); });
+                if (window.smDesignPreview) { var card = button.closest('.sm-design-card'); window.smDesignPreview.open(grid.querySelector('[data-tpl="' + card.dataset.smTemplate + '"]'), button, Number(button.dataset.smVariant) + 1); }
+                return;
+            } else if (button.hasAttribute('data-sm-filter')) {
+                var group = selected[button.dataset.smGroup], id = button.dataset.smFilter;
+                group.has(id) ? group.delete(id) : group.add(id);
+            } else if (button.hasAttribute('data-sm-remove')) {
+                var removeId = button.dataset.smRemove;
+                selected[button.dataset.smGroup].delete(removeId);
+                root.querySelector('[data-sm-filter="' + removeId + '"]').focus();
+            } else if (button.hasAttribute('data-sm-reset')) {
+                selected.collections.clear(); selected.colors.clear(); root.querySelector('[data-sm-toggle]').focus();
+            } else if (button.hasAttribute('data-sm-toggle')) {
+                collapsed = !collapsed; controls.hidden = collapsed;
+                button.setAttribute('aria-expanded', String(!collapsed)); button.textContent = collapsed ? words.show : words.hide;
+            } else if (button.hasAttribute('data-sm-expand')) {
+                expanded = !expanded;
+                root.querySelector('#sm-collections').classList.toggle('is-expanded', expanded);
+                button.setAttribute('aria-expanded', String(expanded)); button.textContent = expanded ? words.collapse : words.expand;
+            } else if (button.hasAttribute('data-sm-scroll')) {
+                var rail = document.getElementById(button.dataset.smRail);
+                rail.scrollBy({left: Number(button.dataset.smScroll) * rail.clientWidth * .8 * (getComputedStyle(rail).direction === 'rtl' ? -1 : 1), behavior: 'smooth'});
+            }
+            refresh();
+        });
+        // Read native category/order/selection without changing the initial chooser.
+        new MutationObserver(schedule).observe(grid, {childList: true, subtree: true, attributes: true, attributeFilter: ['class']});
+        new MutationObserver(schedule).observe(root, {attributes: true, attributeFilter: ['class']});
+        root.querySelectorAll('.sm-collections,.sm-colors').forEach(function (rail) { rail.addEventListener('scroll', syncRails, {passive:true}); });
+        window.addEventListener('resize', syncRails);
+        // Native chooser videos also stay deferred; checkout clones keep the same lazy source.
+        function coverNodes() {
+            return document.querySelectorAll('#filterTpl [data-sm-cover-src],#filterTpl video,#selectTpl video[data-sm-native-cover],.ct-pp-template-image-desk video,.ct-pp-template-image-mob video');
+        }
+        // No cover request until its panel is open and the card approaches view.
+        function loadCover(cover) {
+            var src = cover.dataset.smCoverSrc;
+            if (!src) return;
+            cover.src = src; delete cover.dataset.smCoverSrc;
+        }
+        function canPlay(video) {
+            return !document.hidden && !(window.smDesignPreview && window.smDesignPreview.isOpen())
+                && (!window.smDesignPreview || window.smDesignPreview.canPlayCatalog(video));
+        }
+        function coverIsOpen(cover) {
+            return ['.ct-panel_settings-page','.ct-panel','.ct-modal'].every(function (selector) {
+                var panel = cover.closest(selector);
+                return !panel || panel.classList.contains('active');
+            });
+        }
+        var covers;
+        if ('IntersectionObserver' in window) {
+            covers = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    var cover = entry.target;
+                    if (entry.isIntersecting && coverIsOpen(cover)) {
+                        loadCover(cover);
+                        if (cover.tagName === 'IMG') covers.unobserve(cover);
+                        else if (canPlay(cover)) cover.play().catch(function () {});
+                    } else if (cover.tagName === 'VIDEO') cover.pause();
+                });
+            }, {rootMargin:'200px 0px'});
+        }
+        function observeCovers(force) {
+            coverNodes().forEach(function (cover) {
+                if (covers) { if (force === true) covers.unobserve(cover); covers.observe(cover); }
+                else if (coverIsOpen(cover)) { loadCover(cover); if (cover.tagName === 'VIDEO' && canPlay(cover)) cover.play().catch(function () {}); }
+            });
+        }
+        document.addEventListener('visibilitychange', function () {
+            coverNodes().forEach(function (video) {
+                if (video.tagName !== 'VIDEO') return;
+                if (document.hidden) video.pause(); else if (covers) { covers.unobserve(video); covers.observe(video); }
+            });
+        });
+        // The existing purchase dialog clones the selected cover on opening.
+        var coverPanels = new Set([grid.closest('.ct-panel')]);
+        document.querySelectorAll('.ct-pp-template-image-desk,.ct-pp-template-image-mob').forEach(function (target) {
+            new MutationObserver(observeCovers).observe(target, {childList:true});
+            coverPanels.add(target.closest('.ct-modal'));
+        });
+        coverPanels.forEach(function (panel) {
+            if (panel) new MutationObserver(function () { observeCovers(true); }).observe(panel, {attributes:true,attributeFilter:['class']});
+        });
+        refresh();
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+}());

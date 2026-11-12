@@ -1,0 +1,234 @@
+const greetingSuffix = window.smGreetingModuleSuffix || '';
+const [pickerModule, contentEditorModule, carouselModule] = await Promise.all([
+  import(`./picker${greetingSuffix}.js?v=20261014-production`),
+  import(`./content-editor${greetingSuffix}.js?v=20261014-production`),
+  import(`./carousel${greetingSuffix}.js?v=20261014-production`),
+]);
+const {createGreetingPicker} = pickerModule;
+const {createGreetingContentEditor} = contentEditorModule;
+const {createGreetingCarousel} = carouselModule;
+
+const root = document.querySelector('#customizeView .ct-greeting-setting');
+const dataNode = document.querySelector('#greeting-current-data');
+if (root && dataNode) {
+  const initial = JSON.parse(dataNode.textContent);
+  const endpoint = initial.endpoint;
+  const projectId = typeof project === 'undefined' ? '' : project;
+  const current = {
+    id: Number(initial.id) || 0,
+    strings: initial.strings || [],
+    blur: initial.blur,
+    dark: initial.dark,
+    back: initial.back || '',
+    photos: Array.isArray(initial.photos) ? initial.photos : [],
+    video: initial.video || ''
+  };
+  const catalog = [{id: 0, name: smT('ln-greeting-none'), category: 'none', strings: [], photo: 0, video: 0, blur: 2, dark: 2, image: ''}];
+  document.querySelectorAll('#customizeView .ct-hello_item[data-id]:not([data-id="0"])').forEach(element => {
+    const data = element.dataset;
+    const strings = [element.getAttribute('data-string-1') || ''];
+    const second = element.getAttribute('data-string-2');
+    if (second !== null && (second !== '' || element.hasAttribute('data-string-3'))) strings.push(second);
+    if (element.hasAttribute('data-string-3')) strings.push(element.getAttribute('data-string-3') || '');
+    catalog.push({
+      id: Number(data.id), name: data.name || `${smT('sections_customize_settings_2_title')} ${data.id}`,
+      category: data.category || 'photo', strings,
+      blur: Number(data.blur), dark: Number(data.dark),
+      photo: [21, 22, 23].includes(Number(data.id)) ? 3 : (Number(data.photo) || 0),
+      video: Number(data.video) || 0,
+      image: element.querySelector('img')?.getAttribute('src') || ''
+    });
+  });
+  const get = id => catalog.find(item => item.id === Number(id)) || catalog[0];
+  const notice = document.querySelector('#greeting-notice');
+  let noticeTimer;
+  function notify(message, error = false) {
+    notice.textContent = message;
+    notice.classList.toggle('is-error', error);
+    notice.hidden = false;
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => { notice.hidden = true; }, 4500);
+  }
+  function absoluteMedia(value) {
+    if (!value || value === '-1') return '';
+    if (value.startsWith('s3:') && window.s3Url) return window.s3Url.replace(/\/$/, '') + '/' + value.slice(3);
+    if (/^(blob:|https?:)/.test(value) || value.startsWith('/sitemaker/')) return value;
+    return '/sitemaker' + (value.startsWith('/') ? value : '/' + value);
+  }
+  function storedMedia(value) {
+    value = String(value || '');
+    const prefix = window.s3Url ? window.s3Url.replace(/\/$/, '') + '/' : '';
+    if (prefix && value.startsWith(prefix)) {
+      try {
+        const key = decodeURIComponent(value.slice(prefix.length));
+        if (key.length <= 1024 && /^[A-Za-z0-9._/-]+$/.test(key)
+            && key.split('/').every(part => part && part !== '.' && part !== '..')) return 's3:' + key;
+      } catch (_) { /* Keep unrecognized URLs unchanged. */ }
+    }
+    return value.replace(/^\/sitemaker(?=\/)/, '');
+  }
+  async function post(fields) {
+    const body = new URLSearchParams({project: projectId, ...fields});
+    const response = await fetch(endpoint, {method: 'POST', credentials: 'same-origin', body});
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const result = (await response.text()).trim();
+    if (result !== '1') throw new Error('SiteMaker rejected the change');
+  }
+  async function uploadPhoto(file, multiple) {
+    const body = new FormData();
+    body.append('action', 'images'); body.append('project', projectId);
+    body.append(multiple ? 'INTRO_PHOTO_ITEMS[]' : 'INTRO_PHOTO', file);
+    const response = await fetch(endpoint, {method: 'POST', credentials: 'same-origin', body});
+    if (!response.ok) throw new Error('Photo upload failed');
+    const result = await response.json();
+    if (!Array.isArray(result) || !result[0]) throw new Error('Photo upload failed');
+    return storedMedia(result[0]);
+  }
+  async function uploadVideo(file) {
+    const body = new FormData();
+    body.append('action', 'video'); body.append('project', projectId);
+    body.append('type', '1'); body.append('video', file);
+    const response = await fetch(endpoint, {method: 'POST', credentials: 'same-origin', body});
+    if (!response.ok) throw new Error('Video upload failed');
+    const result = await response.json();
+    if (!result.success || !result.filePath) throw new Error(result.error || 'Video upload failed');
+    return result.filePath;
+  }
+  function syncLegacy() {
+    const holder = document.querySelector('#customizeView .ct-hello_items');
+    if (!holder) return;
+    holder.dataset.current = String(current.id);
+    holder.dataset.currentStr1 = current.strings[0] || '';
+    holder.dataset.currentStr2 = current.strings[1] || '';
+    holder.dataset.currentStr3 = current.strings[2] || '';
+    holder.dataset.currentBlur = String(current.blur);
+    holder.dataset.currentDark = String(current.dark);
+    const item = holder.querySelector(`.ct-hello_item[data-id="${current.id}"]`);
+    if (item) {
+      const slide = item.closest('.swiper-slide');
+      const index = Array.from(holder.querySelectorAll('.swiper-slide')).indexOf(slide);
+      if (holder.swiper && index >= 0) holder.swiper.slideTo(index, 0, false);
+      item.setAttribute('data-current-string-1', current.strings[0] || '');
+      item.setAttribute('data-current-string-2', current.strings[1] || '');
+      item.setAttribute('data-current-string-3', current.strings[2] || '');
+      item.dataset.currentBlur = String(current.blur);
+      item.dataset.currentDark = String(current.dark);
+    }
+    document.querySelector('.ct-intro-photos-21-row')?.setAttribute('data-intro-photos', JSON.stringify(current.photos));
+    const oldPhoto = document.querySelector('.ct-hello_data [data-photos-k="INTRO_PHOTO"]');
+    if (oldPhoto) {
+      if (current.back) {
+        oldPhoto.dataset.url = current.back;
+        oldPhoto.style.backgroundImage = `url("${absoluteMedia(current.back)}")`;
+      } else oldPhoto.remove();
+    }
+    if (typeof loadTemplateData === 'function') loadTemplateData();
+  }
+  async function loadContent(id) {
+    const item = get(id);
+    if (Number(id) !== current.id) return item.video ? {videos: [absoluteMedia(current.video)]} : null;
+    const saved = current.strings[0] !== '-1';
+    return {
+      strings: item.strings.map((value, index) => saved ? (current.strings[index] ?? value) : value),
+      blur: current.blur === '-1' ? item.blur === 1 : String(current.blur) === '1',
+      dark: current.dark === '-1' ? item.dark === 1 : String(current.dark) === '1',
+      photos: item.photo > 1 ? current.photos.map(absoluteMedia) : [absoluteMedia(current.back)],
+      videos: [absoluteMedia(current.video)]
+    };
+  }
+  async function saveContent(snapshot) {
+    const item = get(snapshot.id);
+    const photos = [];
+    for (const value of snapshot.photos) {
+      photos.push(value instanceof Blob ? await uploadPhoto(value, item.photo > 1) : storedMedia(value));
+    }
+    const video = snapshot.videos[0];
+    let videoPath = item.video ? (typeof video === 'string' ? video : '') : current.video;
+    if (video instanceof Blob) videoPath = await uploadVideo(video);
+    if (!video && item.video && current.video) await post({action: 'remvideo', type: '1'});
+    await post({
+      action: 'setintro', iid: String(item.id),
+      str1: snapshot.strings[0] || '', str2: snapshot.strings[1] || '',
+      str3: snapshot.strings[2] || '', blur: snapshot.blur ? '1' : '0',
+      dark: snapshot.dark ? '1' : '0', back: item.photo === 1 ? (photos[0] || '') : '',
+      intro_photo_items: JSON.stringify(item.photo > 1 ? photos : [])
+    });
+    current.id = item.id;
+    current.strings = snapshot.strings.slice();
+    current.blur = snapshot.blur ? '1' : '0';
+    current.dark = snapshot.dark ? '1' : '0';
+    current.back = item.photo === 1 ? (photos[0] || '') : '';
+    current.photos = item.photo > 1 ? photos : [];
+    current.video = videoPath;
+    syncLegacy();
+    return true;
+  }
+  async function clearGreeting() {
+    await post({action: 'setintro', iid: '0', str1: '', str2: '', str3: '', blur: '0', dark: '0', back: '', intro_photo_items: '[]'});
+    current.id = 0; current.strings = []; current.blur = '0'; current.dark = '0';
+    current.back = ''; current.photos = [];
+    syncLegacy();
+  }
+  let picker;
+  const editor = createGreetingContentEditor({loadContent, saveContent, onSave(item) {
+    picker.commit(item.id);
+    notify(smT('ln-greeting-saved'));
+  }});
+  picker = createGreetingPicker({
+    catalog, selectedId: current.id,
+    onEdit: (item, trigger, options) => editor.open(item, trigger, options),
+    onClear: clearGreeting,
+    onError: () => notify(smT('ln-greeting-save-error'), true),
+    onApply: item => { renderSummary(item); if (!item.id) notify(smT('ln-greeting-cleared')); }
+  });
+  function renderSummary(item) {
+    const summary = document.querySelector('#greeting-summary');
+    const actions = document.querySelector('#greeting-actions');
+    summary.tabIndex = -1; summary.replaceChildren(); actions.replaceChildren();
+    root.classList.toggle('ct-greeting-has-selection', !!item.id);
+    actions.hidden = !item.id;
+    const art = document.createElement('span'); art.className = 'ct-gp-summary-art';
+    if (item.image) {
+      const image = document.createElement('img'); image.src = item.image; image.alt = '';
+      art.append(image);
+    } else {
+      art.classList.add('ct-gp-summary-none'); art.innerHTML = '<span><span>' + smT('ln-greeting-site') + '</span><span>' + smT('ln-greeting-without') + '</span></span>';
+    }
+    const copy = document.createElement('div'); copy.className = 'ct-gp-summary-copy';
+    const meta = document.createElement('div'); meta.className = 'ct-gp-summary-meta';
+    const caption = document.createElement('small'); caption.textContent = smT('ln-greeting-current'); meta.append(caption);
+    if (item.id) {
+      const demo = document.createElement('a'); demo.className = 'ct-gp-summary-demo';
+      demo.href = document.querySelector('a.ct-demo')?.href || '/sitemaker/?demo';
+      demo.target = '_blank'; demo.rel = 'noopener'; demo.setAttribute('aria-label', smT('ln-greeting-demo-label'));
+      demo.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg><span>' + smT('buttons_demo') + '</span>';
+      meta.append(demo);
+      const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'ct-gp-summary-edit';
+      edit.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l5-1L20 8a2.8 2.8 0 0 0-4-4L5 15z"/></svg><span>' + smT('ln-greeting-edit-content') + '</span>';
+      edit.addEventListener('click', () => editor.open(item, edit));
+      const clear = document.createElement('button'); clear.type = 'button'; clear.className = 'ct-gp-summary-clear';
+      clear.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m6.5 6.5 11 11"/></svg><span>' + smT('ln-greeting-none') + '</span>';
+      clear.addEventListener('click', async () => { if (await picker.clear()) summary.focus({preventScroll: true}); });
+      actions.append(edit, clear);
+    }
+    const name = document.createElement('strong'); name.textContent = item.name;
+    copy.append(meta, name, actions);
+    if (!item.id) {
+      const detail = document.createElement('p'); detail.textContent = smT('ln-greeting-no-intro-detail'); copy.append(detail);
+    }
+    summary.append(art, copy);
+  }
+  renderSummary(get(current.id));
+  document.querySelector('#catalog-count').textContent = String(catalog.length - 1);
+  document.querySelectorAll('[data-open-picker]').forEach(button => button.addEventListener('click', () => {
+    try { picker.open(button); }
+    catch (error) { notify(smT('ln-greeting-catalog-error') + error.message, true); }
+  }));
+  createGreetingCarousel({items: catalog.filter(item => item.id), onEdit: (id, button) => editor.open(get(id), button)});
+  root.querySelector('.ct-greeting-info').addEventListener('click', event => {
+    const button = event.currentTarget;
+    const expanded = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!expanded));
+    root.querySelector('#greeting-help').hidden = expanded;
+  });
+}

@@ -1,0 +1,36 @@
+function insertOwnMap(sect, link, width, height){
+    iframe.contents().find('[data-type=' + sect + '] .sm-own_wrapper').append(ownBlockTemplateMap);
+    iframe.contents().find('[data-sm-href="OWN_MAP_LINK"]').removeClass('sm-hidden');
+
+    let mapLink = link;
+    if (mapLink != null && mapLink != '') {
+        mapLink = mapLink.replace("https://yandex.ru/maps/", "https://yandex.ru/map-widget/v1/");
+    } else {
+        mapLink = "https://yandex.ru/map-widget/v1/?um=constructor%3A43746300638f8342998f44e6e6d5195d840d8e736bc5cc43abb8cdfb59c7530c&source=constructorLink";
+    }
+    iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').attr('src','about:blank')
+    iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').get(0).contentWindow.location.replace(mapLink);
+    if (width != null && width != '') {
+        iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').attr('width', width);
+    } else {
+        if (width == null || width=== '') {
+            iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').attr('width', 350);
+        } else {
+            iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').attr('width', 350);
+            data_value['OWN_BLOCKS'][sect-1001]['OWN_MAP_WIDTH'] = 350;
+            // $('#secondPanel .ct-panel_settings-page [name="'+(add + 'OWN_MAP_WIDTH').toLowerCase()+'"]').val(350)
+        }
+    }
+    if (height != null && height != '') {
+        iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').attr('height', height);
+    } else {
+        if (height == null || height === '') {
+            iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').attr('height', 350);
+        } else {
+            iframe.contents().find('[data-type="' + sect + '"] [data-sm-href="OWN_MAP_LINK"]').attr('height', 350);
+            data_value['OWN_BLOCKS'][sect-1001]['OWN_MAP_HEIGHT'] = 350;
+            // $('#secondPanel .ct-panel_settings-page [name="'+(add + 'OWN_MAP_HEIGHT').toLowerCase()+'"]').val(350)
+        }
+    }
+
+}

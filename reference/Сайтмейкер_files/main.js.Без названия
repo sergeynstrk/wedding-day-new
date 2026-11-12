@@ -1,0 +1,628 @@
+/* Template-local motion helpers bundled in this file. */
+
+/* Decorative day marker; SiteMaker remains responsible for calendar data. */
+(function (window, document) {
+    'use strict';
+    if (window.SMLilacCalendarMotion) return;
+
+    var svgNamespace = 'http://www.w3.org/2000/svg';
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+
+
+    function init(root) {
+        if (!root || typeof root.querySelectorAll !== 'function') return;
+        var owner = root.ownerDocument || document;
+        root.querySelectorAll('.sm-calendar .sm-number-active').forEach(function (day) {
+            if (day.querySelector('.ll-calendar-marker')) return;
+
+            var marker = owner.createElementNS(svgNamespace, 'svg');
+            marker.setAttribute('class', 'll-calendar-marker');
+            marker.setAttribute('viewBox', '0 0 100 100');
+            marker.setAttribute('aria-hidden', 'true');
+            marker.setAttribute('focusable', 'false');
+
+            var stroke = owner.createElementNS(svgNamespace, 'path');
+            stroke.setAttribute('class', 'll-calendar-marker-stroke');
+            stroke.setAttribute('pathLength', '1');
+            stroke.setAttribute('d', 'M81 20 C60 6 31 10 16 29 C1 51 9 78 34 87 C60 97 87 80 91 57 C97 34 80 13 57 11 C32 9 13 24 10 44');
+            marker.appendChild(stroke);
+            day.appendChild(marker);
+        });
+    }
+
+    window.SMLilacCalendarMotion = { init: init };
+})(window, document);
+
+/* A small marker follows the original wave as the guest scrolls. */
+(function (window, document) {
+    'use strict';
+    var tracks = new WeakMap();
+
+    function initialize(track) {
+        if (tracks.has(track)) { tracks.get(track)(); return; }
+        var path = track.querySelector('path');
+        var dot = track.querySelector('.ob-timeline-dot');
+        if (!path || !dot || typeof path.getPointAtLength !== 'function') return;
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+        var frame = null;
+        var current = null;
+        var previousTime = 0;
+        var length = path.getTotalLength();
+        if (!length) return;
+
+        // The artwork is a filled outline. Follow its uninterrupted top-to-bottom
+        // edge, preserving the shape instead of approximating it with a sine wave.
+        var top = { y: Infinity, length: 0 };
+        var bottom = { y: -Infinity, length: 0 };
+        for (var index = 0; index <= 600; index += 1) {
+            var at = length * index / 600;
+            var point = path.getPointAtLength(at);
+            if (point.y < top.y) top = { y: point.y, length: at };
+            if (point.y > bottom.y) bottom = { y: point.y, length: at };
+        }
+
+        function draw(now) {
+            frame = null;
+            if (reduced.matches || !track.isConnected) return;
+            var rect = track.getBoundingClientRect();
+            if (!rect.height || rect.bottom < 0 || rect.top > window.innerHeight) {
+                current = null;
+                previousTime = 0;
+                return;
+            }
+            var target = Math.max(0, Math.min(1, (window.innerHeight * 0.52 - rect.top) / rect.height));
+            var elapsed = previousTime ? Math.min(64, now - previousTime) : 16;
+            previousTime = now;
+            current = current === null ? target : current + (target - current) * (1 - Math.exp(-elapsed / 80));
+            var point = path.getPointAtLength(top.length + (bottom.length - top.length) * current);
+            dot.style.left = (point.x / 44.57 * 100) + '%';
+            dot.style.top = (point.y / 548.09 * 100) + '%';
+            dot.hidden = false;
+            if (Math.abs(target - current) > 0.0002) frame = window.requestAnimationFrame(draw);
+        }
+
+        function queue() {
+            if (!reduced.matches && frame === null) frame = window.requestAnimationFrame(draw);
+        }
+        function reset() {
+            current = null;
+            previousTime = 0;
+            if (frame !== null) window.cancelAnimationFrame(frame);
+            frame = null;
+            dot.hidden = reduced.matches;
+            queue();
+        }
+
+        window.addEventListener('scroll', queue, { passive: true });
+        window.addEventListener('resize', reset, { passive: true });
+        window.addEventListener('pageshow', reset);
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) reset(); });
+        if (reduced.addEventListener) reduced.addEventListener('change', reset);
+        else reduced.addListener(reset);
+        if (typeof window.ResizeObserver === 'function') new window.ResizeObserver(reset).observe(track);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(reset);
+        new MutationObserver(reset).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        tracks.set(track, reset);
+        reset();
+    }
+
+    window.SMTimelineMotion = {
+        init: function (root) { root.querySelectorAll('.ob-timeline-line').forEach(initialize); }
+    };
+})(window, document);
+
+
+/* Page UI only. SiteMaker owns editable data, countdowns, wishes and RSVP submission. */
+window.wishSliderParams = {
+    slidesToShow: 1,
+    infinite: true,
+    adaptiveHeight: false,
+    nextArrow: document.querySelector('main.sm-yellow-blue [data-wish-next]'),
+    prevArrow: document.querySelector('main.sm-yellow-blue [data-wish-prev]')
+};
+
+(function (window, document) {
+    'use strict';
+    if (window.SMYellowBlue) { window.SMYellowBlue.init(); return; }
+
+    var roots = new WeakMap();
+    var previousStartAll = window.startAll;
+    var sharedStarting = false;
+    var wishEditorBridges = new WeakSet();
+    var musicButtons = new WeakSet();
+    var monogramBindings = new WeakSet();
+    var musicAvailabilityObserver = null;
+    var musicEventsBound = false;
+
+    function isEditorPreview() { return document.body.classList.contains('sm-editor_preview'); }
+
+    function hasMusicTrack() {
+        var audio = document.getElementById('audio');
+        if (!audio) return false;
+        var source = audio.getAttribute('src') || '';
+        if (!source) {
+            var sourceElement = audio.querySelector('source[src]');
+            source = sourceElement ? sourceElement.getAttribute('src') || '' : '';
+        }
+        return source.trim() !== '';
+    }
+
+    function renderMusicControls(playing) {
+        var available = isEditorPreview() || hasMusicTrack();
+        document.querySelectorAll('main.sm-yellow-blue .play-pause').forEach(function (button) {
+            button.classList.toggle('is-playing', playing);
+            button.setAttribute('aria-pressed', playing ? 'true' : 'false');
+            button.setAttribute('aria-label', playing ? 'Поставить музыку на паузу' : 'Включить музыку');
+            button.querySelectorAll('[data-music-play]').forEach(function (icon) { icon.toggleAttribute('hidden', playing); });
+            button.querySelectorAll('[data-music-pause]').forEach(function (icon) { icon.toggleAttribute('hidden', !playing); });
+            button.classList.toggle('is-playing', available && playing);
+            button.disabled = !available;
+            button.setAttribute('aria-pressed', available && playing ? 'true' : 'false');
+            button.setAttribute('aria-label', available && playing ? 'Поставить музыку на паузу' : 'Включить музыку');
+            button.querySelectorAll('[data-music-play]').forEach(function (icon) { icon.toggleAttribute('hidden', !available || playing); });
+            button.querySelectorAll('[data-music-pause]').forEach(function (icon) { icon.toggleAttribute('hidden', !available || !playing); });
+        });
+        document.querySelectorAll('.sm-sound_toggle').forEach(function (toggle) {
+            toggle.classList.toggle('active', playing);
+        });
+    }
+
+    function bindMusicAvailability() {
+        if (musicAvailabilityObserver || !document.body) return;
+        musicAvailabilityObserver = new MutationObserver(function (records) {
+            var changed = records.some(function (record) {
+                return record.type === 'childList' || record.attributeName === 'src' || (record.target === document.body && record.attributeName === 'class');
+            });
+            if (changed) renderMusicControls(window.playing === true);
+        });
+        musicAvailabilityObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src', 'class']
+        });
+    }
+
+    function getNameInitial(element) {
+        var name = element ? element.textContent.trim() : '';
+        return name ? Array.from(name)[0].toLocaleUpperCase() : '';
+    }
+
+    function syncMonogram(root) {
+        var monogram = root.querySelector('.ob-record-monogram');
+        var groom = root.querySelector('[data-sm-text="GROOM"]');
+        var bride = root.querySelector('[data-sm-text="BRIDE"]');
+        if (!monogram || !groom || !bride) return;
+
+        monogram.textContent = getNameInitial(groom) + getNameInitial(bride);
+    }
+
+    function bindMonogram(root) {
+        syncMonogram(root);
+        if (monogramBindings.has(root)) return;
+
+        var names = root.querySelectorAll('[data-sm-text="GROOM"], [data-sm-text="BRIDE"]');
+        if (!names.length) return;
+
+        var observer = new MutationObserver(function () { syncMonogram(root); });
+        names.forEach(function (name) {
+            observer.observe(name, { childList: true, characterData: true, subtree: true });
+        });
+        monogramBindings.add(root);
+    }
+
+    function bindMusic(root) {
+        bindMusicAvailability();
+        if (!musicEventsBound) {
+            ['play', 'pause', 'ended'].forEach(function (type) {
+                document.addEventListener(type, function (event) {
+                    if (!event.target || event.target.id !== 'audio') return;
+                    window.playing = type === 'play';
+                    renderMusicControls(window.playing);
+                }, true);
+            });
+            musicEventsBound = true;
+        }
+        root.querySelectorAll('.play-pause').forEach(function (button) {
+            if (musicButtons.has(button)) return;
+            button.addEventListener('click', function (event) {
+        if (isEditorPreview()) { event.preventDefault(); return; }
+                var audio = document.getElementById('audio');
+                if (!audio) return;
+                event.preventDefault();
+                if (audio.paused) {
+                    window.playing = true;
+                    try {
+                        var playback = audio.play();
+                        if (playback && typeof playback.catch === 'function') playback.catch(function () {
+                            window.playing = false;
+                            renderMusicControls(false);
+                        });
+                    } catch (error) {
+                        window.playing = false;
+                    }
+                } else {
+                    window.playing = false;
+                    audio.pause();
+                }
+                renderMusicControls(window.playing === true);
+            });
+            musicButtons.add(button);
+        });
+        renderMusicControls(window.playing === true);
+    }
+
+    function installWishEditorBridge(root) {
+        if (wishEditorBridges.has(root)) return;
+        var slider = root.querySelector('.sm-wishes__content-slider');
+        if (!slider) return;
+        var pointer = null;
+        var suppressClick = false;
+        var clearTimer = null;
+
+        function clearSuppression() {
+            suppressClick = false;
+            if (clearTimer !== null) {
+                window.clearTimeout(clearTimer);
+                clearTimer = null;
+            }
+        }
+
+        function targetFrom(event) {
+            var target = event.target;
+            if (target && typeof target.closest !== 'function') target = target.parentElement;
+            return target;
+        }
+
+        function pointerDown(event) {
+            if (event.isPrimary === false || event.button > 0) return;
+            var target = targetFrom(event);
+            if (!target || !slider.contains(target)) return;
+            clearSuppression();
+            pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
+        }
+
+        function pointerMove(event) {
+            if (!pointer || event.pointerId !== pointer.id) return;
+            var dx = event.clientX - pointer.x;
+            var dy = event.clientY - pointer.y;
+            if (Math.max(Math.abs(dx), Math.abs(dy)) < 10) return;
+            pointer.moved = true;
+            if (Math.abs(dx) > Math.abs(dy) * 1.25) suppressClick = true;
+        }
+
+        function pointerEnd(event) {
+            if (!pointer || event.pointerId !== pointer.id) return;
+            if (pointer.moved) clearTimer = window.setTimeout(clearSuppression, 250);
+            pointer = null;
+        }
+
+        function click(event) {
+            var target = targetFrom(event);
+            if (suppressClick) {
+                clearSuppression();
+                if (target && slider.contains(target)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                return;
+            }
+            if (!isEditorPreview()) return;
+            var text = target && target.closest('[data-sm-text]');
+            if (!text || !slider.contains(text)) return;
+            var section = slider.closest('.sm-wishes');
+            var title = section && section.querySelector('[data-sm-text="WISH_TITLE"]');
+            if (!title) return;
+            event.preventDefault();
+            event.stopPropagation();
+            title.click();
+        }
+
+        slider.addEventListener('pointerdown', pointerDown);
+        slider.addEventListener('pointermove', pointerMove);
+        slider.addEventListener('pointerup', pointerEnd);
+        slider.addEventListener('pointercancel', pointerEnd);
+        slider.addEventListener('click', click, true);
+        wishEditorBridges.add(root);
+    }
+
+    function prepareNativeCountdown() {
+        document.querySelectorAll('main.sm-yellow-blue #days').forEach(function (holder) {
+            var digits = holder.querySelectorAll('.sm-timer-time_number');
+            if (!digits.length) return;
+            // Native CountBack renders up to five day digits and hides unused cells.
+            // Providing all its supported cells prevents truncation above 99 days.
+            for (var index = digits.length; index < 5; index += 1) {
+                var clone = digits[0].cloneNode(true);
+                clone.style.display = 'none';
+                clone.setAttribute('data-ll-extra-digit', '');
+                holder.appendChild(clone);
+            }
+        });
+        // The shared runtime does not cancel a previous future timer when an edited
+        // date moves into the past. Cancel only its known timer before reinitializing.
+        if (document.querySelector('main.sm-yellow-blue') && typeof window.time_back !== 'undefined') window.clearTimeout(window.time_back);
+    }
+
+    function controls(modal) {
+        return Array.from(modal.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+            .filter(function (element) { return element.getClientRects().length && !element.closest('[hidden], [inert]'); });
+    }
+
+    function initialize(root) {
+        if (roots.has(root)) { roots.get(root).sync(); return; }
+        document.documentElement.classList.add('ll-enhanced');
+        var mobile = window.matchMedia('(max-width: 767px)');
+        var rsvp = root.querySelector('#rsvp');
+        var thanks = root.querySelector('#thankYouMessage');
+        var fixed = root.querySelector('.ll-fixed-rsvp');
+        var lead = root.querySelector('.sm-lead');
+        var intro = root.querySelector('#rsvp-intro');
+        var footer = root.querySelector('.sm-footer');
+        var active = null;
+        var returnFocus = null;
+        var savedOverflow = null;
+        var bodyWasLocked = false;
+        var originalAttributes = null;
+        var inertBackground = [];
+        var frame = null;
+
+        function updateSticky() {
+            if (!fixed) return;
+            var leadGone = lead && lead.getBoundingClientRect().bottom <= 0;
+            var endVisible = [intro, footer].some(function (section) {
+                if (!section || !section.getClientRects().length) return false;
+                var bounds = section.getBoundingClientRect();
+                return bounds.top < window.innerHeight && bounds.bottom > 0;
+            });
+            var show = !isEditorPreview() && mobile.matches && leadGone && !endVisible && !active;
+            fixed.hidden = !show;
+            fixed.classList.toggle('is-visible', Boolean(show));
+        }
+
+        function restoreDialog() {
+            if (!active || !originalAttributes) return;
+            Object.keys(originalAttributes).forEach(function (key) {
+                var value = originalAttributes[key];
+                if (value === null) active.removeAttribute(key);
+                else active.setAttribute(key, value);
+            });
+            originalAttributes = null;
+        }
+
+        function restoreBackground() {
+            inertBackground.forEach(function (entry) {
+                if (entry.value === null) entry.element.removeAttribute('inert');
+                else entry.element.setAttribute('inert', entry.value);
+            });
+            inertBackground = [];
+        }
+
+        function isolateDialog(modal) {
+            // Inert siblings at each ancestor level without making the dialog itself
+            // inert, including when the RSVP form belongs to an inline desktop layout.
+            var branch = modal;
+            while (branch && branch !== document.body) {
+                var parent = branch.parentElement;
+                if (!parent) break;
+                Array.from(parent.children).forEach(function (element) {
+                    if (element === branch || /^(SCRIPT|STYLE|LINK)$/.test(element.tagName)) return;
+                    inertBackground.push({ element: element, value: element.getAttribute('inert') });
+                    element.setAttribute('inert', '');
+                });
+                branch = parent;
+            }
+        }
+
+        function sync() {
+            var thanksOpen = thanks && (thanks.classList.contains('sm-open') || thanks.classList.contains('active'));
+            var rsvpOpen = rsvp && rsvp.classList.contains('sm-open');
+            var next = thanksOpen ? thanks : (rsvpOpen ? rsvp : null);
+            if (thanks) thanks.setAttribute('aria-hidden', thanksOpen ? 'false' : 'true');
+            var panel = root.querySelector('#rsvp-panel');
+            if (panel) panel.setAttribute('aria-hidden', rsvpOpen || isEditorPreview() ? 'false' : 'true');
+            if (next !== active) {
+                var wasOpen = Boolean(active);
+                restoreDialog();
+                restoreBackground();
+                if (active) active.classList.remove('ob-dialog-active');
+                active = next;
+                if (active) {
+                    if (!wasOpen) {
+                        returnFocus = document.activeElement;
+                        bodyWasLocked = document.body.classList.contains('lock');
+                        savedOverflow = { value: document.body.style.getPropertyValue('overflow'), priority: document.body.style.getPropertyPriority('overflow') };
+                    }
+                    active.classList.add('ob-dialog-active');
+                    isolateDialog(active);
+                    document.body.classList.add('ll-modal-open', 'lock');
+                    document.body.style.setProperty('overflow', 'hidden');
+                    originalAttributes = { role: active.getAttribute('role'), 'aria-modal': active.getAttribute('aria-modal'), tabindex: active.getAttribute('tabindex') };
+                    active.setAttribute('role', 'dialog');
+                    active.setAttribute('aria-modal', 'true');
+                    active.setAttribute('tabindex', '-1');
+                    var destination = active;
+                    window.requestAnimationFrame(function () {
+                        if (active === destination) (controls(active)[0] || active).focus({ preventScroll: true });
+                    });
+                } else if (wasOpen) {
+                    document.body.classList.remove('ll-modal-open');
+                    if (!bodyWasLocked) document.body.classList.remove('lock');
+                    if (savedOverflow && savedOverflow.value) document.body.style.setProperty('overflow', savedOverflow.value, savedOverflow.priority);
+                    else document.body.style.removeProperty('overflow');
+                    savedOverflow = null;
+                    // A fixed opener is hidden while the dialog is open. Restore its
+                    // visibility before checking whether focus can return to it.
+                    updateSticky();
+                    if (returnFocus && returnFocus.isConnected && returnFocus.getClientRects().length) returnFocus.focus({ preventScroll: true });
+                    returnFocus = null;
+                }
+            }
+            updateSticky();
+        }
+
+        function close(modal) {
+            if (!modal) return;
+            modal.classList.remove('sm-open', 'active');
+            sync();
+        }
+
+        root.addEventListener('click', function (event) {
+            var target = event.target instanceof Element ? event.target : event.target.parentElement;
+            if (!target) return;
+            if (isEditorPreview()) {
+                var photo = null;
+                var portraitFrame = target.closest('.ob-portrait-frame');
+                var coverArea = target.closest('.ob-green .ob-hover');
+                if (portraitFrame) {
+                    photo = root.querySelector('.ob-portrait-window [data-sm-src="BYE_PHOTO_ONE"]');
+                } else if (coverArea && !target.closest('[data-sm-src]')) {
+                    photo = coverArea.querySelector('[data-sm-src="COVER_PHOTO"]');
+                }
+                if (photo) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    photo.click();
+                    return;
+                }
+            }
+            var opener = target.closest('.open-modal');
+            if (opener && rsvp) {
+                event.preventDefault();
+                opener.focus({ preventScroll: true });
+                rsvp.classList.add('sm-open');
+                sync();
+                return;
+            }
+            var details = target.closest('[data-hero-details]');
+            if (details) {
+                // if (isEditorPreview()) return;
+                var calendar = root.querySelector('#calendar');
+                var destination = calendar && !calendar.hidden ? calendar : root.querySelector('#hello');
+                if (destination) {
+                    event.preventDefault();
+                    var focusTarget = destination.querySelector('h2, h3') || destination;
+                    if (!focusTarget.hasAttribute('tabindex')) focusTarget.setAttribute('tabindex', '-1');
+                    focusTarget.focus({ preventScroll: true });
+                    destination.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+                    var hash = '#' + destination.id;
+                    if (window.history && window.history.pushState && window.location.hash !== hash) window.history.pushState(null, '', hash);
+                }
+                return;
+            }
+            var closer = target.closest('.sm-modal-close, .sm-quest-modal-close');
+            if (closer) {
+                event.preventDefault();
+                event.stopPropagation();
+                close(closer.closest('#thankYouMessage, #rsvp'));
+                return;
+            }
+        }, true);
+
+        root.addEventListener('keydown', function (event) {
+            var trigger = event.target.closest('.sm-mob-btn > .open-modal');
+            if (trigger && (event.key === 'Enter' || event.key === ' ')) {
+                event.preventDefault(); trigger.click();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (!active) return;
+            if (event.key === 'Escape') { event.preventDefault(); close(active); return; }
+            if (event.key !== 'Tab') return;
+            var items = controls(active);
+            var first = items[0];
+            var last = items[items.length - 1];
+            if (!first) { event.preventDefault(); active.focus(); }
+            else if (event.shiftKey && (document.activeElement === first || document.activeElement === active || !active.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && (document.activeElement === last || !active.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
+        });
+
+        new MutationObserver(function (records) {
+            if (records.some(function (record) { return record.target === rsvp || record.target === thanks; })) sync();
+        }).observe(root, { subtree: true, attributes: true, attributeFilter: ['class'] });
+        function scheduleSticky() {
+            if (frame !== null) return;
+            frame = window.requestAnimationFrame(function () { frame = null; updateSticky(); });
+        }
+        window.addEventListener('scroll', scheduleSticky, { passive: true });
+        window.addEventListener('resize', scheduleSticky, { passive: true });
+        function changeViewport() {
+            sync();
+        }
+        if (mobile.addEventListener) mobile.addEventListener('change', changeViewport);
+        else mobile.addListener(changeViewport);
+        new MutationObserver(function () {
+            if (isEditorPreview()) {
+                if (thanks) thanks.classList.remove('sm-open', 'active');
+            }
+            sync();
+        }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        roots.set(root, { sync: sync });
+        sync();
+    }
+
+    function init() {
+        document.querySelectorAll('main.sm-yellow-blue [data-sm-text="GROOM"], main.sm-yellow-blue [data-sm-text="BRIDE"]').forEach(function (name) {
+            var length = name.textContent.trim().length;
+            name.classList.toggle('sm-name-long', length > 10);
+            name.classList.toggle('sm-name-extra-long', length > 24);
+        });
+        document.querySelectorAll('main.sm-yellow-blue').forEach(bindMonogram);
+        // Reference form titles are divs; expose their text as field labels without
+        // changing the host-owned form structure or submission handling.
+        document.querySelectorAll('main.sm-lilac-lime .sm-form__input').forEach(function (input) {
+            var title = input.previousElementSibling;
+            if (title && title.classList.contains('sm-form__block__title')) input.setAttribute('aria-label', title.textContent.trim());
+        });
+        if (window.SMLilacCalendarMotion) document.querySelectorAll('main.sm-yellow-blue').forEach(function (root) { window.SMLilacCalendarMotion.init(root); });
+        document.querySelectorAll('main.sm-yellow-blue').forEach(bindMusic);
+        if (window.SMTimelineMotion) document.querySelectorAll('main.sm-yellow-blue').forEach(function (root) { window.SMTimelineMotion.init(root); });
+        document.querySelectorAll('main.sm-yellow-blue').forEach(initialize);
+        document.querySelectorAll('main.sm-yellow-blue').forEach(installWishEditorBridge);
+    }
+    window.SMYellowBlue = { init: init };
+    window.startAll = function () {
+        var args = arguments;
+        var receiver = this;
+        var result;
+        var delegate = typeof previousStartAll === 'function' ? previousStartAll : window.startAllScripts;
+        if (!sharedStarting && typeof delegate === 'function') {
+            sharedStarting = true;
+            try {
+                prepareNativeCountdown();
+                result = delegate.apply(receiver, args);
+                if (result && typeof result.then === 'function') {
+                    return Promise.resolve(result).then(function (value) {
+                        sharedStarting = false; init(); return value;
+                    }, function (error) { sharedStarting = false; throw error; });
+                }
+                sharedStarting = false;
+            } catch (error) { sharedStarting = false; throw error; }
+        }
+        init();
+        return result;
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+    else init();
+
+
+    document.querySelectorAll('.ob-stage .ob-piece').forEach(piece => {
+        piece.addEventListener('touchstart', () => {
+            piece.classList.add('is-touching');
+        }, { passive: true });
+
+        piece.addEventListener('touchend', () => {
+            piece.classList.remove('is-touching');
+        });
+
+        piece.addEventListener('touchcancel', () => {
+            piece.classList.remove('is-touching');
+        });
+    });
+
+})(window, document);
+
+
+

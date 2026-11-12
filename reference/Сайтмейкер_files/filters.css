@@ -1,0 +1,68 @@
+/* Constructor filter panel. No selectors outside #filterTpl and the filter component. */
+#filterTpl .sm-template-filters {margin:12px 0 18px;min-width:0;color:#57434a}
+#filterTpl .sm-template-filters [hidden] {display:none!important}
+#filterTpl .sm-template-filters * {box-sizing:border-box}
+#filterTpl .sm-template-filters button {font-family:inherit;cursor:pointer;border:0;box-shadow:none;outline:0;letter-spacing:normal;text-transform:none;color:inherit}
+#filterTpl .sm-template-filters h3 {margin:0;font-size:14px;font-weight:600;line-height:1.4}
+#filterTpl .sm-filters-heading,#filterTpl .sm-filters-tools,#filterTpl .sm-results-heading {display:flex;align-items:center;justify-content:space-between;gap:8px}
+#filterTpl .sm-filters-heading>button,#filterTpl .sm-filters-tools button {background:#f6eef2;border-radius:6px;padding:6px 8px;font-size:11px}
+#filterTpl .sm-filters-tools {margin:8px 0;font-size:11px}
+#filterTpl .sm-filters-tools>div {display:flex;gap:5px;flex-shrink:0}
+#filterTpl .sm-template-filters button:focus-visible {text-decoration:underline;background-color:#eed4de;color:#4d2c38}
+#filterTpl .sm-collections {display:flex;gap:10px;overflow:auto;max-width:100%;padding-bottom:6px;scroll-snap-type:x proximity;overscroll-behavior:contain;scrollbar-width:thin}
+#filterTpl .sm-collection {flex:0 0 160px;width:160px;min-width:0;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;background:#f1e5e8;text-align:start;padding:0;scroll-snap-align:start}
+#filterTpl .sm-collection img,#filterTpl .sm-collection video {display:block;width:100%;height:120px;object-fit:cover;object-position:top;flex:none}
+#filterTpl .sm-collection-caption {width:100%;flex:1;display:flex;align-items:center;justify-content:space-between;gap:7px;padding:9px 10px;min-height:58px;font-size:12px;line-height:1.35;font-weight:600;overflow-wrap:anywhere}
+#filterTpl .sm-collection-caption small {display:block;margin-top:4px;font-size:10px;font-weight:400}
+#filterTpl .sm-filter-check {visibility:hidden;flex:none}
+#filterTpl [aria-pressed=true] .sm-filter-check {visibility:visible}
+#filterTpl .sm-collection[aria-pressed=true] .sm-collection-caption {background:#704853;color:#fff}
+#filterTpl .sm-collections.is-expanded {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-height:300px;overflow:auto;scroll-snap-type:none}
+#filterTpl .sm-collections.is-expanded .sm-collection {width:100%;flex-direction:row}
+#filterTpl .sm-collections.is-expanded img,#filterTpl .sm-collections.is-expanded video {width:60px;height:80px}
+#filterTpl .sm-collections.is-expanded .sm-collection-caption {min-height:80px;font-size:11px}
+#filterTpl .sm-colors-heading h3 {font-size:12px;font-weight:400}
+#filterTpl .sm-colors {display:flex;gap:8px;overflow:auto;max-width:100%;padding:1px 0 6px;overscroll-behavior:contain;scrollbar-width:thin}
+#filterTpl .sm-color {flex:0 0 70px;min-width:0;padding:0 0 4px;display:flex;flex-direction:column;gap:4px;background:#fff;border-radius:8px;font-size:10px;line-height:1.4;text-align:center;overflow-wrap:anywhere}
+#filterTpl .sm-palette {position:relative;display:block;height:38px;width:100%;overflow:hidden;border-radius:7px;background:var(--shade-light)}
+#filterTpl .sm-palette i {position:absolute;display:block;width:42%;height:60px;top:-8px;transform:rotate(24deg)}
+#filterTpl .sm-palette i:nth-child(1) {left:-9%;background:var(--shade-deep)}
+#filterTpl .sm-palette i:nth-child(2) {left:30%;background:var(--shade-mid)}
+#filterTpl .sm-palette i:nth-child(3) {left:69%;background:var(--shade-light)}
+#filterTpl .sm-palette .sm-filter-check {position:absolute;inset:0;display:grid;place-items:center;background:#2a1b223d;color:#fff;font-size:17px}
+#filterTpl .sm-color[aria-pressed=true] {background:#704853;color:#fff}
+#filterTpl .sm-selected-filters {display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+#filterTpl .sm-selected-filters:empty {display:none}
+#filterTpl .sm-selected-filters button {display:flex;align-items:center;gap:7px;max-width:100%;padding:5px 8px;background:#f5eaf0;color:#77424f;border-radius:6px;font-size:11px;text-align:start;overflow-wrap:anywhere}
+#filterTpl .sm-results-heading {margin-top:12px;font-size:12px}
+#filterTpl .sm-template-filters p {margin:7px 0 0;font-size:12px;line-height:1.5}
+
+@media(max-width:420px) {
+ #filterTpl .sm-collections.is-expanded {grid-template-columns:minmax(0,1fr)}
+ #filterTpl .sm-filters-heading {align-items:flex-start}
+ #filterTpl .sm-filters-tools {flex-wrap:wrap}
+ #filterTpl .sm-collection {flex-basis:144px;width:144px}
+ #filterTpl .sm-results-heading {align-items:flex-start;flex-wrap:wrap}
+}
+
+#filterTpl .sm-panel-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#filterTpl .sm-panel-title .ct-title{font-size:24px;line-height:1.2;margin:0}
+#filterTpl .sm-panel-title button{flex:none;border:0;border-radius:6px;padding:7px 9px;background:#f6eef2;color:#704853;font:inherit;font-size:11px;cursor:pointer}
+#filterTpl .sm-panel-intro{font-size:12px;line-height:1.6;color:#8a757d;margin:8px 0 0}
+#filterTpl .sm-design-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:21px 14px;margin-top:16px}
+#filterTpl .sm-design-card{min-width:0}
+#filterTpl .sm-design-thumb{display:block;position:relative;width:100%;aspect-ratio:.72;padding:0;overflow:hidden;background:#f5f1ee;border-radius:9px}
+#filterTpl .sm-design-thumb img,#filterTpl .sm-design-thumb video{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+#filterTpl .sm-design-name{font-size:12px;line-height:1.5;margin:9px 0 3px;color:#292729;font-weight:600}
+#filterTpl .sm-design-meta{font-size:10px;line-height:1.5;color:#898087;margin:0}
+#filterTpl .sm-design-premium{position:absolute;inset:9px auto auto 9px;border-radius:4px;padding:4px 6px;background:#765469;color:#fff;font-size:8px;letter-spacing:.05em}
+#filterTpl .sm-design-card.is-active .sm-design-thumb{outline:2px solid #c9a5b1;outline-offset:2px}
+#filterTpl .sm-design-swatches{display:flex;align-items:center;gap:2px;flex-wrap:wrap;margin:4px -4px 2px}
+#filterTpl .sm-design-swatches button{display:grid;place-items:center;flex:none;width:32px;height:36px;padding:0;border:0;border-radius:9px;background:transparent;position:relative}
+#filterTpl .sm-swatch-dot{display:block;width:24px;height:24px;background:var(--swatch);border-radius:50%}
+#filterTpl .sm-design-swatches button:hover,#filterTpl .sm-design-swatches button:focus-visible{background:#f0e5eb}
+#filterTpl .sm-design-swatches button:focus-visible:after{content:'';position:absolute;bottom:0;width:14px;height:2px;background:#795461;border-radius:2px}
+/* The legacy mobile header hides Back and absolutely positions Close. Keep this panel's own header row. */
+#filterTpl .ct-panel_header-controls{position:static!important;inset:auto;width:100%;margin-bottom:20px;align-items:center}
+#filterTpl .ct-panel_back{display:flex!important}
+#filterTpl[dir=rtl] .ct-panel_back:before{transform:rotate(180deg)}

@@ -1,0 +1,14 @@
+$(function () {
+    var query = new URLSearchParams(window.location.search);
+    if (!query.has('successPayment')) {
+        return;
+    }
+
+    if (typeof _ym !== 'undefined' && _ym > 0) {
+        $(document).on('yacounter' + _ym + 'inited', function () {
+            ym(_ym, 'reachGoal', 'sitemakerBuy');
+            alert(smT('ln-checkout-success'));
+            window.location.href = '/sitemaker/';
+        });
+    }
+});

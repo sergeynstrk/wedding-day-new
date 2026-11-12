@@ -1,0 +1,14 @@
+$(function () {
+    var query = new URLSearchParams(window.location.search);
+    if (!query.has('newReg')) {
+        return;
+    }
+
+    if (_ym > 0) {
+        $(document).on('yacounter' + _ym + 'inited', function () {
+            ym(_ym, 'reachGoal', 'sitemakerReg');
+            ym(_ym, 'reachGoal', 'sitemakerRegTg');
+            window.location.href = '/sitemaker/';
+        });
+    }
+});

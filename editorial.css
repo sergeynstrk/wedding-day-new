@@ -1,0 +1,449 @@
+/* Mixed found-paper typography; the body copy stays quiet and readable. */
+:root {
+  --scissor-a: polygon(1% 7%, 18% 1%, 39% 4%, 62% 0, 81% 4%, 98% 1%, 100% 30%, 97% 61%, 99% 95%, 76% 100%, 51% 96%, 29% 100%, 0 95%, 2% 66%, 0 34%);
+  --scissor-b: polygon(0 4%, 23% 0, 49% 6%, 72% 2%, 100% 5%, 98% 27%, 100% 58%, 96% 98%, 72% 95%, 45% 100%, 18% 96%, 2% 100%, 0 70%, 3% 39%);
+  --scissor-c: polygon(3% 1%, 28% 5%, 55% 0, 78% 3%, 98% 0, 96% 30%, 100% 55%, 97% 100%, 79% 97%, 53% 100%, 26% 94%, 0 98%, 2% 73%, 0 46%);
+}
+body { font-family: 'Montserrat', Arial, sans-serif; font-size: 16px; font-weight: 400; }
+p { text-wrap: pretty; }
+.magazine-canvas { isolation: isolate; }
+.skip-link { position: fixed; left: 16px; top: -80px; padding: 12px 18px; background: #fff6e7; color: #30261f; z-index: 1001; }
+.skip-link:focus { top: 12px; }
+.section-heading, .venue-heading { font-size: inherit; font-weight: inherit; line-height: 1.5; }
+.edition-ribbon { font-family: 'Oswald', sans-serif; font-size: 11px; }
+.hero-section { padding-bottom: 18px; margin-bottom: 35px; }
+.hero-huge-title { align-items: center; gap: 5px; padding: 10px 0 14px; margin-bottom: 22px; }
+.giant-char { flex: 1 1 0; font-size: clamp(46px, 9.8vw, 105px); line-height: 1.1; padding: 8px 2px 15px; text-shadow: none; filter: none; border: 0; letter-spacing: -.045em; }
+.char-c1 { font-family: 'Playfair Display', Georgia, serif; color: #f7e9d7; background: #923f35; clip-path: var(--scissor-a); transform: rotate(-7deg); font-weight: 900; }
+.char-c2 { font-family: 'Oswald', Impact, sans-serif; color: #292722; background: #e8ddc9; clip-path: var(--scissor-c); transform: rotate(4deg) translateY(5px); font-size: clamp(42px, 8.8vw, 94px); }
+.char-c3 { font-family: 'Cormorant Garamond', Georgia, serif; color: #f5ebd9; background: #3f6269; clip-path: var(--scissor-b); font-style: italic; font-size: clamp(52px, 11.2vw, 119px); transform: rotate(-4deg) translateY(-3px); }
+.char-c4 { font-family: 'Montserrat', Arial, sans-serif; color: #843d33; background: #dfc586; font-size: clamp(35px, 8vw, 85px); font-weight: 900; clip-path: var(--scissor-c); transform: rotate(6deg); }
+.char-c5 { font-family: 'Playfair Display', Georgia, serif; background: #ab5143; color: #f9ead7; clip-path: var(--scissor-b); transform: rotate(-6deg) translateY(7px); font-size: clamp(44px, 9vw, 96px); }
+.char-c6 { font-family: 'Courier Prime', 'Courier New', monospace; background: #e9dfcc; color: #302e28; clip-path: var(--scissor-a); transform: rotate(5deg) translateY(-4px); font-size: clamp(47px, 10.1vw, 108px); }
+.char-c7 { font-family: 'Oswald', Impact, sans-serif; background: #76806a; color: #fff1dc; clip-path: var(--scissor-c); transform: rotate(-4deg); font-size: clamp(43px, 9.1vw, 97px); }
+.hero-huge-title { filter: drop-shadow(1px 2px 0 #51382738) drop-shadow(2px 5px 3px #51382720); }
+.scrap-clip { filter: drop-shadow(0 1px 0 #48311f45) drop-shadow(2px 3px 1px #48311f25); }
+.clip-body { background-image: linear-gradient(135deg, #ffffff0d, #5e3d1e0a); padding-block: 7px; }
+.cut-scissor-1 { clip-path: var(--scissor-a); }
+.cut-scissor-2 { clip-path: var(--scissor-b); }
+.cut-scissor-3 { clip-path: var(--scissor-c); }
+.cut-scissor-4 { clip-path: polygon(1% 2%, 30% 6%, 62% 0, 98% 3%, 100% 36%, 96% 74%, 99% 98%, 64% 95%, 35% 100%, 0 96%, 3% 60%); }
+.cut-scissor-5 { clip-path: polygon(0 6%, 20% 0, 43% 5%, 68% 1%, 99% 4%, 97% 39%, 100% 70%, 97% 96%, 78% 100%, 48% 95%, 21% 99%, 2% 95%, 0 62%, 2% 28%); }
+.bg-white-serif { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; }
+.bg-black-sans { font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; }
+.bg-burgundy-rich { font-family: 'Oswald', sans-serif; background-color: #8b3c32; }
+.bg-blue-powder { font-family: 'Oswald', sans-serif; background-color: #446771; color: #fff4e5; }
+.bg-news-typewriter { font-family: 'Courier Prime', 'Courier New', monospace; color: #342b25; font-size: 15px; }
+.hero-top-row .scrap-clip:first-child { transform: rotate(-5deg) !important; }
+.hero-top-row .scrap-clip:last-child { transform: rotate(4deg) translateY(5px) !important; }
+.hero-top-row .bg-black-sans { font-family: 'Montserrat', sans-serif; background: #342d28; color: #f8ecdb; font-size: 25px !important; padding: 4px 10px !important; }
+.hero-names-row { gap: 12px; }
+.hero-names-row .scrap-clip:first-child .clip-body { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 700; font-size: 43px !important; padding: 4px 16px 9px !important; }
+.hero-names-row .scrap-clip:nth-child(2) .clip-body { font-family: 'Caveat', cursive; font-size: 28px !important; background: transparent; color: #77342d; }
+.hero-names-row .scrap-clip:last-child .clip-body { font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; font-size: 34px !important; padding: 8px 18px !important; background: #426670; }
+.hero-invitation-note { margin-top: 12px !important; padding-right: 5px; }
+.hero-invitation-note .cute-scribble { font-size: 27px; }
+.couple-photo-inner { filter: drop-shadow(1px 2px 0 #48311f38) drop-shadow(5px 9px 5px #48311f25); }
+.couple-photo-frame { margin-bottom: 15px; }
+.hero-details { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px 190px 0 0; position: relative; z-index: 2; }
+.hero-details time { font-family: 'Oswald', sans-serif; font-size: 24px; background: #e8d5aa; padding: 5px 12px; transform: rotate(-2deg); clip-path: var(--scissor-b); }
+.hero-details > span { font-size: 13px; line-height: 1.6; }
+.hero-details a { display: inline-flex; align-items: center; gap: 20px; min-height: 44px; color: #603227; text-decoration-thickness: 1px; text-underline-offset: 5px; font-size: 14px; font-weight: 600; }
+.hero-details a span { font-size: 26px; }
+.wedding-keepsakes { position: absolute; width: 235px; height: 235px; right: -35px; bottom: -22px; z-index: 3; pointer-events: none; transform: rotate(9deg); }
+.wedding-keepsakes img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(4px 9px 6px #51351e35); }
+.venue-card-inner { border-bottom: 1px solid #795b444d; padding-bottom: 28px; }
+.venue-card-inner > p { font-family: 'Montserrat', Arial, sans-serif; font-size: 15px !important; line-height: 1.85 !important; }
+.venue-photo-wrapper { padding: 5px 5px 16px; filter: drop-shadow(2px 4px 2px #49362b2b); clip-path: var(--scissor-b); }
+.venue-heading .clip-body { font-family: 'Playfair Display', Georgia, serif; text-transform: none; }
+.btn-paper-scrap { min-height: 46px; font-size: 16px; padding-inline: 18px; font-weight: 600; }
+.btn-paper-burgundy { clip-path: var(--scissor-b); background: #84392f; }
+.btn-paper-blue { clip-path: var(--scissor-c); }
+.timing-header-box { margin-bottom: 20px; }
+.timing-header-box > .section-heading { display: inline-block; }
+.timing-header-box > div:nth-child(2) .clip-body { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 31px !important; background: #e9dfcd; color: #853d33; }
+.ll-timeline { row-gap: 20px; }
+.sm-timing__item { gap: 10px; }
+.sm-timing__item.item-2, .sm-timing__item.item-4 { margin-top: -35px; }
+.timing-text-box { gap: 7px; }
+.sm-timing__item.item-2 .bg-white-serif { font-family: 'Montserrat', sans-serif; font-size: 21px !important; background: #d8c48e; }
+.sm-timing__item.item-3 .bg-white-serif { font-family: 'Oswald', sans-serif; font-size: 27px !important; }
+.sm-timing__item.item-4 .bg-white-serif { font-family: 'Courier Prime', monospace; font-size: 22px !important; }
+.b1 { color: #fff4e5; background: #446771; }.b3 { background: #dec580; color: #653023; }.b4 { background: #53694b; color: #fff6e6; }
+.dresscode-section { clip-path: var(--scissor-a); padding: 35px 27px; transform: rotate(.7deg); }
+.dresscode-section .section-heading > .scrap-clip:last-child .clip-body { font-family: 'Courier Prime', monospace; background: #d4bd7b; color: #3d3226; font-size: 19px !important; }
+.dresscode-section > p { font-size: 15px !important; line-height: 1.85 !important; }
+.dress-note-box p { font-size: 14px !important; line-height: 1.7 !important; }
+.palette-swatches { gap: 15px; }
+.swatch-name { font-size: 12px; }
+.swatch-card { padding: 7px 7px 10px; }
+.swatch-card:nth-child(2) { transform: rotate(5deg) translateY(6px); }
+.swatch-card:nth-child(4) { transform: rotate(7deg) translateY(4px); }
+.manor-sticker-inner { font-size: 14px; line-height: 1.75; }
+.rsvp-section { transform: none; padding: 30px; background: #eee5d4; border-top: 2px dashed #705746; }
+.rsvp-input { min-height: 48px; font-size: 16px; border-radius: 0; }
+.choice-box, .chip-box { display: block; min-height: 46px; font-size: 14px; line-height: 1.5; }
+.rsvp-group { margin-bottom: 25px; }
+.rsvp-group .bg-news-typewriter { font-family: 'Oswald', sans-serif; font-size: 17px; }
+.btn-submit-collage { min-height: 54px; font-size: 22px; letter-spacing: .04em; background: #84392f; }
+.scrap-clip:hover { transform: none; }
+@media (hover: hover) {
+  a:hover { text-decoration-thickness: 2px; }
+  .btn-paper-scrap:hover { transform: translateY(-2px) rotate(0); }
+}
+@media (max-width: 780px) {
+  .magazine-canvas { padding-inline: 22px; }
+  .hero-huge-title { gap: 3px; }
+  .giant-char { font-size: clamp(36px, 10.4vw, 79px); padding: 7px 1px 12px; }
+  .char-c2 { font-size: clamp(33px, 9.6vw, 72px); }
+  .char-c3 { font-size: clamp(40px, 11.3vw, 86px); }
+  .char-c4 { font-size: clamp(29px, 8.6vw, 65px); }
+  .char-c5 { font-size: clamp(33px, 9.6vw, 72px); }
+  .char-c6 { font-size: clamp(36px, 10.4vw, 79px); }
+  .char-c7 { font-size: clamp(33px, 9.6vw, 72px); }
+  .hero-names-row .scrap-clip:first-child .clip-body { font-size: 34px !important; padding: 3px 10px 7px !important; }
+  .hero-names-row .scrap-clip:last-child .clip-body { font-size: 28px !important; padding: 7px 13px !important; }
+  .hero-invitation-note .cute-scribble { font-size: 23px !important; }
+  .hero-details { padding-right: 115px; padding-top: 15px; gap: 5px; }
+  .hero-details time { font-size: 19px; }
+  .hero-details > span { font-size: 12px; }
+  .hero-details a { font-size: 12px; gap: 8px; }
+  .wedding-keepsakes { width: 165px; height: 165px; right: -20px; bottom: 0; }
+  .ll-timeline { row-gap: 30px; }
+  .sm-timing__item.item-2, .sm-timing__item.item-4 { margin-top: 0; }
+  .timing-icon-cutout { width: 58px; height: 58px; right: 0; opacity: 1; }
+  .item-top-row { padding-right: 68px; }
+  .timing-text-box { padding-right: 0; }
+  .timing-text-box .clip-body { max-width: 100%; }
+  .dresscode-section { padding: 28px 18px; }
+  .dresscode-section .section-heading > .scrap-clip:last-child { margin-top: 9px; }
+  .dress-note-box p { font-size: 13px !important; }
+  .palette-swatches { gap: 9px; }
+  .swatch-color { width: 43px; }
+  .swatch-name { font-size: 10px; }
+  .swatch-card { padding: 5px; }
+  .rsvp-section { padding: 24px 18px; }
+  .edition-ribbon { font-size: 10px; }
+}
+@media (max-width: 360px) {
+  .magazine-canvas { padding-inline: 15px; }
+  .hero-section { column-gap: 8px; }
+  .hero-names-row .scrap-clip:first-child .clip-body { font-size: 29px !important; }
+  .hero-names-row .scrap-clip:last-child .clip-body { font-size: 25px !important; }
+  .hero-details { padding-right: 98px; }
+  .hero-details time { font-size: 16px; }
+  .wedding-keepsakes { width: 140px; height: 140px; }
+  .palette-swatches { gap: 5px; }
+  .swatch-color { width: 39px; }
+}
+/* Fixed-depth scissor cuts keep the edges irregular without biting into text. */
+:root {
+  --scissor-a: polygon(1px 4px, 18% 1px, 39% 3px, 62% 0, 81% 4px, calc(100% - 2px) 1px, 100% 30%, calc(100% - 2px) 61%, calc(100% - 1px) calc(100% - 3px), 76% 100%, 51% calc(100% - 3px), 29% 100%, 0 calc(100% - 4px), 2px 66%, 0 34%);
+  --scissor-b: polygon(0 3px, 23% 0, 49% 5px, 72% 2px, 100% 4px, calc(100% - 2px) 27%, 100% 58%, calc(100% - 3px) calc(100% - 1px), 72% calc(100% - 4px), 45% 100%, 18% calc(100% - 2px), 2px 100%, 0 70%, 3px 39%);
+  --scissor-c: polygon(3px 1px, 28% 4px, 55% 0, 78% 3px, calc(100% - 1px) 0, calc(100% - 3px) 30%, 100% 55%, calc(100% - 2px) 100%, 79% calc(100% - 3px), 53% 100%, 26% calc(100% - 4px), 0 calc(100% - 1px), 2px 73%, 0 46%);
+}
+.cut-scissor-4 { clip-path: var(--scissor-b); }
+.cut-scissor-5 { clip-path: var(--scissor-c); }
+.hero-section > .hero-invitation-note { grid-column: 1; grid-row: 4; }
+.hero-section > .couple-photo-frame { grid-column: 2; grid-row: 3 / 5; }
+.hero-section > .hero-details { grid-column: 1 / -1; grid-row: 5; }
+.hero-section > .wedding-keepsakes { grid-column: auto; grid-row: auto; }
+.hero-huge-title .giant-char:nth-child(odd) { clip-path: polygon(2% 5%, 29% 1%, 58% 4%, 96% 0, 100% 32%, 97% 64%, 99% 96%, 68% 100%, 36% 96%, 0 100%, 2% 67%, 0 35%); }
+.hero-huge-title .giant-char:nth-child(even) { clip-path: polygon(0 2%, 27% 5%, 61% 0, 99% 3%, 97% 41%, 100% 75%, 96% 100%, 71% 96%, 39% 100%, 2% 96%, 0 60%); }
+.dresscode-section { clip-path: var(--scissor-a); }
+@media (max-width: 780px) {
+  .wedding-keepsakes { right: 3px; width: 145px; height: 145px; }
+  .hero-section > .hero-invitation-note .cute-scribble { font-size: 21px !important; }
+  .palette-swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .swatch-card { min-width: 0; padding: 4px 4px 8px; }
+  .swatch-color { width: 100%; height: 48px; }
+  .swatch-name { font-size: 9px; }
+  .venue-photo-wrapper { float: none; width: 100%; max-width: 360px; margin: 18px auto; }
+  .venue-photo-wrapper img { height: 190px; }
+  .venue-card-inner > p { font-size: 14px !important; }
+  .rsvp-section .bg-white-serif { font-size: 16px !important; }
+}
+
+/* Burgundy tabletop, powder blue accents, tactile paper only on the cutouts. */
+:root {
+  --burgundy: #643e49;
+  --burgundy-rich: #795360;
+  --burgundy-deep: #493139;
+  --powder-blue: #b9cbd2;
+  --powder-blue-light: #e8edef;
+  --powder-blue-dark: #b9cbd2;
+  --ink-soft: #eee6df;
+  --cut-paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .12 0 0 0 0 .08 0 0 0 0 .06 0 0 0 .19 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+body { background: #484644; color: #f0e9e1; }
+.magazine-canvas { background: #681427; box-shadow: 0 8px 35px #241d2030; }
+.edition-ribbon { color: #d9cbc8; border-bottom-color: #e9ddd13b; }
+.edition-ribbon .cute-tag { color: #c5d3d8; }
+.giant-char, .clip-body { position: relative; isolation: isolate; }
+.giant-char::after, .clip-body::after {
+  content: ''; position: absolute; inset: 0; background-image: var(--cut-paper-grain);
+  background-size: 180px 180px; opacity: .6; mix-blend-mode: multiply; pointer-events: none;
+}
+.giant-char { background-image: linear-gradient(135deg, #fff8e518, #48302112); }
+.char-c1 { background-color: #eae4d9; color: #643e49; }
+.char-c2 { background-color: #b9cbd2; color: #3d3338; }
+.char-c3 { background-color: #92717a; color: #f5efe6; }
+.char-c4 { background-color: #e6e1d8; color: #643e49; }
+.char-c5 { background-color: #cbd6d9; color: #643e49; }
+.char-c6 { background-color: #f1ece3; color: #393135; }
+.char-c7 { background-color: #aabfc8; color: #493139; }
+.hero-top-row .bg-black-sans { background-color: #b9cbd2; color: #493139; }
+.hero-names-row .scrap-clip:last-child .clip-body { background-color: #b9cbd2; color: #493139; }
+.hero-names-row .scrap-clip:nth-child(2) .clip-body { color: #c9d6db; }
+.hero-invitation-note .cute-scribble, .cute-scribble { color: #e8ded5; }
+.cute-scribble-blue { color: #c5d3d8; }
+.hero-details time { background: #b9cbd2; color: #493139; }
+.hero-details > span { color: #ddd3cc; }
+.hero-details a { color: #c9d8de; }
+.bg-blue-powder { background-color: #b9cbd2; color: #493139; }
+.bg-white-serif { color: #393135; }
+.bg-burgundy-rich { background-color: #79535e; color: #f5eee6; }
+.bg-news-typewriter { color: #3c3534; }
+.postal-seal-round { background-color: #d3dfe2; color: #643e49; border-color: #643e49; }
+.postal-seal-round .stamp-date { color: #643e49; }
+.venue-card-inner { border-bottom-color: #e2d5cd38; }
+.venue-card-inner > p { color: #eee6df !important; }
+.venue-card-inner .cute-scribble { color: #c5d3d8; }
+.btn-paper-burgundy { background: #b9cbd2; color: #493139; text-shadow: none; }
+.btn-paper-blue { background: #e6e1d8; color: #493139; text-shadow: none; }
+.btn-paper-scrap:hover { color: #493139; }
+.ob-timeline-line > svg { fill: #b6c9d0; }
+.ob-timeline-dot { background: #ccdbe0; box-shadow: 0 0 0 4px #8c6d78; }
+.timing-text-box .cute-scribble { color: #e8dcd5; }
+.timing-text-box .cute-scribble-blue { color: #c5d3d8; }
+.b1, .b4 { background: #b9cbd2; color: #493139; }
+.b2 { background: #eae4d9; color: #493139; }
+.b3 { background: #cbb8bb; color: #493139; }
+.sm-timing__item.item-2 .bg-white-serif { background: #d1dcdf; color: #493139; }
+.timing-header-box > div:nth-child(2) .clip-body { color: #643e49; }
+.timing-icon-cutout { background: #e4dfd5; clip-path: var(--scissor-b); padding: 8px; }
+.dresscode-section, .rsvp-section { --ink-soft: #3c3534; color: #3c3534; }
+.dresscode-section { padding-top: 160px; }
+.dresscode-section .section-heading > .scrap-clip:last-child .clip-body { background: #b9cbd2; color: #493139; }
+.dresscode-section .cute-scribble, .rsvp-section .cute-scribble { color: #643e49; }
+.manor-sticker-inner { background: #d2dde0; color: #40363a; }
+.washi-blue { background: #bdd9eacc; }
+.washi-burgundy { background: #dacbd0bb; }
+.rsvp-section { border-top-color: #a99096; }
+.rsvp-section::after { content: none; }
+.rsvp-group .clip-body { color: #3c3534; }
+.choice-btn input:checked + .choice-box { background: #643e49; color: #f3ece3; border-color: #643e49; }
+.chip-btn input:checked + .chip-box { background: #b9cbd2; color: #493139; border-color: #8ca4af; text-shadow: none; }
+.btn-submit-collage { background: #643e49; color: #f3ece3; }
+.btn-submit-collage:hover { background: #76505d; }
+.farewell-footer .cute-scribble { color: #c9d8de !important; }
+.wedding-keepsakes { right: 0; bottom: -10px; width: 225px; height: 190px; transform: none; }
+.wedding-keepsakes img { filter: none; }
+.flatlay-bouquet { position: absolute; top: -12px; right: 20px; width: 230px; height: 185px; pointer-events: none; transform: rotate(-8deg); }
+.flatlay-bouquet img { width: 100%; height: 100%; object-fit: contain; }
+.modal-box { color: #3c3534; --ink-soft: #3c3534; }
+.modal-box .cute-scribble { color: #643e49; }
+@media (max-width: 780px) {
+  .magazine-canvas { box-shadow: none; }
+  .wedding-keepsakes { right: 0; bottom: -8px; width: 145px; height: 130px; }
+  .hero-details { padding-right: 100px; }
+  .hero-details time { position: relative; z-index: 1; }
+  .dresscode-section { padding-top: 130px; }
+  .flatlay-bouquet { top: -3px; right: 12px; width: 170px; height: 145px; }
+  .timing-icon-cutout { padding: 5px; }
+}
+@media (max-width: 360px) {
+  .wedding-keepsakes { width: 120px; height: 115px; right: -2px; }
+  .hero-details { padding-right: 92px; }
+}
+.num-cutout-box { background-image: var(--cut-paper-grain); background-size: 180px 180px; }
+/* Editorial fashion references supplied with the project. */
+.dress-figure-img { height: 320px; object-fit: contain; background: #ebe7df; padding: 8px; clip-path: var(--scissor-c); }
+.dress-note-box:nth-child(1) .dress-figure-img { transform: rotate(-1.5deg); }
+.dress-note-box:nth-child(2) .dress-figure-img { transform: rotate(1.8deg); }
+.timing-icon-cutout { object-fit: contain; }
+@media (max-width: 780px) {
+  .dress-figure-img { height: 230px; padding: 5px; }
+}
+@media (max-width: 360px) {
+  .dress-figure-img { height: 205px; }
+}
+
+/* Neutral ivory unifies the paper layers; blue is reserved for accents. */
+:root { --paper-surface: #eae5dc; --paper-light: #f1ece4; --paper-ink: #3c3534; }
+.dresscode-section, .rsvp-section, .modal-box { background-color: var(--paper-surface); background-image: none; color: var(--paper-ink); }
+.clip-body.bg-white-serif, .clip-body.bg-news-typewriter { background-color: var(--paper-light); }
+.couple-photo-inner, .swatch-card { background-color: #ece6dc; }
+.photo-caption-scrap { color: #68454e; }
+.rsvp-input, .choice-box, .chip-box { background-color: #f3efe8; border-color: #c4bbb4; color: var(--paper-ink); }
+.manor-sticker-inner { background-color: #d1dcde; }
+.hero-details time { background-color: #e4ded5; color: #563d45; }
+.hero-top-row .bg-black-sans { background-color: #d8dfe0; }
+.char-c3 { background-color: #c4afb3; color: #47343b; }
+.venue-heading .bg-burgundy-rich, .dresscode-section .bg-burgundy-rich, .rsvp-section .bg-burgundy-rich { background-color: #79535e; }
+.btn-paper-burgundy { background-color: #b9cbd2; color: #3f3439; }
+.btn-paper-blue { background-color: #e6e1d8; color: #4b3b41; }
+:focus-visible { outline-color: #90abb8; }
+
+/* Bratsevo is drawn from the supplied photograph in the timing icon style. */
+.venue-illustration { background: #eee8dd; padding: 10px; }
+.venue-illustration img { height: 210px; object-fit: contain; border: 0; clip-path: none; }
+.item-1 .timing-icon-cutout { width: 120px; height: 90px; object-fit: contain; }
+@media (max-width: 780px) {
+  .venue-illustration img { height: 185px; }
+  .item-1 .timing-icon-cutout { width: 78px; height: 60px; }
+  .item-1 .item-top-row { padding-right: 87px; }
+}
+/* The manor illustration sits directly on the collage, without a paper frame. */
+.venue-photo-wrapper.venue-illustration {
+  float: none;
+  width: 100%;
+  max-width: 760px;
+  margin: 28px auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  filter: none;
+  clip-path: none;
+  transform: none;
+}
+.venue-photo-wrapper.venue-illustration img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border: 0;
+  background: transparent;
+  object-fit: contain;
+}
+/* Large tabletop objects occupy dedicated side gutters on wide screens. */
+.magazine-canvas { max-width: 900px; padding: 36px 40px 48px; }
+.hero-section, .venue-card-frame, .timing-section, .decorated-section { position: relative; }
+.decoration-pair { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.decor-object { position: absolute; top: 40px; left: -185px; width: 175px; height: 260px; display: block; object-fit: contain; }
+.decor-object + .decor-object { left: auto; right: -185px; top: 160px; }
+.decor-rings { top: 120px; width: 210px; left: -210px; transform: rotate(-12deg); }
+.decor-envelope { transform: rotate(12deg); }
+.decor-flowers { top: 80px; height: 350px; transform: rotate(-15deg); }
+.decor-key { height: 320px; transform: rotate(18deg); }
+.decor-bow { top: 50px; height: 380px; width: 200px; left: -205px; transform: rotate(-10deg); }
+.decor-hearts { transform: rotate(13deg); }
+.decor-lace { top: 120px; width: 220px; left: -210px; height: 360px; transform: rotate(-8deg); }
+.decor-scissors { transform: rotate(16deg); }
+.decor-pearls { top: 100px; height: 380px; transform: rotate(-14deg); }
+.decor-spool { top: 300px !important; height: 300px; transform: rotate(12deg); }
+.hero-details { padding-right: 0; }
+.flatlay-bouquet { width: 290px; height: 235px; top: -20px; right: 0; }
+.dresscode-section { padding-top: 190px; }
+@media (max-width: 1399px) {
+  .magazine-canvas { max-width: 900px; padding: 30px 38px 40px; }
+  .decoration-pair { position: relative; inset: auto; display: flex; align-items: center; justify-content: space-around; gap: 6px; height: 210px; margin: 8px 0 20px; }
+  .decor-object, .decor-object + .decor-object { position: static; inset: auto; width: 48%; height: 100%; max-width: 280px; }
+  .hero-section > .decoration-pair { grid-column: 1 / -1; grid-row: 6; margin-top: 8px; margin-bottom: 0; }
+  .hero-section > .hero-details { grid-row: 5; }
+  .decorated-section > .decoration-pair { margin-bottom: -15px; }
+  .decor-spool { top: auto !important; }
+  .flatlay-bouquet { width: 230px; height: 210px; }
+  .dresscode-section { padding-top: 165px; }
+}
+@media (max-width: 780px) {
+  .magazine-canvas { padding: 22px 22px 32px; }
+  .decoration-pair { height: 190px; margin-block: 12px 22px; gap: 0; }
+  .decor-object, .decor-object + .decor-object { width: 51%; max-width: none; }
+  .hero-details { padding-right: 0; }
+  .hero-details time { font-size: 22px; }
+  .hero-details > span { font-size: 13px; }
+  .hero-details a { font-size: 14px; }
+  .flatlay-bouquet { width: 220px; height: 200px; top: -12px; }
+  .dresscode-section { padding-top: 165px; }
+}
+@media (max-width: 360px) {
+  .magazine-canvas { padding-inline: 15px; }
+  .decoration-pair { height: 175px; }
+  .hero-details time { font-size: 20px; }
+}
+@media (min-width: 1400px) {
+  .decor-object { width: 200px; left: -205px; }
+  .decor-object + .decor-object { right: -205px; }
+}
+@media (max-width: 780px) {
+  .decor-object { transform: rotate(-6deg); width: 48%; }
+  .decor-object + .decor-object { transform: rotate(6deg); width: 48%; }
+}
+@media (min-width: 1400px) {
+  .decoration-pair .decor-secondary-left { left: -205px; right: auto; top: 480px !important; height: 260px; }
+  .decoration-pair .decor-secondary-right { left: auto; right: -205px; top: 550px !important; height: 300px; }
+  .hero-section .decor-secondary-right { top: 410px !important; }
+  .decorated-section .decor-secondary-left { top: 620px !important; }
+  .decorated-section .decor-secondary-right { top: 720px !important; }
+}
+@media (max-width: 1399px) {
+  .decor-secondary { display: none; }
+}
+.decorated-section > .decoration-pair { z-index: auto; }
+.decor-object { z-index: 2; }
+.decor-lace { z-index: 0; }
+.dresscode-section { z-index: 1; }
+@media (min-width: 1400px) {
+  .decoration-pair .decor-lace { width: 240px; left: -185px; }
+}
+@media (max-width: 780px) {
+  .decoration-pair { display: block; height: 275px; margin-block: 16px 24px; }
+  .decor-object { position: absolute; left: 0; top: 0; width: 65%; height: 215px; max-width: 240px; }
+  .decor-object + .decor-object { position: absolute; left: auto; right: 0; top: 75px; width: 60%; height: 190px; max-width: 225px; }
+  .decor-object.decor-secondary { display: none; }
+  .decor-spool { top: 75px !important; }
+}
+@media (max-width: 780px) {
+  .flatlay-bouquet { transform: none; right: 8px; width: 200px; }
+}
+
+/* Keep the original paper width; enlarge objects in the surrounding space. */
+@media (min-width: 1400px) {
+  .decoration-pair .decor-object { width: 270px; height: 330px; left: -275px; right: auto; transform: rotate(-4deg); }
+  .decoration-pair .decor-object + .decor-object { left: auto; right: -275px; transform: rotate(4deg); }
+  .decoration-pair .decor-object.decor-secondary-left { left: -275px; right: auto; height: 300px; }
+  .decoration-pair .decor-object.decor-secondary-right { left: auto; right: -275px; height: 330px; }
+  .decoration-pair .decor-lace { left: -255px; width: 295px; }
+}
+@media (min-width: 781px) and (max-width: 1399px) {
+  .decoration-pair { height: 280px; }
+  .decoration-pair .decor-object { max-width: 360px; }
+}
+@media (max-width: 780px) {
+  .decoration-pair { height: 310px; }
+  .decoration-pair .decor-object { width: 72%; height: 245px; max-width: 280px; }
+  .decoration-pair .decor-object + .decor-object { width: 68%; height: 225px; max-width: 260px; top: 80px; }
+  .decor-spool { top: 80px !important; }
+}
+/* Faint paper fibers and soft local creases, without high-frequency page noise. */
+.magazine-canvas {
+  background-color: #681427;
+  background-image: url('./assets/burgundy-paper.svg');
+  background-size: 100% 1500px;
+  background-repeat: repeat-y;
+}
+/* Program illustrations share the manor's linework and sit directly on the page. */
+.timing-section .sm-timing__item .timing-icon-cutout {
+  width: 140px;
+  height: 110px;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  clip-path: none !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)) !important;
+  object-fit: contain;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.timing-section .sm-timing__item.item-active .timing-icon-cutout {
+  transform: scale(1.06) rotate(0deg);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35)) !important;
+}
+@media (max-width: 780px) {
+  .timing-section .sm-timing__item .timing-icon-cutout { width: 85px; height: 65px; }
+  .timing-section .item-top-row { padding-right: 95px; }
+}

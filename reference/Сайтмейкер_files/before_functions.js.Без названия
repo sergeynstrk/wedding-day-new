@@ -1,0 +1,152 @@
+function translit(word) {
+    var answer = '';
+    var converter = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+        'е': 'e', 'ё': 'e', 'ж': 'zh', 'з': 'z', 'и': 'i',
+        'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+        'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+        'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c', 'ч': 'ch',
+        'ш': 'sh', 'щ': 'sch', 'ь': '', 'ы': 'y', 'ъ': '',
+        'э': 'e', 'ю': 'yu', 'я': 'ya',
+
+        'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D',
+        'Е': 'E', 'Ё': 'E', 'Ж': 'Zh', 'З': 'Z', 'И': 'I',
+        'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N',
+        'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T',
+        'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'C', 'Ч': 'Ch',
+        'Ш': 'Sh', 'Щ': 'Sch', 'Ь': '', 'Ы': 'Y', 'Ъ': '',
+        'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
+    };
+
+    for (var i = 0; i < word.length; ++i) {
+        if (converter[word[i]] == undefined) {
+            answer += word[i];
+        } else {
+            answer += converter[word[i]];
+        }
+    }
+
+    return answer;
+}
+
+
+function reSortFilter(field, desc = false) {
+
+    var result = $(".ct-tpl_selector-item").sort(function (a, b) {
+        var contentA = parseInt($(a).data(field));
+        var contentB = parseInt($(b).data(field));
+        if (!desc) {
+            return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
+        } else {
+            return (contentA < contentB) ? 1 : (contentA > contentB) ? -1 : 0;
+        }
+    });
+    $('.ct-tpl_selector').html(result);
+}
+
+recursiveSearch = function (text, depth) {
+    text = text || "";
+    depth = depth || 0;
+    if (typeof (filter_options[depth]) != 'undefined' && filter_options[depth].length > 0) {
+        for (var i = 0; i < filter_options[depth].length; i++) {
+            if (depth + 1 < filter_options.length)
+                recursiveSearch(text + ((text == "") ? "" : "") + filter_options[depth][i], depth + 1);
+            else
+                possibilities.push(text + filter_options[depth][i]);
+        }
+
+    } else {
+        recursiveSearch(text, depth + 1);
+    }
+}
+
+
+function getFacet(par = -1) {
+    var ch = $('[name="finp[]"]:checked');
+    if (ch.length > 0) {
+        $('.ct-tpl_selector-item').toggleClass('ct-hidden', true);
+        filter_options = [];
+        possibilities = [];
+        $.each(ch, function () {
+            var v = $(this).val();
+            var i = $(this).parents('.ct-menu_wrapper').index() - 1;
+
+            if (!filter_options[i]) {
+                filter_options[i] = [];
+            }
+            filter_options[i].push('[data-f' + v + ']');
+        })
+        recursiveSearch()
+        $.each(possibilities, function (k, v) {
+            $('.ct-tpl_selector-item' + v).toggleClass('ct-hidden', false);
+        })
+        $('#selectTpl .js-filter').toggleClass('active', true);
+    } else {
+        resetAll()
+    }
+    reFacet(par);
+}
+
+function startPresent() {
+    clearTimeout(pres_timer);
+    if ($('.ct-present').length > 0) {
+        pres_timer = setTimeout(function () {
+            if (present_view !== false) {
+                $('.ct-present').click();
+            }
+        }, 120000)
+    }
+}
+
+function reFacet(par) {
+    $('[name="finp[]"]:not(:checked)').parents('.ct_checkbox').toggleClass('ct-disabled', true);
+    var dot = [];
+    $.each($('.ct-tpl_selector-item:not(.ct-hidden)'), function () {
+        var d = $(this).data()
+        $.each(d, function (k, v) {
+            var da = k.split('f');
+            if (da.length > 1) {
+                dot.push(da[1]);
+            }
+        })
+    })
+
+    if (dot.length > 0) {
+        $.each(dot, function (k, v) {
+            $('[name="finp[]"][value="' + v + '"]').parents('.ct_checkbox').toggleClass('ct-disabled', false);
+        })
+    }
+
+    if (par > -1) {
+        $($('#filterTpl .ct-menu_wrapper')[(par - 1)]).find('.ct_checkbox').toggleClass('ct-disabled', false);
+    }
+}
+
+function resetAll() {
+    $('#selectTpl .js-filter').toggleClass('active', false);
+    $('.ct-tpl_selector-item').toggleClass('ct-hidden', false);
+    $('[name="finp[]"]').prop('checked', false);
+    $('[name="finp[]"]').parents('.ct_checkbox').toggleClass('ct-disabled', false);
+}
+
+function setCook(name, value, options = {}) {
+    options = {
+        path: '/',
+    };
+
+    if (options.expires instanceof Date) {
+        options.expires = options.expires.toUTCString();
+    }
+
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let optionKey in options) {
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+        }
+    }
+
+    document.cookie = updatedCookie;
+}

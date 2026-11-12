@@ -1,0 +1,120 @@
+import { attachMediaLifecycle } from '../../previews/media-lifecycle.js?v=20261030-lazy-media';
+/* Constructor preview interaction; applying uses the existing chooser. */
+(function () {
+    'use strict';
+    function init() {
+        var dialog = document.getElementById('sm-design-preview'), configNode = document.getElementById('sm-design-preview-config');
+        var grid = document.querySelector('#selectTpl .ct-tpl_selector');
+        if (!dialog || !configNode || !grid) return;
+        var config = JSON.parse(configNode.textContent), words = config.words;
+        var frame = dialog.querySelector('iframe'), loading = dialog.querySelector('[data-sm-preview-loading]');
+        var swatches = dialog.querySelector('[data-sm-preview-swatches]'), cover = dialog.querySelector('.sm-preview-cover');
+        var example = dialog.querySelector('[data-sm-preview-example]'), chosen = new Map();
+        var current, trigger, color = 1, timer, overflow, active = false;
+        document.querySelectorAll('#filterTpl video').forEach(function (video) { video.dataset.video = video.dataset.smCoverSrc || video.getAttribute('src') || ''; });
+        var mediaLifecycle = attachMediaLifecycle({
+            getPanel:function () { return document.getElementById('filterTpl'); },
+            getDialog:function () { return dialog; }, getPreviewFrame:function () { return frame; },
+            getPreviewVideo:function () { return cover.querySelector('video'); }
+        });
+        function title(card) {
+            if (card.dataset.smTitle) return card.dataset.smTitle;
+            return Array.from(card.querySelector('.ct-tpl_selector-item_footer > span').childNodes).filter(function (n) { return n.nodeType === 3; }).map(function (n) { return n.textContent; }).join('').trim();
+        }
+        function variantInk(value) {
+            var hex = /^#([\da-f]{6})$/i.exec(value);
+            if (!hex) return '#493b42';
+            var rgb = hex[1].match(/../g).map(function (v) { return parseInt(v, 16); });
+            return rgb[0]*.299 + rgb[1]*.587 + rgb[2]*.114 < 145 ? '#fff' : '#493b42';
+        }
+        function variants() { return current.entry ? current.entry.variants : []; }
+        function loadColor(value) {
+            color = Number(value) || 1; chosen.set(current.card.dataset.tpl, color);
+            swatches.querySelectorAll('button').forEach(function (button) {
+                var selected = Number(button.dataset.smPreviewColor) === color;
+                button.setAttribute('aria-pressed', String(selected));
+                button.querySelector('.sm-swatch-dot').textContent = selected ? '✓' : '';
+            });
+            clearTimeout(timer); cover.replaceChildren(); cover.hidden = true; frame.hidden = false;
+            loading.hidden = false; loading.textContent = words.preview_loading;
+            var variant = variants().find(function (v) { return v.id === color; });
+            var source = variant ? variant.url : current.entry && current.entry.url;
+            if (source) {
+                var url = new URL(source, location.origin);
+                url.searchParams.set('color', color); url.searchParams.set('ln', words.locale === 'es' ? 'sp' : words.locale.slice(0,2));
+                frame.dataset.template = current.card.dataset.tpl; frame.dataset.color = color;
+                frame.setAttribute('aria-busy', 'true'); frame.src = url.href;
+                timer = setTimeout(function () { loading.textContent = words.preview_slow; }, 15000);
+            } else {
+                frame.removeAttribute('src'); frame.hidden = true; cover.hidden = false;
+                var native = current.card.querySelector('.ct-tpl_selector-item_body-mobile') || current.card.querySelector('.ct-tpl_selector-item_body');
+                var video = native && native.querySelector('video');
+                if (video) { var media = video.cloneNode(true); media.muted = true; media.autoplay = true; media.controls = true; cover.appendChild(media); }
+                else {
+                    var match = native && native.style.backgroundImage.match(/^url\(["']?(.*?)["']?\)$/);
+                    if (match || current.card.dataset.smCover) { var image = document.createElement('img'); image.alt = title(current.card); image.src = current.card.dataset.smCover || match[1]; cover.appendChild(image); }
+                }
+                loading.hidden = true;
+            }
+        }
+        function open(card, opener, requestedColor) {
+            var entry = config.entries[card.dataset.tpl];
+            current = {card:card, entry:entry}; trigger = opener || card;
+            var list = variants();
+            var activeColor = Array.from(card.querySelectorAll('.ct-tpl_selector-item_footer-colors li')).findIndex(function (v) { return v.classList.contains('active'); }) + 1;
+            var wanted = requestedColor || chosen.get(card.dataset.tpl) || activeColor || 1;
+            var selected = list.find(function (v) { return v.id === wanted; }) || list[0];
+            dialog.querySelector('#sm-preview-name').textContent = title(card);
+            frame.title = words.preview + ': ' + title(card);
+            dialog.querySelector('.sm-preview-variants').hidden = list.length < 2;
+            swatches.replaceChildren();
+            list.forEach(function (variant) {
+                var button = document.createElement('button'); button.type = 'button'; button.dataset.smPreviewColor = variant.id;
+                button.style.setProperty('--swatch', variant.swatch); button.style.setProperty('--swatch-ink', variantInk(variant.swatch));
+                var label = words.variant_colors[variant.label] || words.preview_color + ' ' + variant.id;
+                button.setAttribute('aria-label', label); button.title = label;
+                var dot = document.createElement('span'); dot.className = 'sm-swatch-dot'; dot.setAttribute('aria-hidden', 'true'); button.appendChild(dot);
+                button.setAttribute('aria-pressed', 'false'); swatches.appendChild(button);
+            });
+            var nativeExample = card.querySelector('a.ct-example'); example.hidden = !nativeExample;
+            if (nativeExample) example.href = nativeExample.href; else example.removeAttribute('href');
+            if (!dialog.open) {
+                overflow = document.documentElement.style.overflow; document.documentElement.style.overflow = 'hidden';
+                mediaLifecycle.freezeCatalog(); dialog.showModal(); active = true; mediaLifecycle.stopBackgroundMedia();
+            }
+            loadColor(selected ? selected.id : wanted);
+            dialog.querySelector('[data-sm-preview-close]').focus();
+        }
+        window.smDesignPreview = {open:open, variantsFor:function (id) { return config.entries[id] ? config.entries[id].variants : []; }, isOpen:function () { return dialog.open; }, canPlayCatalog:mediaLifecycle.catalogCanPlay};
+        swatches.addEventListener('click', function (event) {
+            var button = event.target.closest('[data-sm-preview-color]');
+            if (button) { loadColor(Number(button.dataset.smPreviewColor)); button.focus(); }
+        });
+        dialog.querySelector('[data-sm-preview-close]').addEventListener('click', function () { close(); });
+        dialog.addEventListener('cancel', function (event) { event.preventDefault(); event.stopPropagation(); close(); });
+        dialog.addEventListener('click', function (event) { if (event.target === dialog) { var rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) close(); } });
+        function finishClose() {
+            if (!active || dialog.open) return;
+            active = false;
+            clearTimeout(timer); frame.removeAttribute('src'); cover.querySelectorAll('video').forEach(function (v) { v.pause(); }); cover.replaceChildren();
+            document.documentElement.style.overflow = overflow;
+            if (trigger && trigger.isConnected) { var target = trigger.closest('button,a,[tabindex]') || current.card; target.focus({preventScroll:true}); }
+            requestAnimationFrame(function () { mediaLifecycle.resume(); });
+        }
+        function close() { dialog.close(); finishClose(); }
+        dialog.addEventListener('close', finishClose);
+        example.addEventListener('click', function () { mediaLifecycle.rememberBeforeLeaving(); });
+        dialog.querySelector('[data-sm-preview-apply]').addEventListener('click', function () {
+            var card = current.card;
+            card.querySelectorAll('.ct-tpl_selector-item_footer-colors li').forEach(function (swatch,index) { swatch.classList.toggle('active', index + 1 === color); });
+            close(); card.querySelector('.ct-tpl_selector-item_footer .ct-button').click();
+        });
+        window.addEventListener('message', function (event) {
+            if (!dialog.open || event.origin !== location.origin || event.source !== frame.contentWindow || !event.data) return;
+            if (String(event.data.templateId) !== frame.dataset.template || String(event.data.color) !== frame.dataset.color) return;
+            if (event.data.type === 'wedwed-preview-ready') { clearTimeout(timer); loading.hidden = true; frame.setAttribute('aria-busy', 'false'); mediaLifecycle.resume(); }
+            else if (event.data.type === 'wedwed-preview-error') { clearTimeout(timer); loading.hidden = false; loading.textContent = words.preview_error; }
+        });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+}());

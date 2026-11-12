@@ -1,0 +1,144 @@
+/* A paper collage, with the wedding details kept intact. */
+:root {
+  --burgundy: #9b423b; --burgundy-rich: #a34b40; --burgundy-deep: #71312c;
+  --powder-blue: #7c9ca3; --powder-blue-dark: #527a85;
+  --powder-blue-light: #d7ded5; --cotton-base: #b49b87;
+  --cotton-paper: #c7a58f; --ink: #2b2623; --ink-soft: #342c29;
+}
+body {
+  padding: 28px 20px 65px;
+  background: #a58e7c;
+  background-image: none;
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+}
+.magazine-canvas {
+  max-width: 900px; padding: 26px 40px 40px; border: 0; border-radius: 0;
+  background-color: #c7a58f;
+  background-image: linear-gradient(110deg, #d2b39c 0%, #c7a58f 65%, #c3a18b 100%);
+  box-shadow: 0 5px 25px #33251f35;
+}
+.edition-ribbon { font-size: 10px; letter-spacing: .13em; border-bottom: 1px solid #49362b70; margin-bottom: 24px; gap: 16px; color: #49362b; }
+.edition-ribbon .cute-tag { font-size: 17px; }
+.hero-section { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; text-align: left; margin-bottom: 45px; }
+.hero-top-row { grid-column: 1 / -1; justify-content: flex-start; margin: 0 0 5px; gap: 7px; }
+.hero-top-row .clip-body { font-family: 'Playfair Display', Georgia, serif; font-size: 38px !important; font-weight: 900; padding: 0 12px !important; line-height: 1; }
+.hero-top-row .bg-black-sans { background: #f5eee1; color: #29231f; font-size: 29px !important; }
+.hero-huge-title { grid-column: 1 / -1; justify-content: space-between; margin: 4px 0 26px; gap: 3px; }
+.giant-char { flex: 1; min-width: 0; font-family: 'Oswald', Impact, sans-serif; font-size: clamp(48px, 10.8vw, 116px); line-height: 1.18; padding: 0 3px 6px; margin: 0; font-weight: 700; filter: drop-shadow(1px 2px 1px #4c2d2525); color: #f5e9d9; background-color: #aa493e; text-shadow: 1px 1px #eadccc70; }
+.char-c2 { background: #a54a40; transform: rotate(5deg); }
+.char-c3 { background: #b34e43; }
+.char-c4 { background: #934137; }
+.char-c5 { background: #b46250; }
+.char-c6 { background: #9d3e34; }
+.char-c7 { background: #ac4a40; }
+.hero-names-row { grid-column: 1; grid-row: 3; flex-direction: column; align-items: flex-start; justify-content: center; gap: 7px; margin: 15px 0; }
+.hero-names-row .clip-body { font-size: clamp(23px, 3.5vw, 35px) !important; padding: 2px 12px !important; }
+.hero-names-row .scrap-clip:nth-child(2) { margin: -4px 0 -4px 55px; }
+.hero-section > .hero-invitation-note { grid-column: 1; grid-row: 4; align-self: start; margin-top: 0 !important; }
+.couple-photo-frame { grid-column: 2; grid-row: 3 / 5; width: 100%; margin: 0; align-self: center; }
+.couple-photo-inner { padding: 5px 5px 36px; transform: rotate(4deg); background: #eee3cc; filter: drop-shadow(2px 4px 2px #49362b30); }
+.couple-photo-inner img { height: 270px; object-fit: cover; filter: sepia(.2) contrast(1.06); }
+.photo-caption-scrap { font-family: 'Caveat', cursive; font-size: 19px; left: 8px; right: 8px; bottom: 5px; padding: 2px; text-align: center; border: 0; background: transparent; }
+.postal-seal-round { width: 80px; height: 80px; top: -17px; right: -15px; background: #d8cc9e; border: 2px solid #8e4139; border-radius: 50%; clip-path: none; box-shadow: none; filter: none; }
+.postal-seal-round .stamp-date { font-size: 24px; }
+.cute-scribble { color: #713a31; font-size: 24px; filter: none; }
+.cute-scribble-blue { color: #355861; }
+.scrap-clip { filter: drop-shadow(1px 2px 1px #49362b25); }
+.clip-body { background-image: none; padding: 3px 10px; }
+.bg-white-serif, .bg-news-typewriter { background: #eee6d8; border: 0; }
+.bg-news-typewriter { font-family: 'Oswald', sans-serif; font-size: 17px; font-weight: 500; }
+.bg-black-sans { background: #312d29; }
+.bg-burgundy-rich { background: #a14b3f; }
+.bg-blue-powder { background: #71949d; }
+.bg-black-sans, .bg-burgundy-rich, .bg-blue-powder { text-shadow: none; }
+.venue-card-frame { margin: 0 0 38px; }
+.venue-card-inner { display: flow-root; padding: 12px 0 20px; background: transparent; border: 0; border-radius: 0; filter: none; clip-path: none; border-bottom: 1px solid #6f4c3b60; }
+.venue-photo-wrapper { float: right; width: 44%; margin: 12px 0 14px 22px; transform: rotate(2deg); }
+.venue-photo-wrapper img { width: 100%; height: 210px; object-fit: cover; border: 5px solid #e8ddc6; }
+.venue-card-inner > p { font-family: 'Oswald', sans-serif; font-size: 18px !important; }
+.tape-venue { display: none; }
+.btn-actions-row { gap: 10px; flex-wrap: wrap; }
+.btn-paper-scrap { font-size: 16px; padding: 11px 16px; filter: drop-shadow(1px 2px 1px #49362b30); }
+.timing-section { margin-bottom: 30px; }
+.timing-header-box { text-align: left; margin-bottom: 12px; }
+.timing-header-box > div:nth-child(2) { display: inline-block; margin-left: 8px; }
+.ll-timeline { grid-template-columns: 1fr 40px 1fr; gap: 0 20px; min-height: 0; padding-top: 10px; }
+.ob-timeline-line { width: 25px; opacity: .65; }
+.ob-timeline-dot { width: 10px; height: 10px; box-shadow: 0 0 0 3px #d5c2aa; }
+.sm-timing__item { gap: 5px; padding: 0 !important; min-width: 0; }
+.sm-timing__item.item-2, .sm-timing__item.item-4 { margin-top: -65px; }
+.item-top-row { gap: 8px; }
+.num-cutout-box { width: 36px; height: 42px; font-size: 36px; filter: none; }
+.b1 { background: #73949c; }.b2 { background: #ede3d2; border: 0; }.b3 { background: #b39955; color: #a34738; }.b4 { background: #7e9976; color: #f4ecdf; }
+.timing-icon-cutout { width: 100px; height: 95px; padding: 4px; background: transparent; border: 0; filter: none; }
+.timing-text-box { max-width: 100%; gap: 3px; }
+.timing-text-box .clip-body { padding: 3px 7px; }
+.timing-text-box .cute-scribble { font-size: 20px; }
+.dresscode-section, .rsvp-section { background: #e8ddc6; background-image: none; padding: 25px; border: 0; border-radius: 0; filter: drop-shadow(2px 3px 1px #49362b30); margin-bottom: 30px; }
+.palette-swatches { gap: 12px; margin: 20px 0; }
+.swatch-card { padding: 6px; background: #efe6d6; filter: drop-shadow(1px 2px 1px #49362b25); }
+.swatch-color { width: 75px; height: 65px; box-shadow: none; }
+.swatch-name { font-family: 'Oswald', sans-serif; font-size: 11px; }
+.dress-notes-grid { gap: 22px; margin-top: 15px; }
+.dress-note-box { background: transparent; padding: 0; border: 0; filter: none; }
+.dress-figure-img { height: 220px; object-fit: contain; border: 0; }
+.manor-sticker-inner { background: #d3be7b; border: 0; padding: 14px 20px; filter: drop-shadow(1px 2px 1px #49362b30); }
+.rsvp-section { margin-top: 40px; background-color: #e5dfd0; border-top: 2px dashed #705746; clip-path: none; }
+.rsvp-input { clip-path: none; background: #f4eee2; font-family: inherit; box-shadow: none; }
+.choice-box, .chip-box { background: #f4eee2; font-family: inherit; filter: none; }
+.btn-submit-collage { margin-top: 10px; padding: 14px; font-size: 23px; filter: drop-shadow(1px 2px 1px #49362b30); }
+.farewell-footer { margin-top: 15px; }
+.modal-box { background: #eee3cf; border-width: 2px; }
+:focus-visible { outline: 3px solid #355861; outline-offset: 5px; }
+.choice-btn input:focus-visible + .choice-box, .chip-btn input:focus-visible + .chip-box { outline: 3px solid #355861; outline-offset: 3px; }
+@media (max-width: 780px) {
+  body { padding: 0; }
+  .magazine-canvas { padding: 19px 18px 30px; width: 100%; box-shadow: none; }
+  .edition-ribbon { font-size: 8px; letter-spacing: .04em; gap: 10px; margin-bottom: 18px; }
+  .edition-ribbon .cute-tag { display: none; }
+  .hero-section { gap: 0 12px; margin-bottom: 28px; }
+  .hero-top-row .clip-body { font-size: 30px !important; }
+  .hero-huge-title { margin-bottom: 20px; }
+  .giant-char { font-size: clamp(35px, 11.3vw, 66px); }
+  .hero-names-row .clip-body { font-size: 23px !important; padding: 3px 8px !important; }
+  .hero-section > .hero-invitation-note .cute-scribble { font-size: 20px; }
+  .couple-photo-inner img { height: 210px; }
+  .couple-photo-inner { padding-bottom: 42px; }
+  .photo-caption-scrap { font-size: 16px; line-height: 1; }
+  .postal-seal-round { width: 61px; height: 61px; right: -6px; top: -12px; }
+  .postal-seal-round .stamp-date { font-size: 20px; }
+  .postal-seal-round .stamp-sub, .postal-seal-round .stamp-year { font-size: 9px; }
+  .tape-top { width: 75px; height: 20px; left: 15%; }
+  .venue-photo-wrapper { width: 46%; margin-left: 10px; }
+  .venue-photo-wrapper img { height: 170px; }
+  .venue-card-inner .clip-body { font-size: 17px !important; padding: 5px 8px !important; }
+  .venue-card-inner > p { font-size: 16px !important; }
+  .ll-timeline { grid-template-columns: 27px minmax(0, 1fr); column-gap: 15px; row-gap: 25px; }
+  .ob-timeline-line { grid-column: 1; }
+  .sm-timing__item.item-1, .sm-timing__item.item-2, .sm-timing__item.item-3, .sm-timing__item.item-4 { grid-column: 2; margin-top: 0; align-items: flex-start; text-align: left; }
+  .sm-timing__item.item-1 .timing-text-box, .sm-timing__item.item-3 .timing-text-box { align-items: flex-start; }
+  .timing-icon-cutout { position: absolute; right: 0; top: 0; width: 65px; height: 65px; opacity: .6; }
+  .timing-text-box { padding-right: 4px; }
+  .timing-header-box .clip-body { font-size: 19px !important; }
+  .dresscode-section, .rsvp-section { padding: 20px 14px; }
+  .dresscode-section .clip-body { font-size: 21px !important; padding: 6px 10px !important; }
+  .dress-notes-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dress-figure-img { height: 170px; }
+  .dress-note-box p { font-size: 13px !important; }
+  .palette-swatches { gap: 8px; }
+  .swatch-color { width: 43px; height: 48px; }
+  .swatch-name { font-size: 9px; letter-spacing: 0; }
+  .choice-grid { grid-template-columns: 1fr; }
+  .drinks-chips { gap: 8px; }
+  .chip-box { padding: 10px; }
+  .rsvp-section .clip-body { font-size: 21px !important; padding: 6px 10px !important; }
+  .modal-box { padding: 25px 18px; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .sm-timing__item.item-active { transform: none; }
+}
+
+
+/* Paper grain is applied only to cutouts, never to the page background. */
+:root { --paper-grain: none; --paper-fibers: none; }

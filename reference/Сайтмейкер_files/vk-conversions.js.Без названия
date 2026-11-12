@@ -1,0 +1,31 @@
+(function (w, d) {
+    'use strict';
+    if (w.wwVkPageView) return;
+    var views = {};
+    function clientId() {
+        var match = d.cookie.match(/(?:^|;\s*)_ym_uid=([1-9][0-9]{0,31})(?:;|$)/);
+        return match ? match[1] : '';
+    }
+    w.wwVkPageView = function (pixel) {
+        pixel = String(pixel);
+        if (!/^[1-9][0-9]*$/.test(pixel) || views[pixel]) return;
+        views[pixel] = true;
+        var started = Date.now();
+        function send() {
+            var client = clientId();
+            if (!client && Date.now() - started < 1500) {
+                w.setTimeout(send, 100);
+                return;
+            }
+            var queue = w._tmr || (w._tmr = []);
+            var hit = {id: pixel, type: 'pageView', start: started};
+            if (client) hit.pid = 'ym_' + client;
+            queue.push(hit);
+            if (client) {
+                // Indicates the matching pid was queued for THIS pixel, not attribution proof.
+                d.cookie = 'ww_vk_sync_' + pixel + '=ym_' + client + '; Path=/; Max-Age=7776000; SameSite=Lax; Secure';
+            }
+        }
+        send();
+    };
+})(window, document);

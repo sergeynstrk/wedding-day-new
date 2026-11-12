@@ -1,0 +1,89 @@
+(function () {
+    'use strict';
+
+    var notice = document.getElementById('ww-cookie-notice');
+    if (!notice) return;
+
+    var cookieName = 'ww_cookie_notice_accepted';
+    var accepted = document.cookie.split(';').some(function (part) {
+        return part.trim() === cookieName + '=1';
+    });
+
+    if (!accepted) {
+        try {
+            accepted = window.localStorage.getItem(cookieName) === '1';
+        } catch (error) {
+            // The cookie still works when local storage is unavailable.
+        }
+    }
+    if (accepted) return;
+
+    var acceptButton = notice.querySelector('.ww-cookie-notice__accept');
+    acceptButton.addEventListener('click', function () {
+        var domain = /(^|\.)wedwed\.ru$/.test(location.hostname) ? '; Domain=wedwed.ru' : '';
+        var secure = location.protocol === 'https:' ? '; Secure' : '';
+        document.cookie = cookieName + '=1; Max-Age=34560000; Path=/; SameSite=Lax' + domain + secure;
+        try {
+            window.localStorage.setItem(cookieName, '1');
+        } catch (error) {
+            // Browsers may disable local storage independently of cookies.
+        }
+        notice.hidden = true;
+        if (spacer) spacer.remove();
+    });
+
+    var spacer = null;
+    if (!/^\/sitemaker(?:\/|$)/.test(location.pathname)) {
+        spacer = document.createElement('div');
+        spacer.setAttribute('aria-hidden', 'true');
+        spacer.style.cssText = 'display:block;clear:both;pointer-events:none;';
+        notice.parentNode.insertBefore(spacer, notice);
+    }
+
+    var blockers = ['#footer-mobile_menu', '#ct-mobile_menu', '.ww-cta--bottom.ww-cta--visible', '#floating-buttons.active'];
+    var animationFrame = 0;
+    function positionNotice() {
+        animationFrame = 0;
+        var clearance = 0;
+        blockers.forEach(function (selector) {
+            var element = document.querySelector(selector);
+            if (!element) return;
+            var style = getComputedStyle(element);
+            if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) return;
+            var rect = element.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0 && rect.top < innerHeight && rect.bottom > 0) {
+                clearance = Math.max(clearance, innerHeight - rect.top);
+            }
+        });
+        if (clearance) {
+            notice.style.setProperty('--ww-cookie-clearance', clearance + 'px');
+        } else {
+            notice.style.removeProperty('--ww-cookie-clearance');
+        }
+        if (spacer) spacer.style.height = (notice.offsetHeight + clearance + 24) + 'px';
+    }
+
+    function schedulePosition() {
+        if (!animationFrame) animationFrame = requestAnimationFrame(positionNotice);
+    }
+
+    notice.hidden = false;
+    schedulePosition();
+    window.addEventListener('resize', schedulePosition);
+    window.addEventListener('scroll', schedulePosition, { passive: true });
+    if (window.ResizeObserver) {
+        var resizeObserver = new ResizeObserver(schedulePosition);
+        blockers.forEach(function (selector) {
+            var element = document.querySelector(selector);
+            if (element) resizeObserver.observe(element);
+        });
+        resizeObserver.observe(notice);
+    }
+    if (window.MutationObserver) {
+        var mutationObserver = new MutationObserver(schedulePosition);
+        ['#footer-mobile_menu', '#ct-mobile_menu', '.ww-cta--bottom', '#floating-buttons'].forEach(function (selector) {
+            var element = document.querySelector(selector);
+            if (element) mutationObserver.observe(element, { attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
+        });
+    }
+}());
