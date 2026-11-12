@@ -5,33 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Планы на Свадьбу | Дмитрий & Виктория</title>
   
-  <!-- Экспрессивные шрифты для журнально-газетного коллажа -->
+  <!-- Экспрессивные журнальные и газетные шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,800;0,900;1,800&family=Oswald:wght@600;700;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
 
   <style>
     /* ========================================================
-       КРАФТОВАЯ ПАЛИТРА И ТЕКСТУРЫ
+       КРАФТОВАЯ ПАЛИТРА И ТЕКСТУРЫ БУМАГИ
        ======================================================== */
     :root {
       --burgundy: #6e1526;
       --burgundy-bright: #8a1d33;
       --burgundy-dark: #450c17;
-      --powder-blue: #93bedd;
-      --powder-blue-light: #d8e9f5;
-      --powder-blue-dark: #3b6b8c;
-      --kraft-bg: #c1ab93;
-      --kraft-paper: #ceb79e;
-      --kraft-dark: #9e8770;
-      --newsprint: #f3efe6;
-      --paper-white: #faf8f5;
-      --ink: #161415;
-      --ink-muted: #4a4546;
       
-      --shadow-paper: 2px 3px 6px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.15);
-      --shadow-deep: 3px 6px 16px rgba(0, 0, 0, 0.3);
-      --shadow-heavy: 4px 10px 24px rgba(0, 0, 0, 0.35);
+      --powder-blue: #8ebade;
+      --powder-blue-light: #d6e8f7;
+      --powder-blue-dark: #35678a;
+      
+      --kraft-table: #b39b81;
+      --kraft-poster: #c9b299;
+      --kraft-dark: #988066;
+      
+      --newsprint: #f3efe5;
+      --paper-white: #fbf9f4;
+      --ink: #141213;
+      --ink-muted: #3d3839;
+
+      /* Текстура бумажного зерна (Data-URI SVG noise) */
+      --paper-grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
     }
 
     * {
@@ -41,55 +43,79 @@
     }
 
     body {
-      background-color: #b29b82;
-      /* Текстура грубого картонного стола и крафт-бумаги */
+      background-color: var(--kraft-table);
+      /* Реалистичный фон картонного стола с текстурой крафт-волокон */
       background-image: 
-        radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0.22) 100%),
-        repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 4px);
+        radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.25) 100%),
+        var(--paper-grain),
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 5px);
       font-family: 'Courier Prime', monospace;
       color: var(--ink);
-      line-height: 1.4;
-      padding: 24px 10px 80px;
+      line-height: 1.35;
+      padding: 20px 10px 80px;
       overflow-x: hidden;
     }
 
-    /* Главный плакат-коллаж на крафтовой бумаге с заломами */
+    /* Главный плакат-коллаж из крафтовой бумаги с заломами */
     .collage-poster {
       position: relative;
-      max-width: 600px;
+      max-width: 590px;
       margin: 0 auto;
-      background: var(--kraft-paper);
-      /* Реалистичный эффект заломов бумаги и волокон */
+      background-color: var(--kraft-poster);
+      /* Заломы от сложенного листа бумаги + зерно */
       background-image: 
-        linear-gradient(90deg, transparent 49.5%, rgba(0,0,0,0.07) 50%, rgba(255,255,255,0.09) 50.5%, transparent 51%),
-        linear-gradient(0deg, transparent 49.6%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.08) 50.4%, transparent 51%),
-        radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 70% 80%, rgba(0,0,0,0.14) 0%, transparent 60%);
-      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
-      padding: 40px 24px;
+        linear-gradient(90deg, transparent 49.3%, rgba(0,0,0,0.08) 49.8%, rgba(255,255,255,0.12) 50.2%, transparent 50.7%),
+        linear-gradient(0deg, transparent 49.4%, rgba(0,0,0,0.07) 49.8%, rgba(255,255,255,0.1) 50.2%, transparent 50.6%),
+        radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 80%, rgba(0,0,0,0.15) 0%, transparent 60%),
+        var(--paper-grain);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45), 0 3px 10px rgba(0, 0, 0, 0.2);
+      padding: 38px 22px 50px;
       border: 1px solid #bba187;
     }
 
     /* ========================================================
-       СИСТЕМА ВЫРЕЗОК ИЗ ЖУРНАЛОВ И ГАЗЕТ (RANSOM-NOTE)
+       НЕСТАРАТЕЛЬНО ВЫРЕЗАННЫЕ ЛИСТОЧКИ И БУКВЫ (HAND-CUT)
+       У каждого элемента: неровные ножницы, текстура бумаги,
+       несимметричные поля и физическая тень (filter: drop-shadow)
        ======================================================== */
     .clip {
       display: inline-block;
-      box-shadow: var(--shadow-paper);
       vertical-align: middle;
       user-select: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      line-height: 1.15;
+      position: relative;
+      /* Тень по контуру clip-path */
+      filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.25)) drop-shadow(1px 1px 1px rgba(0,0,0,0.15));
+      transition: transform 0.2s ease, filter 0.2s ease;
+      line-height: 1.1;
     }
 
     .clip:hover {
-      transform: scale(1.05) rotate(0deg) !important;
-      box-shadow: var(--shadow-heavy);
-      z-index: 10;
+      transform: scale(1.06) rotate(0deg) !important;
+      filter: drop-shadow(3px 6px 8px rgba(0, 0, 0, 0.35));
+      z-index: 20;
     }
 
-    /* Огромные буквы заголовка (точь-в-точь как Л-Е-Т-О на референсе) */
-    .char-block {
+    /* Внутреннее тело вырезки с текстурой и неровным краем ножниц */
+    .clip-inner {
+      display: inline-block;
+      padding: 4px 10px;
+      background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.08) 100%),
+        var(--paper-grain);
+      position: relative;
+    }
+
+    /* Разновидности неровных резов ножницами (кривые полигоны) */
+    .cut-a { clip-path: polygon(1.5% 3.5%, 98.5% 0.8%, 99.2% 95.5%, 0.8% 97.2%); }
+    .cut-b { clip-path: polygon(0.8% 1.2%, 97.2% 2.8%, 98.8% 98.8%, 2.8% 96.5%); }
+    .cut-c { clip-path: polygon(2.8% 1.8%, 98.8% 2.5%, 97.5% 97.2%, 1.2% 99.2%); }
+    .cut-d { clip-path: polygon(1.2% 4.2%, 99.2% 1.8%, 98.1% 98.5%, 2.2% 95.8%); }
+    .cut-e { clip-path: polygon(3.2% 1.5%, 97.5% 3.8%, 99.5% 96.8%, 0.5% 98.5%); }
+
+    /* ОГРОМНЫЕ БУКВЫ ЗАГОЛОВКА (С-В-А-Д-Ь-Б-У как Л-Е-Т-О на референсе)
+       Каждая буква вырезана криво, поспешно, на отдельном клочке цветной бумаги */
+    .ransom-letter {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -99,131 +125,169 @@
       line-height: 0.95;
       padding: 6px 12px 10px;
       margin: 0 1px;
-      box-shadow: var(--shadow-deep);
       text-transform: uppercase;
-      text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+      filter: drop-shadow(3px 4px 3px rgba(0,0,0,0.28)) drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
+      background-image: 
+        linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(0,0,0,0.12) 100%),
+        var(--paper-grain);
     }
 
-    .char-burgundy {
-      background: var(--burgundy);
+    /* Буква С (бордо, кривой скос вправо) */
+    .letter-1 {
+      background-color: var(--burgundy);
+      color: #ffffff;
+      transform: rotate(-3.5deg);
+      clip-path: polygon(2% 5%, 97% 1%, 100% 94%, 3% 98%);
+      padding: 7px 11px 9px 13px;
+    }
+
+    /* Буква В (нежно-голубой, скос влево) */
+    .letter-2 {
+      background-color: var(--powder-blue);
+      color: #ffffff;
+      transform: rotate(3deg);
+      clip-path: polygon(1% 2%, 99% 6%, 96% 99%, 4% 94%);
+      padding: 8px 14px 6px 10px;
+    }
+
+    /* Буква А (бордо, неровная верхушка) */
+    .letter-3 {
+      background-color: var(--burgundy);
       color: #ffffff;
       transform: rotate(-2deg);
+      clip-path: polygon(4% 1%, 96% 3%, 98% 97%, 1% 100%);
+      padding: 6px 13px 10px 11px;
     }
 
-    .char-blue {
-      background: var(--powder-blue);
-      color: #ffffff;
-      transform: rotate(2.5deg);
-    }
-
-    .char-white {
-      background: var(--paper-white);
+    /* Буква Д (белая газетная вырезка с бордовыми чернилами) */
+    .letter-4 {
+      background-color: var(--paper-white);
       color: var(--burgundy);
       transform: rotate(-1.5deg);
-      border: 1px solid rgba(0,0,0,0.1);
+      clip-path: polygon(1% 4%, 98% 0%, 97% 95%, 3% 97%);
+      border: 1px solid rgba(0,0,0,0.15);
+      padding: 7px 12px 9px 12px;
     }
 
-    /* Разноформатные плашки со словами */
-    .tag-white-serif {
-      background: var(--paper-white);
+    /* Буква Ь (нежно-голубая, срезанный угол) */
+    .letter-5 {
+      background-color: var(--powder-blue);
+      color: #ffffff;
+      transform: rotate(3.5deg);
+      clip-path: polygon(3% 0%, 100% 4%, 96% 98%, 0% 95%);
+      padding: 5px 12px 11px 12px;
+    }
+
+    /* Буква Б (бордо, неровный низ) */
+    .letter-6 {
+      background-color: var(--burgundy);
+      color: #ffffff;
+      transform: rotate(-2.5deg);
+      clip-path: polygon(1% 3%, 99% 2%, 96% 96%, 3% 99%);
+      padding: 8px 12px 8px 12px;
+    }
+
+    /* Буква У (нежно-голубой, наклон) */
+    .letter-7 {
+      background-color: var(--powder-blue);
+      color: #ffffff;
+      transform: rotate(2deg);
+      clip-path: polygon(2% 1%, 98% 4%, 99% 97%, 1% 95%);
+      padding: 7px 13px 9px 11px;
+    }
+
+    /* СТИЛИ ДЛЯ РАЗНЫХ ТИПОВ ВЫРЕЗОК */
+    /* Белая вырезка из газеты (шрифт с засечками) */
+    .paper-clip-white {
+      background-color: var(--paper-white);
       color: var(--ink);
       font-family: 'Playfair Display', serif;
       font-weight: 900;
-      font-size: 1.45rem;
-      padding: 4px 12px;
-      transform: rotate(-2.5deg);
-      border: 1px solid rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.12);
     }
 
-    .tag-black-sans {
-      background: var(--ink);
+    /* Черная вырезка (белый гротеск на черном) */
+    .paper-clip-black {
+      background-color: var(--ink);
       color: #ffffff;
       font-family: 'Montserrat', sans-serif;
       font-weight: 900;
-      font-size: 1.15rem;
-      padding: 5px 12px;
-      transform: rotate(2deg);
-      letter-spacing: 0.04em;
     }
 
-    .tag-blue-bold {
-      background: var(--powder-blue);
-      color: #ffffff;
-      font-family: 'Oswald', sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      padding: 4px 10px;
-      transform: rotate(-1.5deg);
-      text-transform: uppercase;
-    }
-
-    .tag-burgundy-bold {
-      background: var(--burgundy);
+    /* Бордовая журнальная плашка */
+    .paper-clip-burgundy {
+      background-color: var(--burgundy);
       color: #ffffff;
       font-family: 'Playfair Display', serif;
       font-weight: 900;
-      font-size: 1.35rem;
-      padding: 5px 14px;
-      transform: rotate(1.5deg);
     }
 
-    .tag-newsprint-mono {
-      background: var(--newsprint);
+    /* Нежно-голубая плашка */
+    .paper-clip-blue {
+      background-color: var(--powder-blue);
+      color: #ffffff;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Газетная вырезка на печатной машинке */
+    .paper-clip-newsprint {
+      background-color: var(--newsprint);
       color: var(--ink-muted);
       font-family: 'Courier Prime', monospace;
       font-size: 0.88rem;
-      padding: 3px 8px;
-      border: 1px dashed rgba(0,0,0,0.18);
-      transform: rotate(-0.5deg);
+      border: 1px dashed rgba(0,0,0,0.2);
     }
 
-    .tag-yellow-highlight {
-      background: #f1df91;
-      color: #2b2612;
+    /* Желтая полоска-маркер */
+    .paper-clip-yellow {
+      background-color: #f3df8a;
+      color: #2b240f;
       font-family: 'Oswald', sans-serif;
-      font-size: 0.95rem;
       font-weight: 700;
-      padding: 2px 8px;
       text-transform: uppercase;
-      transform: rotate(1deg);
     }
 
-    /* Номерные бейджи для этапов тайминга (1, 2, 3, 4 как на референсе) */
-    .num-cutout {
+    /* НОМЕРНЫЕ БЕЙДЖИ 1, 2, 3, 4 (КАК НА РЕФЕРЕНСЕ) */
+    .badge-number {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       font-family: 'Oswald', sans-serif;
-      font-size: 1.7rem;
+      font-size: 1.8rem;
       font-weight: 900;
-      box-shadow: var(--shadow-paper);
       flex-shrink: 0;
+      filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.25));
+      background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1) 100%),
+        var(--paper-grain);
     }
 
-    .num-cutout.n1 { background: var(--powder-blue-dark); color: #ffffff; transform: rotate(-3deg); }
-    .num-cutout.n2 { background: var(--paper-white); color: var(--ink); transform: rotate(3deg); border: 2px solid var(--ink); }
-    .num-cutout.n3 { background: var(--burgundy); color: #ffffff; transform: rotate(-2deg); }
-    .num-cutout.n4 { background: #dfc888; color: var(--ink); transform: rotate(4deg); }
+    .badge-1 { background-color: var(--powder-blue-dark); color: #ffffff; transform: rotate(-4deg); clip-path: polygon(2% 4%, 98% 1%, 96% 97%, 3% 99%); }
+    .badge-2 { background-color: var(--paper-white); color: var(--ink); transform: rotate(3deg); border: 2px solid var(--ink); clip-path: polygon(1% 2%, 97% 4%, 99% 98%, 2% 95%); }
+    .badge-3 { background-color: var(--burgundy); color: #ffffff; transform: rotate(-3deg); clip-path: polygon(3% 1%, 99% 3%, 97% 99%, 1% 96%); }
+    .badge-4 { background-color: #e2cb83; color: var(--ink); transform: rotate(4deg); clip-path: polygon(2% 3%, 97% 1%, 99% 96%, 3% 98%); }
 
-    /* Полоски матового полупрозрачного скотча (Washi tape) */
-    .tape {
+    /* ПОЛУПРОЗРАЧНЫЙ РВАНЫЙ СКОТЧ (WASHI TAPE) */
+    .scotch-tape {
       position: absolute;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(1px);
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(1.5px);
       box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-      border-left: 2px dashed rgba(0,0,0,0.15);
-      border-right: 2px dashed rgba(0,0,0,0.15);
-      z-index: 5;
+      z-index: 6;
+      /* Рваные неровные концы скотча */
+      clip-path: polygon(0% 12%, 4% 0%, 96% 3%, 100% 15%, 97% 88%, 100% 100%, 3% 97%, 0% 86%);
     }
 
-    /* ==========================================
+    /* ========================================================
        1. HERO / ОБЛОЖКА КОЛЛАЖА
-       ========================================== */
+       ======================================================== */
     .hero-section {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       position: relative;
     }
 
@@ -247,60 +311,67 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       margin: 16px 0 24px;
     }
 
-    /* Вырезанная фотография пары (стиль журнальной вырезки со скотчем) */
-    .photo-clipping-card {
+    /* ФОТОГРАФИЯ ПАРЫ (НЕБРЕЖНАЯ ВЫРЕЗКА С БЕЛЫМ ПОЛЕМ И СКОТЧЕМ) */
+    .photo-scrapbook {
       position: relative;
       margin: 20px auto;
       max-width: 370px;
-      background: #ffffff;
-      padding: 10px 10px 36px 10px;
-      box-shadow: var(--shadow-heavy);
-      transform: rotate(-1.5deg);
-      border: 1px solid rgba(0,0,0,0.1);
+      /* Неровное белое бумажное поле вокруг фото */
+      background-color: var(--paper-white);
+      background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.06) 100%),
+        var(--paper-grain);
+      padding: 10px 10px 38px 10px;
+      filter: drop-shadow(4px 8px 14px rgba(0,0,0,0.35));
+      transform: rotate(-1.8deg);
+      clip-path: polygon(1.2% 1.8%, 98.8% 0.6%, 99.4% 97.2%, 0.6% 98.8%);
+      border: 1px solid rgba(0,0,0,0.12);
     }
 
-    .photo-clipping-card img {
+    .photo-scrapbook img {
       width: 100%;
       height: 310px;
       object-fit: cover;
       display: block;
       filter: contrast(1.08) saturate(0.95);
+      clip-path: polygon(0.8% 1.2%, 99.2% 0.8%, 98.8% 99.2%, 0.8% 98.8%);
     }
 
-    .tape-top-photo {
+    .tape-photo-top {
       top: -12px;
-      left: 35%;
-      width: 100px;
-      height: 22px;
-      transform: rotate(-2deg);
+      left: 32%;
+      width: 110px;
+      height: 24px;
+      transform: rotate(-2.5deg);
     }
 
-    .photo-caption-strip {
+    .photo-caption-scrap {
       position: absolute;
       bottom: 8px;
-      left: 12px;
-      background: var(--newsprint);
-      padding: 2px 10px;
-      font-size: 0.85rem;
-      transform: rotate(0.8deg);
-      box-shadow: 1px 2px 4px rgba(0,0,0,0.15);
-      border: 1px solid rgba(0,0,0,0.12);
+      left: 14px;
+      background-color: var(--newsprint);
+      padding: 3px 10px;
+      font-size: 0.88rem;
+      transform: rotate(1deg);
+      border: 1px solid rgba(0,0,0,0.15);
       font-style: italic;
+      clip-path: polygon(1% 3%, 99% 0%, 98% 97%, 2% 100%);
     }
 
-    /* Круглая почтовая марка/штемпель с датой */
-    .postal-stamp {
+    /* Круглая почтовая вырезка-штемпель с датой */
+    .stamp-cutout {
       position: absolute;
-      top: -16px;
+      top: -18px;
       right: -16px;
-      width: 86px;
-      height: 86px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
-      background: var(--powder-blue-light);
+      background-color: var(--powder-blue-light);
+      background-image: var(--paper-grain);
       border: 2px dashed var(--burgundy);
       color: var(--burgundy);
       display: flex;
@@ -310,31 +381,35 @@
       font-family: 'Oswald', sans-serif;
       text-transform: uppercase;
       transform: rotate(14deg);
-      box-shadow: var(--shadow-paper);
-      z-index: 6;
+      filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.25));
+      z-index: 7;
       line-height: 1.1;
+      clip-path: polygon(5% 0%, 95% 2%, 100% 90%, 92% 100%, 8% 98%, 0% 88%);
     }
 
-    .postal-stamp .stamp-sub { font-size: 0.7rem; font-weight: 700; }
-    .postal-stamp .stamp-date { font-size: 1.25rem; font-weight: 900; color: var(--burgundy-dark); }
-    .postal-stamp .stamp-year { font-size: 0.75rem; letter-spacing: 0.1em; }
+    .stamp-cutout .stamp-sub { font-size: 0.72rem; font-weight: 700; }
+    .stamp-cutout .stamp-date { font-size: 1.3rem; font-weight: 900; color: var(--burgundy-dark); }
+    .stamp-cutout .stamp-year { font-size: 0.75rem; letter-spacing: 0.1em; }
 
-    /* ==========================================
+    /* ========================================================
        2. ЛОКАЦИЯ (УСАДЬБА)
-       ========================================== */
-    .venue-section {
-      background: rgba(248, 246, 240, 0.5);
-      border: 2px dashed rgba(0,0,0,0.22);
+       ======================================================== */
+    .venue-scrap-card {
+      background-color: rgba(248, 246, 240, 0.6);
+      background-image: var(--paper-grain);
+      border: 2px dashed rgba(0,0,0,0.25);
       padding: 24px 18px;
       margin-bottom: 40px;
       position: relative;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.18));
+      clip-path: polygon(0.8% 1.5%, 99.2% 0.5%, 98.5% 98.8%, 1.2% 98.2%);
     }
 
-    .venue-tape {
+    .tape-venue {
       top: -10px;
-      right: 20px;
-      width: 80px;
-      height: 20px;
+      right: 18px;
+      width: 85px;
+      height: 22px;
       transform: rotate(3deg);
     }
 
@@ -342,10 +417,13 @@
       position: relative;
       margin: 16px auto;
       max-width: 100%;
-      background: #ffffff;
-      padding: 8px;
-      box-shadow: var(--shadow-deep);
-      transform: rotate(1deg);
+      background-color: #ffffff;
+      background-image: var(--paper-grain);
+      padding: 8px 8px 12px 8px;
+      filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.25));
+      transform: rotate(1.2deg);
+      clip-path: polygon(1% 2%, 99% 0.8%, 98.5% 98.5%, 1.5% 97.8%);
+      border: 1px solid rgba(0,0,0,0.1);
     }
 
     .venue-photo-cutout img {
@@ -358,46 +436,51 @@
     .btn-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       margin-top: 16px;
     }
 
-    .btn-cutout {
+    .btn-scrap {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 16px;
+      padding: 10px 18px;
       font-family: 'Oswald', sans-serif;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 700;
       text-transform: uppercase;
       text-decoration: none;
-      box-shadow: var(--shadow-deep);
+      filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.3));
       cursor: pointer;
       transition: all 0.2s ease;
       border: none;
+      background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1) 100%),
+        var(--paper-grain);
     }
 
-    .btn-cutout-burgundy {
-      background: var(--burgundy);
+    .btn-scrap-burgundy {
+      background-color: var(--burgundy);
       color: #ffffff;
-      transform: rotate(-1deg);
+      transform: rotate(-1.5deg);
+      clip-path: polygon(1% 4%, 99% 0%, 97% 96%, 3% 100%);
     }
 
-    .btn-cutout-blue {
-      background: var(--powder-blue-dark);
+    .btn-scrap-blue {
+      background-color: var(--powder-blue-dark);
       color: #ffffff;
-      transform: rotate(1.5deg);
+      transform: rotate(2deg);
+      clip-path: polygon(2% 0%, 98% 3%, 99% 98%, 0% 95%);
     }
 
-    .btn-cutout:hover {
-      transform: scale(1.05) rotate(0deg);
-      box-shadow: var(--shadow-heavy);
+    .btn-scrap:hover {
+      transform: scale(1.06) rotate(0deg);
+      filter: drop-shadow(3px 6px 10px rgba(0,0,0,0.4));
     }
 
-    /* ==========================================
+    /* ========================================================
        3. ТАЙМИНГ С АНИМАЦИЕЙ (ЗНАМЕНИТАЯ ВОЛНА И ВЫРЕЗКИ)
-       ========================================= */
+       ======================================================== */
     .timing-section {
       position: relative;
       margin-bottom: 44px;
@@ -413,8 +496,8 @@
       position: relative;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      column-gap: 40px;
-      row-gap: 28px;
+      column-gap: 38px;
+      row-gap: 30px;
       width: 100%;
       padding: 30px 0 20px;
       min-height: 520px;
@@ -438,18 +521,19 @@
       height: 100%;
       overflow: visible;
       fill: var(--powder-blue-dark);
-      opacity: 0.75;
+      opacity: 0.8;
+      filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.15));
     }
 
     /* Анимированная скользящая точка */
     .ob-timeline-dot {
       position: absolute;
       z-index: 4;
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: var(--burgundy);
-      box-shadow: 0 0 0 4px var(--powder-blue-light), 0 0 14px rgba(110, 21, 38, 0.6);
+      box-shadow: 0 0 0 4px var(--powder-blue-light), 0 0 14px rgba(110, 21, 38, 0.65);
       transform: translate(-50%, -50%);
       transition: transform 0.15s ease-out;
       will-change: left, top;
@@ -464,12 +548,12 @@
       text-align: center;
       z-index: 3;
       transition: transform 0.3s ease, opacity 0.3s ease;
-      opacity: 0.85;
+      opacity: 0.88;
     }
 
     .sm-timing__item.item-active {
       opacity: 1;
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02);
     }
 
     .sm-timing__item.item-1 { grid-column: 1; grid-row: 1; }
@@ -483,30 +567,41 @@
       gap: 8px;
     }
 
+    /* Иконки этапов, вырезанные ножницами с белым полем */
     .timing-icon-cutout {
-      width: 74px;
-      height: 74px;
-      background: #ffffff;
+      width: 76px;
+      height: 76px;
+      background-color: #ffffff;
+      background-image: var(--paper-grain);
       padding: 10px;
-      box-shadow: var(--shadow-paper);
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 2px;
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.22));
+      border: 1px solid rgba(0,0,0,0.12);
+      transition: transform 0.3s ease;
     }
 
-    .sm-timing__item.item-1 .timing-icon-cutout,
+    .sm-timing__item.item-1 .timing-icon-cutout {
+      transform: rotate(-2.5deg);
+      clip-path: polygon(1.5% 3%, 98% 1%, 97% 97%, 2% 98%);
+    }
+
+    .sm-timing__item.item-2 .timing-icon-cutout {
+      transform: rotate(2.5deg);
+      clip-path: polygon(2% 1%, 99% 3%, 96% 98%, 1% 96%);
+    }
+
     .sm-timing__item.item-3 .timing-icon-cutout {
       transform: rotate(-2deg);
+      clip-path: polygon(3% 2%, 97% 1%, 99% 97%, 1% 98%);
     }
 
-    .sm-timing__item.item-2 .timing-icon-cutout,
     .sm-timing__item.item-4 .timing-icon-cutout {
-      transform: rotate(2deg);
+      transform: rotate(3deg);
+      clip-path: polygon(1% 2%, 98% 4%, 96% 99%, 3% 95%);
     }
 
     .sm-timing__item.item-active .timing-icon-cutout {
-      transform: scale(1.08) rotate(0deg);
-      box-shadow: var(--shadow-heavy);
+      transform: scale(1.1) rotate(0deg);
+      filter: drop-shadow(3px 6px 10px rgba(0,0,0,0.32));
       border-color: var(--burgundy);
     }
 
@@ -514,21 +609,25 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       max-width: 220px;
     }
 
-    /* ==========================================
-       4. ДРЕСС-КОД (КОЛОНКА СТИЛЯ И ВЫРЕЗКИ ФАСОНОВ)
-       ========================================= */
+    /* ========================================================
+       4. ДРЕСС-КОД (КОЛОНКА СТИЛЯ И СВОТЧИ)
+       ======================================================== */
     .dresscode-section {
-      background: #ffffff;
-      box-shadow: var(--shadow-heavy);
-      padding: 28px 20px;
+      background-color: #ffffff;
+      background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.05) 100%),
+        var(--paper-grain);
+      filter: drop-shadow(4px 8px 16px rgba(0,0,0,0.35));
+      padding: 30px 20px;
       margin-bottom: 44px;
       position: relative;
-      transform: rotate(0.6deg);
+      transform: rotate(0.8deg);
       border: 1px solid #d5c8b8;
+      clip-path: polygon(0.5% 1.2%, 99.5% 0.5%, 98.8% 99.2%, 1.2% 98.5%);
     }
 
     .palette-swatches {
@@ -539,24 +638,28 @@
       margin: 22px 0 18px;
     }
 
+    /* Карточки-свотчи ткани с неровными срезами */
     .swatch-card {
-      background: var(--newsprint);
+      background-color: var(--newsprint);
+      background-image: var(--paper-grain);
       padding: 8px 8px 10px;
-      box-shadow: var(--shadow-paper);
+      filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.22));
       text-align: center;
-      transform: rotate(-1.5deg);
-      border: 1px solid rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.1);
     }
 
-    .swatch-card:nth-child(even) {
-      transform: rotate(2deg);
-    }
+    .swatch-card:nth-child(1) { transform: rotate(-2.5deg); clip-path: polygon(2% 4%, 98% 1%, 96% 97%, 3% 99%); }
+    .swatch-card:nth-child(2) { transform: rotate(2deg); clip-path: polygon(1% 1%, 97% 3%, 99% 98%, 2% 96%); }
+    .swatch-card:nth-child(3) { transform: rotate(-1.5deg); clip-path: polygon(3% 2%, 99% 1%, 97% 99%, 1% 97%); }
+    .swatch-card:nth-child(4) { transform: rotate(3deg); clip-path: polygon(2% 3%, 98% 1%, 96% 97%, 3% 98%); }
+    .swatch-card:nth-child(5) { transform: rotate(-2deg); clip-path: polygon(1% 2%, 97% 4%, 99% 96%, 2% 98%); }
 
     .swatch-color {
       width: 60px;
       height: 52px;
       margin-bottom: 6px;
-      box-shadow: inset 0 0 4px rgba(0,0,0,0.18);
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.22);
+      clip-path: polygon(2% 2%, 98% 1%, 97% 98%, 1% 97%);
     }
 
     .swatch-name {
@@ -566,20 +669,22 @@
       text-transform: uppercase;
     }
 
-    /* Карточки рекомендаций для дам и кавалеров */
+    /* Вырезки фасонов одежды для дам и джентльменов */
     .dress-notes-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 18px;
+      gap: 16px;
+      margin-top: 20px;
     }
 
     .dress-note-box {
-      background: var(--paper-white);
+      background-color: var(--paper-white);
+      background-image: var(--paper-grain);
       padding: 14px;
-      box-shadow: var(--shadow-paper);
-      border: 1px solid rgba(0,0,0,0.08);
+      filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.2));
+      border: 1px solid rgba(0,0,0,0.1);
       text-align: center;
+      clip-path: polygon(1% 2%, 99% 1%, 98% 99%, 1.5% 98%);
     }
 
     .dress-figure-img {
@@ -590,31 +695,44 @@
       margin: 8px 0;
       filter: contrast(1.05);
       border: 1px solid #ddd;
+      clip-path: polygon(1% 3%, 98% 1%, 99% 97%, 2% 98%);
     }
 
-    /* Желтый стикер с предупреждением */
+    /* Желтый стикер с предупреждением о гравии */
     .manor-sticker {
-      margin-top: 20px;
-      background: #ffeaa7;
+      margin-top: 22px;
+      background-color: #ffeaa7;
+      background-image: var(--paper-grain);
       padding: 14px 16px;
-      box-shadow: var(--shadow-paper);
-      transform: rotate(-1.2deg);
+      filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.22));
+      transform: rotate(-1.5deg);
       font-size: 0.88rem;
       border: 1px solid #ebd068;
       text-align: left;
+      clip-path: polygon(1% 2%, 99% 0.5%, 98% 98.5%, 2% 99%);
     }
 
-    /* ==========================================
-       5. АНКЕТА ГОСТЯ / RSVP (ВЫРЕЗНОЙ БЛАНК)
-       ========================================= */
+    /* ========================================================
+       5. АНКЕТА ГОСТЯ / RSVP (ВЫРЕЗНОЙ ГАЗЕТНЫЙ КУПОН)
+       ======================================================== */
     .rsvp-section {
-      background: var(--paper-white);
-      padding: 28px 22px;
-      box-shadow: var(--shadow-heavy);
+      background-color: var(--paper-white);
+      background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.06) 100%),
+        var(--paper-grain);
+      padding: 30px 22px;
+      filter: drop-shadow(4px 8px 16px rgba(0,0,0,0.35));
       position: relative;
-      transform: rotate(-0.5deg);
+      transform: rotate(-0.6deg);
       border: 2px dashed #888;
       margin-bottom: 34px;
+      /* Неровный край сверху как от ножниц зигзаг */
+      clip-path: polygon(
+        0% 0%, 3% 4px, 6% 0%, 9% 4px, 12% 0%, 15% 4px, 18% 0%, 21% 4px, 24% 0%, 27% 4px, 30% 0%,
+        33% 4px, 36% 0%, 39% 4px, 42% 0%, 45% 4px, 48% 0%, 51% 4px, 54% 0%, 57% 4px, 60% 0%,
+        63% 4px, 66% 0%, 69% 4px, 72% 0%, 75% 4px, 78% 0%, 81% 4px, 84% 0%, 87% 4px, 90% 0%,
+        93% 4px, 96% 0%, 100% 4px, 99.2% 99.2%, 0.8% 98.8%
+      );
     }
 
     .cut-line {
@@ -642,12 +760,14 @@
     .rsvp-input {
       width: 100%;
       padding: 12px 14px;
-      background: #ffffff;
+      background-color: #ffffff;
+      background-image: var(--paper-grain);
       border: 1px solid #888;
-      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.12);
       font-family: 'Courier Prime', monospace;
       font-size: 0.95rem;
       margin-top: 6px;
+      clip-path: polygon(0.5% 2%, 99.5% 0.5%, 99% 98%, 0.5% 99%);
     }
 
     .rsvp-input:focus {
@@ -659,8 +779,8 @@
     .choice-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 6px;
+      gap: 12px;
+      margin-top: 8px;
     }
 
     .choice-btn {
@@ -675,22 +795,24 @@
 
     .choice-box {
       padding: 10px 12px;
-      background: #ffffff;
+      background-color: #ffffff;
+      background-image: var(--paper-grain);
       border: 1px solid #bbb;
       text-align: center;
       font-size: 0.9rem;
       font-weight: 700;
-      box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
+      filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.15));
       transition: all 0.2s ease;
       user-select: none;
+      clip-path: polygon(1% 3%, 99% 1%, 98% 97%, 2% 99%);
     }
 
     .choice-btn input:checked + .choice-box {
-      background: var(--burgundy);
+      background-color: var(--burgundy);
       color: #ffffff;
       border-color: var(--burgundy);
-      transform: scale(1.02);
-      box-shadow: var(--shadow-paper);
+      transform: scale(1.03);
+      filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.25));
     }
 
     .drinks-chips {
@@ -712,16 +834,18 @@
 
     .chip-box {
       padding: 8px 14px;
-      background: #ffffff;
+      background-color: #ffffff;
+      background-image: var(--paper-grain);
       border: 1px solid #bbb;
       font-size: 0.85rem;
-      box-shadow: 1px 2px 3px rgba(0,0,0,0.1);
+      filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.15));
       user-select: none;
       transition: all 0.15s ease;
+      clip-path: polygon(2% 4%, 98% 1%, 97% 96%, 3% 99%);
     }
 
     .chip-btn input:checked + .chip-box {
-      background: var(--powder-blue-dark);
+      background-color: var(--powder-blue-dark);
       color: #ffffff;
       border-color: var(--powder-blue-dark);
       transform: translateY(-2px);
@@ -730,7 +854,10 @@
     .btn-submit-collage {
       width: 100%;
       padding: 16px;
-      background: var(--burgundy);
+      background-color: var(--burgundy);
+      background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.12) 100%),
+        var(--paper-grain);
       color: #ffffff;
       border: none;
       font-family: 'Oswald', sans-serif;
@@ -738,24 +865,25 @@
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      box-shadow: var(--shadow-heavy);
+      filter: drop-shadow(3px 6px 12px rgba(110, 21, 38, 0.45));
       cursor: pointer;
-      margin-top: 14px;
+      margin-top: 16px;
       transition: all 0.2s ease;
+      clip-path: polygon(1% 3%, 99% 0.5%, 98% 97%, 2% 99.5%);
     }
 
     .btn-submit-collage:hover {
-      background: var(--burgundy-bright);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(110, 21, 38, 0.4);
+      background-color: var(--burgundy-bright);
+      transform: translateY(-2px) scale(1.02);
+      filter: drop-shadow(4px 8px 16px rgba(110, 21, 38, 0.55));
     }
 
-    /* ==========================================
+    /* ========================================================
        6. ФИНАЛ И МОДАЛЬНОЕ ОКНО
-       ========================================= */
+       ======================================================== */
     .farewell-footer {
       text-align: center;
-      margin-top: 24px;
+      margin-top: 28px;
     }
 
     .modal-backdrop {
@@ -771,36 +899,38 @@
     }
 
     .modal-box {
-      background: var(--paper-white);
+      background-color: var(--paper-white);
+      background-image: var(--paper-grain);
       max-width: 440px;
       width: 100%;
       padding: 34px 24px;
-      box-shadow: var(--shadow-heavy);
+      filter: drop-shadow(6px 12px 24px rgba(0,0,0,0.5));
       border: 4px solid var(--burgundy);
       text-align: center;
-      transform: rotate(-1deg);
+      transform: rotate(-1.5deg);
+      clip-path: polygon(1% 2%, 99% 0.8%, 98.5% 98.8%, 1.5% 98.2%);
       animation: modalSlam 0.35s ease-out;
     }
 
     @keyframes modalSlam {
       0% { transform: scale(1.15) rotate(3deg); opacity: 0; }
-      100% { transform: scale(1) rotate(-1deg); opacity: 1; }
+      100% { transform: scale(1) rotate(-1.5deg); opacity: 1; }
     }
 
     @media (max-width: 560px) {
       .collage-poster {
         padding: 24px 14px;
       }
-      .char-block {
+      .ransom-letter {
         font-size: 2.7rem;
-        padding: 4px 6px 8px;
+        padding: 4px 7px 7px;
       }
       .ll-timeline {
         column-gap: 20px;
       }
       .timing-icon-cutout {
-        width: 58px;
-        height: 58px;
+        width: 60px;
+        height: 60px;
         padding: 8px;
       }
       .dress-notes-grid, .choice-grid {
@@ -819,41 +949,51 @@
     <section class="hero-section">
       <!-- Верхняя строчка вырезок (как в референсе: "планы на") -->
       <div class="hero-top-row">
-        <span class="clip tag-white-serif">планы</span>
-        <span class="clip tag-black-sans">на</span>
+        <span class="clip" style="transform: rotate(-3deg);">
+          <span class="clip-inner cut-a paper-clip-white" style="font-size: 1.5rem; padding: 5px 14px;">планы</span>
+        </span>
+        <span class="clip" style="transform: rotate(2.5deg);">
+          <span class="clip-inner cut-b paper-clip-black" style="font-size: 1.2rem; padding: 6px 12px;">на</span>
+        </span>
       </div>
 
       <!-- Главный вырезанный заголовок из букв (точь-в-точь как Л-Е-Т-О) -->
       <div class="hero-huge-title">
-        <span class="char-block char-burgundy">С</span>
-        <span class="char-block char-blue">В</span>
-        <span class="char-block char-burgundy">А</span>
-        <span class="char-block char-white">Д</span>
-        <span class="char-block char-blue">Ь</span>
-        <span class="char-block char-burgundy">Б</span>
-        <span class="char-block char-blue">У</span>
+        <span class="ransom-letter letter-1">С</span>
+        <span class="ransom-letter letter-2">В</span>
+        <span class="ransom-letter letter-3">А</span>
+        <span class="ransom-letter letter-4">Д</span>
+        <span class="ransom-letter letter-5">Ь</span>
+        <span class="ransom-letter letter-6">Б</span>
+        <span class="ransom-letter letter-7">У</span>
       </div>
 
-      <!-- Имена пары на вырезных плашках -->
+      <!-- Имена пары на вырезных плашках с неровными краями -->
       <div class="hero-names-row">
-        <span class="clip tag-white-serif" style="font-size: 1.5rem;">Дмитрий</span>
-        <span class="clip tag-burgundy-bold" style="font-size: 1.25rem;">&</span>
-        <span class="clip tag-blue-bold" style="font-size: 1.5rem;">Виктория</span>
+        <span class="clip" style="transform: rotate(-2deg);">
+          <span class="clip-inner cut-c paper-clip-white" style="font-size: 1.5rem; padding: 6px 14px;">Дмитрий</span>
+        </span>
+        <span class="clip" style="transform: rotate(3deg);">
+          <span class="clip-inner cut-d paper-clip-burgundy" style="font-size: 1.3rem; padding: 6px 12px;">&</span>
+        </span>
+        <span class="clip" style="transform: rotate(-1.5deg);">
+          <span class="clip-inner cut-e paper-clip-blue" style="font-size: 1.5rem; padding: 6px 14px;">Виктория</span>
+        </span>
       </div>
 
       <!-- Вырезанная фотография пары со скотчем и почтовым штемпелем -->
-      <div class="photo-clipping-card">
-        <div class="tape tape-top-photo"></div>
+      <div class="photo-scrapbook">
+        <div class="scotch-tape tape-photo-top"></div>
 
         <!-- Почтовый штемпель с датой -->
-        <div class="postal-stamp">
+        <div class="stamp-cutout">
           <span class="stamp-sub">СВАДЬБА</span>
           <span class="stamp-date">19.11</span>
           <span class="stamp-year">2026</span>
         </div>
 
         <img src="./Сайтмейкер_files/couple-city.webp" onerror="this.src='./Сайтмейкер_files/couple-kiss.webp'" alt="Дмитрий и Виктория">
-        <div class="photo-caption-strip">
+        <div class="photo-caption-scrap">
           «Камерное торжество для самых близких»
         </div>
       </div>
@@ -862,16 +1002,22 @@
     <!-- ==========================================
          2. ЛОКАЦИЯ (УСАДЬБА)
          ========================================== -->
-    <section class="venue-section">
-      <div class="tape venue-tape"></div>
+    <section class="venue-scrap-card">
+      <div class="scotch-tape tape-venue"></div>
 
       <div style="margin-bottom: 10px;">
-        <span class="clip tag-black-sans">МЕСТО ДЕЙСТВИЯ</span>
-        <span class="clip tag-blue-bold">САНКТ-ПЕТЕРБУРГ</span>
+        <span class="clip" style="transform: rotate(2deg);">
+          <span class="clip-inner cut-a paper-clip-black" style="font-size: 0.95rem;">МЕСТО ДЕЙСТВИЯ</span>
+        </span>
+        <span class="clip" style="transform: rotate(-2deg);">
+          <span class="clip-inner cut-c paper-clip-blue" style="font-size: 1rem;">САНКТ-ПЕТЕРБУРГ</span>
+        </span>
       </div>
 
       <div style="margin: 8px 0;">
-        <span class="clip tag-burgundy-bold" style="font-size: 1.35rem;">ОСОБНЯК ПУТИЛОВА</span>
+        <span class="clip" style="transform: rotate(1.2deg);">
+          <span class="clip-inner cut-b paper-clip-burgundy" style="font-size: 1.4rem; padding: 6px 16px;">ОСОБНЯК ПУТИЛОВА</span>
+        </span>
       </div>
 
       <!-- Фотография усадьбы -->
@@ -884,10 +1030,10 @@
       </p>
 
       <div class="btn-row">
-        <a href="https://yandex.ru/maps/?text=Особняк+Путилова+Санкт-Петербург" target="_blank" class="btn-cutout btn-cutout-burgundy">
+        <a href="https://yandex.ru/maps/?text=Особняк+Путилова+Санкт-Петербург" target="_blank" class="btn-scrap btn-scrap-burgundy">
           Маршрут на карте ↗
         </a>
-        <button type="button" class="btn-cutout btn-cutout-blue" onclick="addToCalendar()">
+        <button type="button" class="btn-scrap btn-scrap-blue" onclick="addToCalendar()">
           В календарь 📅
         </button>
       </div>
@@ -898,9 +1044,13 @@
          ========================================== -->
     <section class="timing-section" id="timing">
       <div class="timing-header">
-        <span class="clip tag-blue-bold">РАСПОРЯДОК ДНЯ</span>
+        <span class="clip" style="transform: rotate(-1.5deg);">
+          <span class="clip-inner cut-d paper-clip-blue" style="font-size: 1.15rem;">РАСПОРЯДОК ДНЯ</span>
+        </span>
         <div style="margin-top: 6px;">
-          <span class="clip tag-burgundy-bold">ТАЙМИНГ</span>
+          <span class="clip" style="transform: rotate(2deg);">
+            <span class="clip-inner cut-e paper-clip-burgundy" style="font-size: 1.35rem;">ТАЙМИНГ</span>
+          </span>
         </div>
       </div>
 
@@ -911,52 +1061,76 @@
         <!-- 1: Сбор гостей -->
         <div class="sm-timing__item item-1">
           <div class="item-top-row">
-            <span class="num-cutout n1">1</span>
-            <span class="clip tag-burgundy-bold" style="font-size: 1.15rem;">12:00</span>
+            <span class="badge-number badge-1">1</span>
+            <span class="clip" style="transform: rotate(2deg);">
+              <span class="clip-inner cut-a paper-clip-burgundy" style="font-size: 1.15rem; padding: 4px 10px;">12:00</span>
+            </span>
           </div>
           <img class="timing-icon-cutout" src="./Сайтмейкер_files/icon-chapel.svg" alt="Сбор гостей">
           <div class="timing-text-box">
-            <span class="clip tag-white-serif" style="font-size: 1.05rem;">СБОР ГОСТЕЙ</span>
-            <span class="clip tag-newsprint-mono">Аперитив на веранде</span>
+            <span class="clip" style="transform: rotate(-1.5deg);">
+              <span class="clip-inner cut-b paper-clip-white" style="font-size: 1.05rem;">СБОР ГОСТЕЙ</span>
+            </span>
+            <span class="clip" style="transform: rotate(1.8deg);">
+              <span class="clip-inner cut-c paper-clip-newsprint">Аперитив на веранде</span>
+            </span>
           </div>
         </div>
 
         <!-- 2: Церемония -->
         <div class="sm-timing__item item-2">
           <div class="item-top-row">
-            <span class="num-cutout n2">2</span>
-            <span class="clip tag-blue-bold" style="font-size: 1.15rem;">12:30</span>
+            <span class="badge-number badge-2">2</span>
+            <span class="clip" style="transform: rotate(-2.5deg);">
+              <span class="clip-inner cut-b paper-clip-blue" style="font-size: 1.15rem; padding: 4px 10px;">12:30</span>
+            </span>
           </div>
           <img class="timing-icon-cutout" src="./Сайтмейкер_files/icon-wedding-rings.svg" alt="Церемония регистрации">
           <div class="timing-text-box">
-            <span class="clip tag-white-serif" style="font-size: 1.05rem;">ЦЕРЕМОНИЯ</span>
-            <span class="clip tag-newsprint-mono">Клятвы и кольца</span>
+            <span class="clip" style="transform: rotate(2deg);">
+              <span class="clip-inner cut-d paper-clip-white" style="font-size: 1.05rem;">ЦЕРЕМОНИЯ</span>
+            </span>
+            <span class="clip" style="transform: rotate(-1.5deg);">
+              <span class="clip-inner cut-e paper-clip-newsprint">Клятвы и кольца</span>
+            </span>
           </div>
         </div>
 
         <!-- 3: Банкет -->
         <div class="sm-timing__item item-3">
           <div class="item-top-row">
-            <span class="num-cutout n3">3</span>
-            <span class="clip tag-burgundy-bold" style="font-size: 1.15rem;">13:30</span>
+            <span class="badge-number badge-3">3</span>
+            <span class="clip" style="transform: rotate(2deg);">
+              <span class="clip-inner cut-c paper-clip-burgundy" style="font-size: 1.15rem; padding: 4px 10px;">13:30</span>
+            </span>
           </div>
           <img class="timing-icon-cutout" src="./Сайтмейкер_files/icon-dinner-table.svg" alt="Банкет в Особняке">
           <div class="timing-text-box">
-            <span class="clip tag-white-serif" style="font-size: 1.05rem;">ЗВАНЫЙ УЖИН</span>
-            <span class="clip tag-newsprint-mono">Особняк при свечах</span>
+            <span class="clip" style="transform: rotate(-2deg);">
+              <span class="clip-inner cut-a paper-clip-white" style="font-size: 1.05rem;">ЗВАНЫЙ УЖИН</span>
+            </span>
+            <span class="clip" style="transform: rotate(1.5deg);">
+              <span class="clip-inner cut-d paper-clip-newsprint">Особняк при свечах</span>
+            </span>
           </div>
         </div>
 
         <!-- 4: Завершение -->
         <div class="sm-timing__item item-4">
           <div class="item-top-row">
-            <span class="num-cutout n4">4</span>
-            <span class="clip tag-blue-bold" style="font-size: 1.15rem;">23:00</span>
+            <span class="badge-number badge-4">4</span>
+            <span class="clip" style="transform: rotate(-2deg);">
+              <span class="clip-inner cut-d paper-clip-blue" style="font-size: 1.15rem; padding: 4px 10px;">23:00</span>
+            </span>
           </div>
           <img class="timing-icon-cutout" src="./Сайтмейкер_files/icon-wedding-car.svg" alt="Завершение вечера">
           <div class="timing-text-box">
-            <span class="clip tag-white-serif" style="font-size: 1.05rem;">ФИНАЛ ВЕЧЕРА</span>
-            <span class="clip tag-newsprint-mono">Торт и огни</span>
+            <span class="clip" style="transform: rotate(2deg);">
+              <span class="clip-inner cut-e paper-clip-white" style="font-size: 1.05rem;">ФИНАЛ ВЕЧЕРА</span>
+            </span>
+            <span class="clip" style="transform: rotate(-1.5deg);">
+              <span class="clip-inner cut-b paper-clip-newsprint">Торт и огни</span>
+            </span>
           </div>
         </div>
       </div>
@@ -967,26 +1141,30 @@
          ========================================== -->
     <section class="dresscode-section">
       <div style="text-align: center;">
-        <span class="clip tag-burgundy-bold" style="font-size: 1.45rem;">ДРЕСС-КОД</span>
-        <span class="clip tag-blue-bold">КОЛОНКА СТИЛЯ</span>
+        <span class="clip" style="transform: rotate(-2deg);">
+          <span class="clip-inner cut-a paper-clip-burgundy" style="font-size: 1.45rem; padding: 6px 14px;">ДРЕСС-КОД</span>
+        </span>
+        <span class="clip" style="transform: rotate(2.5deg);">
+          <span class="clip-inner cut-b paper-clip-blue" style="font-size: 1.15rem; padding: 6px 12px;">КОЛОНКА СТИЛЯ</span>
+        </span>
       </div>
 
-      <p style="font-size: 0.88rem; margin: 12px auto; max-width: 460px; text-align: center;">
+      <p style="font-size: 0.88rem; margin: 14px auto; max-width: 460px; text-align: center;">
         Мы готовимся к нашему незабываемому дню и будем счастливы видеть вас в нарядах главных оттенков:
       </p>
 
-      <!-- Образцы палитры (свотчи ткани на булавках) -->
+      <!-- Образцы палитры (свотчи ткани с неровным резом) -->
       <div class="palette-swatches">
         <div class="swatch-card">
           <div class="swatch-color" style="background: #6e1526;"></div>
           <div class="swatch-name">БОРДО</div>
         </div>
         <div class="swatch-card">
-          <div class="swatch-color" style="background: #93bedd;"></div>
+          <div class="swatch-color" style="background: #8ebade;"></div>
           <div class="swatch-name">ГОЛУБОЙ</div>
         </div>
         <div class="swatch-card">
-          <div class="swatch-color" style="background: #faf8f5; border: 1px solid #ccc;"></div>
+          <div class="swatch-color" style="background: #fbf9f4; border: 1px solid #ccc;"></div>
           <div class="swatch-name">МОЛОЧНЫЙ</div>
         </div>
         <div class="swatch-card">
@@ -994,22 +1172,26 @@
           <div class="swatch-name">КРАФТ</div>
         </div>
         <div class="swatch-card">
-          <div class="swatch-color" style="background: #161415;"></div>
-          <div class="swatch-name" style="color: #fff; background: #161415;">ГРАФИТ</div>
+          <div class="swatch-color" style="background: #141213;"></div>
+          <div class="swatch-name" style="color: #fff; background: #141213;">ГРАФИТ</div>
         </div>
       </div>
 
       <!-- Вырезки фасонов для дам и кавалеров -->
       <div class="dress-notes-grid">
         <div class="dress-note-box">
-          <span class="clip tag-black-sans" style="font-size: 0.8rem; margin-bottom: 6px;">01 / ДЛЯ ДАМ</span>
+          <span class="clip" style="transform: rotate(-2deg);">
+            <span class="clip-inner cut-c paper-clip-black" style="font-size: 0.8rem; margin-bottom: 6px;">01 / ДЛЯ ДАМ</span>
+          </span>
           <img class="dress-figure-img" src="./Сайтмейкер_files/women-01.webp" alt="Образ для дам">
           <p style="font-size: 0.82rem; line-height: 1.35;">
             Вечерние или коктейльные платья, брючные костюмы в цветах палитры.
           </p>
         </div>
         <div class="dress-note-box">
-          <span class="clip tag-blue-bold" style="font-size: 0.8rem; margin-bottom: 6px;">02 / ДЛЯ КАВАЛЕРОВ</span>
+          <span class="clip" style="transform: rotate(2deg);">
+            <span class="clip-inner cut-d paper-clip-blue" style="font-size: 0.8rem; margin-bottom: 6px;">02 / ДЛЯ КАВАЛЕРОВ</span>
+          </span>
           <img class="dress-figure-img" src="./Сайтмейкер_files/men-01.webp" alt="Образ для мужчин">
           <p style="font-size: 0.82rem; line-height: 1.35;">
             Классические костюмы или блейзеры в глубоких графитовых или синих тонах.
@@ -1017,7 +1199,7 @@
         </div>
       </div>
 
-      <!-- Важная пометка про обувь в усадьбе -->
+      <!-- Желтый стикер с предупреждением -->
       <div class="manor-sticker">
         ⚠️ <strong>ВАЖНАЯ ЗАМЕТКА:</strong> Дорожки в усадебном парке гравийные — прекрасным дамам очень рекомендуем устойчивый каблук или изящный flat!
       </div>
@@ -1034,22 +1216,30 @@
       </div>
 
       <div style="text-align: center; margin-bottom: 16px;">
-        <span class="clip tag-burgundy-bold" style="font-size: 1.35rem;">АНКЕТА ГОСТЯ</span>
+        <span class="clip" style="transform: rotate(-1.5deg);">
+          <span class="clip-inner cut-b paper-clip-burgundy" style="font-size: 1.35rem; padding: 6px 14px;">АНКЕТА ГОСТЯ</span>
+        </span>
         <div style="margin-top: 6px;">
-          <span class="clip tag-white-serif" style="font-size: 1rem;">ОТВЕТ ДО 1 НОЯБРЯ 2026</span>
+          <span class="clip" style="transform: rotate(2deg);">
+            <span class="clip-inner cut-a paper-clip-white" style="font-size: 1rem; padding: 4px 10px;">ОТВЕТ ДО 1 НОЯБРЯ 2026</span>
+          </span>
         </div>
       </div>
 
       <form id="weddingRsvpForm">
         <!-- ФИО -->
         <div class="rsvp-group">
-          <span class="clip tag-newsprint-mono">1. ВАШЕ ИМЯ И ФАМИЛИЯ:</span>
+          <span class="clip" style="transform: rotate(-1deg);">
+            <span class="clip-inner cut-c paper-clip-newsprint">1. ВАШЕ ИМЯ И ФАМИЛИЯ:</span>
+          </span>
           <input type="text" id="guestName" class="rsvp-input" placeholder="Например: Иван и Анна Смирновы" required>
         </div>
 
         <!-- Присутствие -->
         <div class="rsvp-group">
-          <span class="clip tag-newsprint-mono">2. СМОЖЕТЕ ПРИЙТИ?</span>
+          <span class="clip" style="transform: rotate(1deg);">
+            <span class="clip-inner cut-d paper-clip-newsprint">2. СМОЖЕТЕ ПРИЙТИ?</span>
+          </span>
           <div class="choice-grid">
             <label class="choice-btn">
               <input type="radio" name="attendance" value="yes" checked>
@@ -1064,7 +1254,9 @@
 
         <!-- Алкоголь (из референса) -->
         <div class="rsvp-group">
-          <span class="clip tag-newsprint-mono">3. ПРЕДПОЧТЕНИЯ ПО БАРУ:</span>
+          <span class="clip" style="transform: rotate(-1.5deg);">
+            <span class="clip-inner cut-e paper-clip-newsprint">3. ПРЕДПОЧТЕНИЯ ПО БАРУ:</span>
+          </span>
           <div class="drinks-chips">
             <label class="chip-btn">
               <input type="checkbox" name="drinks" value="Шампанское">
@@ -1091,7 +1283,9 @@
 
         <!-- Пожелания / Аллергии -->
         <div class="rsvp-group">
-          <span class="clip tag-newsprint-mono">4. ОСОБЫЕ ПОЖЕЛАНИЯ / ТРАНСФЕР:</span>
+          <span class="clip" style="transform: rotate(1deg);">
+            <span class="clip-inner cut-a paper-clip-newsprint">4. ОСОБЫЕ ПОЖЕЛАНИЯ / ТРАНСФЕР:</span>
+          </span>
           <input type="text" id="guestComment" class="rsvp-input" placeholder="Вегетарианское меню / аллергия / нужен трансфер">
         </div>
 
@@ -1105,23 +1299,31 @@
          6. ФИНАЛ
          ========================================== -->
     <footer class="farewell-footer">
-      <span class="clip tag-white-serif" style="font-size: 1.15rem;">ДО ВСТРЕЧИ В ОСОБНЯКЕ!</span>
-      <div style="margin-top: 8px;">
-        <span class="clip tag-burgundy-bold">19 . 11 . 2026</span>
-        <span class="clip tag-black-sans">САНКТ-ПЕТЕРБУРГ</span>
+      <span class="clip" style="transform: rotate(-2deg);">
+        <span class="clip-inner cut-b paper-clip-white" style="font-size: 1.2rem; padding: 6px 14px;">ДО ВСТРЕЧИ В ОСОБНЯКЕ!</span>
+      </span>
+      <div style="margin-top: 10px;">
+        <span class="clip" style="transform: rotate(2deg);">
+          <span class="clip-inner cut-c paper-clip-burgundy" style="font-size: 1.1rem; padding: 5px 12px;">19 . 11 . 2026</span>
+        </span>
+        <span class="clip" style="transform: rotate(-1.5deg);">
+          <span class="clip-inner cut-d paper-clip-black" style="font-size: 1rem; padding: 5px 12px;">САНКТ-ПЕТЕРБУРГ</span>
+        </span>
       </div>
     </footer>
 
   </main>
 
-  <!-- Модальное окно подтверждения с анимацией печати -->
+  <!-- Модальное окно подтверждения с печатью -->
   <div class="modal-backdrop" id="successModal">
     <div class="modal-box">
-      <span class="clip tag-burgundy-bold" style="font-size: 1.6rem; margin-bottom: 12px;">ОТВЕТ ПРИНЯТ!</span>
-      <p style="font-size: 1rem; margin: 14px 0 20px; line-height: 1.4;">
+      <span class="clip" style="transform: rotate(-2deg); margin-bottom: 12px;">
+        <span class="clip-inner cut-a paper-clip-burgundy" style="font-size: 1.6rem; padding: 8px 16px;">ОТВЕТ ПРИНЯТ!</span>
+      </span>
+      <p style="font-size: 1rem; margin: 16px 0 22px; line-height: 1.4;">
         Ваш купон успешно передан молодожёнам. С нетерпением ждём встречи с вами в усадьбе!
       </p>
-      <button type="button" class="btn-cutout btn-cutout-burgundy" style="cursor: pointer;" onclick="document.getElementById('successModal').style.display = 'none';">
+      <button type="button" class="btn-scrap btn-scrap-burgundy" style="cursor: pointer;" onclick="document.getElementById('successModal').style.display = 'none';">
         ОТЛИЧНО, ЗАКРЫТЬ
       </button>
     </div>
