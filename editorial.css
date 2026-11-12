@@ -418,11 +418,11 @@ body { background: #484644; color: #f0e9e1; }
   .decoration-pair .decor-object + .decor-object { width: 68%; height: 225px; max-width: 260px; top: 80px; }
   .decor-spool { top: 80px !important; }
 }
-/* Ровная благородная фактура ватмана без замятий, сгенерированная через imagegen в цвете #681427 */
+/* Ровная благородная фактура ватмана при взгляде со стандартного расстояния, 100% без склеек */
 .magazine-canvas {
   background-color: #681427;
-  background-image: url('./assets/burgundy-whatman-seamless.jpg');
-  background-size: 800px auto;
+  background-image: url('./assets/burgundy-paper.svg');
+  background-size: 300px 300px;
   background-repeat: repeat;
 }
 /* Program illustrations share the manor's linework and sit directly on the page. */

@@ -1,16 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400">
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
   <defs>
-    <filter id="fiber">
-      <feTurbulence type="fractalNoise" baseFrequency=".018 .09" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 .88 0 0 0 0 .85 0 0 0 .018 0"/>
+    <filter id="whatmanDistantTooth" x="0%" y="0%" width="100%" height="100%">
+      <!-- Ультра-мелкое зерно хлопковой бумаги (взгляд издалека, без грубых волокон) -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" result="microTooth"/>
+      <feColorMatrix type="matrix" values="
+        0 0 0 0 0.96
+        0 0 0 0 0.90
+        0 0 0 0 0.85
+        0 0 0 0.032 0" in="microTooth" result="lightGrain"/>
+
+      <!-- Деликатная естественная вариация плотности листа (абсолютно бесшовная) -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.2" numOctaves="2" stitchTiles="stitch" result="softCloud"/>
+      <feColorMatrix type="matrix" values="
+        0 0 0 0 0.10
+        0 0 0 0 0.01
+        0 0 0 0 0.03
+        0 0 0 0.022 0" in="softCloud" result="darkGrain"/>
+
+      <feMerge>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="darkGrain"/>
+        <feMergeNode in="lightGrain"/>
+      </feMerge>
     </filter>
-    <radialGradient id="light">
-      <stop stop-color="#fff3df" stop-opacity=".035"/>
-      <stop offset="1" stop-color="#fff3df" stop-opacity="0"/>
-    </radialGradient>
   </defs>
-  <rect width="900" height="1400" fill="#681427"/>
-  <ellipse cx="180" cy="300" rx="420" ry="390" fill="url(#light)"/>
-  <ellipse cx="780" cy="1010" rx="350" ry="330" fill="url(#light)"/>
-  <rect width="900" height="1400" filter="url(#fiber)"/>
+
+  <!-- Чистый исходный бордовый цвет #681427 -->
+  <rect width="300" height="300" fill="#681427" filter="url(#whatmanDistantTooth)"/>
 </svg>
