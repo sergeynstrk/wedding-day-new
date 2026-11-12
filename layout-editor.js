@@ -11,7 +11,7 @@
   let selected = null;
   let drag = null;
   let undoState = null;
-  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки',lace:'Кружево',scissors:'Ножницы',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы'};
+  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки','lace-br':'Кружево (нижний угол)',lace:'Кружево',scissors:'Ножницы',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы'};
   items.forEach((item, i) => {
     item.dataset.layoutId ||= 'decoration-' + String(i + 1).padStart(2, '0');
     const name = Object.keys(names).find(key => item.classList.contains('decor-' + key));
