@@ -4,22 +4,26 @@ window.WEDDING_LAYOUT_DEFAULTS = {
   "layouts": {
     "desktop": {
       "decoration-02": {
-        "x": -233,
-        "y": 390,
+        "x": -220,
+        "y": 406,
         "scale": 1,
-        "rotation": 17
+        "rotation": 17,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-11": {
-        "x": 633,
-        "y": -2908.8003540039062,
+        "x": 631,
+        "y": -2913.8003540039062,
         "scale": 1,
-        "rotation": 2
+        "rotation": 2,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-12": {
-        "x": 825,
-        "y": -2720,
+        "x": 835,
+        "y": -2727,
         "scale": 1,
-        "rotation": 177,
+        "rotation": -180,
         "flipX": false,
         "flipY": false
       },
@@ -96,10 +100,10 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": -12
       },
       "decoration-16": {
-        "x": 0,
-        "y": 0,
+        "x": -157,
+        "y": 16,
         "scale": 1,
-        "rotation": 3,
+        "rotation": 24,
         "flipX": false,
         "flipY": false
       }
