@@ -93,45 +93,241 @@ body {
 .choice-btn input:focus-visible + .choice-box, .chip-btn input:focus-visible + .chip-box { outline: 3px solid #355861; outline-offset: 3px; }
 @media (max-width: 780px) {
   body { padding: 0; }
-  .magazine-canvas { padding: 19px 18px 30px; width: 100%; box-shadow: none; }
+  .magazine-canvas {
+    padding: 16px 14px 28px;
+    width: 100%;
+    box-shadow: none;
+    overflow-x: hidden;
+  }
   .edition-ribbon { font-size: 8px; letter-spacing: .04em; gap: 10px; margin-bottom: 18px; }
   .edition-ribbon .cute-tag { display: none; }
-  .hero-section { gap: 0 12px; margin-bottom: 28px; }
-  .hero-top-row .clip-body { font-size: 30px !important; }
-  .hero-huge-title { margin-bottom: 20px; }
-  .giant-char { font-size: clamp(35px, 11.3vw, 66px); }
-  .hero-names-row .clip-body { font-size: 23px !important; padding: 3px 8px !important; }
+
+  /* Hero: clean single-column presentation */
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+  }
+  .hero-top-row {
+    justify-content: center;
+    margin: 0 0 2px;
+  }
+  .hero-top-row .clip-body { font-size: 28px !important; }
+  .hero-huge-title {
+    width: 100%;
+    justify-content: center;
+    margin: 0 0 8px;
+  }
+  .giant-char { font-size: clamp(34px, 11vw, 64px); }
+  .hero-names-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 4px;
+    gap: 6px;
+  }
+  .hero-names-row .scrap-clip:nth-child(2) { margin: 0 !important; }
+  .hero-names-row .clip-body { font-size: 24px !important; padding: 4px 10px !important; }
+  .hero-section > .hero-invitation-note {
+    margin: 0 0 6px !important;
+    text-align: center;
+    padding-right: 0;
+  }
   .hero-section > .hero-invitation-note .cute-scribble { font-size: 20px; }
-  .couple-photo-inner img { height: 210px; }
-  .couple-photo-inner { padding-bottom: 42px; }
+
+  /* Couple photo: full horizontal polaroid card */
+  .couple-photo-frame {
+    width: 100%;
+    max-width: 335px;
+    margin: 4px auto 10px;
+  }
+  .couple-photo-inner {
+    padding: 6px 6px 36px;
+    transform: rotate(2deg);
+  }
+  .couple-photo-inner img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    object-position: center 32%;
+  }
   .photo-caption-scrap { font-size: 16px; line-height: 1; }
   .postal-seal-round { width: 61px; height: 61px; right: -6px; top: -12px; }
   .postal-seal-round .stamp-date { font-size: 20px; }
   .postal-seal-round .stamp-sub, .postal-seal-round .stamp-year { font-size: 9px; }
   .tape-top { width: 75px; height: 20px; left: 15%; }
-  .venue-photo-wrapper { width: 46%; margin-left: 10px; }
-  .venue-photo-wrapper img { height: 170px; }
+
+  .hero-details {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+  }
+
+  /* Hide intermediate decor clutter on mobile */
+  .decoration-pair,
+  .flatlay-bouquet {
+    display: none !important;
+  }
+
+  /* Venue section: full Bratsevo manor illustration */
+  .venue-card-frame {
+    margin: 0 0 28px;
+  }
+  .venue-card-inner {
+    padding: 18px 14px 22px;
+    text-align: center;
+  }
+  .venue-photo-wrapper {
+    float: none;
+    width: 100%;
+    max-width: 320px;
+    margin: 12px auto;
+    transform: rotate(-1deg);
+  }
+  .venue-photo-wrapper img {
+    width: 100%;
+    height: auto;
+    max-height: 160px;
+    object-fit: contain;
+    background: #ffffff;
+    padding: 6px;
+    border: 3px solid #e8ddc6;
+    box-sizing: border-box;
+  }
   .venue-card-inner .clip-body { font-size: 17px !important; padding: 5px 8px !important; }
-  .venue-card-inner > p { font-size: 16px !important; }
-  .ll-timeline { grid-template-columns: 27px minmax(0, 1fr); column-gap: 15px; row-gap: 25px; }
+  .venue-card-inner > p {
+    font-size: 15px !important;
+    line-height: 1.6;
+    text-align: left;
+    margin: 14px 0;
+  }
+  .btn-actions-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  .btn-actions-row .btn-paper-scrap {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  /* Timing: clean list alignment without overlap */
+  .timing-section {
+    margin-bottom: 28px;
+  }
+  .timing-header-box {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .timing-header-box .section-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .timing-header-box > div:nth-child(2) {
+    display: block;
+    margin: 6px auto 0;
+    text-align: center;
+  }
+  .ll-timeline {
+    grid-template-columns: 24px minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 22px;
+  }
   .ob-timeline-line { grid-column: 1; }
-  .sm-timing__item.item-1, .sm-timing__item.item-2, .sm-timing__item.item-3, .sm-timing__item.item-4 { grid-column: 2; margin-top: 0; align-items: flex-start; text-align: left; }
-  .sm-timing__item.item-1 .timing-text-box, .sm-timing__item.item-3 .timing-text-box { align-items: flex-start; }
-  .timing-icon-cutout { position: absolute; right: 0; top: 0; width: 65px; height: 65px; opacity: .6; }
-  .timing-text-box { padding-right: 4px; }
+  .sm-timing__item.item-1,
+  .sm-timing__item.item-2,
+  .sm-timing__item.item-3,
+  .sm-timing__item.item-4 {
+    grid-column: 2;
+    margin-top: 0;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .sm-timing__item.item-1 .timing-text-box,
+  .sm-timing__item.item-3 .timing-text-box {
+    align-items: flex-start;
+  }
+  .timing-icon-cutout {
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    width: 52px !important;
+    height: 52px !important;
+    opacity: 0.75 !important;
+    object-fit: contain;
+  }
+  .timing-text-box {
+    padding-right: 56px;
+    position: relative;
+    z-index: 1;
+  }
   .timing-header-box .clip-body { font-size: 19px !important; }
-  .dresscode-section, .rsvp-section { padding: 20px 14px; }
+
+  /* Dresscode section */
+  .dresscode-section {
+    padding: 24px 14px 20px;
+    margin-bottom: 24px;
+  }
   .dresscode-section .clip-body { font-size: 21px !important; padding: 6px 10px !important; }
-  .dress-notes-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .dress-figure-img { height: 170px; }
-  .dress-note-box p { font-size: 13px !important; }
-  .palette-swatches { gap: 8px; }
-  .swatch-color { width: 43px; height: 48px; }
+  .dress-notes-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .dress-note-box {
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .dress-figure-img {
+    height: 240px;
+    width: auto;
+    max-width: 100%;
+    margin: 10px auto;
+    display: block;
+  }
+  .dress-note-box p { font-size: 14px !important; line-height: 1.5; }
+  .palette-swatches { gap: 8px; justify-content: center; }
+  .swatch-color { width: 44px; height: 48px; }
   .swatch-name { font-size: 9px; letter-spacing: 0; }
-  .choice-grid { grid-template-columns: 1fr; }
-  .drinks-chips { gap: 8px; }
-  .chip-box { padding: 10px; }
+
+  /* RSVP section */
+  .rsvp-section {
+    padding: 24px 14px 20px;
+  }
   .rsvp-section .clip-body { font-size: 21px !important; padding: 6px 10px !important; }
+  .choice-grid { grid-template-columns: 1fr; }
+  .drinks-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip-box {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .farewell-footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    text-align: center;
+  }
+  .decor-cat {
+    position: absolute;
+    right: -5px;
+    top: -25px;
+    width: 85px;
+    height: 95px;
+  }
   .modal-box { padding: 25px 18px; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
