@@ -37,7 +37,7 @@ html.envelope-active .farewell-footer {
   top: 24px;
   right: 24px;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.85);
   border: 1px solid rgba(214, 199, 184, 0.85);
   border-radius: 30px;
   padding: 8px 18px;
@@ -99,14 +99,13 @@ html.envelope-active .farewell-footer {
     url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='linerGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='3' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0.98  0 1 0 0 0.94  0 0 1 0 0.93  0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23linerGrain)'/%3E%3C/svg%3E");
 }
 
-/* 3D Envelope Box (Контейнер конверта) */
+/* Контейнер конверта: perspective: 1400px, БЕЗ preserve-3d, чтобы 2D z-index работал корректно */
 .envelope-box {
   position: relative;
   width: 100%;
   max-width: 576px;
   height: 340px;
   perspective: 1400px;
-  transform-style: preserve-3d;
   will-change: transform;
 }
 
@@ -116,17 +115,16 @@ html.envelope-active .farewell-footer {
   }
 }
 
-/* 1. Задняя стенка конверта (z-0) */
+/* 1. Задняя стенка конверта (z-index: 0) */
 .envelope-back {
   position: absolute;
   inset: 0;
   border-radius: 0;
   box-shadow: 0 20px 45px rgba(51, 41, 43, 0.08);
   z-index: 0;
-  will-change: transform, opacity;
 }
 
-/* 1.1 Внутренний шелковый/золоченый лайнер кармана (z-1) */
+/* 1.1 Внутренний шелковый/золоченый лайнер кармана (z-index: 1) */
 .envelope-liner {
   position: absolute;
   inset: 6px;
@@ -134,10 +132,9 @@ html.envelope-active .farewell-footer {
   opacity: 0.9;
   z-index: 1;
   pointer-events: none;
-  will-change: transform, opacity;
 }
 
-/* 2. Пригласительная карточка со скругленными уголками (z-10) */
+/* 2. Пригласительная карточка со скругленными уголками (z-index: 10) */
 .envelope-letter {
   position: absolute;
   left: 5%;
@@ -157,9 +154,6 @@ html.envelope-active .farewell-footer {
   border: 1px solid #EBE5DF;
   box-sizing: border-box;
   transform-origin: center center;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 @media (min-width: 768px) {
@@ -284,7 +278,7 @@ html.envelope-active .farewell-footer {
   text-transform: uppercase;
 }
 
-/* 3. Передние карманы конверта (z-20) */
+/* 3. Передние карманы конверта (z-index: 20 — поверх карточки, чтобы карточка была внутри кармана) */
 .envelope-front {
   position: absolute;
   inset: 0;
@@ -292,7 +286,6 @@ html.envelope-active .farewell-footer {
   pointer-events: none;
   border-radius: 0;
   overflow: hidden;
-  will-change: transform, opacity;
 }
 
 .envelope-front-side {
@@ -316,7 +309,7 @@ html.envelope-active .farewell-footer {
   pointer-events: none;
 }
 
-/* 4. Верхний крышка-клапан (z-30) */
+/* 4. Верхний крышка-клапан (z-index: 30 при закрытом, z-index: 5 при откидывании) */
 .envelope-flap {
   position: absolute;
   top: 0;
@@ -324,14 +317,10 @@ html.envelope-active .farewell-footer {
   width: 100%;
   height: 68%;
   z-index: 30;
-  transform-origin: top center;
-  transform-style: preserve-3d;
+  transform-origin: top;
   clip-path: polygon(0 0, 100% 0, 50% 79.4%);
   -webkit-clip-path: polygon(0 0, 100% 0, 50% 79.4%);
   filter: drop-shadow(0 4px 10px rgba(51, 41, 43, 0.08));
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform;
 }
 
 .envelope-flap-liner {
@@ -350,19 +339,19 @@ html.envelope-active .farewell-footer {
   pointer-events: none;
 }
 
-/* 5. Главная непрерывная золотисто-бежевая рамка конверта (z-35) */
+/* 5. Главная непрерывная золотисто-бежевая рамка конверта (z-index: 2, без border-top, чтобы не перерезать выезжающее письмо) */
 .envelope-border {
   position: absolute;
   inset: 0;
   border-radius: 0;
   border: 1px solid #D6C7B8;
+  border-top: none;
   pointer-events: none;
-  z-index: 35;
+  z-index: 2;
   box-shadow: 0 20px 45px rgba(51, 41, 43, 0.08);
-  will-change: transform, opacity;
 }
 
-/* 6. Элегантная печать "Пыльная Роза" (z-50) */
+/* 6. Элегантная печать "Пыльная Роза" (z-index: 50 — на самом верху) */
 .envelope-btn {
   position: absolute;
   z-index: 50;
@@ -370,7 +359,6 @@ html.envelope-active .farewell-footer {
   left: 50%;
   transform: translate(-50%, -50%);
   transform-origin: center center;
-  will-change: transform, opacity;
 }
 
 .wax-seal {
