@@ -1,9 +1,9 @@
 /* ========================================================
-   ИНТЕРАКТИВНЫЙ 3D КОНВЕРТ ИЗ ОРИГИНАЛЬНОГО РЕПОЗИТОРИЯ
-   (Ported from sergeynstrk/wedding-day EnvelopeScreen)
+   ИНТЕРАКТИВНЫЙ 3D КОНВЕРТ (INTERACTIVE ENVELOPE)
+   Адаптировано напрямую из репозитория sergeynstrk/wedding-day
    ======================================================== */
 
-/* Экран-подложка конверта */
+/* Экран конверта на весь вьюпорт (z-index выше всего сайта) */
 .envelope-screen {
   position: fixed;
   inset: 0;
@@ -12,19 +12,10 @@
   align-items: center;
   justify-content: center;
   background-color: #FAF6F5;
-  background-image: 
-    radial-gradient(circle at 50% 30%, #FFFDFB 0%, #FAF4F1 55%, #F0E6E1 100%);
+  background-image: radial-gradient(circle at 50% 30%, #FFFDFB 0%, #FAF4F1 55%, #F0E6E1 100%);
   padding: 16px;
   overflow: hidden;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.6s linear, visibility 0.6s linear;
-}
-
-.envelope-screen.is-hidden {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+  box-sizing: border-box;
 }
 
 body.envelope-locked {
@@ -33,13 +24,20 @@ body.envelope-locked {
   touch-action: none;
 }
 
-/* Кнопка быстрого пропуска */
+/* Полное сокрытие основного сайта во время показа конверта для 60 FPS */
+html.envelope-active #invitation,
+html.envelope-active .farewell-footer {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Кнопка быстрого перехода сразу к сайту */
 .envelope-quick-skip-btn {
   position: absolute;
   top: 24px;
   right: 24px;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(214, 199, 184, 0.85);
   border-radius: 30px;
   padding: 8px 18px;
@@ -51,7 +49,7 @@ body.envelope-locked {
   cursor: pointer;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: all 0.25s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
   box-shadow: 0 4px 12px rgba(51, 41, 43, 0.05);
 }
 
@@ -63,7 +61,7 @@ body.envelope-locked {
   box-shadow: 0 6px 16px rgba(51, 41, 43, 0.1);
 }
 
-/* Текстуры бумаги (оригинальные SVG-фильтры из wedding-day) */
+/* Фактуры бумаги (SVG-фильтры из wedding-day) */
 .paper-texture-back {
   background-color: #FAF4F1;
   background-image: 
@@ -125,6 +123,7 @@ body.envelope-locked {
   border-radius: 0;
   box-shadow: 0 20px 45px rgba(51, 41, 43, 0.08);
   z-index: 0;
+  will-change: transform, opacity;
 }
 
 /* 1.1 Внутренний шелковый/золоченый лайнер кармана (z-1) */
@@ -135,6 +134,7 @@ body.envelope-locked {
   opacity: 0.9;
   z-index: 1;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 /* 2. Пригласительная карточка со скругленными уголками (z-10) */
@@ -157,6 +157,9 @@ body.envelope-locked {
   border: 1px solid #EBE5DF;
   box-sizing: border-box;
   transform-origin: center center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 @media (min-width: 768px) {
@@ -289,6 +292,7 @@ body.envelope-locked {
   pointer-events: none;
   border-radius: 0;
   overflow: hidden;
+  will-change: transform, opacity;
 }
 
 .envelope-front-side {
@@ -323,7 +327,11 @@ body.envelope-locked {
   transform-origin: top center;
   transform-style: preserve-3d;
   clip-path: polygon(0 0, 100% 0, 50% 79.4%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 50% 79.4%);
   filter: drop-shadow(0 4px 10px rgba(51, 41, 43, 0.08));
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
 
 .envelope-flap-liner {
@@ -342,7 +350,7 @@ body.envelope-locked {
   pointer-events: none;
 }
 
-/* 5. Главная непрерывная золотисто-бежевая рамочная каемка (z-35) */
+/* 5. Главная непрерывная золотисто-бежевая рамка конверта (z-35) */
 .envelope-border {
   position: absolute;
   inset: 0;
@@ -351,15 +359,18 @@ body.envelope-locked {
   pointer-events: none;
   z-index: 35;
   box-shadow: 0 20px 45px rgba(51, 41, 43, 0.08);
+  will-change: transform, opacity;
 }
 
-/* 6. Элегантная печать "Пыльная Роза" с двумя сердцами (z-50) */
+/* 6. Элегантная печать "Пыльная Роза" (z-50) */
 .envelope-btn {
   position: absolute;
   z-index: 50;
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
+  transform-origin: center center;
+  will-change: transform, opacity;
 }
 
 .wax-seal {
@@ -381,7 +392,7 @@ body.envelope-locked {
   width: 112px;
   height: 112px;
   filter: drop-shadow(0 8px 20px rgba(181, 126, 120, 0.35));
-  transition: all 0.5s ease-out;
+  transition: transform 0.4s ease-out, filter 0.4s ease-out;
   display: block;
 }
 
@@ -415,7 +426,7 @@ body.envelope-locked {
 .wax-seal-bg,
 .wax-seal-ring,
 .wax-seal-core {
-  transition: all 0.5s ease;
+  transition: fill 0.4s ease, opacity 0.4s ease;
 }
 
 /* Подпись "Нажмите, чтобы открыть" */
@@ -426,7 +437,7 @@ body.envelope-locked {
   transform: translateX(-50%);
   white-space: nowrap;
   pointer-events: none;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
   opacity: 0.9;
 }
 
@@ -450,7 +461,7 @@ body.envelope-locked {
   text-transform: uppercase;
   box-shadow: 0 4px 12px rgba(51, 41, 43, 0.08);
   border: 1px solid #E3DAD0;
-  transition: all 0.3s ease;
+  transition: border-color 0.25s ease, color 0.25s ease;
 }
 
 .wax-seal:hover .wax-seal-hint span {
@@ -478,7 +489,7 @@ body.envelope-locked {
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(51, 41, 43, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28), box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
   user-select: none;
 }
 

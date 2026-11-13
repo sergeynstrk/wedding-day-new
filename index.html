@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Сергей и Юля приглашают на свадьбу 19 ноября 2026 года. Москва, усадьба Братцево. Программа дня, дресс-код и анкета гостя.">
+  <meta name="description"
+    content="Сергей и Юля приглашают на свадьбу 19 ноября 2026 года. Москва, усадьба Братцево. Программа дня, дресс-код и анкета гостя.">
   <meta name="theme-color" content="#681427">
   <title>Планы на Свадьбу | Сергей & Юля</title>
 
@@ -49,7 +51,8 @@
     }
 
     /* РЕЗКОСТЬ И ЧЁТКОСТЬ ШРИФТОВ НА ВСЕХ ЭКРАНАХ */
-    html, body {
+    html,
+    body {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
@@ -81,7 +84,7 @@
       margin: 0 auto;
       background-color: var(--cotton-paper);
       background-image:
-        radial-gradient(ellipse at 15% 10%, rgba(255,255,255,0.95) 0%, transparent 55%),
+        radial-gradient(ellipse at 15% 10%, rgba(255, 255, 255, 0.95) 0%, transparent 55%),
         radial-gradient(ellipse at 88% 88%, rgba(228, 241, 252, 0.45) 0%, transparent 55%),
         radial-gradient(ellipse at 50% 50%, rgba(253, 248, 242, 0.6) 0%, transparent 65%),
         var(--paper-fibers),
@@ -128,8 +131,7 @@
       user-select: none;
       position: relative;
       filter:
-        drop-shadow(0 1px 1px rgba(45, 15, 22, 0.22))
-        drop-shadow(2px 4px 7px rgba(70, 18, 30, 0.16));
+        drop-shadow(0 1px 1px rgba(45, 15, 22, 0.22)) drop-shadow(2px 4px 7px rgba(70, 18, 30, 0.16));
       transition: transform 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28), filter 0.22s ease;
       line-height: 1.15;
       transform: translateZ(0);
@@ -139,8 +141,7 @@
     .scrap-clip:hover {
       transform: scale(1.05) rotate(0deg) translateZ(0) !important;
       filter:
-        drop-shadow(0 2px 3px rgba(45, 15, 22, 0.25))
-        drop-shadow(3px 8px 16px rgba(104, 20, 39, 0.28));
+        drop-shadow(0 2px 3px rgba(45, 15, 22, 0.25)) drop-shadow(3px 8px 16px rgba(104, 20, 39, 0.28));
       z-index: 25;
     }
 
@@ -155,48 +156,38 @@
 
     /* РЕАЛИСТИЧНЫЕ НЕСТАНДАРТНЫЕ СРЕЗЫ НОЖНИЦАМИ ВРУЧНУЮ (14-20 ТОЧЕК) */
     .cut-scissor-1 {
-      clip-path: polygon(
-        0% 3px, 14% 1px, 32% 4px, 56% 1px, 78% 5px, 92% 2px, 100% 4px,
-        99% 26%, 100% 50%, 98.8% 76%, 100% 98%,
-        84% 99%, 64% calc(100% - 3px), 44% 100%, 24% calc(100% - 2px), 8% 100%,
-        0% calc(100% - 3px), 1.2% 76%, 0% 48%, 1.5% 20%
-      );
+      clip-path: polygon(0% 3px, 14% 1px, 32% 4px, 56% 1px, 78% 5px, 92% 2px, 100% 4px,
+          99% 26%, 100% 50%, 98.8% 76%, 100% 98%,
+          84% 99%, 64% calc(100% - 3px), 44% 100%, 24% calc(100% - 2px), 8% 100%,
+          0% calc(100% - 3px), 1.2% 76%, 0% 48%, 1.5% 20%);
     }
 
     .cut-scissor-2 {
-      clip-path: polygon(
-        0% 1px, 22% 4px, 44% 1px, 66% 5px, 86% 2px, 100% 3px,
-        98.8% 28%, 100% 55%, 98.2% 82%, 99.5% 100%,
-        82% calc(100% - 2px), 60% 100%, 38% calc(100% - 4px), 16% 100%,
-        0% calc(100% - 1px), 1.5% 78%, 0% 50%, 1.2% 24%
-      );
+      clip-path: polygon(0% 1px, 22% 4px, 44% 1px, 66% 5px, 86% 2px, 100% 3px,
+          98.8% 28%, 100% 55%, 98.2% 82%, 99.5% 100%,
+          82% calc(100% - 2px), 60% 100%, 38% calc(100% - 4px), 16% 100%,
+          0% calc(100% - 1px), 1.5% 78%, 0% 50%, 1.2% 24%);
     }
 
     .cut-scissor-3 {
-      clip-path: polygon(
-        0% 4px, 18% 1px, 38% 3px, 62% 0px, 84% 4px, 100% 2px,
-        98.5% 22%, 100% 52%, 98% 75%, 99% 100%,
-        80% calc(100% - 3px), 58% 99%, 35% calc(100% - 2px), 14% 100%,
-        0% calc(100% - 4px), 1.8% 72%, 0% 45%, 1.2% 18%
-      );
+      clip-path: polygon(0% 4px, 18% 1px, 38% 3px, 62% 0px, 84% 4px, 100% 2px,
+          98.5% 22%, 100% 52%, 98% 75%, 99% 100%,
+          80% calc(100% - 3px), 58% 99%, 35% calc(100% - 2px), 14% 100%,
+          0% calc(100% - 4px), 1.8% 72%, 0% 45%, 1.2% 18%);
     }
 
     .cut-scissor-4 {
-      clip-path: polygon(
-        0% 2px, 26% 5px, 52% 1px, 76% 4px, 100% 2px,
-        98.2% 35%, 100% 68%, 98.5% 100%,
-        82% 99%, 56% calc(100% - 3px), 28% 100%,
-        0% calc(100% - 2px), 1.5% 65%, 0% 32%
-      );
+      clip-path: polygon(0% 2px, 26% 5px, 52% 1px, 76% 4px, 100% 2px,
+          98.2% 35%, 100% 68%, 98.5% 100%,
+          82% 99%, 56% calc(100% - 3px), 28% 100%,
+          0% calc(100% - 2px), 1.5% 65%, 0% 32%);
     }
 
     .cut-scissor-5 {
-      clip-path: polygon(
-        0% 3px, 28% 1px, 56% 4px, 82% 1px, 100% 3px,
-        98.6% 38%, 100% 72%, 99% 100%,
-        78% calc(100% - 3px), 52% 100%, 24% calc(100% - 4px),
-        0% 98%, 1.8% 62%, 0% 30%
-      );
+      clip-path: polygon(0% 3px, 28% 1px, 56% 4px, 82% 1px, 100% 3px,
+          98.6% 38%, 100% 72%, 99% 100%,
+          78% calc(100% - 3px), 52% 100%, 24% calc(100% - 4px),
+          0% 98%, 1.8% 62%, 0% 30%);
     }
 
     /* МИЛЫЕ РУКОПИСНЫЕ ЗАМЕТКИ (CAVEAT FONT) */
@@ -231,8 +222,7 @@
       margin: 0 clamp(1px, 0.35vw, 3px);
       text-transform: uppercase;
       filter:
-        drop-shadow(0 2px 2px rgba(45, 15, 22, 0.25))
-        drop-shadow(3px 6px 9px rgba(104, 20, 39, 0.22));
+        drop-shadow(0 2px 2px rgba(45, 15, 22, 0.25)) drop-shadow(3px 6px 9px rgba(104, 20, 39, 0.22));
       transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
       transform: translateZ(0);
       backface-visibility: hidden;
@@ -248,7 +238,7 @@
       color: #ffffff;
       transform: rotate(-3.5deg);
       clip-path: polygon(2% 4%, 98% 1%, 100% 95%, 2% 98%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .char-c2 {
@@ -256,7 +246,7 @@
       color: #ffffff;
       transform: rotate(2.5deg);
       clip-path: polygon(1% 2%, 99% 5%, 97% 99%, 3% 94%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
     }
 
     .char-c3 {
@@ -264,7 +254,7 @@
       color: #ffffff;
       transform: rotate(-2deg);
       clip-path: polygon(3% 1%, 97% 3%, 98% 97%, 1% 99%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .char-c4 {
@@ -280,7 +270,7 @@
       color: #ffffff;
       transform: rotate(3deg);
       clip-path: polygon(2% 0%, 100% 4%, 97% 98%, 0% 95%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
     }
 
     .char-c6 {
@@ -288,7 +278,7 @@
       color: #ffffff;
       transform: rotate(-2.5deg);
       clip-path: polygon(1% 2%, 99% 2%, 97% 96%, 2% 99%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .char-c7 {
@@ -304,7 +294,7 @@
       color: var(--ink);
       font-family: 'Playfair Display', serif;
       font-weight: 800;
-      border: 1px solid rgba(0,0,0,0.12);
+      border: 1px solid rgba(0, 0, 0, 0.12);
     }
 
     .bg-black-sans {
@@ -312,7 +302,7 @@
       color: #ffffff;
       font-family: 'Montserrat', sans-serif;
       font-weight: 800;
-      text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     }
 
     .bg-burgundy-rich {
@@ -320,7 +310,7 @@
       color: #ffffff;
       font-family: 'Playfair Display', serif;
       font-weight: 800;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .bg-blue-powder {
@@ -329,7 +319,7 @@
       font-family: 'Oswald', sans-serif;
       font-weight: 700;
       text-transform: uppercase;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .bg-news-typewriter {
@@ -353,8 +343,7 @@
       font-weight: 900;
       flex-shrink: 0;
       filter:
-        drop-shadow(0 1px 1px rgba(0,0,0,0.2))
-        drop-shadow(2px 4px 5px rgba(0,0,0,0.18));
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.18));
       transform: translateZ(0);
     }
 
@@ -363,8 +352,9 @@
       color: #ffffff;
       transform: rotate(-3deg);
       clip-path: polygon(2% 4%, 98% 1%, 96% 97%, 3% 99%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
+
     .b2 {
       background-color: #ffffff;
       color: var(--ink);
@@ -372,13 +362,15 @@
       border: 2px solid var(--ink);
       clip-path: polygon(1% 2%, 97% 4%, 99% 98%, 2% 95%);
     }
+
     .b3 {
       background-color: var(--burgundy);
       color: #ffffff;
       transform: rotate(-3deg);
       clip-path: polygon(3% 1%, 99% 3%, 97% 99%, 1% 96%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
+
     .b4 {
       background-color: var(--champagne-silk);
       color: var(--burgundy-deep);
@@ -394,7 +386,7 @@
         radial-gradient(circle, rgba(157, 194, 223, 0.35) 15%, transparent 16%);
       background-size: 8px 8px;
       backdrop-filter: blur(2px);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
       z-index: 10;
       clip-path: polygon(0% 15%, 3% 0%, 97% 4%, 100% 18%, 98% 85%, 100% 100%, 3% 96%, 0% 82%);
       pointer-events: none;
@@ -403,6 +395,7 @@
     .washi-blue {
       background: rgba(195, 222, 245, 0.82);
     }
+
     .washi-burgundy {
       background: rgba(240, 205, 215, 0.82);
     }
@@ -453,10 +446,9 @@
       background-color: #faf7f2;
       padding: 14px 14px 48px 14px;
       filter:
-        drop-shadow(0 2px 2px rgba(45, 15, 22, 0.2))
-        drop-shadow(4px 12px 24px rgba(104, 20, 39, 0.18));
+        drop-shadow(0 2px 2px rgba(45, 15, 22, 0.2)) drop-shadow(4px 12px 24px rgba(104, 20, 39, 0.18));
       transform: rotate(-1.5deg) translateZ(0);
-      border: 1px solid rgba(0,0,0,0.08);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       position: relative;
     }
 
@@ -486,7 +478,7 @@
       font-size: 0.98rem;
       font-weight: 600;
       transform: rotate(0.8deg);
-      border: 1px solid rgba(0,0,0,0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       font-style: italic;
       color: var(--burgundy);
     }
@@ -509,15 +501,29 @@
       font-family: 'Oswald', sans-serif;
       text-transform: uppercase;
       transform: rotate(14deg);
-      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.16));
+      filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.16));
       z-index: 12;
       line-height: 1.1;
       clip-path: polygon(4% 0%, 96% 2%, 100% 92%, 92% 100%, 8% 98%, 0% 86%);
     }
 
-    .postal-seal-round .stamp-sub { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; }
-    .postal-seal-round .stamp-date { font-size: 1.55rem; font-weight: 900; color: var(--burgundy-deep); margin: 2px 0; }
-    .postal-seal-round .stamp-year { font-size: 0.82rem; letter-spacing: 0.12em; }
+    .postal-seal-round .stamp-sub {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .postal-seal-round .stamp-date {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: var(--burgundy-deep);
+      margin: 2px 0;
+    }
+
+    .postal-seal-round .stamp-year {
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+    }
 
     /* ========================================================
        2. ЛОКАЦИЯ (УСАДЬБА БРАТЦЕВО)
@@ -533,7 +539,7 @@
       border: 2px dashed rgba(104, 20, 39, 0.32);
       padding: 38px 36px;
       position: relative;
-      filter: drop-shadow(3px 8px 16px rgba(0,0,0,0.06));
+      filter: drop-shadow(3px 8px 16px rgba(0, 0, 0, 0.06));
       border-radius: 4px;
     }
 
@@ -551,9 +557,9 @@
       max-width: 100%;
       background-color: #ffffff;
       padding: 12px 12px 16px 12px;
-      filter: drop-shadow(3px 6px 14px rgba(0,0,0,0.12));
+      filter: drop-shadow(3px 6px 14px rgba(0, 0, 0, 0.12));
       transform: rotate(0.8deg);
-      border: 1px solid rgba(0,0,0,0.08);
+      border: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     .venue-photo-wrapper img {
@@ -582,8 +588,7 @@
       text-transform: uppercase;
       text-decoration: none;
       filter:
-        drop-shadow(0 1px 1px rgba(0,0,0,0.2))
-        drop-shadow(2px 5px 8px rgba(104, 20, 39, 0.25));
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 5px 8px rgba(104, 20, 39, 0.25));
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
       border: none;
@@ -594,7 +599,7 @@
       color: #ffffff;
       transform: rotate(-1.5deg);
       clip-path: polygon(1% 4%, 99% 0%, 97% 96%, 3% 100%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .btn-paper-blue {
@@ -602,14 +607,13 @@
       color: #ffffff;
       transform: rotate(2deg);
       clip-path: polygon(2% 0%, 98% 3%, 99% 98%, 0% 95%);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .btn-paper-scrap:hover {
       transform: scale(1.05) rotate(0deg);
       filter:
-        drop-shadow(0 2px 3px rgba(0,0,0,0.25))
-        drop-shadow(3px 10px 18px rgba(104, 20, 39, 0.38));
+        drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25)) drop-shadow(3px 10px 18px rgba(104, 20, 39, 0.38));
     }
 
     /* ========================================================
@@ -652,14 +656,14 @@
       z-index: 2;
     }
 
-    .ob-timeline-line > svg {
+    .ob-timeline-line>svg {
       display: block;
       width: 100%;
       height: 100%;
       overflow: visible;
       fill: var(--powder-blue-dark);
       opacity: 0.95;
-      filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.15));
+      filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.15));
     }
 
     /* Анимированная скользящая точка */
@@ -683,7 +687,8 @@
       gap: 12px;
       z-index: 3;
       transition: transform 0.3s ease, filter 0.3s ease;
-      opacity: 1; /* Полная непрозрачность для идеальной резкости шрифта */
+      opacity: 1;
+      /* Полная непрозрачность для идеальной резкости шрифта */
     }
 
     .sm-timing__item.item-active {
@@ -744,16 +749,30 @@
       background-color: #ffffff;
       padding: 14px;
       filter:
-        drop-shadow(0 1px 1px rgba(0,0,0,0.18))
-        drop-shadow(2px 5px 6px rgba(0,0,0,0.12));
-      border: 1px solid rgba(0,0,0,0.1);
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.18)) drop-shadow(2px 5px 6px rgba(0, 0, 0, 0.12));
+      border: 1px solid rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
     }
 
-    .sm-timing__item.item-1 .timing-icon-cutout { transform: rotate(-2.5deg); clip-path: polygon(1.5% 3%, 98% 1%, 97% 97%, 2% 98%); }
-    .sm-timing__item.item-2 .timing-icon-cutout { transform: rotate(2.5deg); clip-path: polygon(2% 1%, 99% 3%, 96% 98%, 1% 96%); }
-    .sm-timing__item.item-3 .timing-icon-cutout { transform: rotate(-2deg); clip-path: polygon(3% 2%, 97% 1%, 99% 97%, 1% 98%); }
-    .sm-timing__item.item-4 .timing-icon-cutout { transform: rotate(3deg); clip-path: polygon(1% 2%, 98% 4%, 96% 99%, 3% 95%); }
+    .sm-timing__item.item-1 .timing-icon-cutout {
+      transform: rotate(-2.5deg);
+      clip-path: polygon(1.5% 3%, 98% 1%, 97% 97%, 2% 98%);
+    }
+
+    .sm-timing__item.item-2 .timing-icon-cutout {
+      transform: rotate(2.5deg);
+      clip-path: polygon(2% 1%, 99% 3%, 96% 98%, 1% 96%);
+    }
+
+    .sm-timing__item.item-3 .timing-icon-cutout {
+      transform: rotate(-2deg);
+      clip-path: polygon(3% 2%, 97% 1%, 99% 97%, 1% 98%);
+    }
+
+    .sm-timing__item.item-4 .timing-icon-cutout {
+      transform: rotate(3deg);
+      clip-path: polygon(1% 2%, 98% 4%, 96% 99%, 3% 95%);
+    }
 
     .sm-timing__item.item-active .timing-icon-cutout {
       transform: scale(1.1) rotate(0deg);
@@ -784,7 +803,7 @@
     .dresscode-section {
       background-color: #ffffff;
       background-image:
-        linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(240,230,220,0.2) 100%);
+        linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(240, 230, 220, 0.2) 100%);
       filter: drop-shadow(4px 12px 28px rgba(104, 20, 39, 0.14));
       padding: 42px 38px;
       margin-bottom: 56px;
@@ -807,10 +826,9 @@
       background-color: #ffffff;
       padding: 12px 12px 14px;
       filter:
-        drop-shadow(0 1px 1px rgba(0,0,0,0.16))
-        drop-shadow(2px 4px 5px rgba(0,0,0,0.12));
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.16)) drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.12));
       text-align: center;
-      border: 1px solid rgba(0,0,0,0.08);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       transition: transform 0.2s ease;
     }
 
@@ -819,17 +837,36 @@
       z-index: 10;
     }
 
-    .swatch-card:nth-child(1) { transform: rotate(-2.5deg); clip-path: polygon(2% 4%, 98% 1%, 96% 97%, 3% 99%); }
-    .swatch-card:nth-child(2) { transform: rotate(2deg); clip-path: polygon(1% 1%, 97% 3%, 99% 98%, 2% 96%); }
-    .swatch-card:nth-child(3) { transform: rotate(-1.5deg); clip-path: polygon(3% 2%, 99% 1%, 97% 99%, 1% 97%); }
-    .swatch-card:nth-child(4) { transform: rotate(3deg); clip-path: polygon(2% 3%, 98% 1%, 96% 97%, 3% 98%); }
-    .swatch-card:nth-child(5) { transform: rotate(-2deg); clip-path: polygon(1% 2%, 97% 4%, 99% 96%, 2% 98%); }
+    .swatch-card:nth-child(1) {
+      transform: rotate(-2.5deg);
+      clip-path: polygon(2% 4%, 98% 1%, 96% 97%, 3% 99%);
+    }
+
+    .swatch-card:nth-child(2) {
+      transform: rotate(2deg);
+      clip-path: polygon(1% 1%, 97% 3%, 99% 98%, 2% 96%);
+    }
+
+    .swatch-card:nth-child(3) {
+      transform: rotate(-1.5deg);
+      clip-path: polygon(3% 2%, 99% 1%, 97% 99%, 1% 97%);
+    }
+
+    .swatch-card:nth-child(4) {
+      transform: rotate(3deg);
+      clip-path: polygon(2% 3%, 98% 1%, 96% 97%, 3% 98%);
+    }
+
+    .swatch-card:nth-child(5) {
+      transform: rotate(-2deg);
+      clip-path: polygon(1% 2%, 97% 4%, 99% 96%, 2% 98%);
+    }
 
     .swatch-color {
       width: 82px;
       height: 64px;
       margin-bottom: 10px;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.22);
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.22);
       clip-path: polygon(2% 2%, 98% 1%, 97% 98%, 1% 97%);
     }
 
@@ -854,9 +891,8 @@
       background-color: #faf7f2;
       padding: 22px;
       filter:
-        drop-shadow(0 1px 1px rgba(0,0,0,0.12))
-        drop-shadow(2px 5px 8px rgba(0,0,0,0.08));
-      border: 1px solid rgba(0,0,0,0.08);
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12)) drop-shadow(2px 5px 8px rgba(0, 0, 0, 0.08));
+      border: 1px solid rgba(0, 0, 0, 0.08);
       text-align: center;
     }
 
@@ -882,8 +918,7 @@
       background-color: #fff6da;
       padding: 20px 26px;
       filter:
-        drop-shadow(0 1px 1px rgba(0,0,0,0.15))
-        drop-shadow(2px 5px 7px rgba(0,0,0,0.12));
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15)) drop-shadow(2px 5px 7px rgba(0, 0, 0, 0.12));
       transform: rotate(-1.2deg);
       font-size: 0.98rem;
       font-weight: 500;
@@ -906,7 +941,7 @@
     .rsvp-section {
       background-color: #ffffff;
       background-image:
-        linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(240,230,220,0.2) 100%);
+        linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(240, 230, 220, 0.2) 100%);
       padding: 42px 36px;
       filter: drop-shadow(4px 12px 28px rgba(104, 20, 39, 0.16));
       position: relative;
@@ -914,14 +949,12 @@
       border: 2px dashed rgba(104, 20, 39, 0.35);
       margin-bottom: 42px;
       /* Фигурный срез зигзаг ножницами сверху */
-      clip-path: polygon(
-        0% 0%, 2% 5px, 4% 0%, 6% 5px, 8% 0%, 10% 5px, 12% 0%, 14% 5px, 16% 0%, 18% 5px,
-        20% 0%, 22% 5px, 24% 0%, 26% 5px, 28% 0%, 30% 5px, 32% 0%, 34% 5px, 36% 0%, 38% 5px,
-        40% 0%, 42% 5px, 44% 0%, 46% 5px, 48% 0%, 50% 5px, 52% 0%, 54% 5px, 56% 0%, 58% 5px,
-        60% 0%, 62% 5px, 64% 0%, 66% 5px, 68% 0%, 70% 5px, 72% 0%, 74% 5px, 76% 0%, 78% 5px,
-        80% 0%, 82% 5px, 84% 0%, 86% 5px, 88% 0%, 90% 5px, 92% 0%, 94% 5px, 96% 0%, 98% 5px, 100% 0%,
-        99.2% 99.2%, 0.8% 99%
-      );
+      clip-path: polygon(0% 0%, 2% 5px, 4% 0%, 6% 5px, 8% 0%, 10% 5px, 12% 0%, 14% 5px, 16% 0%, 18% 5px,
+          20% 0%, 22% 5px, 24% 0%, 26% 5px, 28% 0%, 30% 5px, 32% 0%, 34% 5px, 36% 0%, 38% 5px,
+          40% 0%, 42% 5px, 44% 0%, 46% 5px, 48% 0%, 50% 5px, 52% 0%, 54% 5px, 56% 0%, 58% 5px,
+          60% 0%, 62% 5px, 64% 0%, 66% 5px, 68% 0%, 70% 5px, 72% 0%, 74% 5px, 76% 0%, 78% 5px,
+          80% 0%, 82% 5px, 84% 0%, 86% 5px, 88% 0%, 90% 5px, 92% 0%, 94% 5px, 96% 0%, 98% 5px, 100% 0%,
+          99.2% 99.2%, 0.8% 99%);
     }
 
     .cut-line {
@@ -952,7 +985,7 @@
       padding: 16px 18px;
       background-color: #ffffff;
       border: 1px solid #c8c0b5;
-      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.06);
+      box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.06);
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
       font-size: 1rem;
@@ -992,19 +1025,19 @@
       text-align: center;
       font-size: 1rem;
       font-weight: 700;
-      filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.08));
+      filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.08));
       transition: all 0.2s ease;
       user-select: none;
       clip-path: polygon(1% 3%, 99% 1%, 98% 97%, 2% 99%);
     }
 
-    .choice-btn input:checked + .choice-box {
+    .choice-btn input:checked+.choice-box {
       background-color: var(--burgundy);
       color: #ffffff;
       border-color: var(--burgundy);
       transform: scale(1.03);
       filter: drop-shadow(2px 5px 10px rgba(104, 20, 39, 0.32));
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .drinks-chips {
@@ -1031,19 +1064,19 @@
       font-size: 0.95rem;
       font-weight: 600;
       color: var(--ink);
-      filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.08));
+      filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.08));
       user-select: none;
       transition: all 0.15s ease;
       clip-path: polygon(2% 4%, 98% 1%, 97% 96%, 3% 99%);
     }
 
-    .chip-btn input:checked + .chip-box {
+    .chip-btn input:checked+.chip-box {
       background-color: var(--powder-blue-dark);
       color: #ffffff;
       border-color: var(--powder-blue-dark);
       transform: translateY(-2px);
       filter: drop-shadow(2px 4px 6px rgba(53, 103, 138, 0.35));
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .btn-submit-collage {
@@ -1058,26 +1091,22 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       filter:
-        drop-shadow(0 2px 3px rgba(0,0,0,0.25))
-        drop-shadow(3px 10px 20px rgba(104, 20, 39, 0.45));
+        drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25)) drop-shadow(3px 10px 20px rgba(104, 20, 39, 0.45));
       cursor: pointer;
       margin-top: 22px;
       transition: all 0.2s ease;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-      clip-path: polygon(
-        0% 3px, 25% 0px, 55% 4px, 80% 1px, 100% 3px,
-        98.8% 38%, 100% 70%, 99% 100%,
-        75% calc(100% - 2px), 50% 100%, 25% calc(100% - 3px), 0% 98%,
-        1.5% 65%, 0% 30%
-      );
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      clip-path: polygon(0% 3px, 25% 0px, 55% 4px, 80% 1px, 100% 3px,
+          98.8% 38%, 100% 70%, 99% 100%,
+          75% calc(100% - 2px), 50% 100%, 25% calc(100% - 3px), 0% 98%,
+          1.5% 65%, 0% 30%);
     }
 
     .btn-submit-collage:hover {
       background-color: var(--burgundy-rich);
       transform: translateY(-2px) scale(1.02);
       filter:
-        drop-shadow(0 3px 4px rgba(0,0,0,0.3))
-        drop-shadow(4px 14px 28px rgba(104, 20, 39, 0.55));
+        drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3)) drop-shadow(4px 14px 28px rgba(104, 20, 39, 0.55));
     }
 
     /* ========================================================
@@ -1091,7 +1120,10 @@
     .modal-backdrop {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: rgba(35, 12, 18, 0.7);
       backdrop-filter: blur(6px);
       z-index: 1000;
@@ -1105,7 +1137,7 @@
       max-width: 520px;
       width: 100%;
       padding: 44px 34px;
-      filter: drop-shadow(6px 18px 40px rgba(0,0,0,0.4));
+      filter: drop-shadow(6px 18px 40px rgba(0, 0, 0, 0.4));
       border: 4px solid var(--burgundy);
       text-align: center;
       transform: rotate(-1.5deg);
@@ -1113,8 +1145,15 @@
     }
 
     @keyframes modalSlam {
-      0% { transform: scale(1.15) rotate(3deg); opacity: 0; }
-      100% { transform: scale(1) rotate(-1.5deg); opacity: 1; }
+      0% {
+        transform: scale(1.15) rotate(3deg);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1) rotate(-1.5deg);
+        opacity: 1;
+      }
     }
 
     /* ========================================================
@@ -1124,15 +1163,18 @@
       .magazine-canvas {
         padding: 36px 20px;
       }
+
       .ll-timeline {
         grid-template-columns: 48px 1fr;
         column-gap: 20px;
         row-gap: 36px;
       }
+
       .ob-timeline-line {
         grid-column: 1;
         grid-row: 1 / span 4;
       }
+
       .sm-timing__item.item-1,
       .sm-timing__item.item-2,
       .sm-timing__item.item-3,
@@ -1144,24 +1186,41 @@
         padding-left: 0;
         padding-right: 0;
       }
-      .sm-timing__item.item-1 { grid-row: 1; }
-      .sm-timing__item.item-2 { grid-row: 2; }
-      .sm-timing__item.item-3 { grid-row: 3; }
-      .sm-timing__item.item-4 { grid-row: 4; }
+
+      .sm-timing__item.item-1 {
+        grid-row: 1;
+      }
+
+      .sm-timing__item.item-2 {
+        grid-row: 2;
+      }
+
+      .sm-timing__item.item-3 {
+        grid-row: 3;
+      }
+
+      .sm-timing__item.item-4 {
+        grid-row: 4;
+      }
+
       .sm-timing__item.item-1 .item-top-row,
       .sm-timing__item.item-3 .item-top-row {
         flex-direction: row;
       }
+
       .sm-timing__item.item-1 .timing-text-box,
       .sm-timing__item.item-3 .timing-text-box {
         align-items: flex-start;
       }
+
       .timing-icon-cutout {
         width: 72px;
         height: 72px;
         padding: 10px;
       }
-      .dress-notes-grid, .choice-grid {
+
+      .dress-notes-grid,
+      .choice-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -1170,18 +1229,22 @@
       body {
         padding: 18px 8px 80px;
       }
+
       .magazine-canvas {
         padding: 26px 14px;
       }
+
       .hero-names-row {
         gap: 8px;
       }
+
       .postal-seal-round {
         width: 86px;
         height: 86px;
         top: -14px;
         right: -10px;
       }
+
       .postal-seal-round .stamp-date {
         font-size: 1.25rem;
       }
@@ -1191,7 +1254,13 @@
   <link rel="stylesheet" href="editorial.css">
   <link rel="stylesheet" href="layout-editor.css">
   <link rel="stylesheet" href="envelope.css">
+  <script>
+    if (location.search.indexOf('edit=1') === -1) {
+      document.documentElement.classList.add('envelope-active');
+    }
+  </script>
 </head>
+
 <body>
   <!-- ==========================================
        ИНТЕРАКТИВНЫЙ 3D КОНВЕРТ (INTERACTIVE ENVELOPE)
@@ -1206,7 +1275,7 @@
     <div id="envelopeBox" class="envelope-box">
       <!-- 1. Задняя стенка конверта (z-0) -->
       <div class="envelope-back paper-texture-back"></div>
-      
+
       <!-- 1.1 Внутренний шелковый/золоченый лайнер кармана конверта (z-1) -->
       <div class="envelope-liner paper-texture-liner"></div>
 
@@ -1250,7 +1319,7 @@
 
         <!-- Нижний клапан для рельефа швов -->
         <div class="envelope-front-bottom paper-texture-bottom"></div>
-        
+
         <!-- Единые сплошные швы конверта в точном стиле рамки приглашения (#D6C7B8, 1px) -->
         <svg class="envelope-seams-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
           <line x1="0" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
@@ -1280,15 +1349,21 @@
           <!-- Изящная SVG-печать оттенка Пыльной Розы -->
           <svg viewBox="0 0 200 200" class="wax-seal-svg">
             <!-- 1. Матовый силуэт воска оттенка Пыльной Розы (--c-accent #B57E78) -->
-            <path d="M 100,12 C 126,9 146,18 163,35 C 180,52 194,74 191,101 C 188,128 177,153 158,171 C 139,189 113,194 88,189 C 63,184 41,173 25,153 C 9,133 6,108 12,83 C 18,58 35,36 57,23 C 74,12 82,14 100,12 Z" fill="#B57E78" class="wax-seal-bg" />
+            <path
+              d="M 100,12 C 126,9 146,18 163,35 C 180,52 194,74 191,101 C 188,128 177,153 158,171 C 139,189 113,194 88,189 C 63,184 41,173 25,153 C 9,133 6,108 12,83 C 18,58 35,36 57,23 C 74,12 82,14 100,12 Z"
+              fill="#B57E78" class="wax-seal-bg" />
             <!-- 2. Чистая сплошная окантовка воска (без пунктира) -->
-            <circle cx="100" cy="103" r="58" fill="none" stroke="#D6C7B8" stroke-width="1.2" opacity="0.85" class="wax-seal-ring" />
+            <circle cx="100" cy="103" r="58" fill="none" stroke="#D6C7B8" stroke-width="1.2" opacity="0.85"
+              class="wax-seal-ring" />
             <!-- 3. Матовый центральный оттиск -->
             <circle cx="100" cy="103" r="53" fill="#A36D67" class="wax-seal-core" />
             <!-- 4. Два лаконичных тисненых сердца (БЕЗ веточек) -->
             <g stroke-linecap="round" stroke-linejoin="round">
-              <path d="M 83,71 C 74,56 56,58 52,75 C 47,96 70,116 83,130 C 93,117 114,96 109,75 C 105,57 89,55 83,71 Z" fill="none" stroke="#FFF5F3" stroke-width="2.2" opacity="0.95" />
-              <path d="M 124,83 C 117,72 104,74 101,86 C 98,100 114,114 124,124 C 131,114 145,100 142,86 C 139,73 128,72 124,83 Z" fill="none" stroke="#E4C88A" stroke-width="2" opacity="0.9" />
+              <path d="M 83,71 C 74,56 56,58 52,75 C 47,96 70,116 83,130 C 93,117 114,96 109,75 C 105,57 89,55 83,71 Z"
+                fill="none" stroke="#FFF5F3" stroke-width="2.2" opacity="0.95" />
+              <path
+                d="M 124,83 C 117,72 104,74 101,86 C 98,100 114,114 124,124 C 131,114 145,100 142,86 C 139,73 128,72 124,83 Z"
+                fill="none" stroke="#E4C88A" stroke-width="2" opacity="0.9" />
             </g>
           </svg>
 
@@ -1303,7 +1378,8 @@
   </div>
 
   <!-- Плавающая кнопка повтора «✉ Конверт» -->
-  <button type="button" id="envelopeReplayBtn" class="envelope-replay-btn" aria-label="Посмотреть конверт снова" style="display: none;">
+  <button type="button" id="envelopeReplayBtn" class="envelope-replay-btn" aria-label="Посмотреть конверт снова"
+    style="display: none;">
     <span class="replay-icon">✉</span>
     <span class="replay-text">Конверт</span>
   </button>
@@ -1316,12 +1392,20 @@
          1. HERO / ОБЛОЖКА КОЛЛАЖА
          ========================================== -->
     <section class="hero-section" aria-label="Приглашение на свадьбу">
-      <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-rings" src="./assets/wedding-rings-topdown.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-01"><img class="decor-object decor-envelope" src="./assets/keepsakes/envelope.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-02"><img class="decor-object decor-secondary decor-secondary-left decor-hearts" src="./assets/keepsakes/hearts.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-03"><img class="decor-object decor-secondary decor-secondary-right decor-pearls" src="./assets/keepsakes/pearls.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-04"></div>
+      <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-rings"
+          src="./assets/wedding-rings-topdown.png" alt="" loading="lazy" decoding="async" width="1536" height="1024"
+          data-layout-id="decoration-01"><img class="decor-object decor-envelope" src="./assets/keepsakes/envelope.png"
+          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-02"><img
+          class="decor-object decor-secondary decor-secondary-left decor-hearts" src="./assets/keepsakes/hearts.png"
+          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-03"><img
+          class="decor-object decor-secondary decor-secondary-right decor-pearls" src="./assets/keepsakes/pearls.png"
+          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-04"></div>
 
       <!-- Верхняя строчка вырезок (как в референсе: "планы на") -->
       <div class="hero-top-row">
         <span class="scrap-clip" style="transform: rotate(-3deg);">
-          <span class="clip-body cut-scissor-1 bg-white-serif" style="font-size: 1.8rem; padding: 7px 20px;">планы</span>
+          <span class="clip-body cut-scissor-1 bg-white-serif"
+            style="font-size: 1.8rem; padding: 7px 20px;">планы</span>
         </span>
         <span class="scrap-clip" style="transform: rotate(2.5deg);">
           <span class="clip-body cut-scissor-2 bg-black-sans" style="font-size: 1.4rem; padding: 7px 18px;">на</span>
@@ -1342,7 +1426,8 @@
       <!-- Имена пары на вырезных плашках с неровными краями -->
       <div class="hero-names-row">
         <span class="scrap-clip" style="transform: rotate(-2deg);">
-          <span class="clip-body cut-scissor-3 bg-white-serif" style="font-size: 1.85rem; padding: 8px 22px;">Сергей</span>
+          <span class="clip-body cut-scissor-3 bg-white-serif"
+            style="font-size: 1.85rem; padding: 8px 22px;">Сергей</span>
         </span>
         <span class="scrap-clip" style="transform: rotate(3deg);">
           <span class="clip-body cut-scissor-4 bg-burgundy-rich" style="font-size: 1.5rem; padding: 8px 16px;">&</span>
@@ -1379,7 +1464,10 @@
          2. ЛОКАЦИЯ (УСАДЬБА БРАТЦЕВО)
          ========================================== -->
     <div class="venue-card-frame">
-      <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-flowers" src="./assets/keepsakes/flowers.png" alt="" loading="lazy" decoding="async" width="1312" height="1199" data-layout-id="decoration-05"><img class="decor-object decor-key" src="./assets/keepsakes/key.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-06"></div>
+      <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-flowers"
+          src="./assets/keepsakes/flowers.png" alt="" loading="lazy" decoding="async" width="1312" height="1199"
+          data-layout-id="decoration-05"><img class="decor-object decor-key" src="./assets/keepsakes/key.png" alt=""
+          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-06"></div>
 
       <div class="washi-strip tape-venue washi-burgundy"></div>
 
@@ -1395,17 +1483,22 @@
 
         <h2 class="venue-heading" style="margin: 12px 0;">
           <span class="scrap-clip" style="transform: rotate(1.2deg);">
-            <span class="clip-body cut-scissor-2 bg-burgundy-rich" style="font-size: 1.75rem; padding: 10px 24px;">УСАДЬБА БРАТЦЕВО</span>
+            <span class="clip-body cut-scissor-2 bg-burgundy-rich"
+              style="font-size: 1.75rem; padding: 10px 24px;">УСАДЬБА БРАТЦЕВО</span>
           </span>
         </h2>
 
         <!-- Иллюстрация Братцево по фотографии пользователя -->
         <div class="venue-photo-wrapper venue-illustration">
-          <img loading="lazy" decoding="async" src="./assets/bratsevo-icon.png" alt="Усадьба Братцево: фасад с куполом, балконом и колоннами — рисунок по фотографии" width="1945" height="808">
+          <img loading="lazy" decoding="async" src="./assets/bratsevo-icon.png"
+            alt="Усадьба Братцево: фасад с куполом, балконом и колоннами — рисунок по фотографии" width="1945"
+            height="808">
         </div>
 
-        <p style="font-size: 1.05rem; margin: 16px 0; max-width: 740px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
-          Встречаемся в усадьбе Братцево в Москве, чтобы разделить с вами наш день: обнять близких, сказать самое важное и отпраздновать начало нашей семьи.
+        <p
+          style="font-size: 1.05rem; margin: 16px 0; max-width: 740px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
+          Встречаемся в усадьбе Братцево в Москве, чтобы разделить с вами наш день: обнять близких, сказать самое важное
+          и отпраздновать начало нашей семьи.
         </p>
 
         <div style="margin-top: 6px;">
@@ -1415,7 +1508,8 @@
         </div>
 
         <div class="btn-actions-row">
-          <a href="https://yandex.ru/maps/?text=Усадьба+Братцево+Москва" target="_blank" rel="noopener noreferrer" class="btn-paper-scrap btn-paper-burgundy">
+          <a href="https://yandex.ru/maps/?text=Усадьба+Братцево+Москва" target="_blank" rel="noopener noreferrer"
+            class="btn-paper-scrap btn-paper-burgundy">
             Маршрут на карте ↗
           </a>
           <button type="button" class="btn-paper-scrap btn-paper-blue" onclick="addToCalendar()">
@@ -1432,13 +1526,14 @@
 
       <div class="timing-header-box">
         <h2 class="section-heading">
-        <span class="scrap-clip" style="transform: rotate(-1.5deg);">
-          <span class="clip-body cut-scissor-4 bg-blue-powder" style="font-size: 1.35rem;">РАСПОРЯДОК ДНЯ</span>
-        </span>
+          <span class="scrap-clip" style="transform: rotate(-1.5deg);">
+            <span class="clip-body cut-scissor-4 bg-blue-powder" style="font-size: 1.35rem;">РАСПОРЯДОК ДНЯ</span>
+          </span>
         </h2>
         <div style="margin-top: 10px;">
           <span class="scrap-clip" style="transform: rotate(2deg);">
-            <span class="clip-body cut-scissor-5 bg-burgundy-rich" style="font-size: 1.65rem; padding: 8px 22px;">ТАЙМИНГ</span>
+            <span class="clip-body cut-scissor-5 bg-burgundy-rich"
+              style="font-size: 1.65rem; padding: 8px 22px;">ТАЙМИНГ</span>
           </span>
         </div>
         <div style="margin-top: 8px;">
@@ -1452,7 +1547,9 @@
         <!-- Анимированная волнообразная кривая и скользящая точка из референса -->
         <span class="ob-timeline-line" aria-hidden="true">
           <svg viewBox="0 0 44.57 548.09" preserveAspectRatio="none" focusable="false">
-            <path d="M7.98,522.58c1.9-3.54,4.01-6.36,6-8.76,2-2.4,3.89-4.39,5.63-6.17,3.47-3.56,6.3-6.34,8.93-9.31,2.62-2.96,5.09-6.09,7.44-10.42,2.32-4.33,4.38-10.03,4.86-17.94.23-3.95-.03-7.42-.43-10.47-.41-3.06-1.17-5.68-1.93-8.02-1.69-4.64-3.73-8.07-6.03-11.27-2.32-3.21-5-6.14-8.46-9.7-1.73-1.78-3.67-3.71-5.81-5.97-2.14-2.26-4.5-4.85-6.83-8.1-4.67-6.52-6.61-12.41-7.53-17.3-.89-4.93-.95-8.96-.76-12.95.09-1,.19-1.99.28-3.01.13-1.01.32-2.02.48-3.08.2-1.05.48-2.11.74-3.22.35-1.09.65-2.24,1.11-3.41,1.72-4.7,4.74-10.05,10.09-15.99,2.66-2.98,5.14-5.43,7.31-7.65,2.17-2.22,4.06-4.19,5.69-6.05,3.25-3.73,5.52-6.99,7.35-10.48,1.82-3.49,3.19-7.24,4.04-12.1.78-4.84,1.22-10.88-.26-18.64-.79-3.87-2.02-7.12-3.39-9.87-1.37-2.76-2.86-5.04-4.31-7.03-2.97-3.95-5.72-6.82-8.48-9.68-2.76-2.86-5.62-5.64-8.89-9.41-1.63-1.89-3.33-4.06-5.02-6.7-1.68-2.63-3.32-5.77-4.57-9.58-1.22-3.81-1.85-7.29-2.06-10.4-.17-1.55-.13-3.03-.2-4.41.05-1.39.06-2.7.15-3.95.38-4.99,1.31-8.93,2.72-12.68,1.44-3.73,3.34-7.31,6.36-11.3,1.49-2.01,3.31-4.07,5.43-6.35,2.12-2.28,4.6-4.73,7.36-7.58,2.76-2.86,5.06-5.46,6.92-7.93,1.86-2.47,3.27-4.8,4.42-6.98,2.19-4.42,3.28-8.27,3.93-12.15.61-3.9.84-7.88.45-12.8-.06-.61-.12-1.24-.18-1.89-.07-.65-.2-1.3-.31-1.98-.18-1.36-.57-2.76-.91-4.27-.84-2.96-2.09-6.21-4.06-9.64-1.97-3.43-4.13-6.16-6.15-8.5-2.03-2.34-3.94-4.3-5.67-6.08-3.48-3.55-6.31-6.38-8.89-9.44-.65-.76-1.29-1.53-1.9-2.34-.64-.79-1.23-1.64-1.84-2.51-.64-.85-1.17-1.82-1.79-2.77-.54-1.01-1.17-2.02-1.69-3.16-2.17-4.49-4.1-10.37-4.29-18.4-.1-4,.14-7.52.74-10.59.56-3.08,1.32-5.75,2.27-8.07,1.84-4.68,4.07-8.07,6.5-11.24,2.44-3.17,5.18-6.1,8.67-9.65,1.74-1.78,3.68-3.71,5.78-5.99,2.1-2.28,4.39-4.9,6.61-8.18,1.62-2.43,2.83-4.74,3.79-6.85.44-1.07.85-2.08,1.19-3.04.3-.98.62-1.88.85-2.74.21-.87.41-1.68.59-2.43.14-.76.26-1.47.38-2.12.27-1.3.31-2.41.44-3.33.13-.92.15-1.67.19-2.26.04-.56.07-1,.1-1.37.06-.66.11-.86.16-.86.05,0,.09.2.1.86,0,.37,0,.82.01,1.38,0,.6,0,1.35-.09,2.29-.1.93-.12,2.06-.36,3.38-.11.66-.22,1.38-.35,2.15-.18.77-.37,1.59-.58,2.47-.22.88-.54,1.8-.84,2.79-.34.98-.75,2.01-1.19,3.1-.96,2.15-2.19,4.49-3.83,6.96-2.25,3.31-4.55,5.95-6.66,8.25-2.11,2.29-4.05,4.22-5.78,6-3.48,3.54-6.19,6.44-8.6,9.58-2.39,3.14-4.59,6.46-6.4,11.05-.94,2.28-1.68,4.9-2.24,7.92-.59,3.02-.82,6.49-.74,10.43.1,3.95.58,7.39,1.36,10.37.78,2.98,1.7,5.54,2.8,7.74.49,1.13,1.13,2.12,1.64,3.12.61.95,1.14,1.89,1.75,2.74.6.86,1.18,1.7,1.81,2.48.6.8,1.23,1.57,1.87,2.32,2.54,3.04,5.34,5.86,8.82,9.41,1.73,1.78,3.65,3.75,5.7,6.1,2.03,2.36,4.23,5.1,6.25,8.57,2.01,3.47,3.31,6.76,4.15,9.77.37,1.52.77,2.94.95,4.32.11.69.22,1.35.32,2,.06.66.12,1.29.18,1.92.41,4.98.19,9.01-.41,12.96-.64,3.94-1.73,7.85-3.94,12.35-1.15,2.22-2.57,4.59-4.44,7.1-1.86,2.51-4.18,5.13-6.94,8-5.56,5.7-9.8,9.9-12.75,13.87-3.01,3.92-4.88,7.45-6.32,11.12-1.4,3.68-2.34,7.56-2.72,12.48-.12,1.23-.1,2.53-.16,3.9.04,1.37.04,2.83.17,4.36.21,3.08.8,6.5,1.99,10.26,1.21,3.75,2.81,6.84,4.45,9.44,1.65,2.6,3.32,4.76,4.94,6.63,3.23,3.76,6.08,6.53,8.85,9.39,2.77,2.85,5.55,5.74,8.57,9.73,1.47,2.02,3,4.32,4.42,7.12,1.42,2.79,2.66,6.11,3.49,10.03,1.54,7.87,1.12,13.97.34,18.89-.84,4.93-2.22,8.75-4.04,12.32-1.85,3.55-4.16,6.86-7.41,10.64-1.64,1.88-3.53,3.87-5.71,6.09-2.17,2.22-4.65,4.67-7.29,7.62-5.32,5.89-8.33,11.12-10.04,15.74-1.74,4.62-2.37,8.58-2.65,12.52-.22,3.94-.17,7.94.68,12.8.08.61.23,1.23.39,1.86.16.63.29,1.28.48,1.95.41,1.31.81,2.7,1.42,4.13,1.14,2.86,2.76,5.94,5.06,9.16,2.3,3.22,4.64,5.8,6.77,8.06,2.14,2.25,4.07,4.18,5.82,5.96,3.48,3.57,6.19,6.52,8.57,9.75,2.35,3.23,4.45,6.71,6.19,11.43,1.64,4.73,2.86,10.76,2.47,18.78-.46,8.03-2.55,13.86-4.89,18.28-2.39,4.42-4.88,7.61-7.52,10.6-2.64,3-5.48,5.81-8.95,9.37-1.73,1.78-3.61,3.76-5.59,6.14-1.97,2.38-4.05,5.16-5.92,8.64-2.74,5.15-3.72,9.4-4.3,12.47-.13.78-.27,1.48-.35,2.13-.07.65-.13,1.23-.19,1.76-.14,1.05-.18,1.87-.21,2.52-.15,2.57-.24,2.21-.34,2.21-.1,0-.2.36-.2-2.23,0-.65,0-1.48.11-2.55.05-.54.1-1.13.15-1.79.07-.66.2-1.37.32-2.16.55-3.13,1.52-7.47,4.31-12.72Z"></path>
+            <path
+              d="M7.98,522.58c1.9-3.54,4.01-6.36,6-8.76,2-2.4,3.89-4.39,5.63-6.17,3.47-3.56,6.3-6.34,8.93-9.31,2.62-2.96,5.09-6.09,7.44-10.42,2.32-4.33,4.38-10.03,4.86-17.94.23-3.95-.03-7.42-.43-10.47-.41-3.06-1.17-5.68-1.93-8.02-1.69-4.64-3.73-8.07-6.03-11.27-2.32-3.21-5-6.14-8.46-9.7-1.73-1.78-3.67-3.71-5.81-5.97-2.14-2.26-4.5-4.85-6.83-8.1-4.67-6.52-6.61-12.41-7.53-17.3-.89-4.93-.95-8.96-.76-12.95.09-1,.19-1.99.28-3.01.13-1.01.32-2.02.48-3.08.2-1.05.48-2.11.74-3.22.35-1.09.65-2.24,1.11-3.41,1.72-4.7,4.74-10.05,10.09-15.99,2.66-2.98,5.14-5.43,7.31-7.65,2.17-2.22,4.06-4.19,5.69-6.05,3.25-3.73,5.52-6.99,7.35-10.48,1.82-3.49,3.19-7.24,4.04-12.1.78-4.84,1.22-10.88-.26-18.64-.79-3.87-2.02-7.12-3.39-9.87-1.37-2.76-2.86-5.04-4.31-7.03-2.97-3.95-5.72-6.82-8.48-9.68-2.76-2.86-5.62-5.64-8.89-9.41-1.63-1.89-3.33-4.06-5.02-6.7-1.68-2.63-3.32-5.77-4.57-9.58-1.22-3.81-1.85-7.29-2.06-10.4-.17-1.55-.13-3.03-.2-4.41.05-1.39.06-2.7.15-3.95.38-4.99,1.31-8.93,2.72-12.68,1.44-3.73,3.34-7.31,6.36-11.3,1.49-2.01,3.31-4.07,5.43-6.35,2.12-2.28,4.6-4.73,7.36-7.58,2.76-2.86,5.06-5.46,6.92-7.93,1.86-2.47,3.27-4.8,4.42-6.98,2.19-4.42,3.28-8.27,3.93-12.15.61-3.9.84-7.88.45-12.8-.06-.61-.12-1.24-.18-1.89-.07-.65-.2-1.3-.31-1.98-.18-1.36-.57-2.76-.91-4.27-.84-2.96-2.09-6.21-4.06-9.64-1.97-3.43-4.13-6.16-6.15-8.5-2.03-2.34-3.94-4.3-5.67-6.08-3.48-3.55-6.31-6.38-8.89-9.44-.65-.76-1.29-1.53-1.9-2.34-.64-.79-1.23-1.64-1.84-2.51-.64-.85-1.17-1.82-1.79-2.77-.54-1.01-1.17-2.02-1.69-3.16-2.17-4.49-4.1-10.37-4.29-18.4-.1-4,.14-7.52.74-10.59.56-3.08,1.32-5.75,2.27-8.07,1.84-4.68,4.07-8.07,6.5-11.24,2.44-3.17,5.18-6.1,8.67-9.65,1.74-1.78,3.68-3.71,5.78-5.99,2.1-2.28,4.39-4.9,6.61-8.18,1.62-2.43,2.83-4.74,3.79-6.85.44-1.07.85-2.08,1.19-3.04.3-.98.62-1.88.85-2.74.21-.87.41-1.68.59-2.43.14-.76.26-1.47.38-2.12.27-1.3.31-2.41.44-3.33.13-.92.15-1.67.19-2.26.04-.56.07-1,.1-1.37.06-.66.11-.86.16-.86.05,0,.09.2.1.86,0,.37,0,.82.01,1.38,0,.6,0,1.35-.09,2.29-.1.93-.12,2.06-.36,3.38-.11.66-.22,1.38-.35,2.15-.18.77-.37,1.59-.58,2.47-.22.88-.54,1.8-.84,2.79-.34.98-.75,2.01-1.19,3.1-.96,2.15-2.19,4.49-3.83,6.96-2.25,3.31-4.55,5.95-6.66,8.25-2.11,2.29-4.05,4.22-5.78,6-3.48,3.54-6.19,6.44-8.6,9.58-2.39,3.14-4.59,6.46-6.4,11.05-.94,2.28-1.68,4.9-2.24,7.92-.59,3.02-.82,6.49-.74,10.43.1,3.95.58,7.39,1.36,10.37.78,2.98,1.7,5.54,2.8,7.74.49,1.13,1.13,2.12,1.64,3.12.61.95,1.14,1.89,1.75,2.74.6.86,1.18,1.7,1.81,2.48.6.8,1.23,1.57,1.87,2.32,2.54,3.04,5.34,5.86,8.82,9.41,1.73,1.78,3.65,3.75,5.7,6.1,2.03,2.36,4.23,5.1,6.25,8.57,2.01,3.47,3.31,6.76,4.15,9.77.37,1.52.77,2.94.95,4.32.11.69.22,1.35.32,2,.06.66.12,1.29.18,1.92.41,4.98.19,9.01-.41,12.96-.64,3.94-1.73,7.85-3.94,12.35-1.15,2.22-2.57,4.59-4.44,7.1-1.86,2.51-4.18,5.13-6.94,8-5.56,5.7-9.8,9.9-12.75,13.87-3.01,3.92-4.88,7.45-6.32,11.12-1.4,3.68-2.34,7.56-2.72,12.48-.12,1.23-.1,2.53-.16,3.9.04,1.37.04,2.83.17,4.36.21,3.08.8,6.5,1.99,10.26,1.21,3.75,2.81,6.84,4.45,9.44,1.65,2.6,3.32,4.76,4.94,6.63,3.23,3.76,6.08,6.53,8.85,9.39,2.77,2.85,5.55,5.74,8.57,9.73,1.47,2.02,3,4.32,4.42,7.12,1.42,2.79,2.66,6.11,3.49,10.03,1.54,7.87,1.12,13.97.34,18.89-.84,4.93-2.22,8.75-4.04,12.32-1.85,3.55-4.16,6.86-7.41,10.64-1.64,1.88-3.53,3.87-5.71,6.09-2.17,2.22-4.65,4.67-7.29,7.62-5.32,5.89-8.33,11.12-10.04,15.74-1.74,4.62-2.37,8.58-2.65,12.52-.22,3.94-.17,7.94.68,12.8.08.61.23,1.23.39,1.86.16.63.29,1.28.48,1.95.41,1.31.81,2.7,1.42,4.13,1.14,2.86,2.76,5.94,5.06,9.16,2.3,3.22,4.64,5.8,6.77,8.06,2.14,2.25,4.07,4.18,5.82,5.96,3.48,3.57,6.19,6.52,8.57,9.75,2.35,3.23,4.45,6.71,6.19,11.43,1.64,4.73,2.86,10.76,2.47,18.78-.46,8.03-2.55,13.86-4.89,18.28-2.39,4.42-4.88,7.61-7.52,10.6-2.64,3-5.48,5.81-8.95,9.37-1.73,1.78-3.61,3.76-5.59,6.14-1.97,2.38-4.05,5.16-5.92,8.64-2.74,5.15-3.72,9.4-4.3,12.47-.13.78-.27,1.48-.35,2.13-.07.65-.13,1.23-.19,1.76-.14,1.05-.18,1.87-.21,2.52-.15,2.57-.24,2.21-.34,2.21-.1,0-.2.36-.2-2.23,0-.65,0-1.48.11-2.55.05-.54.1-1.13.15-1.79.07-.66.2-1.37.32-2.16.55-3.13,1.52-7.47,4.31-12.72Z">
+            </path>
           </svg>
           <span class="ob-timeline-dot"></span>
         </span>
@@ -1462,10 +1559,12 @@
           <div class="item-top-row">
             <span class="num-cutout-box b1">1</span>
             <span class="scrap-clip" style="transform: rotate(2deg);">
-              <span class="clip-body cut-scissor-1 bg-burgundy-rich" style="font-size: 1.35rem; padding: 6px 14px;">12:00</span>
+              <span class="clip-body cut-scissor-1 bg-burgundy-rich"
+                style="font-size: 1.35rem; padding: 6px 14px;">12:00</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/bratsevo-icon.png" alt="Сбор гостей в усадьбе Братцево" width="1945" height="808">
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/bratsevo-icon.png"
+            alt="Сбор гостей в усадьбе Братцево" width="1945" height="808">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(-1.5deg);">
               <span class="clip-body cut-scissor-2 bg-white-serif" style="font-size: 1.25rem;">СБОР ГОСТЕЙ</span>
@@ -1484,10 +1583,12 @@
           <div class="item-top-row">
             <span class="num-cutout-box b2">2</span>
             <span class="scrap-clip" style="transform: rotate(-2.5deg);">
-              <span class="clip-body cut-scissor-2 bg-blue-powder" style="font-size: 1.35rem; padding: 6px 14px;">12:30</span>
+              <span class="clip-body cut-scissor-2 bg-blue-powder"
+                style="font-size: 1.35rem; padding: 6px 14px;">12:30</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-rings.png" alt="Церемония регистрации: обручальные кольца" width="1536" height="1024">
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-rings.png"
+            alt="Церемония регистрации: обручальные кольца" width="1536" height="1024">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(2deg);">
               <span class="clip-body cut-scissor-4 bg-white-serif" style="font-size: 1.25rem;">ЦЕРЕМОНИЯ</span>
@@ -1506,10 +1607,12 @@
           <div class="item-top-row">
             <span class="num-cutout-box b3">3</span>
             <span class="scrap-clip" style="transform: rotate(2deg);">
-              <span class="clip-body cut-scissor-3 bg-burgundy-rich" style="font-size: 1.35rem; padding: 6px 14px;">13:30</span>
+              <span class="clip-body cut-scissor-3 bg-burgundy-rich"
+                style="font-size: 1.35rem; padding: 6px 14px;">13:30</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-dinner.png" alt="Званый ужин: праздничный стол" width="1536" height="1024">
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-dinner.png"
+            alt="Званый ужин: праздничный стол" width="1536" height="1024">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(-2deg);">
               <span class="clip-body cut-scissor-1 bg-white-serif" style="font-size: 1.25rem;">ЗВАНЫЙ УЖИН</span>
@@ -1528,10 +1631,12 @@
           <div class="item-top-row">
             <span class="num-cutout-box b4">4</span>
             <span class="scrap-clip" style="transform: rotate(-2deg);">
-              <span class="clip-body cut-scissor-4 bg-blue-powder" style="font-size: 1.35rem; padding: 6px 14px;">23:00</span>
+              <span class="clip-body cut-scissor-4 bg-blue-powder"
+                style="font-size: 1.35rem; padding: 6px 14px;">23:00</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-cake.png" alt="Завершение вечера: свадебный торт и бенгальские огни" width="1312" height="1199">
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-cake.png"
+            alt="Завершение вечера: свадебный торт и бенгальские огни" width="1312" height="1199">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(2deg);">
               <span class="clip-body cut-scissor-5 bg-white-serif" style="font-size: 1.25rem;">ФИНАЛ ВЕЧЕРА</span>
@@ -1551,197 +1656,231 @@
          4. ДРЕСС-КОД (КОЛОНКА СТИЛЯ И ШЕЛКОВАЯ ПАЛИТРА)
          ========================================== -->
     <div class="decorated-section">
-      <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-lace" src="./assets/keepsakes/lace.png" alt="" loading="lazy" decoding="async" width="1402" height="1122" data-layout-id="decoration-11"><img class="decor-object decor-lace" src="./assets/keepsakes/lace.png" alt="" loading="lazy" decoding="async" width="1402" height="1122" data-layout-id="decoration-12"><img class="decor-object decor-secondary decor-secondary-left decor-spool" src="./assets/keepsakes/spool.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-13"><img class="decor-object decor-secondary decor-secondary-right decor-bow" src="./assets/keepsakes/bow.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-14"></div>
-<section class="dresscode-section">
-      <div class="flatlay-bouquet" aria-hidden="true" data-layout-id="decoration-15"><img src="./assets/wedding-ribbon-topdown.png" alt="" loading="lazy" decoding="async" width="1103" height="1426"></div>
-      <h2 class="section-heading" style="text-align: center;">
-        <span class="scrap-clip" style="transform: rotate(-2deg);">
-          <span class="clip-body cut-scissor-1 bg-burgundy-rich" style="font-size: 1.65rem; padding: 8px 20px;">ДРЕСС-КОД</span>
-        </span>
-        <span class="scrap-clip" style="transform: rotate(2.5deg);">
-          <span class="clip-body cut-scissor-2 bg-blue-powder" style="font-size: 1.35rem; padding: 8px 18px;">КОЛОНКА СТИЛЯ</span>
-        </span>
-      </h2>
-
-      <p style="font-size: 1.05rem; margin: 18px auto; max-width: 640px; text-align: center; color: var(--ink-soft); line-height: 1.6; font-weight: 500;">
-        Мы готовимся к нашему незабываемому дню и будем невероятно счастливы видеть вас в элегантных нарядах главных оттенков торжества:
-      </p>
-
-      <!-- Образцы палитры (свотчи ткани с неровным резом) -->
-      <div class="palette-swatches">
-        <div class="swatch-card">
-          <div class="swatch-color" style="background: #681427;"></div>
-          <div class="swatch-name">БОРДО</div>
+      <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-lace"
+          src="./assets/keepsakes/lace.png" alt="" loading="lazy" decoding="async" width="1402" height="1122"
+          data-layout-id="decoration-11"><img class="decor-object decor-lace" src="./assets/keepsakes/lace.png" alt=""
+          loading="lazy" decoding="async" width="1402" height="1122" data-layout-id="decoration-12"><img
+          class="decor-object decor-secondary decor-secondary-left decor-spool" src="./assets/keepsakes/spool.png"
+          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-13"><img
+          class="decor-object decor-secondary decor-secondary-right decor-bow" src="./assets/keepsakes/bow.png" alt=""
+          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-14"></div>
+      <section class="dresscode-section">
+        <div class="flatlay-bouquet" aria-hidden="true" data-layout-id="decoration-15"><img
+            src="./assets/wedding-ribbon-topdown.png" alt="" loading="lazy" decoding="async" width="1103" height="1426">
         </div>
-        <div class="swatch-card">
-          <div class="swatch-color" style="background: #9dc2df;"></div>
-          <div class="swatch-name">ГОЛУБОЙ</div>
-        </div>
-        <div class="swatch-card">
-          <div class="swatch-color" style="background: #ffffff; border: 1px solid #d5cbbe;"></div>
-          <div class="swatch-name">МОЛОЧНЫЙ</div>
-        </div>
-        <div class="swatch-card">
-          <div class="swatch-color" style="background: #ebd8b7;"></div>
-          <div class="swatch-name">ШАМПАНЬ</div>
-        </div>
-        <div class="swatch-card">
-          <div class="swatch-color" style="background: #1a1617;"></div>
-          <div class="swatch-name" style="color: #fff; background: #1a1617; padding: 2px 4px;">ГРАФИТ</div>
-        </div>
-      </div>
-
-      <!-- Вырезки фасонов для дам и кавалеров -->
-      <div class="dress-notes-grid">
-        <div class="dress-note-box cut-scissor-3">
+        <h2 class="section-heading" style="text-align: center;">
           <span class="scrap-clip" style="transform: rotate(-2deg);">
-            <span class="clip-body cut-scissor-1 bg-black-sans" style="font-size: 0.95rem; margin-bottom: 8px;">01 / ДЛЯ ДАМ</span>
+            <span class="clip-body cut-scissor-1 bg-burgundy-rich"
+              style="font-size: 1.65rem; padding: 8px 20px;">ДРЕСС-КОД</span>
           </span>
-          <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/dress-burgundy.webp" alt="Пример дресс-кода: длинное бордовое платье">
-          <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
-            Вечерние или коктейльные платья, шёлковые комбинации, костюмы в благородных цветах палитры.
-          </p>
-        </div>
-        <div class="dress-note-box cut-scissor-4">
-          <span class="scrap-clip" style="transform: rotate(2deg);">
-            <span class="clip-body cut-scissor-2 bg-blue-powder" style="font-size: 0.95rem; margin-bottom: 8px;">02 / ДЛЯ КАВАЛЕРОВ</span>
+          <span class="scrap-clip" style="transform: rotate(2.5deg);">
+            <span class="clip-body cut-scissor-2 bg-blue-powder" style="font-size: 1.35rem; padding: 8px 18px;">КОЛОНКА
+              СТИЛЯ</span>
           </span>
-          <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/suit-burgundy.webp" alt="Пример дресс-кода: бордовый костюм">
-          <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
-            Классические костюмы или блейзеры в глубоких графитовых, тёмно-синих или бордовых тонах.
-          </p>
-        </div>
-      </div>
+        </h2>
 
-      <!-- Памятка о гравии (внешний контейнер не срезает скотч) -->
-      <div class="manor-sticker-frame">
-        <div class="washi-strip tape-sticker washi-blue"></div>
-        <div class="manor-sticker-inner cut-scissor-5">
-          <strong>МАЛЕНЬКАЯ ЗАМЕТКА ДЛЯ ВСЕХ:</strong> Выбирайте удобную обувь для танцев. А для прогулки в ноябре захватите тёплую верхнюю одежду — пусть ничто не мешает наслаждаться нашим днём.
+        <p
+          style="font-size: 1.05rem; margin: 18px auto; max-width: 640px; text-align: center; color: var(--ink-soft); line-height: 1.6; font-weight: 500;">
+          Мы готовимся к нашему незабываемому дню и будем невероятно счастливы видеть вас в элегантных нарядах главных
+          оттенков торжества:
+        </p>
+
+        <!-- Образцы палитры (свотчи ткани с неровным резом) -->
+        <div class="palette-swatches">
+          <div class="swatch-card">
+            <div class="swatch-color" style="background: #681427;"></div>
+            <div class="swatch-name">БОРДО</div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background: #9dc2df;"></div>
+            <div class="swatch-name">ГОЛУБОЙ</div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background: #ffffff; border: 1px solid #d5cbbe;"></div>
+            <div class="swatch-name">МОЛОЧНЫЙ</div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background: #ebd8b7;"></div>
+            <div class="swatch-name">ШАМПАНЬ</div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background: #1a1617;"></div>
+            <div class="swatch-name" style="color: #fff; background: #1a1617; padding: 2px 4px;">ГРАФИТ</div>
+          </div>
         </div>
-      </div>
-    </section></div>
+
+        <!-- Вырезки фасонов для дам и кавалеров -->
+        <div class="dress-notes-grid">
+          <div class="dress-note-box cut-scissor-3">
+            <span class="scrap-clip" style="transform: rotate(-2deg);">
+              <span class="clip-body cut-scissor-1 bg-black-sans" style="font-size: 0.95rem; margin-bottom: 8px;">01 /
+                ДЛЯ ДАМ</span>
+            </span>
+            <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/dress-burgundy.webp"
+              alt="Пример дресс-кода: длинное бордовое платье">
+            <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
+              Вечерние или коктейльные платья, шёлковые комбинации, костюмы в благородных цветах палитры.
+            </p>
+          </div>
+          <div class="dress-note-box cut-scissor-4">
+            <span class="scrap-clip" style="transform: rotate(2deg);">
+              <span class="clip-body cut-scissor-2 bg-blue-powder" style="font-size: 0.95rem; margin-bottom: 8px;">02 /
+                ДЛЯ КАВАЛЕРОВ</span>
+            </span>
+            <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/suit-burgundy.webp"
+              alt="Пример дресс-кода: бордовый костюм">
+            <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
+              Классические костюмы или блейзеры в глубоких графитовых, тёмно-синих или бордовых тонах.
+            </p>
+          </div>
+        </div>
+
+        <!-- Памятка о гравии (внешний контейнер не срезает скотч) -->
+        <div class="manor-sticker-frame">
+          <div class="washi-strip tape-sticker washi-blue"></div>
+          <div class="manor-sticker-inner cut-scissor-5">
+            <strong>МАЛЕНЬКАЯ ЗАМЕТКА ДЛЯ ВСЕХ:</strong> Выбирайте удобную обувь для танцев. А для прогулки в ноябре
+            захватите тёплую верхнюю одежду — пусть ничто не мешает наслаждаться нашим днём.
+          </div>
+        </div>
+      </section>
+    </div>
 
     <!-- ==========================================
          5. АНКЕТА ГОСТЯ / RSVP (ОТРЫВНОЙ КУПОН)
          ========================================== -->
     <div class="decorated-section">
       <div class="decoration-pair" aria-hidden="true">
-        <img class="decor-object decor-fountain-pen decor-secondary-left" src="./assets/keepsakes/fountain-pen.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-19">
-        <img class="decor-object decor-inkwell decor-secondary-right" src="./assets/keepsakes/inkwell.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-20">
-        <img class="decor-object decor-reply-card decor-secondary-left" src="./assets/keepsakes/reply-card.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-21">
-        <img class="decor-object decor-binder-clips decor-secondary-right" src="./assets/keepsakes/binder-clips.png" alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-22">
+        <img class="decor-object decor-fountain-pen decor-secondary-left" src="./assets/keepsakes/fountain-pen.png"
+          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-19">
+        <img class="decor-object decor-inkwell decor-secondary-right" src="./assets/keepsakes/inkwell.png" alt=""
+          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-20">
+        <img class="decor-object decor-reply-card decor-secondary-left" src="./assets/keepsakes/reply-card.png" alt=""
+          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-21">
+        <img class="decor-object decor-binder-clips decor-secondary-right" src="./assets/keepsakes/binder-clips.png"
+          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-22">
       </div>
-<section class="rsvp-section" id="rsvp">
-      <div class="cut-line">
-        <span>✂ ОТРЕЗАТЬ ПО ЛИНИИ</span>
-        <hr>
-        <span>КУПОН ГОСТЯ</span>
-      </div>
-
-      <div style="text-align: center; margin-bottom: 24px;">
-        <h2 class="section-heading"><span class="scrap-clip" style="transform: rotate(-1.5deg);">
-          <span class="clip-body cut-scissor-2 bg-burgundy-rich" style="font-size: 1.65rem; padding: 8px 22px;">АНКЕТА ГОСТЯ</span>
-        </span></h2>
-        <div style="margin-top: 10px;">
-          <span class="scrap-clip" style="transform: rotate(2deg);">
-            <span class="clip-body cut-scissor-1 bg-white-serif" style="font-size: 1.15rem; padding: 6px 16px;">ДАДИТЕ ЗНАТЬ, ЧТО ВЫ С НАМИ?</span>
-          </span>
-        </div>
-        <div style="margin-top: 8px;">
-          <span class="cute-scribble" style="transform: rotate(-1.2deg);">
-            Пожалуйста, подтвердите ваше присутствие, чтобы мы всё красиво подготовили ♡
-          </span>
-        </div>
-      </div>
-
-      <form id="weddingRsvpForm">
-        <!-- ФИО -->
-        <div class="rsvp-group">
-          <span class="scrap-clip" style="transform: rotate(-1deg);">
-            <span class="clip-body cut-scissor-3 bg-news-typewriter">1. ВАШЕ ИМЯ И ФАМИЛИЯ:</span>
-          </span>
-          <input type="text" id="guestName" aria-label="Ваши имена и фамилия" autocomplete="name" class="rsvp-input" placeholder="Например: Иван и Анна Смирновы" required>
+      <section class="rsvp-section" id="rsvp">
+        <div class="cut-line">
+          <span>✂ ОТРЕЗАТЬ ПО ЛИНИИ</span>
+          <hr>
+          <span>КУПОН ГОСТЯ</span>
         </div>
 
-        <!-- Присутствие -->
-        <div class="rsvp-group">
-          <span class="scrap-clip" style="transform: rotate(1deg);">
-            <span class="clip-body cut-scissor-4 bg-news-typewriter">2. СМОЖЕТЕ ПРИЙТИ?</span>
-          </span>
-          <div class="choice-grid">
-            <label class="choice-btn">
-              <input type="radio" name="attendance" value="yes" checked>
-              <div class="choice-box">✔ Буду с огромной радостью!</div>
-            </label>
-            <label class="choice-btn">
-              <input type="radio" name="attendance" value="no">
-              <div class="choice-box">✖ К сожалению, не смогу</div>
-            </label>
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h2 class="section-heading"><span class="scrap-clip" style="transform: rotate(-1.5deg);">
+              <span class="clip-body cut-scissor-2 bg-burgundy-rich"
+                style="font-size: 1.65rem; padding: 8px 22px;">АНКЕТА ГОСТЯ</span>
+            </span></h2>
+          <div style="margin-top: 10px;">
+            <span class="scrap-clip" style="transform: rotate(2deg);">
+              <span class="clip-body cut-scissor-1 bg-white-serif" style="font-size: 1.15rem; padding: 6px 16px;">ДАДИТЕ
+                ЗНАТЬ, ЧТО ВЫ С НАМИ?</span>
+            </span>
+          </div>
+          <div style="margin-top: 8px;">
+            <span class="cute-scribble" style="transform: rotate(-1.2deg);">
+              Пожалуйста, подтвердите ваше присутствие, чтобы мы всё красиво подготовили ♡
+            </span>
           </div>
         </div>
 
-        <!-- Напитки -->
-        <div class="rsvp-group">
-          <span class="scrap-clip" style="transform: rotate(-1.5deg);">
-            <span class="clip-body cut-scissor-5 bg-news-typewriter">3. ПРЕДПОЧТЕНИЯ ПО БАРУ:</span>
-          </span>
-          <div class="drinks-chips">
-            <label class="chip-btn">
-              <input type="checkbox" name="drinks" value="Шампанское">
-              <div class="chip-box"> Шампанское</div>
-            </label>
-            <label class="chip-btn">
-              <input type="checkbox" name="drinks" value="Белое вино">
-              <div class="chip-box"> Белое вино</div>
-            </label>
-            <label class="chip-btn">
-              <input type="checkbox" name="drinks" value="Красное вино">
-              <div class="chip-box"> Красное вино</div>
-            </label>
-            <label class="chip-btn">
-              <input type="checkbox" name="drinks" value="Крепкие напитки">
-              <div class="chip-box"> Крепкое</div>
-            </label>
-            <label class="chip-btn">
-              <input type="checkbox" name="drinks" value="Безалкогольное">
-              <div class="chip-box"> Безалкогольное</div>
-            </label>
+        <form id="weddingRsvpForm">
+          <!-- ФИО -->
+          <div class="rsvp-group">
+            <span class="scrap-clip" style="transform: rotate(-1deg);">
+              <span class="clip-body cut-scissor-3 bg-news-typewriter">1. ВАШЕ ИМЯ И ФАМИЛИЯ:</span>
+            </span>
+            <input type="text" id="guestName" aria-label="Ваши имена и фамилия" autocomplete="name" class="rsvp-input"
+              placeholder="Например: Иван и Анна Смирновы" required>
           </div>
-          <input type="text" id="customDrink" aria-label="Свой вариант напитка" class="rsvp-input" style="margin-top: 10px;" placeholder="Или напишите свой вариант (например: джин, виски, сидр)...">
-        </div>
 
-        <!-- Пожелания / Аллергии -->
-        <div class="rsvp-group">
-          <span class="scrap-clip" style="transform: rotate(1deg);">
-            <span class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
-          </span>
-          <input type="text" id="guestComment" aria-label="Особые пожелания и аллергии" class="rsvp-input" placeholder="Вегетарианское меню / аллергия / любимая музыка">
-        </div>
+          <!-- Присутствие -->
+          <div class="rsvp-group">
+            <span class="scrap-clip" style="transform: rotate(1deg);">
+              <span class="clip-body cut-scissor-4 bg-news-typewriter">2. СМОЖЕТЕ ПРИЙТИ?</span>
+            </span>
+            <div class="choice-grid">
+              <label class="choice-btn">
+                <input type="radio" name="attendance" value="yes" checked>
+                <div class="choice-box">✔ Буду с огромной радостью!</div>
+              </label>
+              <label class="choice-btn">
+                <input type="radio" name="attendance" value="no">
+                <div class="choice-box">✖ К сожалению, не смогу</div>
+              </label>
+            </div>
+          </div>
 
-        <p style="font-size: 14px; margin-top: 12px; color: var(--ink-soft); opacity: 0.85;">Ответ сразу будет отправлен молодожёнам.</p>
-        <button type="submit" id="rsvpSubmitBtn" class="btn-submit-collage">
-          ОТПРАВИТЬ ОТВЕТ ✉
-        </button>
-      </form>
-    </section></div>
+          <!-- Напитки -->
+          <div class="rsvp-group">
+            <span class="scrap-clip" style="transform: rotate(-1.5deg);">
+              <span class="clip-body cut-scissor-5 bg-news-typewriter">3. ПРЕДПОЧТЕНИЯ ПО БАРУ:</span>
+            </span>
+            <div class="drinks-chips">
+              <label class="chip-btn">
+                <input type="checkbox" name="drinks" value="Шампанское">
+                <div class="chip-box"> Шампанское</div>
+              </label>
+              <label class="chip-btn">
+                <input type="checkbox" name="drinks" value="Белое вино">
+                <div class="chip-box"> Белое вино</div>
+              </label>
+              <label class="chip-btn">
+                <input type="checkbox" name="drinks" value="Красное вино">
+                <div class="chip-box"> Красное вино</div>
+              </label>
+              <label class="chip-btn">
+                <input type="checkbox" name="drinks" value="Крепкие напитки">
+                <div class="chip-box"> Крепкое</div>
+              </label>
+              <label class="chip-btn">
+                <input type="checkbox" name="drinks" value="Безалкогольное">
+                <div class="chip-box"> Безалкогольное</div>
+              </label>
+            </div>
+            <input type="text" id="customDrink" aria-label="Свой вариант напитка" class="rsvp-input"
+              style="margin-top: 10px;" placeholder="Или напишите свой вариант (например: джин, виски, сидр)...">
+          </div>
+
+          <!-- Пожелания / Аллергии -->
+          <div class="rsvp-group">
+            <span class="scrap-clip" style="transform: rotate(1deg);">
+              <span class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
+            </span>
+            <input type="text" id="guestComment" aria-label="Особые пожелания и аллергии" class="rsvp-input"
+              placeholder="Вегетарианское меню / аллергия / любимая музыка">
+          </div>
+
+          <p style="font-size: 14px; margin-top: 12px; color: var(--ink-soft); opacity: 0.85;">Ответ сразу будет
+            отправлен молодожёнам.</p>
+          <button type="submit" id="rsvpSubmitBtn" class="btn-submit-collage">
+            ОТПРАВИТЬ ОТВЕТ ✉
+          </button>
+        </form>
+      </section>
+    </div>
 
     <!-- ==========================================
          6. ФИНАЛ
          ========================================== -->
     <footer class="farewell-footer">
       <div class="farewell-decor" aria-hidden="true">
-        <img class="decor-object decor-cat sticker-cat" src="./assets/cat-sticker.png" alt="Кот в шляпе" loading="lazy" decoding="async" width="248" height="275" data-layout-id="decoration-16">
+        <img class="decor-object decor-cat sticker-cat" src="./assets/cat-sticker.png" alt="Кот в шляпе" loading="lazy"
+          decoding="async" width="248" height="275" data-layout-id="decoration-16">
       </div>
       <span class="scrap-clip" style="transform: rotate(-2deg);">
-        <span class="clip-body cut-scissor-2 bg-white-serif" style="font-size: 1.45rem; padding: 8px 22px;">ДО ВСТРЕЧИ В БРАТЦЕВО!</span>
+        <span class="clip-body cut-scissor-2 bg-white-serif" style="font-size: 1.45rem; padding: 8px 22px;">ДО ВСТРЕЧИ В
+          БРАТЦЕВО!</span>
       </span>
       <div style="margin-top: 14px;">
         <span class="scrap-clip" style="transform: rotate(2deg);">
-          <span class="clip-body cut-scissor-3 bg-burgundy-rich" style="font-size: 1.25rem; padding: 7px 16px;">19 . 11 . 2026</span>
+          <span class="clip-body cut-scissor-3 bg-burgundy-rich" style="font-size: 1.25rem; padding: 7px 16px;">19 . 11
+            . 2026</span>
         </span>
         <span class="scrap-clip" style="transform: rotate(-1.5deg);">
-          <span class="clip-body cut-scissor-4 bg-black-sans" style="font-size: 1.15rem; padding: 7px 16px;">МОСКВА</span>
+          <span class="clip-body cut-scissor-4 bg-black-sans"
+            style="font-size: 1.15rem; padding: 7px 16px;">МОСКВА</span>
         </span>
       </div>
       <div style="margin-top: 18px;">
@@ -1757,9 +1896,11 @@
   <div class="modal-backdrop" id="successModal" role="dialog" aria-modal="true" aria-label="Ответ отправлен">
     <div class="modal-box">
       <span class="scrap-clip" style="transform: rotate(-2deg); margin-bottom: 16px;">
-        <span id="successModalTitle" class="clip-body cut-scissor-1 bg-burgundy-rich" style="font-size: 1.8rem; padding: 10px 22px;">ОТВЕТ ОТПРАВЛЕН!</span>
+        <span id="successModalTitle" class="clip-body cut-scissor-1 bg-burgundy-rich"
+          style="font-size: 1.8rem; padding: 10px 22px;">ОТВЕТ ОТПРАВЛЕН!</span>
       </span>
-      <p id="successModalDesc" style="font-size: 1.1rem; margin: 20px 0 26px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
+      <p id="successModalDesc"
+        style="font-size: 1.1rem; margin: 20px 0 26px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
         Ваш ответ успешно доставлен Сергею и Юле! Спасибо, мы с нетерпением ждём встречи с вами.
       </p>
       <div style="margin-bottom: 22px;">
@@ -1767,7 +1908,8 @@
           Спасибо, что вы с нами в этот важный день ♡
         </span>
       </div>
-      <button type="button" class="btn-paper-scrap btn-paper-burgundy" style="cursor: pointer;" onclick="closeRsvpModal()">
+      <button type="button" class="btn-paper-scrap btn-paper-burgundy" style="cursor: pointer;"
+        onclick="closeRsvpModal()">
         ОТЛИЧНО, ЗАКРЫТЬ
       </button>
     </div>
@@ -1864,7 +2006,7 @@
     // ==========================================
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXXWaDim-BnbZE1LP50RiGm3HlDPaO3Xl6NQSdTQbwQ-ZOKnIMvWs25O-7CkoBDPyemA/exec';
 
-    document.getElementById('weddingRsvpForm').addEventListener('submit', async function(e) {
+    document.getElementById('weddingRsvpForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const form = this;
@@ -1894,7 +2036,7 @@
       // Резервное сохранение на устройстве
       try {
         localStorage.setItem('wedding_rsvp_' + Date.now(), JSON.stringify(payload));
-      } catch (err) {}
+      } catch (err) { }
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'ОТПРАВЛЯЕМ... ✉';
@@ -1968,4 +2110,5 @@
   <script src="layout-defaults.js" defer></script>
   <script src="layout-editor.js" defer></script>
 </body>
+
 </html>

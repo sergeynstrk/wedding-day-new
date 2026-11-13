@@ -1,45 +1,48 @@
 /**
  * ========================================================
  * ИНТЕРАКТИВНЫЙ 3D КОНВЕРТ (INTERACTIVE ENVELOPE)
- * Перенесён из оригинального репозитория sergeynstrk/wedding-day
+ * 1-в-1 реализация из оригинального репозитория sergeynstrk/wedding-day
  * ========================================================
- * - Показывается при первом визите гостя на сайт
- * - Запоминает статус в localStorage (wedding_envelope_opened_v1)
- * - Повторный просмотр доступен по плавающей кнопке «✉ Конверт»
- * - По клику на сургуч: салют конфетти, печать исчезает,
- *   клапан откидывается назад на 180°, карточка выезжает вверх,
- *   конверт опускается вниз, а карточка распахивается на весь экран.
+ * - Сам НЕ открывается: ждёт клика пользователя на сургучную печать
+ * - Основной сайт скрыт (display: none) во время показа конверта,
+ *   поэтому 3D-анимация работает абсолютно плавно без микрофризов и лагов
+ * - После раскрытия карточки сайт плавно появляется через GSAP fade-in
+ * - Есть плавающая кнопка «✉ Конверт» для повторного просмотра
+ * - Есть кнопка «Сразу к сайту ➔» и клавиша Escape для мгновенного пропуска
  */
 (function initInteractiveEnvelope() {
-  const STORAGE_KEY = 'wedding_envelope_opened_v1';
   const overlay = document.getElementById('envelopeScreen');
-  const replayBtn = document.getElementById('envelopeReplayBtn');
+  const mainSite = document.getElementById('invitation');
   const waxSealBtn = document.getElementById('waxSealBtn');
-  const envelopeBox = document.getElementById('envelopeBox');
   const skipBtn = document.getElementById('envelopeSkipBtn');
+  const replayBtn = document.getElementById('envelopeReplayBtn');
 
-  if (!overlay) return;
+  if (!overlay || !mainSite) return;
 
   const urlParams = new URLSearchParams(window.location.search);
-  const forceEnvelope = urlParams.get('envelope') === '1';
   const isEditMode = urlParams.get('edit') === '1';
+  const forceEnvelope = urlParams.get('envelope') === '1';
+
+  // В режиме визуального редактора (?edit=1) конверт скрывается, если явно не задан ?envelope=1
+  if (isEditMode && !forceEnvelope) {
+    document.documentElement.classList.remove('envelope-active');
+    overlay.style.display = 'none';
+    mainSite.style.display = 'block';
+    mainSite.style.opacity = '1';
+    if (replayBtn) replayBtn.style.display = 'inline-flex';
+    return;
+  }
 
   let isOpening = false;
+  let activeTimeline = null;
 
-  function showReplayBtn() {
-    if (replayBtn) replayBtn.style.display = 'inline-flex';
-  }
-
-  function hideReplayBtn() {
-    if (replayBtn) replayBtn.style.display = 'none';
-  }
-
-  function unlockPage() {
-    isOpening = false;
-    document.body.classList.remove('envelope-locked');
-    overlay.classList.add('is-hidden');
-    showReplayBtn();
-  }
+  // Исходное состояние: сайт скрыт (display: none), чтобы браузер не рендерил
+  // тяжёлый коллаж и фильтры под конвертом — анимация работает ровно в 60 FPS
+  document.documentElement.classList.add('envelope-active');
+  document.body.classList.add('envelope-locked');
+  mainSite.style.display = 'none';
+  mainSite.style.opacity = '0';
+  window.scrollTo(0, 0);
 
   function triggerConfetti() {
     if (typeof confetti === 'function') {
@@ -55,29 +58,49 @@
     }
   }
 
-  function handleOpenEnvelope(fast = false) {
+  function onOpenComplete() {
+    // 1. Полностью убираем оверлей конверта
+    overlay.style.display = 'none';
+
+    // 2. Открываем основной сайт и запускаем мягкий fade-in как в оригинальном App.jsx
+    document.documentElement.classList.remove('envelope-active');
+    mainSite.style.display = 'block';
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(mainSite, 
+        { opacity: 0 }, 
+        { opacity: 1, duration: 1.2, ease: "power2.out" }
+      );
+    } else {
+      mainSite.style.opacity = '1';
+    }
+
+    // 3. Разблокируем прокрутку
+    document.body.classList.remove('envelope-locked');
+
+    // 4. Показываем плавающую кнопку повтора
+    if (replayBtn) replayBtn.style.display = 'inline-flex';
+
+    isOpening = false;
+    activeTimeline = null;
+  }
+
+  function handleOpenEnvelope() {
     if (isOpening) return;
     isOpening = true;
 
-    try {
-      localStorage.setItem(STORAGE_KEY, '1');
-    } catch (e) {
-      /* ignore storage quota/security errors in private mode */
-    }
+    triggerConfetti();
 
-    if (fast || typeof gsap === 'undefined') {
-      overlay.style.transition = 'opacity 0.3s ease, visibility 0.3s ease';
-      unlockPage();
+    if (typeof gsap === 'undefined') {
+      onOpenComplete();
       return;
     }
 
-    triggerConfetti();
-
     const tl = gsap.timeline({
       onComplete: () => {
-        unlockPage();
+        onOpenComplete();
       }
     });
+    activeTimeline = tl;
 
     // 1. Исчезновение сургучной печати (z-50)
     tl.to(".envelope-btn", { 
@@ -112,13 +135,13 @@
     
     .set(".envelope-letter", { zIndex: 40 })
 
-    // 5. Раскрытие карточки приглашения на весь экран
+    // 5. Раскрытие карточки приглашения на весь экран (оригинальная задержка +=1.1s)
     .to(".envelope-letter", {
       scale: 2.2,
       opacity: 0,
       duration: 0.85,
       ease: "power2.inOut"
-    }, "+=0.9") 
+    }, "+=1.1") 
     
     // 6. Плавный переход к главному сайту
     .to(overlay, {
@@ -128,10 +151,30 @@
     }, "-=0.3");
   }
 
-  function resetAndOpen() {
-    hideReplayBtn();
+  function instantSkip() {
+    if (activeTimeline) {
+      activeTimeline.kill();
+      activeTimeline = null;
+    }
+    overlay.style.display = 'none';
+    document.documentElement.classList.remove('envelope-active');
+    mainSite.style.display = 'block';
+    mainSite.style.opacity = '1';
+    document.body.classList.remove('envelope-locked');
+    if (replayBtn) replayBtn.style.display = 'inline-flex';
+    isOpening = false;
+  }
+
+  function replayEnvelope() {
+    if (replayBtn) replayBtn.style.display = 'none';
     isOpening = false;
 
+    // Скрываем сайт
+    document.documentElement.classList.add('envelope-active');
+    mainSite.style.display = 'none';
+    mainSite.style.opacity = '0';
+
+    // Сбрасываем стили GSAP
     if (typeof gsap !== 'undefined') {
       gsap.set(".envelope-btn", { clearProps: "all" });
       gsap.set(".envelope-flap", { clearProps: "all" });
@@ -140,66 +183,37 @@
       gsap.set(overlay, { clearProps: "all" });
     }
 
-    overlay.style.transition = '';
-    overlay.classList.remove('is-hidden');
+    overlay.style.display = 'flex';
+    overlay.style.opacity = '1';
     document.body.classList.add('envelope-locked');
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    if (waxSealBtn) waxSealBtn.focus();
+    window.scrollTo(0, 0);
   }
 
-  // Проверка первого визита
-  let alreadyOpened = false;
-  try {
-    alreadyOpened = localStorage.getItem(STORAGE_KEY) === '1';
-  } catch (e) {}
-
-  // В режиме редактора (?edit=1) скрываем конверт, если явно не запрошен ?envelope=1
-  if (isEditMode && !forceEnvelope) {
-    alreadyOpened = true;
-  }
-
-  if (forceEnvelope) {
-    alreadyOpened = false;
-  }
-
-  if (alreadyOpened) {
-    overlay.classList.add('is-hidden');
-    showReplayBtn();
-  } else {
-    document.body.classList.add('envelope-locked');
-  }
-
-  // Слушатели событий
+  // Клик ТОЛЬКО по сургучной печати (как в оригинале EnvelopeScreen)
   if (waxSealBtn) {
     waxSealBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      handleOpenEnvelope(false);
+      handleOpenEnvelope();
     });
   }
 
-  if (envelopeBox) {
-    envelopeBox.addEventListener('click', (e) => {
-      if (!isOpening) {
-        handleOpenEnvelope(false);
-      }
-    });
-  }
-
+  // Быстрый пропуск «Сразу к сайту ➔»
   if (skipBtn) {
     skipBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      handleOpenEnvelope(true);
+      instantSkip();
     });
   }
 
+  // Повторный просмотр по кнопке «✉ Конверт»
   if (replayBtn) {
-    replayBtn.addEventListener('click', resetAndOpen);
+    replayBtn.addEventListener('click', replayEnvelope);
   }
 
-  // Закрытие по Escape
+  // Пропуск по Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !overlay.classList.contains('is-hidden')) {
-      handleOpenEnvelope(true);
+    if (e.key === 'Escape' && overlay.style.display !== 'none') {
+      instantSkip();
     }
   });
 })();
