@@ -1,9 +1,29 @@
 .layout-editing { scroll-padding-bottom: 200px; }
 .layout-editing body { padding-bottom: 210px; }
 .layout-editing .decoration-pair, .layout-editing .farewell-decor { z-index: 40 !important; pointer-events: none !important; }
-.layout-editing .decor-object, .layout-editing .flatlay-bouquet { pointer-events: auto !important; touch-action: none !important; cursor: grab; user-select: none; -webkit-user-drag: none; z-index: 50 !important; }
-.layout-editing .layout-selected { outline: 2px dashed #bdd9ea; outline-offset: 5px; }
-.layout-editing .layout-dragging { cursor: grabbing; z-index: 100 !important; }
+.layout-editing .decor-object, .layout-editing .flatlay-bouquet {
+  pointer-events: auto !important;
+  touch-action: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  cursor: grab;
+  z-index: 50 !important;
+}
+.layout-editing .flatlay-bouquet img {
+  pointer-events: none !important;
+}
+.layout-editing .layout-selected {
+  outline: 3px solid #ff2d55 !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 16px rgba(255, 45, 85, 0.7) !important;
+}
+.layout-editing .layout-dragging {
+  cursor: grabbing !important;
+  z-index: 9999 !important;
+  opacity: 0.92 !important;
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5)) !important;
+}
 .layout-toolbar { position: fixed; z-index: 2000; inset: auto 16px 16px; max-width: 1240px; margin-inline: auto; padding: 15px 18px; background: #f2ede5; color: #382b30; border: 1px solid #bcb2ad; box-shadow: 0 5px 35px #160b1460; font: 13px/1.5 'Montserrat', sans-serif; border-radius: 8px; }
 .layout-toolbar.layout-toolbar-collapsed .layout-body { display: none; }
 .layout-toolbar.layout-toolbar-collapsed { padding: 8px 14px; max-height: none; }

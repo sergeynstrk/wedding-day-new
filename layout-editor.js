@@ -114,23 +114,41 @@
     selected?.classList.add('layout-selected');
     controls();
   }
-  function move(event) {
-    if (!drag) return;
-    drag.clientX = event.clientX; drag.clientY = event.clientY;
-    const x = event.clientX + scrollX - drag.startX;
-    const y = event.clientY + scrollY - drag.startY;
-    const dx = Math.max(8 - drag.rect.left, Math.min(innerWidth - 8 - drag.rect.right, x));
-    const dy = Math.max(8 - drag.pageTop, y);
-    update(drag.item, {x:drag.state.x + dx, y:drag.state.y + dy});
+  function startDrag(item, clientX, clientY, identifier) {
+    select(item);
+    remember();
+    const rect = item.getBoundingClientRect();
+    drag = {
+      item,
+      state: getState(item),
+      rect,
+      pageTop: rect.top + window.scrollY,
+      startX: clientX + window.scrollX,
+      startY: clientY + window.scrollY,
+      identifier
+    };
+    item.classList.add('layout-dragging');
+    field('layoutStatus').textContent = 'Перемещаем: ' + item.dataset.layoutName;
   }
-  function endDrag(event) {
-    if (!drag || (event && event.pointerId !== drag.pointerId)) return;
+
+  function doMove(clientX, clientY) {
+    if (!drag) return;
+    const x = clientX + window.scrollX - drag.startX;
+    const y = clientY + window.scrollY - drag.startY;
+    const dx = Math.max(8 - drag.rect.left, Math.min(window.innerWidth - 8 - drag.rect.right, x));
+    const dy = Math.max(8 - drag.pageTop, y);
+    update(drag.item, { x: drag.state.x + dx, y: drag.state.y + dy });
+  }
+
+  function finishDrag() {
+    if (!drag) return;
     const item = drag.item;
     drag = null;
     item.classList.remove('layout-dragging');
-    if (event && item.hasPointerCapture(event.pointerId)) item.releasePointerCapture(event.pointerId);
+    field('layoutStatus').textContent = 'Сохранено';
     save();
   }
+
   items.forEach(item => {
     const hiddenParent = item.closest('[aria-hidden="true"]');
     hiddenParent?.removeAttribute('aria-hidden');
@@ -139,24 +157,57 @@
     item.setAttribute('aria-label', `Переместить: ${item.dataset.layoutName}`);
     item.setAttribute('draggable', 'false');
     item.addEventListener('dragstart', event => event.preventDefault());
+    item.addEventListener('contextmenu', event => event.preventDefault());
     item.addEventListener('focus', () => select(item));
+
+    // Pointer events (mouse / pen)
     item.addEventListener('pointerdown', event => {
-      if (event.button !== 0) return;
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
       event.preventDefault();
-      select(item); remember();
-      item.focus({preventScroll:true});
-      const rect = item.getBoundingClientRect();
-      drag = {item, state:getState(item), rect, pageTop:rect.top + scrollY, startX:event.clientX + scrollX, startY:event.clientY + scrollY, pointerId:event.pointerId, clientX:event.clientX, clientY:event.clientY};
-      item.classList.add('layout-dragging');
-      item.setPointerCapture(event.pointerId);
-      field('layoutStatus').textContent = 'Перемещаем…';
+      event.stopPropagation();
+      startDrag(item, event.clientX, event.clientY, event.pointerId);
     });
-    item.addEventListener('pointermove', move);
-    item.addEventListener('pointerup', endDrag);
-    item.addEventListener('pointercancel', endDrag);
-    item.addEventListener('lostpointercapture', () => endDrag());
+
+    // Native touch events (mobile phones, tablets, in-app browsers)
+    item.addEventListener('touchstart', event => {
+      if (event.touches.length !== 1) return;
+      const touch = event.touches[0];
+      event.preventDefault();
+      event.stopPropagation();
+      startDrag(item, touch.clientX, touch.clientY, touch.identifier);
+    }, { passive: false });
   });
-  addEventListener('scroll', () => { if (drag) move(drag); }, {passive:true});
+
+  // Global move & release listeners on window
+  window.addEventListener('pointermove', event => {
+    if (!drag || drag.identifier !== event.pointerId) return;
+    doMove(event.clientX, event.clientY);
+  });
+  window.addEventListener('pointerup', event => {
+    if (!drag || drag.identifier !== event.pointerId) return;
+    finishDrag();
+  });
+  window.addEventListener('pointercancel', event => {
+    if (!drag || drag.identifier !== event.pointerId) return;
+    finishDrag();
+  });
+
+  window.addEventListener('touchmove', event => {
+    if (!drag) return;
+    const touch = [...event.touches].find(t => t.identifier === drag.identifier);
+    if (!touch) return;
+    event.preventDefault();
+    doMove(touch.clientX, touch.clientY);
+  }, { passive: false });
+
+  window.addEventListener('touchend', event => {
+    if (!drag) return;
+    const stillTouching = [...event.touches].some(t => t.identifier === drag.identifier);
+    if (!stillTouching) finishDrag();
+  });
+  window.addEventListener('touchcancel', () => {
+    if (drag) finishDrag();
+  });
   field('layoutTogglePanel')?.addEventListener('click', () => {
     const isCollapsed = toolbar.classList.toggle('layout-toolbar-collapsed');
     field('layoutTogglePanel').textContent = isCollapsed ? 'Развернуть ▲' : 'Свернуть ▼';
