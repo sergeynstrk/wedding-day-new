@@ -5,12 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Сергей и Юля приглашают на свадьбу 19 ноября 2026 года. Москва, усадьба Братцево. Программа дня, дресс-код и анкета гостя.">
+    content="Сергей и Юля приглашают на свадьбу 5 августа 2027 года. Москва, усадьба Братцево. Программа дня, дресс-код и анкета гостя.">
   <meta name="theme-color" content="#681427">
   <title>Планы на Свадьбу | Сергей & Юля</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
 
   <!-- Изящная и кристально чёткая типографика: журнальные заголовки, нежная каллиграфия и чёткий гротеск -->
+  <link rel="preload" as="image" href="./assets/burgundy-paper-user.jpg">
   <link rel="stylesheet" href="fonts.css">
 
   <style>
@@ -1256,134 +1257,72 @@
   <link rel="stylesheet" href="layout-editor.css">
   <link rel="stylesheet" href="envelope.css">
   <script>
-    if (location.search.indexOf('edit=1') === -1) {
+    const entryParams = new URLSearchParams(location.search);
+    if (entryParams.get('edit') !== '1' || entryParams.get('envelope') === '1') {
       document.documentElement.classList.add('envelope-active');
     }
   </script>
 </head>
 
 <body>
-  <!-- ==========================================
-       ИНТЕРАКТИВНЫЙ 3D КОНВЕРТ (INTERACTIVE ENVELOPE)
-       Перенесён из репозитория sergeynstrk/wedding-day
-       ========================================== -->
-  <div id="envelopeScreen" class="envelope-screen" aria-modal="true" role="dialog" aria-label="Свадебное приглашение">
-    <!-- Кнопка быстрого перехода сразу к сайту -->
-    <button type="button" id="envelopeSkipBtn" class="envelope-quick-skip-btn" aria-label="Сразу к сайту">
-      Сразу к сайту ➔
-    </button>
+  <!-- Бумажный конверт: открытие по нажатию на сургучную печать. -->
+  <div id="envelopeScreen" class="envelope-screen" role="dialog" aria-modal="true"
+    aria-labelledby="envelopeTitle" aria-describedby="envelopeOpenHint" tabindex="-1" hidden>
+    <div class="envelope-stage">
 
-    <div id="envelopeBox" class="envelope-box">
-      <!-- 1. Задняя стенка конверта (z-0) -->
-      <div class="envelope-back paper-texture-back"></div>
+      <header class="envelope-intro">
+        <p class="envelope-eyebrow">У нас для вас кое-что есть</p>
+        <h2 id="envelopeTitle"><span>Для самых</span> <em>близких</em></h2>
+      </header>
 
-      <!-- 1.1 Внутренний шелковый/золоченый лайнер кармана конверта (z-1) -->
-      <div class="envelope-liner paper-texture-liner"></div>
+      <div class="envelope-table">
+        <div id="envelopeBox" class="envelope-box">
+          <div class="envelope-back paper-texture-back" aria-hidden="true"></div>
+          <div class="envelope-liner paper-texture-liner" aria-hidden="true"></div>
 
-      <!-- 2. Исходная карточка-приглашение со скругленными уголками (z-10) -->
-      <div class="envelope-letter">
-        <!-- Декоративная тонкая рамка со скруглениями и золотыми уголочками ✦ -->
-        <div class="letter-inner-frame">
-          <div class="frame-stars-row">
-            <span>✦</span>
-            <span>✦</span>
+          <div class="envelope-letter">
+            <p class="letter-top-label"><span>Приглашение</span></p>
+            <div class="letter-couple">
+              <h3 class="letter-names"><span class="letter-name-first">Сергей</span><span class="letter-amp">&amp;</span><span class="letter-name-second">Юля</span></h3>
+              <p class="letter-note">Разделите с нами этот день ♡</p>
+            </div>
+            <div class="letter-monogram-wrap">
+              <time class="letter-date" datetime="2027-08-05">5 августа 2027</time>
+              <p class="letter-location">Москва · усадьба Братцево</p>
+            </div>
           </div>
-          <div class="frame-stars-row">
-            <span>✦</span>
-            <span>✦</span>
+
+          <div class="envelope-front" aria-hidden="true">
+            <div class="envelope-front-side paper-texture-side"></div>
+            <div class="envelope-front-bottom paper-texture-bottom"></div>
+            <svg class="envelope-seams-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M0 0L50 56L100 0M0 100L50 56L100 100"/>
+            </svg>
+            <span class="envelope-address">для наших<br><strong>любимых людей</strong></span>
+            <span class="envelope-postmark">Москва<b>05.08</b><small>2027</small></span>
+          </div>
+
+          <div class="envelope-flap paper-texture-flap" aria-hidden="true">
+            <div class="envelope-flap-liner paper-texture-liner"></div>
+            <svg class="envelope-flap-svg" viewBox="0 0 100 58" preserveAspectRatio="none">
+              <path d="M0 0L50 56L100 0"/>
+            </svg>
+          </div>
+          <div class="envelope-border" aria-hidden="true"></div>
+          <div class="envelope-btn">
+            <button type="button" id="waxSealBtn" class="wax-seal" aria-label="Открыть свадебное приглашение" aria-describedby="envelopeOpenHint">
+              <img class="wax-seal-image" src="./assets/keepsakes/wax-seal.png" alt="" width="285" height="269" decoding="async" fetchpriority="high">
+            </button>
           </div>
         </div>
-
-        <div class="letter-top-label">
-          <span>Свадебное приглашение</span>
-        </div>
-
-        <div class="letter-couple">
-          <h3 class="letter-names">
-            Сергей <span class="letter-amp">&amp;</span> Юлия
-          </h3>
-          <p class="letter-date">
-            19 ноября 2026
-          </p>
-        </div>
-
-        <div class="letter-monogram-wrap">
-          <div class="letter-line"></div>
-          <span class="letter-monogram">S &amp; Y</span>
-        </div>
       </div>
 
-      <!-- 3. Передние карманы конверта - плотная непрозрачная бумага с единым контуром (z-20) -->
-      <div class="envelope-front">
-        <!-- Сплошная плотная подложка кармана -->
-        <div class="envelope-front-side paper-texture-side"></div>
-
-        <!-- Нижний клапан для рельефа швов -->
-        <div class="envelope-front-bottom paper-texture-bottom"></div>
-
-        <!-- Единые сплошные швы конверта в точном стиле рамки приглашения (#D6C7B8, 1px) -->
-        <svg class="envelope-seams-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <line x1="0" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
-          <line x1="100" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
-          <polyline points="0,100 50,54 100,100" fill="none" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
-        </svg>
-      </div>
-
-      <!-- 4. Верхний крышка-клапан с V-линией в едином стиле с рамкой письма (z-30) -->
-      <div class="envelope-flap paper-texture-flap">
-        <!-- Внутренняя шелковая подкладка клапана при открывании -->
-        <div class="envelope-flap-liner paper-texture-liner"></div>
-
-        <!-- Золотисто-бежевая V-линия в едином стиле с рамкой письма (#D6C7B8, 1px) -->
-        <svg class="envelope-flap-svg" viewBox="0 0 100 68" preserveAspectRatio="none">
-          <line x1="0" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
-          <line x1="100" y1="0" x2="50" y2="54" stroke="#D6C7B8" stroke-width="1" opacity="0.85" />
-        </svg>
-      </div>
-
-      <!-- 5. Главная непрерывная золотисто-бежевая рамочная каемка в едином стиле с рамкой письма (z-35) -->
-      <div class="envelope-border"></div>
-
-      <!-- 6. Элегантная печать "Пыльная Роза" с двумя сердцами без веточек и без пунктиров (z-50) -->
-      <div class="envelope-btn">
-        <button type="button" id="waxSealBtn" class="wax-seal" title="Открыть приглашение">
-          <!-- Изящная SVG-печать оттенка Пыльной Розы -->
-          <svg viewBox="0 0 200 200" class="wax-seal-svg">
-            <!-- 1. Матовый силуэт воска оттенка Пыльной Розы (--c-accent #B57E78) -->
-            <path
-              d="M 100,12 C 126,9 146,18 163,35 C 180,52 194,74 191,101 C 188,128 177,153 158,171 C 139,189 113,194 88,189 C 63,184 41,173 25,153 C 9,133 6,108 12,83 C 18,58 35,36 57,23 C 74,12 82,14 100,12 Z"
-              fill="#B57E78" class="wax-seal-bg" />
-            <!-- 2. Чистая сплошная окантовка воска (без пунктира) -->
-            <circle cx="100" cy="103" r="58" fill="none" stroke="#D6C7B8" stroke-width="1.2" opacity="0.85"
-              class="wax-seal-ring" />
-            <!-- 3. Матовый центральный оттиск -->
-            <circle cx="100" cy="103" r="53" fill="#A36D67" class="wax-seal-core" />
-            <!-- 4. Два лаконичных тисненых сердца (БЕЗ веточек) -->
-            <g stroke-linecap="round" stroke-linejoin="round">
-              <path d="M 83,71 C 74,56 56,58 52,75 C 47,96 70,116 83,130 C 93,117 114,96 109,75 C 105,57 89,55 83,71 Z"
-                fill="none" stroke="#FFF5F3" stroke-width="2.2" opacity="0.95" />
-              <path
-                d="M 124,83 C 117,72 104,74 101,86 C 98,100 114,114 124,124 C 131,114 145,100 142,86 C 139,73 128,72 124,83 Z"
-                fill="none" stroke="#E4C88A" stroke-width="2" opacity="0.9" />
-            </g>
-          </svg>
-
-          <!-- Подпись "Нажмите, чтобы открыть" -->
-          <div class="wax-seal-hint">
-            <span>Нажмите, чтобы открыть</span>
-          </div>
-        </button>
-      </div>
-
+      <footer class="envelope-caption">
+        <p id="envelopeOpenHint">Нажмите на печать — внутри приглашение</p>
+        <span class="envelope-signature">С любовью, Сергей и Юля</span>
+      </footer>
     </div>
   </div>
-
-  <!-- Плавающая кнопка повтора «✉ Конверт» -->
-  <button type="button" id="envelopeReplayBtn" class="envelope-replay-btn" aria-label="Посмотреть конверт снова"
-    style="display: none;">
-    <span class="replay-icon">✉</span>
-    <span class="replay-text">Конверт</span>
-  </button>
 
   <a class="skip-link" href="#invitation">К приглашению</a>
 
@@ -1448,14 +1387,14 @@
       <!-- Вырезанная фотография пары -->
       <div class="couple-photo-frame">
         <div class="couple-photo-inner cut-scissor-1">
-          <img src="./assets/couple-photo.png" alt="Сергей и Юля" decoding="async">
+          <img src="./assets/couple-photo.png" alt="Сергей и Юля" decoding="async" fetchpriority="high">
           <div class="photo-caption-scrap cut-scissor-2">
             Это мы ♡
           </div>
         </div>
       </div>
       <div class="hero-details">
-        <time datetime="2026-11-19T12:00:00+03:00">19 ноября 2026 · с 12:00</time>
+        <time datetime="2027-08-05T12:00:00+03:00">5 августа 2027 · с 12:00</time>
         <span>Москва · усадьба Братцево</span>
         <a href="#rsvp">Заполнить анкету гостя <span aria-hidden="true">↘</span></a>
       </div>
@@ -1740,8 +1679,8 @@
         <div class="manor-sticker-frame">
           <div class="washi-strip tape-sticker washi-blue"></div>
           <div class="manor-sticker-inner cut-scissor-5">
-            <strong>МАЛЕНЬКАЯ ЗАМЕТКА ДЛЯ ВСЕХ:</strong> Выбирайте удобную обувь для танцев. А для прогулки в ноябре
-            захватите тёплую верхнюю одежду — пусть ничто не мешает наслаждаться нашим днём.
+            <strong>МАЛЕНЬКАЯ ЗАМЕТКА ДЛЯ ВСЕХ:</strong> Выбирайте удобную обувь для танцев. А для вечерней прогулки
+            захватите лёгкую накидку — пусть ничто не мешает наслаждаться нашим днём.
           </div>
         </div>
       </section>
@@ -1876,8 +1815,7 @@
       </span>
       <div style="margin-top: 14px;">
         <span class="scrap-clip" style="transform: rotate(2deg);">
-          <span class="clip-body cut-scissor-3 bg-burgundy-rich" style="font-size: 1.25rem; padding: 7px 16px;">19 . 11
-            . 2026</span>
+          <span class="clip-body cut-scissor-3 bg-burgundy-rich" style="font-size: 1.25rem; padding: 7px 16px;">05 . 08 . 2027</span>
         </span>
         <span class="scrap-clip" style="transform: rotate(-1.5deg);">
           <span class="clip-body cut-scissor-4 bg-black-sans"
@@ -2100,13 +2038,13 @@
       const title = encodeURIComponent("Свадьба Сергея и Юли");
       const details = encodeURIComponent("Камерное свадебное торжество в усадьбе Братцево. Сбор гостей в 12:00.");
       const location = encodeURIComponent("Москва, Усадьба Братцево");
-      const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261119T090000Z/20261119T200000Z&details=${details}&location=${location}`;
+      const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270805T090000Z/20270805T200000Z&details=${details}&location=${location}`;
       window.open(googleUrl, '_blank', 'noopener,noreferrer');
     }
   </script>
   <!-- Вспомогательные библиотеки для 3D-анимации конверта и салюта конфетти -->
-  <script src="vendor/gsap.min.js"></script>
-  <script src="vendor/confetti.browser.js"></script>
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/confetti.browser.js" defer></script>
   <script src="envelope.js" defer></script>
   <script src="layout-defaults.js" defer></script>
   <script src="layout-editor.js" defer></script>

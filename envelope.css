@@ -1,517 +1,175 @@
-/* ========================================================
-   ИНТЕРАКТИВНЫЙ 3D КОНВЕРТ (INTERACTIVE ENVELOPE)
-   Адаптировано напрямую из репозитория sergeynstrk/wedding-day
-   ======================================================== */
-
-/* Экран конверта на весь вьюпорт (z-index выше всего сайта) */
+/* The entry is another sheet of the same burgundy paper as the invitation. */
 .envelope-screen {
+  --env-wine: #681427;
+  --env-blue: #bdd5e2;
+  --env-paper: #eee7db;
+  --env-ink: #493139;
+  --env-grain: var(--cut-paper-grain, none);
   position: fixed;
   inset: 0;
   z-index: 99999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  background-color: #FAF6F5;
-  background-image: radial-gradient(circle at 50% 30%, #FFFDFB 0%, #FAF4F1 55%, #F0E6E1 100%);
-  padding: 16px;
+  padding: 20px;
+  background: transparent;
   overflow: hidden;
-  box-sizing: border-box;
+  overscroll-behavior: contain;
+  color: var(--env-paper);
 }
-
-body.envelope-locked {
-  overflow: hidden !important;
-  height: 100vh !important;
-  touch-action: none;
+html.envelope-active .envelope-screen { display: flex; }
+body.envelope-locked { overflow: hidden; }
+/* The main sheet stays in the document: only its contents are hidden. */
+html { scrollbar-gutter: stable; }
+html.envelope-active #invitation > * { visibility: hidden; opacity: 0; }
+html.envelope-active.envelope-revealing #invitation > * {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(.22, .61, .36, 1);
 }
-
-/* Полное сокрытие основного сайта во время показа конверта для 60 FPS */
-html.envelope-active #invitation,
-html.envelope-active .farewell-footer {
-  display: none !important;
-  opacity: 0 !important;
+html.envelope-active .layout-toolbar { visibility: hidden; }
+.envelope-stage {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  width: min(900px, 100%);
+  height: min(840px, calc(100svh - 40px));
+  padding: 70px 28px 34px;
+  isolation: isolate;
+  background: transparent;
+  box-shadow: none;
 }
-
-/* Кнопка быстрого перехода сразу к сайту */
-.envelope-quick-skip-btn {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(214, 199, 184, 0.85);
-  border-radius: 30px;
-  padding: 8px 18px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  color: #6B5A5C;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
-  box-shadow: 0 4px 12px rgba(51, 41, 43, 0.05);
+.envelope-intro { text-align: center; position: relative; z-index: 1; }
+.envelope-eyebrow { color: #e1ccd0; font: 400 11px/1.5 'Montserrat', sans-serif; margin-bottom: 14px; letter-spacing: .05em; }
+.envelope-intro h2 { font-weight: 700; font-size: inherit; line-height: 1.2; }
+.envelope-intro h2 > span {
+  display: inline-block;
+  padding: 4px 13px 7px;
+  background: var(--env-paper);
+  background-image: var(--env-grain);
+  color: #493139;
+  clip-path: var(--scissor-a);
+  transform: rotate(-3deg);
+  font: 900 clamp(28px, 3.4vw, 40px)/1.1 'Playfair Display', Georgia, serif;
 }
-
-.envelope-quick-skip-btn:hover {
-  background: #ffffff;
-  color: #33292B;
-  border-color: #C5A059;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(51, 41, 43, 0.1);
-}
-
-/* Фактуры бумаги (SVG-фильтры из wedding-day) */
-.paper-texture-back {
-  background-color: #FAF4F1;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.7) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(232, 216, 213, 0.35) 0%, transparent 45%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='feltGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0.96  0 1 0 0 0.92  0 0 1 0 0.90  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23feltGrain)'/%3E%3C/svg%3E");
-}
-
-.paper-texture-flap {
-  background-color: #F7EDE9;
-  background-image: 
-    linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(225, 205, 200, 0.18) 100%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='feltGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0.95  0 1 0 0 0.90  0 0 1 0 0.88  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23feltGrain)'/%3E%3C/svg%3E");
-}
-
-.paper-texture-side {
-  background-color: #F4E7E3;
-  background-image: 
-    linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(218, 195, 190, 0.22) 100%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='feltGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0.94  0 1 0 0 0.88  0 0 1 0 0.86  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23feltGrain)'/%3E%3C/svg%3E");
-}
-
-.paper-texture-bottom {
-  background-color: #F0E1DC;
-  background-image: 
-    linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(210, 185, 180, 0.25) 100%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='feltGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0.92  0 1 0 0 0.85  0 0 1 0 0.83  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23feltGrain)'/%3E%3C/svg%3E");
-}
-
-.paper-texture-liner {
-  background-color: #FAF4F1;
-  background-image: 
-    radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.1) 0%, transparent 70%),
-    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C5A059' stroke-width='0.6' opacity='0.35'%3E%3Cpath d='M30 0 C35 15, 45 25, 60 30 C45 35, 35 45, 30 60 C25 45, 15 35, 0 30 C15 25, 25 15, 30 0 Z'/%3E%3Ccircle cx='30' cy='30' r='3' fill='%23C5A059' opacity='0.25'/%3E%3C/g%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='linerGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='3' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0.98  0 1 0 0 0.94  0 0 1 0 0.93  0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23linerGrain)'/%3E%3C/svg%3E");
-}
-
-/* Контейнер конверта: perspective: 1400px, БЕЗ preserve-3d, чтобы 2D z-index работал корректно */
+.envelope-intro h2 em { display: inline-block; color: #c9e0ec; font: 700 clamp(35px, 4vw, 49px)/1 'Caveat', cursive; transform: rotate(2deg); padding-left: 6px; }
+.envelope-table { display: grid; place-items: center; min-height: 0; padding-top: 12px; }
 .envelope-box {
   position: relative;
-  width: 100%;
-  max-width: 576px;
-  height: 340px;
+  width: min(560px, calc(100vw - 76px), calc((100svh - 240px) * 1.5));
+  aspect-ratio: 1.52;
   perspective: 1400px;
-  will-change: transform;
+  filter: drop-shadow(0 2px 1px #3108134d) drop-shadow(0 18px 16px #23081057);
 }
-
-@media (min-width: 768px) {
-  .envelope-box {
-    height: 420px;
-  }
+.envelope-back, .envelope-liner, .envelope-front, .envelope-border { position: absolute; inset: 0; }
+.paper-texture-back, .paper-texture-flap, .paper-texture-side, .paper-texture-bottom {
+  background-image: var(--env-grain), linear-gradient(130deg, #fffbed20, #6246270d);
 }
-
-/* 1. Задняя стенка конверта (z-index: 0) */
-.envelope-back {
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-  box-shadow: 0 20px 45px rgba(51, 41, 43, 0.08);
-  z-index: 0;
-}
-
-/* 1.1 Внутренний шелковый/золоченый лайнер кармана (z-index: 1) */
-.envelope-liner {
-  position: absolute;
-  inset: 6px;
-  border-radius: 0;
-  opacity: 0.9;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* 2. Пригласительная карточка со скругленными уголками (z-index: 10) */
+.envelope-back { z-index: 0; background-color: #e4dccc; border: 1px solid #b7aa96; }
+.envelope-liner { z-index: 1; inset: 5px; }
+.paper-texture-liner { background-color: #b8d0dd; background-image: var(--env-grain), linear-gradient(145deg, #ffffff0d, #35516419); }
 .envelope-letter {
   position: absolute;
-  left: 5%;
-  right: 5%;
-  bottom: 12px;
-  top: 12px;
-  background: #FCFCFA;
-  border-radius: 16px;
-  padding: 24px;
-  text-align: center;
+  z-index: 10;
+  inset: 11px 5% 12px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-  border: 1px solid #EBE5DF;
-  box-sizing: border-box;
-  transform-origin: center center;
-}
-
-@media (min-width: 768px) {
-  .envelope-letter {
-    padding: 32px;
-  }
-}
-
-/* Декоративная тонкая рамка со скруглениями и золотыми уголочками ✦ */
-.letter-inner-frame {
-  position: absolute;
-  inset: 10px;
-  border: 1px solid #E3DAD0;
-  border-radius: 12px;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 12px;
-  box-sizing: border-box;
-}
-
-@media (min-width: 768px) {
-  .letter-inner-frame {
-    inset: 14px;
-  }
-}
-
-.frame-stars-row {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  opacity: 0.5;
-  font-size: 10px;
-  color: #C5A059;
-}
-
-.letter-top-label {
-  position: relative;
-  z-index: 10;
-  margin-top: 4px;
-}
-
-.letter-top-label span {
-  color: #B57E78;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.4em;
-  font-weight: 500;
-  display: block;
-  font-family: 'Montserrat', sans-serif;
-}
-
-@media (min-width: 768px) {
-  .letter-top-label span {
-    font-size: 12px;
-  }
-}
-
-.letter-couple {
-  position: relative;
-  z-index: 10;
-  margin: auto 0;
-}
-
-.letter-names {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(26px, 5.5vw, 46px);
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  color: #33292B;
-  line-height: 1.15;
-  margin: 0;
-}
-
-.letter-amp {
-  color: #B57E78;
-  font-style: italic;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 400;
-}
-
-.letter-date {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  color: #6B5A5C;
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  margin-top: 8px;
-}
-
-@media (min-width: 768px) {
-  .letter-date {
-    font-size: 13px;
-  }
-}
-
-.letter-monogram-wrap {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
-}
-
-.letter-line {
-  width: 80px;
-  height: 1px;
-  background: #E8D8D5;
-}
-
-.letter-monogram {
-  color: #C3A6A0;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.35em;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-/* 3. Передние карманы конверта (z-index: 20 — поверх карточки, чтобы карточка была внутри кармана) */
-.envelope-front {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  pointer-events: none;
+  padding: 20px 16px;
+  background: #f0eadf;
+  background-image: var(--env-grain);
+  color: var(--env-ink);
+  border: 1px solid #d1c6b4;
   border-radius: 0;
-  overflow: hidden;
+  box-shadow: 0 2px 8px #45311f1f;
+  transform-origin: 50% 50%;
 }
-
-.envelope-front-side {
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
-  filter: drop-shadow(0 -3px 8px rgba(51, 41, 43, 0.08));
+.letter-top-label { margin: 0; transform: rotate(-2deg); }
+.letter-top-label span { display: block; padding: 4px 10px 6px; background: #681427; color: #f5ece1; clip-path: var(--scissor-c); font: 600 14px/1 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .06em; }
+.letter-couple { margin: auto 0; text-align: center; }
+.letter-names { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 0; line-height: 1; }
+.letter-name-first { font: 700 clamp(24px, 4.2vw, 44px)/1 'Cormorant Garamond', Georgia, serif; transform: rotate(-2deg); }
+.letter-amp { color: #7b4f5a; font: 700 clamp(22px, 3vw, 34px)/1 'Caveat', cursive; }
+.letter-name-second { background: #bdd5e2; background-image: var(--env-grain); padding: 7px 11px 10px; color: #681427; font: 900 clamp(20px, 3.2vw, 34px)/1 'Montserrat', sans-serif; clip-path: var(--scissor-b); transform: rotate(3deg); }
+.letter-note { margin-top: 13px; color: #70414e; font: 700 clamp(17px, 2.4vw, 25px)/1.2 'Caveat', cursive; }
+.letter-monogram-wrap { text-align: center; }
+.letter-date { display: inline-block; padding: 4px 10px 6px; background: #d0dee4; clip-path: var(--scissor-a); color: #4d343c; font: 600 18px/1.2 'Oswald', sans-serif; }
+.letter-location { margin-top: 6px; font: 400 10px/1.5 'Montserrat', sans-serif; }
+.envelope-front { z-index: 20; pointer-events: none; overflow: hidden; }
+.envelope-front-side { position: absolute; inset: 0; clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%); background-color: #e9e1d2; }
+.envelope-front-bottom { position: absolute; inset: 0; clip-path: polygon(0 100%, 50% 56%, 100% 100%); background-color: #eee6d9; }
+.envelope-seams-svg, .envelope-flap-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.envelope-seams-svg path, .envelope-flap-svg path { fill: none; stroke: #b7a992; stroke-width: 1; vector-effect: non-scaling-stroke; opacity: .68; }
+.envelope-flap { position: absolute; top: 0; left: 0; width: 100%; height: 58%; z-index: 30; background-color: #eee7d9; clip-path: polygon(0 0, 100% 0, 50% 96.55%); transform-origin: 50% 0; }
+.envelope-flap-liner { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.envelope-border { z-index: 2; border: 1px solid #b8ab98; border-top: none; pointer-events: none; }
+.envelope-address { position: absolute; left: 26px; bottom: 26px; color: #6c4952; font: 700 clamp(18px, 2.4vw, 27px)/1 'Caveat', cursive; transform: rotate(-4deg); }
+.envelope-address strong { font-weight: 700; }
+.envelope-postmark { position: absolute; right: 26px; bottom: 22px; display: flex; flex-direction: column; justify-content: center; width: 66px; height: 66px; border: 0; border-radius: 50%; color: #536f7c; text-align: center; transform: rotate(12deg); text-transform: uppercase; font: 500 9px/1.3 'Oswald', sans-serif; letter-spacing: .07em; }
+.envelope-postmark b { font-size: 20px; font-weight: 600; letter-spacing: 0; }
+.envelope-postmark small { font-size: 9px; }
+.envelope-btn { position: absolute; z-index: 50; top: 56%; left: 50%; transform: translate(-50%, -50%); }
+.wax-seal { display: block; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.wax-seal-image { display: block; width: clamp(70px, 13vw, 108px); height: auto; filter: drop-shadow(0 3px 2px #41132135); transition: transform .2s ease, filter .2s ease; }
+.wax-seal:disabled { cursor: default; }
+.wax-seal:focus-visible { outline: none; }
+.envelope-caption { position: relative; z-index: 1; text-align: center; padding-top: 18px; }
+#envelopeOpenHint { color: #dbdfe2; font: 400 11px/1.6 'Montserrat', sans-serif; }
+.envelope-signature { display: inline-block; margin-top: 10px; color: #c7dbe6; font: 700 26px/1.2 'Caveat', cursive; transform: rotate(-2deg); }
+@media (hover: hover) {
+  .wax-seal:not(:disabled):hover .wax-seal-image { transform: translateY(-2px) rotate(-3deg); filter: drop-shadow(0 5px 3px #41132145); }
 }
-
-.envelope-front-bottom {
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(0 100%, 50% 54%, 100% 100%);
-}
-
-.envelope-seams-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* 4. Верхний крышка-клапан (z-index: 30 при закрытом, z-index: 5 при откидывании) */
-.envelope-flap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 68%;
-  z-index: 30;
-  transform-origin: top;
-  clip-path: polygon(0 0, 100% 0, 50% 79.4%);
-  -webkit-clip-path: polygon(0 0, 100% 0, 50% 79.4%);
-  filter: drop-shadow(0 4px 10px rgba(51, 41, 43, 0.08));
-}
-
-.envelope-flap-liner {
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-  opacity: 0.95;
-  pointer-events: none;
-}
-
-.envelope-flap-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* 5. Главная непрерывная золотисто-бежевая рамка конверта (z-index: 2, без border-top, чтобы не перерезать выезжающее письмо) */
-.envelope-border {
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-  border: 1px solid #D6C7B8;
-  border-top: none;
-  pointer-events: none;
-  z-index: 2;
-  box-shadow: 0 20px 45px rgba(51, 41, 43, 0.08);
-}
-
-/* 6. Элегантная печать "Пыльная Роза" (z-index: 50 — на самом верху) */
-.envelope-btn {
-  position: absolute;
-  z-index: 50;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transform-origin: center center;
-}
-
-.wax-seal {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  user-select: none;
-  border: none;
-  background: transparent;
-  padding: 0;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.wax-seal-svg {
-  width: 112px;
-  height: 112px;
-  filter: drop-shadow(0 8px 20px rgba(181, 126, 120, 0.35));
-  transition: transform 0.4s ease-out, filter 0.4s ease-out;
-  display: block;
-}
-
-@media (min-width: 768px) {
-  .wax-seal-svg {
-    width: 128px;
-    height: 128px;
-  }
-}
-
-.wax-seal:hover .wax-seal-svg {
-  transform: scale(1.06);
-}
-
-.wax-seal:active .wax-seal-svg {
-  transform: scale(0.95);
-}
-
-.wax-seal:hover .wax-seal-bg {
-  fill: #A36D67;
-}
-
-.wax-seal:hover .wax-seal-ring {
-  opacity: 1;
-}
-
-.wax-seal:hover .wax-seal-core {
-  fill: #925C56;
-}
-
-.wax-seal-bg,
-.wax-seal-ring,
-.wax-seal-core {
-  transition: fill 0.4s ease, opacity 0.4s ease;
-}
-
-/* Подпись "Нажмите, чтобы открыть" */
-.wax-seal-hint {
-  position: absolute;
-  bottom: -32px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  pointer-events: none;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-  opacity: 0.9;
-}
-
-.wax-seal:hover .wax-seal-hint {
-  transform: translateX(-50%) translateY(2px);
-  opacity: 1;
-}
-
-.wax-seal-hint span {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(250, 246, 245, 0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #6B5A5C;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  font-weight: 500;
-  text-transform: uppercase;
-  box-shadow: 0 4px 12px rgba(51, 41, 43, 0.08);
-  border: 1px solid #E3DAD0;
-  transition: border-color 0.25s ease, color 0.25s ease;
-}
-
-.wax-seal:hover .wax-seal-hint span {
-  border-color: rgba(197, 160, 89, 0.6);
-  color: #33292B;
-}
-
-/* Плавающая кнопка повтора «✉ Конверт» */
-.envelope-replay-btn {
-  position: fixed;
-  bottom: 22px;
-  left: 22px;
-  z-index: 9998;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: #ffffff;
-  background-image: linear-gradient(145deg, #ffffff 0%, #f6f1e8 100%);
-  color: #3b171f;
-  border: 1px solid rgba(181, 126, 120, 0.3);
-  border-radius: 24px;
-  padding: 8px 16px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(51, 41, 43, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28), box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-  user-select: none;
-}
-
-.envelope-replay-btn:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(181, 126, 120, 0.25);
-  border-color: #B57E78;
-  color: #8E2535;
-}
-
-.envelope-replay-btn:active {
-  transform: translateY(0) scale(0.98);
-}
-
-.envelope-replay-btn .replay-icon {
-  font-size: 15px;
-  line-height: 1;
-}
-
 @media (max-width: 600px) {
-  .envelope-box {
-    max-width: 94vw;
-    height: 320px;
-  }
-  .envelope-quick-skip-btn {
-    top: 14px;
-    right: 14px;
-    padding: 6px 14px;
-    font-size: 11px;
-  }
-  .envelope-replay-btn {
-    bottom: 16px;
-    left: 16px;
-    padding: 7px 13px;
-    font-size: 12px;
-  }
+  .envelope-screen { padding: 0; }
+  .envelope-stage { width: 100%; height: 100svh; max-height: none; padding: 80px 16px 35px; }
+  .envelope-eyebrow { font-size: 10px; margin-bottom: 13px; }
+  .envelope-intro h2 > span { font-size: 29px; }
+  .envelope-intro h2 em { font-size: 38px; padding-left: 2px; }
+  .envelope-box { width: min(440px, calc(100vw - 46px), calc((100svh - 240px) * 1.5)); }
+  .envelope-letter { padding: 11px 9px; inset: 8px 5%; }
+  .letter-top-label span { font-size: 10px; padding: 3px 8px 5px; }
+  .letter-names { gap: 7px; }
+  .letter-note { margin-top: 9px; font-size: 18px; }
+  .letter-date { font-size: 14px; padding: 3px 8px 5px; }
+  .letter-location { font-size: 8px; margin-top: 4px; }
+  .envelope-address { bottom: 18px; left: 18px; font-size: 21px; }
+  .envelope-postmark { width: 49px; height: 49px; right: 16px; bottom: 15px; font-size: 7px; }
+  .envelope-postmark b { font-size: 16px; }
+  .envelope-postmark small { font-size: 7px; }
+  .wax-seal-image { width: 78px; }
+  #envelopeOpenHint { font-size: 10px; }
+  .envelope-signature { font-size: 24px; }
 }
+@media (max-height: 560px) {
+  .envelope-stage { padding-top: 52px; padding-bottom: 12px; }
+  .envelope-eyebrow, .envelope-signature { display: none; }
+  .envelope-intro h2 > span { font-size: 24px; }
+  .envelope-intro h2 em { font-size: 30px; }
+  .envelope-box { width: min(400px, calc(100vw - 64px), calc((100svh - 190px) * 1.5)); }
+  .envelope-caption { padding-top: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .envelope-screen *, html.envelope-active.envelope-revealing #invitation > * { transition: none !important; }
+}
+
+.envelope-screen:focus { outline: none; }
+.envelope-screen:not(.envelope-keyboard) .wax-seal:focus-visible { outline: none; }
+@media (max-height: 560px) {
+  .wax-seal-image { width: 76px; }
+  .envelope-address { bottom: 18px; left: 18px; font-size: 18px; }
+  .envelope-postmark { width: 49px; height: 49px; right: 16px; bottom: 15px; font-size: 7px; }
+  .envelope-postmark b { font-size: 16px; }
+  .envelope-postmark small { font-size: 7px; }
+  .envelope-letter { padding: 12px; }
+  .letter-name-first { font-size: 30px; }
+  .letter-name-second { font-size: 22px; }
+  .letter-note { font-size: 17px; margin-top: 8px; }
+  .letter-date { font-size: 14px; }
+  .letter-top-label span { font-size: 11px; }
+}
+
+/* Keep keyboard focus visible on the wax itself, without a coloured ring. */
+.envelope-keyboard .wax-seal:focus-visible .wax-seal-image { filter: brightness(1.18) drop-shadow(0 3px 3px #41132145); }
+.magazine-canvas:focus { outline: none; }
