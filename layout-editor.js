@@ -60,19 +60,35 @@
   toolbar.className = 'layout-toolbar';
   toolbar.setAttribute('aria-label', 'Редактор расстановки декора');
   toolbar.innerHTML = `
-    <div class="layout-heading"><strong>Расстановка декора</strong><span id="layoutStatus" role="status">Потяните картинку мышкой</span><a href="./">Посмотреть без редактора ↗</a></div>
-    <div class="layout-controls">
-      <span id="layoutSelected">Выберите предмет</span>
-      <label>Размер <input id="layoutScale" type="range" min="40" max="250" value="100" step="5" disabled><output id="layoutScaleValue">100%</output></label>
-      <label>Поворот <input id="layoutRotation" type="range" min="-180" max="180" value="0" step="1" disabled><output id="layoutRotationValue">0°</output></label>
-      <button type="button" id="layoutFlipX" disabled title="Отразить слева направо (клавиша H)">↔ Отразить</button>
-      <button type="button" id="layoutFlipY" disabled title="Отразить сверху вниз (клавиша V)">↕ По вертикали</button>
-      <button type="button" id="layoutReset" disabled>Вернуть предмет</button>
-      <button type="button" id="layoutUndo" disabled>Отменить</button>
-      <button type="button" id="layoutResetAll">Сбросить экран</button>
-      <button type="button" id="layoutExport">Скачать расстановку</button>
+    <div class="layout-heading">
+      <strong>Расстановка декора</strong>
+      <span id="layoutStatus" role="status">Потяните предмет</span>
+      <button type="button" id="layoutTogglePanel" class="layout-btn-mini">Свернуть ▼</button>
+      <a href="./">Без редактора ↗</a>
     </div>
-    <p>Положение сохраняется автоматически в этом браузере. Для телефона, планшета и компьютера — отдельные расстановки. Стрелки двигают выбранный предмет (Shift — шаг 10 px). Кнопки «↔ Отразить» (H) и «↕ По вертикали» (V) зеркалят предмет.</p>`;
+    <div class="layout-body" id="layoutToolbarBody">
+      <div class="layout-controls">
+        <select id="layoutItemSelect" aria-label="Выбрать предмет">
+          <option value="">-- Выберите предмет --</option>
+          ${items.map(it => `<option value="${it.dataset.layoutId}">${it.dataset.layoutName}</option>`).join('')}
+        </select>
+        <div class="layout-nudge-group">
+          <button type="button" id="nudgeUp" title="Вверх (10px)" disabled>↑</button>
+          <button type="button" id="nudgeDown" title="Вниз (10px)" disabled>↓</button>
+          <button type="button" id="nudgeLeft" title="Влево (10px)" disabled>←</button>
+          <button type="button" id="nudgeRight" title="Вправо (10px)" disabled>→</button>
+        </div>
+        <label>Размер <input id="layoutScale" type="range" min="40" max="250" value="100" step="5" disabled><output id="layoutScaleValue">100%</output></label>
+        <label>Поворот <input id="layoutRotation" type="range" min="-180" max="180" value="0" step="1" disabled><output id="layoutRotationValue">0°</output></label>
+        <button type="button" id="layoutFlipX" disabled title="Отразить слева направо (клавиша H)">↔ Отразить</button>
+        <button type="button" id="layoutFlipY" disabled title="Отразить сверху вниз (клавиша V)">↕ По вертикали</button>
+        <button type="button" id="layoutReset" disabled>Вернуть предмет</button>
+        <button type="button" id="layoutUndo" disabled>Отменить</button>
+        <button type="button" id="layoutResetAll">Сбросить экран</button>
+        <button type="button" id="layoutExport">Скачать расстановку</button>
+      </div>
+      <p>Положение сохраняется в телефоне автоматически. Двигайте предметы пальцем или стрелками. Выберите предмет в списке, чтобы перейти к нему.</p>
+    </div>`;
   document.body.append(toolbar);
   const field = id => toolbar.querySelector('#' + id);
   function save() {
@@ -82,7 +98,8 @@
   function remember() { undoState = JSON.stringify(layouts); field('layoutUndo').disabled = false; }
   function controls() {
     const state = selected ? getState(selected) : {scale:1, rotation:0, flipX:false, flipY:false};
-    field('layoutSelected').textContent = selected ? selected.dataset.layoutName : 'Выберите предмет';
+    if (field('layoutItemSelect')) field('layoutItemSelect').value = selected ? selected.dataset.layoutId : '';
+    ['nudgeUp','nudgeDown','nudgeLeft','nudgeRight'].forEach(id => { if (field(id)) field(id).disabled = !selected; });
     field('layoutScale').disabled = field('layoutRotation').disabled = field('layoutReset').disabled = field('layoutFlipX').disabled = field('layoutFlipY').disabled = !selected;
     field('layoutScale').value = state.scale * 100;
     field('layoutScaleValue').textContent = Math.round(state.scale * 100) + '%';
@@ -140,6 +157,31 @@
     item.addEventListener('lostpointercapture', () => endDrag());
   });
   addEventListener('scroll', () => { if (drag) move(drag); }, {passive:true});
+  field('layoutTogglePanel')?.addEventListener('click', () => {
+    const isCollapsed = toolbar.classList.toggle('layout-toolbar-collapsed');
+    field('layoutTogglePanel').textContent = isCollapsed ? 'Развернуть ▲' : 'Свернуть ▼';
+  });
+  field('layoutItemSelect')?.addEventListener('change', event => {
+    const id = event.target.value;
+    const targetItem = items.find(it => it.dataset.layoutId === id);
+    if (targetItem) {
+      select(targetItem);
+      targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      select(null);
+    }
+  });
+  const nudge = (dx, dy) => {
+    if (!selected) return;
+    remember();
+    const state = getState(selected);
+    update(selected, { x: state.x + dx, y: state.y + dy });
+    save();
+  };
+  field('nudgeUp')?.addEventListener('click', () => nudge(0, -10));
+  field('nudgeDown')?.addEventListener('click', () => nudge(0, 10));
+  field('nudgeLeft')?.addEventListener('click', () => nudge(-10, 0));
+  field('nudgeRight')?.addEventListener('click', () => nudge(10, 0));
   for (const [id, key, divisor] of [['layoutScale','scale',100],['layoutRotation','rotation',1]]) {
     field(id).addEventListener('pointerdown', remember);
     field(id).addEventListener('keydown', event => {if(event.key.startsWith('Arrow')) remember();});
