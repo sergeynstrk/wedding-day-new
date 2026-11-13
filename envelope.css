@@ -11,14 +11,20 @@
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  background-color: #681427;
-  background-image: 
-    radial-gradient(circle at 50% 25%, rgba(148, 37, 64, 0.45) 0%, transparent 65%),
-    radial-gradient(circle at 50% 85%, rgba(72, 9, 24, 0.6) 0%, transparent 75%);
+  padding: 20px;
+  background: transparent;
   overflow: hidden;
   overscroll-behavior: contain;
   color: var(--env-paper);
+}
+@media (max-width: 780px) {
+  .envelope-screen {
+    padding: 16px;
+    background-color: #681427;
+    background-image: url('./assets/burgundy-paper-user.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+  }
 }
 html.envelope-active .envelope-screen { display: flex; }
 body.envelope-locked { overflow: hidden; }
