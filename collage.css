@@ -37,7 +37,7 @@ body {
 .hero-section > .hero-invitation-note { grid-column: 1; grid-row: 4; align-self: start; margin-top: 0 !important; }
 .couple-photo-frame { grid-column: 2; grid-row: 3 / 5; width: 100%; margin: 0; align-self: center; }
 .couple-photo-inner { padding: 5px 5px 36px; transform: rotate(4deg); background: #eee3cc; filter: drop-shadow(2px 4px 2px #49362b30); }
-.couple-photo-inner img { height: 270px; object-fit: cover; filter: sepia(.2) contrast(1.06); }
+.couple-photo-inner img { height: 270px; object-fit: cover; object-position: center 32%; filter: none; }
 .photo-caption-scrap { font-family: 'Caveat', cursive; font-size: 19px; left: 8px; right: 8px; bottom: 5px; padding: 2px; text-align: center; border: 0; background: transparent; }
 .postal-seal-round { width: 80px; height: 80px; top: -17px; right: -15px; background: #d8cc9e; border: 2px solid #8e4139; border-radius: 50%; clip-path: none; box-shadow: none; filter: none; }
 .postal-seal-round .stamp-date { font-size: 24px; }
