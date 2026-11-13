@@ -366,28 +366,20 @@ body { background: #484644; color: #f0e9e1; }
   .dresscode-section { padding-top: 165px; }
 }
 @media (max-width: 780px) {
-  .magazine-canvas { padding: 22px 22px 32px; }
-  .decoration-pair { height: 190px; margin-block: 12px 22px; gap: 0; }
-  .decor-object, .decor-object + .decor-object { width: 51%; max-width: none; }
+  .magazine-canvas { padding: 16px 14px 28px; }
   .hero-details { padding-right: 0; }
   .hero-details time { font-size: 22px; }
   .hero-details > span { font-size: 13px; }
   .hero-details a { font-size: 14px; }
-  .flatlay-bouquet { width: 220px; height: 200px; top: -12px; }
-  .dresscode-section { padding-top: 165px; }
+  .dresscode-section { padding-top: 24px; }
 }
 @media (max-width: 360px) {
-  .magazine-canvas { padding-inline: 15px; }
-  .decoration-pair { height: 175px; }
+  .magazine-canvas { padding-inline: 12px; }
   .hero-details time { font-size: 20px; }
 }
 @media (min-width: 1400px) {
   .decor-object { width: 200px; left: -205px; }
   .decor-object + .decor-object { right: -205px; }
-}
-@media (max-width: 780px) {
-  .decor-object { transform: rotate(-6deg); width: 48%; }
-  .decor-object + .decor-object { transform: rotate(6deg); width: 48%; }
 }
 @media (min-width: 1400px) {
   .decoration-pair .decor-secondary-left { left: -205px; right: auto; top: 480px !important; height: 260px; }
@@ -401,7 +393,8 @@ body { background: #484644; color: #f0e9e1; }
   .decor-cat { position: absolute !important; right: -10px !important; top: -45px !important; width: 140px !important; height: 155px !important; }
 }
 @media (max-width: 780px) {
-  .decor-cat { position: absolute !important; right: 5px !important; top: -35px !important; width: 110px !important; height: 125px !important; }
+  .decor-secondary { display: block !important; }
+  .decor-cat { position: absolute !important; left: 0 !important; top: 0 !important; right: auto !important; bottom: auto !important; width: 95px !important; height: 105px !important; display: block !important; }
 }
 .decorated-section > .decoration-pair { z-index: auto; }
 .decor-object { z-index: 2; }
@@ -411,14 +404,10 @@ body { background: #484644; color: #f0e9e1; }
   .decoration-pair .decor-lace { width: 240px; left: -185px; }
 }
 @media (max-width: 780px) {
-  .decoration-pair { display: block; height: 275px; margin-block: 16px 24px; }
-  .decor-object { position: absolute; left: 0; top: 0; width: 65%; height: 215px; max-width: 240px; }
-  .decor-object + .decor-object { position: absolute; left: auto; right: 0; top: 75px; width: 60%; height: 190px; max-width: 225px; }
-  .decor-object.decor-secondary { display: none; }
-  .decor-spool { top: 75px !important; }
-}
-@media (max-width: 780px) {
-  .flatlay-bouquet { transform: none; right: 8px; width: 200px; }
+  .decoration-pair { position: absolute !important; inset: 0 !important; pointer-events: none !important; z-index: 6 !important; height: auto !important; margin: 0 !important; display: block !important; overflow: visible !important; }
+  .flatlay-bouquet { position: absolute !important; left: 0 !important; top: 0 !important; right: auto !important; bottom: auto !important; width: 85px !important; height: 85px !important; pointer-events: none !important; display: block !important; z-index: 6 !important; }
+  .decor-object, .decor-lace { position: absolute !important; left: 0 !important; top: 0 !important; right: auto !important; bottom: auto !important; width: 85px !important; height: 85px !important; max-width: none !important; object-fit: contain !important; pointer-events: none !important; display: block !important; }
+  .decor-object.decor-secondary { display: block !important; }
 }
 
 /* Keep the original paper width; enlarge objects in the surrounding space. */
@@ -432,12 +421,6 @@ body { background: #484644; color: #f0e9e1; }
 @media (min-width: 781px) and (max-width: 1399px) {
   .decoration-pair { height: 280px; }
   .decoration-pair .decor-object { max-width: 360px; }
-}
-@media (max-width: 780px) {
-  .decoration-pair { height: 310px; }
-  .decoration-pair .decor-object { width: 72%; height: 245px; max-width: 280px; }
-  .decoration-pair .decor-object + .decor-object { width: 68%; height: 225px; max-width: 260px; top: 80px; }
-  .decor-spool { top: 80px !important; }
 }
 /* Пользовательская фактура ватмана: бесшовное вертикальное соединение, исходный цвет бордо #681427 */
 .magazine-canvas {
@@ -470,28 +453,39 @@ body { background: #484644; color: #f0e9e1; }
   filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.38)) !important;
 }
 @media (max-width: 780px) {
+  .timing-section .sm-timing__item {
+    padding-right: 105px !important;
+    min-height: 115px !important;
+    position: relative !important;
+  }
   .timing-section .sm-timing__item .timing-icon-cutout {
-    width: 52px !important;
-    height: 52px !important;
-    top: 0 !important;
+    width: 95px !important;
+    height: 80px !important;
+    top: 6px !important;
     right: 0 !important;
-    opacity: 0.75 !important;
+    opacity: 1 !important;
+    object-fit: contain !important;
+    pointer-events: none !important;
   }
   .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
-    width: 52px !important;
-    height: 52px !important;
+    width: 112px !important;
+    height: 68px !important;
+    top: 10px !important;
   }
   .timing-section .item-top-row {
     padding-right: 0;
   }
 }
 @media (max-width: 360px) {
+  .timing-section .sm-timing__item {
+    padding-right: 96px !important;
+  }
   .timing-section .sm-timing__item .timing-icon-cutout {
-    width: 46px !important;
-    height: 46px !important;
+    width: 88px !important;
+    height: 75px !important;
   }
   .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
-    width: 46px !important;
-    height: 46px !important;
+    width: 104px !important;
+    height: 64px !important;
   }
 }

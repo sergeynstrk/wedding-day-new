@@ -11,8 +11,11 @@
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background: transparent;
+  padding: 16px;
+  background-color: #681427;
+  background-image: 
+    radial-gradient(circle at 50% 25%, rgba(148, 37, 64, 0.45) 0%, transparent 65%),
+    radial-gradient(circle at 50% 85%, rgba(72, 9, 24, 0.6) 0%, transparent 75%);
   overflow: hidden;
   overscroll-behavior: contain;
   color: var(--env-paper);
@@ -101,7 +104,7 @@ html.envelope-active .layout-toolbar { visibility: hidden; }
 .envelope-front-side { position: absolute; inset: 0; clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%); background-color: #e9e1d2; }
 .envelope-front-bottom { position: absolute; inset: 0; clip-path: polygon(0 100%, 50% 56%, 100% 100%); background-color: #eee6d9; }
 .envelope-seams-svg, .envelope-flap-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.envelope-seams-svg path, .envelope-flap-svg path { fill: none; stroke: #b7a992; stroke-width: 1; vector-effect: non-scaling-stroke; opacity: .68; }
+.envelope-seams-svg path, .envelope-flap-svg path { fill: none !important; stroke: #b7a992 !important; stroke-width: 1px; vector-effect: non-scaling-stroke; opacity: .75; }
 .envelope-flap { position: absolute; top: 0; left: 0; width: 100%; height: 58%; z-index: 30; background-color: #eee7d9; clip-path: polygon(0 0, 100% 0, 50% 96.55%); transform-origin: 50% 0; }
 .envelope-flap-liner { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
 .envelope-border { z-index: 2; border: 1px solid #b8ab98; border-top: none; pointer-events: none; }

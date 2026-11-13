@@ -171,10 +171,42 @@ body {
     padding: 0;
   }
 
-  /* Hide intermediate decor clutter on mobile */
-  .decoration-pair,
+  /* Intermediate decor / keepsakes on mobile: enabled with dedicated layout */
+  .decoration-pair {
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 6 !important;
+    overflow: visible !important;
+    display: block !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
   .flatlay-bouquet {
-    display: none !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 85px !important;
+    height: 85px !important;
+    pointer-events: none !important;
+    display: block !important;
+    z-index: 6 !important;
+  }
+  .decor-object,
+  .decor-lace {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 85px !important;
+    height: 85px !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    pointer-events: none !important;
+    display: block !important;
   }
 
   /* Venue section: full Bratsevo manor illustration */
@@ -259,17 +291,28 @@ body {
   .sm-timing__item.item-3 .timing-text-box {
     align-items: flex-start;
   }
+  .sm-timing__item {
+    padding-right: 105px !important;
+    min-height: 115px !important;
+    position: relative !important;
+  }
   .timing-icon-cutout {
     position: absolute !important;
     right: 0 !important;
-    top: 0 !important;
-    width: 52px !important;
-    height: 52px !important;
-    opacity: 0.75 !important;
-    object-fit: contain;
+    top: 6px !important;
+    width: 95px !important;
+    height: 80px !important;
+    opacity: 1 !important;
+    object-fit: contain !important;
+    pointer-events: none !important;
+  }
+  .sm-timing__item.item-1 .timing-icon-cutout {
+    width: 112px !important;
+    height: 68px !important;
+    top: 10px !important;
   }
   .timing-text-box {
-    padding-right: 56px;
+    padding-right: 0 !important;
     position: relative;
     z-index: 1;
   }
@@ -318,15 +361,25 @@ body {
   }
   .farewell-footer {
     margin-top: 10px;
-    padding-top: 10px;
+    padding-top: 95px !important;
+    position: relative !important;
     text-align: center;
   }
+  .farewell-decor {
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+  }
   .decor-cat {
-    position: absolute;
-    right: -5px;
-    top: -25px;
-    width: 85px;
-    height: 95px;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 95px !important;
+    height: 105px !important;
+    display: block !important;
   }
   .modal-box { padding: 25px 18px; transform: none; }
 }
