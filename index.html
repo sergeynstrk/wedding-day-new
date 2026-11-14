@@ -5,9 +5,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Сергей и Юля приглашают на свадьбу 5 августа 2027 года. Москва, усадьба Братцево. Программа дня, дресс-код и анкета гостя.">
+    content="Приглашение на свадьбу Сергея и Юли — 5 августа 2027 года, Москва, усадьба Братцево. Будем счастливы разделить этот день с вами!">
   <meta name="theme-color" content="#681427">
-  <title>Планы на Свадьбу | Сергей & Юля</title>
+  <title>Сергей & Юля — Приглашение на свадьбу · 05.08.2027</title>
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Сергей & Юля — Приглашение на свадьбу · 05.08.2027">
+  <meta property="og:description" content="Для самых близких ♡ 5 августа 2027 года, Москва, старинная усадьба Братцево. Откройте конверт с приглашением!">
+  <meta property="og:url" content="https://sergeynstrk.github.io/wedding-day-new/">
+  <meta property="og:image" content="https://sergeynstrk.github.io/wedding-day-new/assets/og-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Приглашение на свадьбу Сергея и Юли — 05.08.2027">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Сергей & Юля — Приглашение на свадьбу · 05.08.2027">
+  <meta name="twitter:description" content="Для самых близких ♡ 5 августа 2027 года, Москва, усадьба Братцево.">
+  <meta name="twitter:image" content="https://sergeynstrk.github.io/wedding-day-new/assets/og-preview.jpg">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
 
   <!-- Изящная и кристально чёткая типографика: журнальные заголовки, нежная каллиграфия и чёткий гротеск -->
@@ -1251,6 +1264,160 @@
         font-size: 1.25rem;
       }
     }
+
+    /* ========================================================
+       ДОПОЛНИТЕЛЬНЫЕ ЭЛЕМЕНТЫ: КНОПКИ, УМНАЯ АНКЕТА И ТАЙМЕР
+       ======================================================== */
+    .btn-paper-scrap {
+      justify-content: center;
+    }
+
+    .rsvp-saved-notice {
+      margin-bottom: 22px;
+      padding: 14px 18px;
+      background-color: #d8e5ea;
+      border: 1px dashed #643e49;
+      color: #3c3534;
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.45;
+      text-align: left;
+      transform: rotate(-0.5deg);
+      clip-path: polygon(0.5% 1.5%, 99.5% 0%, 99% 98.5%, 0.5% 99%);
+    }
+
+    #rsvpDrinksGroup {
+      overflow: hidden;
+      max-height: 620px;
+      opacity: 1;
+      transition: opacity 0.28s ease, max-height 0.32s ease, margin 0.28s ease;
+    }
+
+    #rsvpDrinksGroup.is-collapsed {
+      opacity: 0;
+      max-height: 0;
+      margin-bottom: 0 !important;
+      pointer-events: none;
+    }
+
+    .countdown-section {
+      text-align: center;
+      margin: 20px auto 34px;
+      padding: 8px 4px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .countdown-eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #ebd8b7;
+      margin-bottom: 16px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .countdown-card {
+      background-color: #f1ece4;
+      background-image: var(--cut-paper-grain);
+      background-size: 180px 180px;
+      color: #3c3534;
+      padding: 16px 8px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      filter: drop-shadow(0 3px 6px rgba(20, 4, 9, 0.36));
+      clip-path: polygon(1.5% 2%, 98.5% 0.5%, 97.5% 98%, 2% 99%);
+    }
+
+    .countdown-card.cd-tilt-1 {
+      transform: rotate(-2deg);
+    }
+
+    .countdown-card.cd-tilt-2 {
+      transform: rotate(1.5deg);
+      background-color: #d8dfe0;
+    }
+
+    .countdown-card.cd-tilt-3 {
+      transform: rotate(-1deg);
+      background-color: #ebe4d8;
+    }
+
+    .countdown-card.cd-tilt-4 {
+      transform: rotate(2deg);
+    }
+
+    .countdown-num {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: clamp(1.9rem, 4.5vw, 2.75rem);
+      line-height: 1;
+      color: #681427;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-card.cd-tilt-2 .countdown-num {
+      color: #275273;
+    }
+
+    .countdown-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #493139;
+    }
+
+    .countdown-sub {
+      margin-top: 16px;
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #c9d8de;
+    }
+
+    @media (max-width: 780px) {
+      .countdown-section {
+        margin: 18px auto 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .countdown-grid {
+        gap: 8px;
+      }
+
+      .countdown-card {
+        padding: 12px 4px 10px;
+        gap: 4px;
+      }
+
+      .countdown-num {
+        font-size: clamp(1.45rem, 6.2vw, 2rem);
+      }
+
+      .countdown-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.04em;
+      }
+
+      .countdown-sub {
+        font-size: 1.2rem;
+      }
+    }
   </style>
   <link rel="stylesheet" href="collage.css">
   <link rel="stylesheet" href="editorial.css">
@@ -1311,7 +1478,7 @@
           <div class="envelope-border" aria-hidden="true"></div>
           <div class="envelope-btn">
             <button type="button" id="waxSealBtn" class="wax-seal" aria-label="Открыть свадебное приглашение" aria-describedby="envelopeOpenHint">
-              <img class="wax-seal-image" src="./assets/keepsakes/wax-seal.png" alt="" width="285" height="269" decoding="async" fetchpriority="high">
+              <img class="wax-seal-image" src="./assets/keepsakes/wax-seal.webp" alt="" width="285" height="269" decoding="async" fetchpriority="high">
             </button>
           </div>
         </div>
@@ -1333,12 +1500,12 @@
          ========================================== -->
     <section class="hero-section" aria-label="Приглашение на свадьбу">
       <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-rings"
-          src="./assets/wedding-rings-topdown.png" alt="" loading="lazy" decoding="async" width="1536" height="1024"
-          data-layout-id="decoration-01"><img class="decor-object decor-envelope" src="./assets/keepsakes/envelope.png"
+          src="./assets/wedding-rings-topdown.webp" alt="" loading="lazy" decoding="async" width="1536" height="1024"
+          data-layout-id="decoration-01"><img class="decor-object decor-envelope" src="./assets/keepsakes/envelope.webp"
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-02"><img
-          class="decor-object decor-secondary decor-secondary-left decor-hearts" src="./assets/keepsakes/hearts.png"
+          class="decor-object decor-secondary decor-secondary-left decor-hearts" src="./assets/keepsakes/hearts.webp"
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-03"><img
-          class="decor-object decor-secondary decor-secondary-right decor-pearls" src="./assets/keepsakes/pearls.png"
+          class="decor-object decor-secondary decor-secondary-right decor-pearls" src="./assets/keepsakes/pearls.webp"
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-04"></div>
 
       <!-- Верхняя строчка вырезок (как в референсе: "планы на") -->
@@ -1387,7 +1554,7 @@
       <!-- Вырезанная фотография пары -->
       <div class="couple-photo-frame">
         <div class="couple-photo-inner cut-scissor-1">
-          <img src="./assets/couple-photo.png" alt="Сергей и Юля" decoding="async" fetchpriority="high">
+          <img src="./assets/couple-photo.webp" alt="Сергей и Юля" decoding="async" fetchpriority="high">
           <div class="photo-caption-scrap cut-scissor-2">
             Это мы ♡
           </div>
@@ -1405,8 +1572,8 @@
          ========================================== -->
     <div class="venue-card-frame">
       <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-flowers"
-          src="./assets/keepsakes/flowers.png" alt="" loading="lazy" decoding="async" width="1312" height="1199"
-          data-layout-id="decoration-05"><img class="decor-object decor-key" src="./assets/keepsakes/key.png" alt=""
+          src="./assets/keepsakes/flowers.webp" alt="" loading="lazy" decoding="async" width="1312" height="1199"
+          data-layout-id="decoration-05"><img class="decor-object decor-key" src="./assets/keepsakes/key.webp" alt=""
           loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-06"></div>
 
       <div class="washi-strip tape-venue washi-burgundy"></div>
@@ -1430,7 +1597,7 @@
 
         <!-- Иллюстрация Братцево по фотографии пользователя -->
         <div class="venue-photo-wrapper venue-illustration">
-          <img loading="lazy" decoding="async" src="./assets/bratsevo-icon.png"
+          <img loading="lazy" decoding="async" src="./assets/bratsevo-icon.webp"
             alt="Усадьба Братцево: фасад с куполом, балконом и колоннами — рисунок по фотографии" width="1945"
             height="808">
         </div>
@@ -1448,13 +1615,16 @@
         </div>
 
         <div class="btn-actions-row">
-          <a href="https://yandex.ru/maps/?text=Усадьба+Братцево+Москва" target="_blank" rel="noopener noreferrer"
+          <button type="button" class="btn-paper-scrap btn-paper-blue" onclick="downloadIcsCalendar()">
+            В календарь iPhone / Apple (.ics)
+          </button>
+          <button type="button" class="btn-paper-scrap btn-paper-blue" onclick="addToCalendar()">
+            Google Календарь ↗
+          </button>
+          <a href="https://yandex.ru/maps/?text=Усадьба+Братцево+Светлогорский+проезд+13" target="_blank" rel="noopener noreferrer"
             class="btn-paper-scrap btn-paper-burgundy">
             Маршрут на карте ↗
           </a>
-          <button type="button" class="btn-paper-scrap btn-paper-blue" onclick="addToCalendar()">
-            В календарь ↗
-          </button>
         </div>
       </section>
     </div>
@@ -1503,7 +1673,7 @@
                 style="font-size: 1.35rem; padding: 6px 14px;">12:00</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/bratsevo-icon.png"
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/bratsevo-icon.webp"
             alt="Сбор гостей в усадьбе Братцево" width="1945" height="808">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(-1.5deg);">
@@ -1527,7 +1697,7 @@
                 style="font-size: 1.35rem; padding: 6px 14px;">12:30</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-rings.png"
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-rings.webp"
             alt="Церемония регистрации: обручальные кольца" width="1536" height="1024">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(2deg);">
@@ -1551,7 +1721,7 @@
                 style="font-size: 1.35rem; padding: 6px 14px;">13:30</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-dinner.png"
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-dinner.webp"
             alt="Званый ужин: праздничный стол" width="1536" height="1024">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(-2deg);">
@@ -1575,7 +1745,7 @@
                 style="font-size: 1.35rem; padding: 6px 14px;">23:00</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-cake.png"
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-cake.webp"
             alt="Завершение вечера: свадебный торт и бенгальские огни" width="1312" height="1199">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(2deg);">
@@ -1597,16 +1767,16 @@
          ========================================== -->
     <div class="decorated-section">
       <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-lace"
-          src="./assets/keepsakes/lace.png" alt="" loading="lazy" decoding="async" width="1402" height="1122"
-          data-layout-id="decoration-11"><img class="decor-object decor-lace" src="./assets/keepsakes/lace.png" alt=""
+          src="./assets/keepsakes/lace.webp" alt="" loading="lazy" decoding="async" width="1402" height="1122"
+          data-layout-id="decoration-11"><img class="decor-object decor-lace" src="./assets/keepsakes/lace.webp" alt=""
           loading="lazy" decoding="async" width="1402" height="1122" data-layout-id="decoration-12"><img
-          class="decor-object decor-secondary decor-secondary-left decor-spool" src="./assets/keepsakes/spool.png"
+          class="decor-object decor-secondary decor-secondary-left decor-spool" src="./assets/keepsakes/spool.webp"
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-13"><img
-          class="decor-object decor-secondary decor-secondary-right decor-bow" src="./assets/keepsakes/bow.png" alt=""
+          class="decor-object decor-secondary decor-secondary-right decor-bow" src="./assets/keepsakes/bow.webp" alt=""
           loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-14"></div>
       <section class="dresscode-section">
         <div class="flatlay-bouquet" aria-hidden="true" data-layout-id="decoration-15"><img
-            src="./assets/wedding-ribbon-topdown.png" alt="" loading="lazy" decoding="async" width="1103" height="1426">
+            src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="1103" height="1426">
         </div>
         <h2 class="section-heading" style="text-align: center;">
           <span class="scrap-clip" style="transform: rotate(-2deg);">
@@ -1691,13 +1861,13 @@
          ========================================== -->
     <div class="decorated-section">
       <div class="decoration-pair" aria-hidden="true">
-        <img class="decor-object decor-fountain-pen decor-secondary-left" src="./assets/keepsakes/fountain-pen.png"
+        <img class="decor-object decor-fountain-pen decor-secondary-left" src="./assets/keepsakes/fountain-pen.webp"
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-19">
-        <img class="decor-object decor-inkwell decor-secondary-right" src="./assets/keepsakes/inkwell.png" alt=""
+        <img class="decor-object decor-inkwell decor-secondary-right" src="./assets/keepsakes/inkwell.webp" alt=""
           loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-20">
-        <img class="decor-object decor-reply-card decor-secondary-left" src="./assets/keepsakes/reply-card.png" alt=""
+        <img class="decor-object decor-reply-card decor-secondary-left" src="./assets/keepsakes/reply-card.webp" alt=""
           loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-21">
-        <img class="decor-object decor-binder-clips decor-secondary-right" src="./assets/keepsakes/binder-clips.png"
+        <img class="decor-object decor-binder-clips decor-secondary-right" src="./assets/keepsakes/binder-clips.webp"
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-22">
       </div>
       <section class="rsvp-section" id="rsvp">
@@ -1726,6 +1896,8 @@
         </div>
 
         <form id="weddingRsvpForm">
+          <div id="rsvpSavedNotice" class="rsvp-saved-notice" hidden></div>
+
           <!-- ФИО -->
           <div class="rsvp-group">
             <span class="scrap-clip" style="transform: rotate(-1deg);">
@@ -1753,7 +1925,7 @@
           </div>
 
           <!-- Напитки -->
-          <div class="rsvp-group">
+          <div class="rsvp-group" id="rsvpDrinksGroup">
             <span class="scrap-clip" style="transform: rotate(-1.5deg);">
               <span class="clip-body cut-scissor-5 bg-news-typewriter">3. ПРЕДПОЧТЕНИЯ ПО БАРУ:</span>
             </span>
@@ -1786,7 +1958,7 @@
           <!-- Пожелания / Аллергии -->
           <div class="rsvp-group">
             <span class="scrap-clip" style="transform: rotate(1deg);">
-              <span class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
+              <span id="rsvpCommentLabel" class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
             </span>
             <input type="text" id="guestComment" aria-label="Особые пожелания и аллергии" class="rsvp-input"
               placeholder="Вегетарианское меню / аллергия / любимая музыка">
@@ -1802,11 +1974,37 @@
     </div>
 
     <!-- ==========================================
+         5.5 ОБРАТНЫЙ ОТСЧЁТ ДО СВАДЬБЫ
+         ========================================== -->
+    <section class="countdown-section" aria-label="Обратный отсчёт до свадьбы">
+      <div class="countdown-eyebrow">ДО НАШЕЙ ВСТРЕЧИ ОСТАЛОСЬ</div>
+      <div class="countdown-grid">
+        <div class="countdown-card cd-tilt-1">
+          <span class="countdown-num" id="cdDays">—</span>
+          <span class="countdown-label" id="cdDaysLabel">дней</span>
+        </div>
+        <div class="countdown-card cd-tilt-2">
+          <span class="countdown-num" id="cdHours">—</span>
+          <span class="countdown-label" id="cdHoursLabel">часов</span>
+        </div>
+        <div class="countdown-card cd-tilt-3">
+          <span class="countdown-num" id="cdMinutes">—</span>
+          <span class="countdown-label" id="cdMinutesLabel">минут</span>
+        </div>
+        <div class="countdown-card cd-tilt-4">
+          <span class="countdown-num" id="cdSeconds">—</span>
+          <span class="countdown-label" id="cdSecondsLabel">секунд</span>
+        </div>
+      </div>
+      <p class="countdown-sub">5 августа 2027 · 12:00 · Москва, усадьба Братцево</p>
+    </section>
+
+    <!-- ==========================================
          6. ФИНАЛ
          ========================================== -->
     <footer class="farewell-footer">
       <div class="farewell-decor" aria-hidden="true">
-        <img class="decor-object decor-cat sticker-cat" src="./assets/cat-sticker.png" alt="Кот в шляпе" loading="lazy"
+        <img class="decor-object decor-cat sticker-cat" src="./assets/cat-sticker.webp" alt="Кот в шляпе" loading="lazy"
           decoding="async" width="248" height="275" data-layout-id="decoration-16">
       </div>
       <span class="scrap-clip" style="transform: rotate(-2deg);">
@@ -1944,40 +2142,156 @@
     }
 
     // ==========================================
-    // 2. ОТПРАВКА RSVP АНКЕТЫ (GOOGLE SHEETS + TELEGRAM)
+    // 2. УМНАЯ ЛОГИКА RSVP И ОТПРАВКА АНКЕТЫ (GOOGLE SHEETS + TELEGRAM)
     // ==========================================
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXXWaDim-BnbZE1LP50RiGm3HlDPaO3Xl6NQSdTQbwQ-ZOKnIMvWs25O-7CkoBDPyemA/exec';
+    const RSVP_STORAGE_KEY = 'wedding_rsvp_latest';
+
+    function updateRsvpAttendanceState() {
+      const form = document.getElementById('weddingRsvpForm');
+      if (!form) return;
+      const drinksGroup = document.getElementById('rsvpDrinksGroup');
+      const commentLabel = document.getElementById('rsvpCommentLabel');
+      const commentInput = document.getElementById('guestComment');
+      const attendanceEl = form.querySelector('input[name="attendance"]:checked');
+      const isDeclining = attendanceEl && attendanceEl.value === 'no';
+
+      if (drinksGroup) {
+        drinksGroup.classList.toggle('is-collapsed', isDeclining);
+        drinksGroup.setAttribute('aria-hidden', isDeclining ? 'true' : 'false');
+        drinksGroup.querySelectorAll('input').forEach((input) => {
+          input.disabled = isDeclining;
+        });
+      }
+
+      if (commentLabel) {
+        commentLabel.textContent = isDeclining
+          ? '3. ТЁПЛЫЕ СЛОВА ДЛЯ ПАРЫ:'
+          : '4. ОСОБЫЕ ПОЖЕЛАНИЯ:';
+      }
+
+      if (commentInput) {
+        commentInput.placeholder = isDeclining
+          ? 'Напишите пару тёплых слов для Сергея и Юли ♡'
+          : 'Вегетарианское меню / аллергия / любимая музыка';
+      }
+    }
+
+    function showRsvpSavedNotice(name) {
+      const notice = document.getElementById('rsvpSavedNotice');
+      const submitBtn = document.getElementById('rsvpSubmitBtn');
+      if (notice) {
+        notice.textContent = name
+          ? `✔ Ваша анкета уже отправлена (${name}). Вы можете изменить ответ и отправить её повторно.`
+          : '✔ Ваша анкета уже отправлена. Вы можете изменить ответ и отправить её повторно.';
+        notice.hidden = false;
+      }
+      if (submitBtn) {
+        submitBtn.innerHTML = 'ОБНОВИТЬ ОТВЕТ ✉';
+      }
+    }
+
+    function restoreSavedRsvp() {
+      const form = document.getElementById('weddingRsvpForm');
+      if (!form) return;
+      let saved = null;
+      try {
+        const raw = localStorage.getItem(RSVP_STORAGE_KEY);
+        if (raw) saved = JSON.parse(raw);
+      } catch (err) {
+        saved = null;
+      }
+      if (!saved || typeof saved !== 'object') {
+        updateRsvpAttendanceState();
+        return;
+      }
+
+      const nameInput = document.getElementById('guestName');
+      if (nameInput && typeof saved.name === 'string') nameInput.value = saved.name;
+
+      if (saved.attendanceVal === 'no' || saved.attendanceVal === 'yes') {
+        const targetRadio = form.querySelector(`input[name="attendance"][value="${saved.attendanceVal}"]`);
+        if (targetRadio) targetRadio.checked = true;
+      }
+
+      const selectedChips = Array.isArray(saved.selectedChips) ? saved.selectedChips : [];
+      form.querySelectorAll('input[name="drinks"]').forEach((cb) => {
+        cb.checked = selectedChips.includes(cb.value);
+      });
+
+      const customDrinkInput = document.getElementById('customDrink');
+      if (customDrinkInput && typeof saved.customDrink === 'string') {
+        customDrinkInput.value = saved.customDrink;
+      }
+
+      const commentInput = document.getElementById('guestComment');
+      if (commentInput && typeof saved.rawComment === 'string') {
+        commentInput.value = saved.rawComment;
+      }
+
+      updateRsvpAttendanceState();
+      showRsvpSavedNotice(saved.name || '');
+    }
+
+    (function initRsvpSmartForm() {
+      const form = document.getElementById('weddingRsvpForm');
+      if (!form) return;
+      form.querySelectorAll('input[name="attendance"]').forEach((radio) => {
+        radio.addEventListener('change', updateRsvpAttendanceState);
+      });
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', restoreSavedRsvp);
+      } else {
+        restoreSavedRsvp();
+      }
+    })();
 
     document.getElementById('weddingRsvpForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const form = this;
       const submitBtn = document.getElementById('rsvpSubmitBtn') || form.querySelector('button[type="submit"]');
-      const origBtnText = submitBtn.innerHTML;
 
       const name = (document.getElementById('guestName').value || '').trim();
       const attendanceEl = form.querySelector('input[name="attendance"]:checked');
       const attendanceVal = attendanceEl ? attendanceEl.value : 'yes';
       const attendanceText = attendanceVal === 'yes' ? '✔ Буду с огромной радостью!' : '✖ К сожалению, не смогу';
-      const drinks = Array.from(form.querySelectorAll('input[name="drinks"]:checked')).map(cb => cb.value);
-      const customDrink = (document.getElementById('customDrink')?.value || '').trim();
+      const selectedChips = attendanceVal === 'yes'
+        ? Array.from(form.querySelectorAll('input[name="drinks"]:checked')).map(cb => cb.value)
+        : [];
+      const customDrink = attendanceVal === 'yes'
+        ? (document.getElementById('customDrink')?.value || '').trim()
+        : '';
+      const drinks = [...selectedChips];
       if (customDrink) {
         drinks.push(customDrink);
       }
       const comment = (document.getElementById('guestComment').value || '').trim();
 
       const commentText = comment || 'Нет особых пожеланий';
+      const timestamp = new Date().toISOString();
       const payload = {
         name,
         attendance: attendanceText,
         drinks,
         comment: commentText,
-        timestamp: new Date().toISOString()
+        timestamp
+      };
+
+      const savedState = {
+        name,
+        attendanceVal,
+        attendance: attendanceText,
+        selectedChips,
+        customDrink,
+        rawComment: comment,
+        timestamp
       };
 
       // Резервное сохранение на устройстве
       try {
         localStorage.setItem('wedding_rsvp_' + Date.now(), JSON.stringify(payload));
+        localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(savedState));
       } catch (err) { }
 
       submitBtn.disabled = true;
@@ -2002,9 +2316,10 @@
       if (isSuccess) {
         if (modalTitle) modalTitle.textContent = 'ОТВЕТ ОТПРАВЛЕН!';
         if (modalDesc) {
-          modalDesc.textContent = 'Ваш ответ успешно доставлен Сергею и Юле! Спасибо, мы с нетерпением ждём встречи с вами.';
+          modalDesc.textContent = attendanceVal === 'no'
+            ? 'Ваш ответ успешно доставлен Сергею и Юле! Нам очень жаль, что не получится увидеться, но спасибо за тёплые слова ♡'
+            : 'Ваш ответ успешно доставлен Сергею и Юле! Спасибо, мы с нетерпением ждём встречи с вами.';
         }
-        form.reset();
       } else {
         if (modalTitle) modalTitle.textContent = 'ОТВЕТ СОХРАНЁН!';
         if (modalDesc) {
@@ -2012,8 +2327,8 @@
         }
       }
 
+      showRsvpSavedNotice(name);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = origBtnText;
       document.getElementById('successModal').style.display = 'flex';
       document.querySelector('#successModal button').focus();
     });
@@ -2035,14 +2350,117 @@
     });
 
     // ==========================================
-    // 3. ДОБАВЛЕНИЕ В КАЛЕНДАРЬ
+    // 3. ДОБАВЛЕНИЕ В КАЛЕНДАРЬ (APPLE .ICS И GOOGLE)
     // ==========================================
+    function downloadIcsCalendar() {
+      const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+      const icsLines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Sergey & Yulia Wedding//RU',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'UID:wedding-sergey-yulia-20270805@sergeynstrk.github.io',
+        `DTSTAMP:${stamp}`,
+        'DTSTART:20270805T090000Z',
+        'DTEND:20270805T200000Z',
+        'SUMMARY:Свадьба Сергея и Юли ♡',
+        'DESCRIPTION:Сбор гостей в 12:00\\, начало церемонии в 12:30. Усадьба Братцево (Москва\\, Светлогорский проезд\\, 13). Сайт: https://sergeynstrk.github.io/wedding-day-new/',
+        'LOCATION:Усадьба Братцево\\, Светлогорский проезд\\, 13\\, Москва',
+        'BEGIN:VALARM',
+        'TRIGGER:-PT24H',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Завтра свадьба Сергея и Юли!',
+        'END:VALARM',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ];
+      const blob = new Blob([icsLines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'wedding-sergey-yulia.ics';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
     function addToCalendar() {
       const title = encodeURIComponent("Свадьба Сергея и Юли");
       const details = encodeURIComponent("Камерное свадебное торжество в усадьбе Братцево. Сбор гостей в 12:00.");
       const location = encodeURIComponent("Москва, Усадьба Братцево");
       const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270805T090000Z/20270805T200000Z&details=${details}&location=${location}`;
       window.open(googleUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    // ==========================================
+    // 4. ОБРАТНЫЙ ОТСЧЁТ ДО СВАДЬБЫ
+    // ==========================================
+    function pluralizeRu(number, forms) {
+      const n = Math.abs(number) % 100;
+      const n1 = n % 10;
+      if (n > 10 && n < 20) return forms[2];
+      if (n1 > 1 && n1 < 5) return forms[1];
+      if (n1 === 1) return forms[0];
+      return forms[2];
+    }
+
+    function initWeddingCountdown() {
+      const targetMs = new Date('2027-08-05T12:00:00+03:00').getTime();
+      const daysEl = document.getElementById('cdDays');
+      const hoursEl = document.getElementById('cdHours');
+      const minutesEl = document.getElementById('cdMinutes');
+      const secondsEl = document.getElementById('cdSeconds');
+      const daysLabel = document.getElementById('cdDaysLabel');
+      const hoursLabel = document.getElementById('cdHoursLabel');
+      const minutesLabel = document.getElementById('cdMinutesLabel');
+      const secondsLabel = document.getElementById('cdSecondsLabel');
+      const eyebrowEl = document.querySelector('.countdown-eyebrow');
+
+      if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+      function tick() {
+        const diff = targetMs - Date.now();
+        if (diff <= 0) {
+          daysEl.textContent = '0';
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          if (daysLabel) daysLabel.textContent = 'дней';
+          if (hoursLabel) hoursLabel.textContent = 'часов';
+          if (minutesLabel) minutesLabel.textContent = 'минут';
+          if (secondsLabel) secondsLabel.textContent = 'секунд';
+          if (eyebrowEl) eyebrowEl.textContent = 'ЭТОТ ДЕНЬ НАСТАЛ! ♡';
+          return;
+        }
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        daysEl.textContent = String(days);
+        hoursEl.textContent = String(hours).padStart(2, '0');
+        minutesEl.textContent = String(minutes).padStart(2, '0');
+        secondsEl.textContent = String(seconds).padStart(2, '0');
+
+        if (daysLabel) daysLabel.textContent = pluralizeRu(days, ['день', 'дня', 'дней']);
+        if (hoursLabel) hoursLabel.textContent = pluralizeRu(hours, ['час', 'часа', 'часов']);
+        if (minutesLabel) minutesLabel.textContent = pluralizeRu(minutes, ['минута', 'минуты', 'минут']);
+        if (secondsLabel) secondsLabel.textContent = pluralizeRu(seconds, ['секунда', 'секунды', 'секунд']);
+      }
+
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initWeddingCountdown);
+    } else {
+      initWeddingCountdown();
     }
   </script>
   <!-- Вспомогательные библиотеки для 3D-анимации конверта и салюта конфетти -->
