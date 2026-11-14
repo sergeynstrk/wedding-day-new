@@ -728,3 +728,190 @@ body { background: #484644; color: #f0e9e1; }
     transform: none !important;
   }
 }
+
+/* 11. Кристальная резкость всего текста без мыла и растрового размытия */
+html,
+body {
+  -webkit-font-smoothing: auto !important;
+  -moz-osx-font-smoothing: auto !important;
+  font-synthesis: none !important;
+  text-rendering: geometricPrecision !important;
+}
+
+/* Убираем шумовую плёнку (feTurbulence + multiply) поверх букв и под текстом */
+.giant-char::after,
+.clip-body::after {
+  content: none !important;
+  display: none !important;
+}
+.countdown-card,
+.envelope-intro h2 > span,
+.letter-name-second,
+.envelope-letter {
+  background-image: none !important;
+}
+
+/* Отключаем поворот (rotate), scale и 3D-слои на всех текстовых плашках и секциях,
+   чтобы штрихи букв ложились строго по пиксельной сетке экрана */
+.scrap-clip,
+.hero-top-row .scrap-clip:first-child,
+.hero-top-row .scrap-clip:last-child,
+.clip-body,
+.giant-char,
+.char-c1, .char-c2, .char-c3, .char-c4, .char-c5, .char-c6, .char-c7,
+.cute-scribble,
+.btn-paper-scrap,
+.btn-paper-burgundy,
+.btn-paper-blue,
+.dresscode-section,
+.rsvp-section,
+.manor-sticker-inner,
+.countdown-card,
+.countdown-card.cd-tilt-1,
+.countdown-card.cd-tilt-2,
+.countdown-card.cd-tilt-3,
+.countdown-card.cd-tilt-4,
+.countdown-card.is-ticking .countdown-num,
+.swatch-card,
+.swatch-card:nth-child(1),
+.swatch-card:nth-child(2),
+.swatch-card:nth-child(3),
+.swatch-card:nth-child(4),
+.swatch-card:nth-child(5),
+.hero-details time,
+.couple-photo-inner,
+.photo-caption-scrap,
+.postal-seal-round,
+.num-cutout-box,
+.b1, .b2, .b3, .b4,
+.sm-timing__item,
+.sm-timing__item.item-active,
+.timing-section .sm-timing__item.item-active .num-cutout-box,
+.choice-box,
+.chip-box,
+.choice-btn input:checked + .choice-box,
+.chip-btn input:checked + .chip-box,
+.btn-submit-collage,
+.rsvp-saved-notice,
+.envelope-intro h2 > span,
+.envelope-intro h2 em,
+.letter-top-label,
+.letter-name-first,
+.letter-name-second,
+.envelope-address,
+.envelope-postmark,
+.envelope-signature {
+  transform: none !important;
+  text-shadow: none !important;
+  backface-visibility: visible !important;
+}
+
+/* Убираем растровый filter: drop-shadow с текстовых контейнеров и конверта,
+   заменяя его на векторный box-shadow и чёткие контуры */
+.scrap-clip,
+.giant-char,
+.hero-huge-title,
+.cute-scribble,
+.btn-paper-scrap,
+.num-cutout-box,
+.dresscode-section,
+.rsvp-section,
+.venue-card-inner,
+.dress-note-box,
+.manor-sticker-inner,
+.swatch-card,
+.countdown-card,
+.couple-photo-inner,
+.postal-seal-round,
+.choice-box,
+.chip-box,
+.choice-btn input:checked + .choice-box,
+.chip-btn input:checked + .chip-box,
+.btn-submit-collage,
+.envelope-box {
+  filter: none !important;
+}
+
+.couple-photo-frame .postal-seal-round {
+  backdrop-filter: none !important;
+  background-color: #d3dfe2 !important;
+}
+
+.envelope-box {
+  box-shadow: 0 2px 2px rgba(49, 8, 19, 0.3), 0 18px 28px rgba(35, 8, 16, 0.36) !important;
+}
+.couple-photo-inner {
+  clip-path: none !important;
+  box-shadow: 0 8px 22px rgba(24, 6, 11, 0.28) !important;
+}
+.dresscode-section,
+.rsvp-section {
+  box-shadow: 0 10px 28px rgba(24, 6, 11, 0.28) !important;
+}
+.dress-note-box,
+.manor-sticker-inner,
+.swatch-card {
+  box-shadow: 0 2px 6px rgba(40, 30, 26, 0.1) !important;
+}
+.rsvp-section .clip-body.bg-white-serif,
+.rsvp-section .clip-body.bg-news-typewriter,
+.dresscode-section .clip-body.bg-white-serif,
+.dresscode-section .clip-body.bg-news-typewriter {
+  background-color: #fbf8f2 !important;
+  border: 1px solid #cfc4b6 !important;
+}
+
+/* Повышенная контрастность текста на бордовом и бумажном фонах */
+.edition-ribbon {
+  color: #f5ede6 !important;
+  font-weight: 600 !important;
+}
+.edition-ribbon .cute-tag {
+  color: #dcebf2 !important;
+}
+.venue-card-inner > p {
+  color: #faf5ef !important;
+  font-weight: 600 !important;
+}
+.hero-details > span {
+  color: #f7efe8 !important;
+  font-weight: 600 !important;
+}
+.hero-details a {
+  color: #e0eef5 !important;
+}
+.cute-scribble,
+.hero-invitation-note .cute-scribble,
+.timing-text-box .cute-scribble {
+  color: #faf3eb !important;
+}
+.cute-scribble-blue,
+.venue-card-inner .cute-scribble,
+.timing-text-box .cute-scribble-blue {
+  color: #dcebf2 !important;
+}
+.dresscode-section,
+.rsvp-section,
+.dresscode-section > p,
+.dress-note-box p,
+.manor-sticker-inner,
+.swatch-name {
+  color: #201a19 !important;
+}
+.dresscode-section .cute-scribble,
+.rsvp-section .cute-scribble {
+  color: #5a2230 !important;
+}
+.bg-white-serif,
+.bg-news-typewriter {
+  color: #201a19 !important;
+}
+.bg-blue-powder,
+.btn-paper-burgundy,
+.btn-paper-blue,
+.hero-top-row .bg-black-sans,
+.hero-names-row .scrap-clip:last-child .clip-body,
+.hero-details time,
+.b1, .b2, .b3, .b4 {
+  color: #24161b !important;
+}
