@@ -109,8 +109,8 @@ window.WEDDING_LAYOUT_DEFAULTS = {
       }
     },
     "mobile": {
-      "decoration-01": { "x": 228, "y": 685, "scale": 1.15, "rotation": -6 },
-      "decoration-02": { "x": 8, "y": 700, "scale": 1.05, "rotation": 12 },
+      "decoration-01": { "x": 238, "y": 754, "scale": 1.0, "rotation": -6 },
+      "decoration-02": { "x": 8, "y": 756, "scale": 0.92, "rotation": 12 },
       "decoration-03": { "x": 255, "y": 135, "scale": 0.85, "rotation": 15 },
       "decoration-04": { "x": 4, "y": 215, "scale": 0.9, "rotation": -18 },
       "decoration-05": { "x": 4, "y": 118, "scale": 0.95, "rotation": -12 },
@@ -124,7 +124,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
       "decoration-20": { "x": 265, "y": 210, "scale": 0.85, "rotation": -5 },
       "decoration-21": { "x": 8, "y": 15, "scale": 0.85, "rotation": -10 },
       "decoration-22": { "x": 262, "y": 380, "scale": 0.85, "rotation": 14 },
-      "decoration-16": { "x": 215, "y": -20, "scale": 1.0, "rotation": 6 }
+      "decoration-16": { "x": 238, "y": -8, "scale": 0.92, "rotation": 8 }
     }
   }
 };

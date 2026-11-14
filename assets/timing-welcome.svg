@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024" fill="none">
+  <!-- Clink sparkles above glasses -->
+  <g stroke="#000000" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="768" y1="88" x2="768" y2="178" />
+    <line x1="684" y1="112" x2="718" y2="188" />
+    <line x1="852" y1="112" x2="818" y2="188" />
+    <line x1="612" y1="176" x2="674" y2="218" />
+    <line x1="924" y1="176" x2="862" y2="218" />
+  </g>
+
+  <!-- Left champagne flute (tilted inward -11deg) -->
+  <g transform="translate(560 560) rotate(11) translate(-560 -560)" stroke="#000000" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Base -->
+    <ellipse cx="560" cy="876" rx="116" ry="30" fill="#ffffff" />
+    <!-- Stem -->
+    <path d="M542 588 L542 868 Q560 874 578 868 L578 588 Z" fill="#ffffff" />
+    <!-- Bowl -->
+    <path d="M462 214 Q456 544 560 592 Q664 544 658 214 Z" fill="#ffffff" />
+    <!-- Rim & liquid line -->
+    <ellipse cx="560" cy="214" rx="98" ry="26" fill="#ffffff" />
+    <path d="M469 348 Q514 374 560 356 Q606 338 651 352" fill="none" />
+    <!-- Rising bubbles -->
+    <circle cx="540" cy="480" r="15" fill="#ffffff" />
+    <circle cx="585" cy="434" r="18" fill="#ffffff" />
+    <circle cx="552" cy="396" r="13" fill="#ffffff" />
+    <!-- Ribbon bow on stem -->
+    <path d="M546 704 C500 676 472 700 486 734 C500 758 536 736 548 718" fill="#ffffff" />
+    <path d="M574 704 C620 676 648 700 634 734 C620 758 584 736 572 718" fill="#ffffff" />
+    <path d="M548 718 L510 784" fill="none" />
+    <path d="M572 718 L610 784" fill="none" />
+    <circle cx="560" cy="712" r="18" fill="#ffffff" />
+  </g>
+
+  <!-- Right champagne flute (tilted inward -11deg symmetrically) -->
+  <g transform="translate(976 560) rotate(-11) translate(-976 -560)" stroke="#000000" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Base -->
+    <ellipse cx="976" cy="876" rx="116" ry="30" fill="#ffffff" />
+    <!-- Stem -->
+    <path d="M958 588 L958 868 Q976 874 994 868 L994 588 Z" fill="#ffffff" />
+    <!-- Bowl -->
+    <path d="M878 214 Q872 544 976 592 Q1080 544 1074 214 Z" fill="#ffffff" />
+    <!-- Rim & liquid line -->
+    <ellipse cx="976" cy="214" rx="98" ry="26" fill="#ffffff" />
+    <path d="M885 352 Q930 338 976 356 Q1022 374 1067 348" fill="none" />
+    <!-- Rising bubbles -->
+    <circle cx="996" cy="480" r="15" fill="#ffffff" />
+    <circle cx="951" cy="434" r="18" fill="#ffffff" />
+    <circle cx="984" cy="396" r="13" fill="#ffffff" />
+    <!-- Ribbon bow on stem -->
+    <path d="M962 704 C916 676 888 700 902 734 C916 758 952 736 964 718" fill="#ffffff" />
+    <path d="M990 704 C1036 676 1064 700 1050 734 C1036 758 1000 736 988 718" fill="#ffffff" />
+    <path d="M964 718 L926 784" fill="none" />
+    <path d="M988 718 L1026 784" fill="none" />
+    <circle cx="976" cy="712" r="18" fill="#ffffff" />
+  </g>
+</svg>

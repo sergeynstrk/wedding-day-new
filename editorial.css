@@ -498,6 +498,183 @@ body { background: #484644; color: #f0e9e1; }
 .ob-timeline-line > svg {
   fill: none !important;
   filter: none !important;
-  opacity: 0.85 !important;
+  opacity: 1 !important;
   shape-rendering: geometricPrecision;
+}
+
+/* 1. Мобильные отступы: разделяем hero и карточку места, аккуратно убираем зазор у кота в футере */
+@media (max-width: 780px) {
+  .hero-section {
+    margin-bottom: 64px !important;
+    padding-bottom: 34px !important;
+  }
+  .hero-details {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .farewell-footer {
+    padding-top: 72px !important;
+    padding-bottom: 28px !important;
+  }
+}
+
+/* 2 & 3. Единый размер и тёплая тонировка в цвет слоновой кости для иллюстраций усадьбы и тайминга */
+.venue-photo-wrapper.venue-illustration img,
+.timing-section .sm-timing__item .timing-icon-cutout {
+  filter: sepia(0.14) saturate(0.75) brightness(0.96) drop-shadow(0 4px 10px rgba(20, 4, 9, 0.32)) !important;
+}
+.timing-section .sm-timing__item.item-active .timing-icon-cutout {
+  filter: sepia(0.1) saturate(0.8) brightness(0.99) drop-shadow(0 6px 16px rgba(20, 4, 9, 0.42)) !important;
+}
+.timing-section .sm-timing__item.item-1 .timing-icon-cutout {
+  width: 220px;
+  height: 160px;
+}
+@media (max-width: 780px) {
+  .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
+    width: 95px !important;
+    height: 80px !important;
+    top: 6px !important;
+  }
+}
+@media (max-width: 360px) {
+  .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
+    width: 88px !important;
+    height: 75px !important;
+  }
+}
+
+/* 5. Текстура шёлка/ткани и мини-скотч на карточках палитры дресс-кода */
+.swatch-card {
+  position: relative;
+  overflow: visible;
+}
+.swatch-card::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 34px;
+  height: 10px;
+  transform: translateX(-50%) rotate(-2deg);
+  background: rgba(216, 229, 234, 0.78);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  clip-path: polygon(2% 10%, 98% 0%, 100% 90%, 0% 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+.swatch-color {
+  position: relative;
+  overflow: hidden;
+  clip-path: var(--scissor-b);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.35), inset 0 -2px 6px rgba(0, 0, 0, 0.22);
+}
+.swatch-color::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 42%, rgba(0, 0, 0, 0.16) 70%, rgba(255, 255, 255, 0.14) 100%),
+    var(--cut-paper-grain);
+  background-size: 100% 100%, 90px 90px;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* 6. Почтовый штемпель и японский скотч на полароиде пары */
+.couple-photo-frame .tape-top,
+.couple-photo-frame .postal-seal-round {
+  z-index: 12;
+}
+.couple-photo-frame .postal-seal-round {
+  border: 2px dashed #643e49;
+  background-color: rgba(211, 223, 226, 0.92);
+  backdrop-filter: blur(1px);
+  box-shadow: inset 0 0 0 3px rgba(100, 62, 73, 0.18);
+}
+@media (max-width: 780px) {
+  .couple-photo-frame .postal-seal-round {
+    right: -4px;
+  }
+}
+
+/* 7. Подсветка активного бейджа тайминга */
+.timing-section .sm-timing__item.item-active .num-cutout-box {
+  transform: scale(1.08) rotate(0deg);
+  box-shadow: 0 0 0 2px rgba(241, 236, 228, 0.55);
+}
+
+/* 8. Перфорация отрывного купона RSVP и лёгкое движение ножниц */
+.rsvp-section {
+  border-top: 0 !important;
+  position: relative;
+  margin-top: 46px;
+}
+.rsvp-section::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: radial-gradient(circle at 10px 0, transparent 5.5px, var(--paper-surface) 6px) repeat-x;
+  background-size: 20px 10px;
+  pointer-events: none;
+}
+@keyframes scissorSnip {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  40% { transform: translateX(8px) rotate(-1.5deg); }
+  70% { transform: translateX(3px) rotate(0.5deg); }
+}
+.rsvp-section.is-revealed .cut-line > span:first-child {
+  display: inline-block;
+  animation: scissorSnip 1.1s ease-in-out 0.25s 1;
+}
+
+/* 9. Мини-скотч на карточках обратного отсчёта и плавное появление при скролле */
+.countdown-card {
+  position: relative;
+  overflow: visible;
+}
+.countdown-card::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 42px;
+  height: 11px;
+  transform: translateX(-50%) rotate(1.5deg);
+  background: rgba(235, 216, 183, 0.72);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14);
+  clip-path: polygon(2% 10%, 98% 0%, 100% 90%, 0% 100%);
+  pointer-events: none;
+}
+.countdown-card.cd-tilt-2::before {
+  transform: translateX(-50%) rotate(-2deg);
+}
+.countdown-num {
+  transition: transform 0.18s ease-out;
+}
+.countdown-card.is-ticking .countdown-num {
+  transform: scale(1.06);
+}
+.reveal-pending {
+  opacity: 0;
+  translate: 0 18px;
+}
+.is-revealed {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 0.48s cubic-bezier(0.22, 0.61, 0.36, 1), translate 0.48s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-pending {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+  .rsvp-section.is-revealed .cut-line > span:first-child,
+  .countdown-card.is-ticking .countdown-num {
+    animation: none !important;
+    transform: none !important;
+  }
 }

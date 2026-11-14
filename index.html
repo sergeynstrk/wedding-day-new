@@ -25,6 +25,13 @@
 
   <!-- Изящная и кристально чёткая типографика: журнальные заголовки, нежная каллиграфия и чёткий гротеск -->
   <link rel="preload" as="image" href="./assets/burgundy-paper-user.jpg">
+  <link rel="preload" as="image" href="./assets/keepsakes/wax-seal.webp">
+  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/playfair-display-normal-900.ttf" crossorigin>
+  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/caveat-normal-700.ttf" crossorigin>
+  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/montserrat-normal-400.ttf" crossorigin>
+  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/montserrat-normal-900.ttf" crossorigin>
+  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/oswald-normal-600.ttf" crossorigin>
+  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/cormorant-garamond-normal-700.ttf" crossorigin>
   <link rel="stylesheet" href="fonts.css">
 
   <style>
@@ -1428,6 +1435,24 @@
     if (entryParams.get('edit') !== '1' || entryParams.get('envelope') === '1') {
       document.documentElement.classList.add('envelope-active');
     }
+    if (document.fonts && typeof document.fonts.load === 'function') {
+      document.documentElement.classList.add('fonts-loading');
+      const finishFonts = () => {
+        document.documentElement.classList.remove('fonts-loading');
+        document.documentElement.classList.add('fonts-loaded');
+      };
+      Promise.race([
+        Promise.allSettled([
+          document.fonts.load('900 28px "Playfair Display"'),
+          document.fonts.load('700 35px "Caveat"'),
+          document.fonts.load('400 11px "Montserrat"'),
+          document.fonts.load('900 20px "Montserrat"'),
+          document.fonts.load('600 14px "Oswald"'),
+          document.fonts.load('700 24px "Cormorant Garamond"')
+        ]).then(() => document.fonts.ready),
+        new Promise(resolve => setTimeout(resolve, 700))
+      ]).then(finishFonts);
+    }
   </script>
 </head>
 
@@ -1553,6 +1578,12 @@
 
       <!-- Вырезанная фотография пары -->
       <div class="couple-photo-frame">
+        <div class="washi-strip tape-top washi-blue" aria-hidden="true"></div>
+        <div class="postal-seal-round" aria-hidden="true">
+          <span class="stamp-sub">МОСКВА</span>
+          <span class="stamp-date">05.08</span>
+          <span class="stamp-year">2027</span>
+        </div>
         <div class="couple-photo-inner cut-scissor-1">
           <img src="./assets/couple-photo.webp" alt="Сергей и Юля" decoding="async" fetchpriority="high">
           <div class="photo-caption-scrap cut-scissor-2">
@@ -1657,10 +1688,28 @@
         <!-- Анимированная волнообразная кривая и скользящая точка из референса -->
         <span class="ob-timeline-line" aria-hidden="true">
           <svg viewBox="0 0 44.57 548.09" preserveAspectRatio="none" focusable="false">
+            <defs>
+              <clipPath id="timelineProgressClip">
+                <rect id="timelineClipRect" x="-10" y="-10" width="65" height="0" />
+              </clipPath>
+            </defs>
             <path
+              class="timeline-path-base"
               fill="none"
               stroke="#c5d6dc"
+              stroke-opacity="0.38"
               stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"
+              d="M41.19,4.43 C41.19,42 3.87,48 3.87,85.32 C3.87,124 40.86,128 40.86,166.93 C40.86,204 4.6,200 4.6,238 C4.6,276 40.3,276 40.3,314 C40.3,352 4.39,354 4.39,392 C4.39,430 41.46,430 41.46,468 C41.46,506 6,510 3.5,543.87">
+            </path>
+            <path
+              class="timeline-path-progress"
+              clip-path="url(#timelineProgressClip)"
+              fill="none"
+              stroke="#f1ece4"
+              stroke-width="2.6"
               stroke-linecap="round"
               stroke-linejoin="round"
               vector-effect="non-scaling-stroke"
@@ -1679,8 +1728,8 @@
                 style="font-size: 1.35rem; padding: 6px 14px;">12:00</span>
             </span>
           </div>
-          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/bratsevo-icon.webp"
-            alt="Сбор гостей в усадьбе Братцево" width="1945" height="808">
+          <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-welcome.svg"
+            alt="Сбор гостей: приветственные бокалы игристого" width="1536" height="1024">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(-1.5deg);">
               <span class="clip-body cut-scissor-2 bg-white-serif" style="font-size: 1.25rem;">СБОР ГОСТЕЙ</span>
@@ -1821,7 +1870,7 @@
           </div>
           <div class="swatch-card">
             <div class="swatch-color" style="background: #1a1617;"></div>
-            <div class="swatch-name" style="color: #fff; background: #1a1617; padding: 2px 4px;">ГРАФИТ</div>
+            <div class="swatch-name">ГРАФИТ</div>
           </div>
         </div>
 
@@ -2068,12 +2117,17 @@
     function initTimelineAnimation() {
       const track = document.querySelector(".ob-timeline-line");
       if (!track) return;
-      const path = track.querySelector("path");
+      const path = track.querySelector(".timeline-path-base") || track.querySelector("path");
+      const clipRect = document.getElementById("timelineClipRect");
       const dot = track.querySelector(".ob-timeline-dot");
       if (!path || !dot || typeof path.getPointAtLength !== "function") return;
 
       const length = path.getTotalLength();
       if (!length) return;
+
+      if (clipRect) {
+        clipRect.setAttribute("height", "0");
+      }
 
       let top = { y: Infinity, length: 0 };
       let bottom = { y: -Infinity, length: 0 };
@@ -2106,6 +2160,10 @@
         dot.style.left = (point.x / 44.57 * 100) + "%";
         dot.style.top = (point.y / 548.09 * 100) + "%";
         dot.hidden = false;
+
+        if (clipRect) {
+          clipRect.setAttribute("height", String(Math.max(0, point.y + 10)));
+        }
 
         // Подсветка активных этапов
         const items = document.querySelectorAll(".sm-timing__item");
@@ -2426,6 +2484,8 @@
       const eyebrowEl = document.querySelector('.countdown-eyebrow');
 
       if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+      const secondsCard = secondsEl.closest('.countdown-card');
+      let tickTimeout = null;
 
       function tick() {
         const diff = targetMs - Date.now();
@@ -2447,11 +2507,19 @@
         const hours = Math.floor((totalSeconds % 86400) / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
+        const secStr = String(seconds).padStart(2, '0');
+        const prevSec = secondsEl.textContent;
 
         daysEl.textContent = String(days);
         hoursEl.textContent = String(hours).padStart(2, '0');
         minutesEl.textContent = String(minutes).padStart(2, '0');
-        secondsEl.textContent = String(seconds).padStart(2, '0');
+        secondsEl.textContent = secStr;
+
+        if (secondsCard && prevSec !== '—' && prevSec !== secStr) {
+          secondsCard.classList.add('is-ticking');
+          clearTimeout(tickTimeout);
+          tickTimeout = setTimeout(() => secondsCard.classList.remove('is-ticking'), 180);
+        }
 
         if (daysLabel) daysLabel.textContent = pluralizeRu(days, ['день', 'дня', 'дней']);
         if (hoursLabel) hoursLabel.textContent = pluralizeRu(hours, ['час', 'часа', 'часов']);
@@ -2467,6 +2535,44 @@
       document.addEventListener('DOMContentLoaded', initWeddingCountdown);
     } else {
       initWeddingCountdown();
+    }
+
+    // ==========================================
+    // 5. ПЛАВНОЕ ПОЯВЛЕНИЕ ВЫРЕЗОК ПРИ СКРОЛЛЕ
+    // ==========================================
+    function initScrollReveal() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+        return;
+      }
+      const targets = document.querySelectorAll(
+        '.venue-card-frame, .timing-section .sm-timing__item, .dresscode-section, .rsvp-section, .countdown-section, .farewell-footer'
+      );
+      if (!targets.length) return;
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.remove('reveal-pending');
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -15px 0px' });
+
+      const foldY = window.innerHeight * 0.96;
+      targets.forEach((el) => {
+        if (el.getBoundingClientRect().top > foldY) {
+          el.classList.add('reveal-pending');
+          observer.observe(el);
+        } else {
+          el.classList.add('is-revealed');
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initScrollReveal);
+    } else {
+      initScrollReveal();
     }
   </script>
   <!-- Вспомогательные библиотеки для 3D-анимации конверта и салюта конфетти -->

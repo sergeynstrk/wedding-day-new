@@ -27,7 +27,7 @@
   }
 }
 html.envelope-active .envelope-screen { display: flex; }
-body.envelope-locked { overflow: hidden; }
+html.envelope-active, body.envelope-locked, html.envelope-active body { overflow: hidden; }
 /* The main sheet stays in the document: only its contents are hidden. */
 html { scrollbar-gutter: stable; }
 html.envelope-active #invitation > * { visibility: hidden; opacity: 0; }
@@ -48,10 +48,23 @@ html.envelope-active .layout-toolbar { visibility: hidden; }
   isolation: isolate;
   background: transparent;
   box-shadow: none;
+  transition: opacity 0.18s ease-out;
 }
-.envelope-intro { text-align: center; position: relative; z-index: 1; }
+html.fonts-loading .envelope-stage {
+  opacity: 0;
+}
+.envelope-intro {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .envelope-eyebrow { color: #e1ccd0; font: 400 11px/1.5 'Montserrat', sans-serif; margin-bottom: 14px; letter-spacing: .05em; }
-.envelope-intro h2 { font-weight: 700; font-size: inherit; line-height: 1.2; }
+.envelope-intro h2 { font-weight: 700; font-size: inherit; line-height: 1.2; white-space: nowrap; }
 .envelope-intro h2 > span {
   display: inline-block;
   padding: 4px 13px 7px;
@@ -124,15 +137,17 @@ html.envelope-active .layout-toolbar { visibility: hidden; }
 .wax-seal-image { display: block; width: clamp(70px, 13vw, 108px); height: auto; filter: drop-shadow(0 3px 2px #41132135); transition: transform .2s ease, filter .2s ease; }
 .wax-seal:disabled { cursor: default; }
 .wax-seal:focus-visible { outline: none; }
-.envelope-caption { position: relative; z-index: 1; text-align: center; padding-top: 18px; }
+.envelope-caption { position: relative; z-index: 1; text-align: center; padding-top: 18px; min-height: 78px; }
 #envelopeOpenHint { color: #dbdfe2; font: 400 11px/1.6 'Montserrat', sans-serif; }
-.envelope-signature { display: inline-block; margin-top: 10px; color: #c7dbe6; font: 700 26px/1.2 'Caveat', cursive; transform: rotate(-2deg); }
+.envelope-signature { display: inline-block; margin-top: 10px; color: #c7dbe6; font: 700 26px/1.2 'Caveat', cursive; transform: rotate(-2deg); white-space: nowrap; }
 @media (hover: hover) {
   .wax-seal:not(:disabled):hover .wax-seal-image { transform: translateY(-2px) rotate(-3deg); filter: drop-shadow(0 5px 3px #41132145); }
 }
 @media (max-width: 600px) {
   .envelope-screen { padding: 0; }
   .envelope-stage { width: 100%; height: 100svh; max-height: none; padding: 80px 16px 35px; }
+  .envelope-intro { min-height: 76px; }
+  .envelope-caption { min-height: 68px; }
   .envelope-eyebrow { font-size: 10px; margin-bottom: 13px; }
   .envelope-intro h2 > span { font-size: 29px; }
   .envelope-intro h2 em { font-size: 38px; padding-left: 2px; }
