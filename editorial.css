@@ -489,3 +489,15 @@ body { background: #484644; color: #f0e9e1; }
     height: 64px !important;
   }
 }
+
+.venue-card-inner {
+  border-bottom: 0 !important;
+  clip-path: none !important;
+}
+
+.ob-timeline-line > svg {
+  fill: none !important;
+  filter: none !important;
+  opacity: 0.85 !important;
+  shape-rendering: geometricPrecision;
+}
