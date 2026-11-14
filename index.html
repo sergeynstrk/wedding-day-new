@@ -400,28 +400,6 @@
       clip-path: polygon(2% 3%, 97% 1%, 99% 96%, 3% 98%);
     }
 
-    /* МАТОВЫЙ ЯПОНСКИЙ СКОТЧ (WASHI TAPE) */
-    .washi-strip {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.85);
-      background-image:
-        radial-gradient(circle, rgba(157, 194, 223, 0.35) 15%, transparent 16%);
-      background-size: 8px 8px;
-      backdrop-filter: blur(2px);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-      z-index: 10;
-      clip-path: polygon(0% 15%, 3% 0%, 97% 4%, 100% 18%, 98% 85%, 100% 100%, 3% 96%, 0% 82%);
-      pointer-events: none;
-    }
-
-    .washi-blue {
-      background: rgba(195, 222, 245, 0.82);
-    }
-
-    .washi-burgundy {
-      background: rgba(240, 205, 215, 0.82);
-    }
-
     /* ========================================================
        1. HERO / ОБЛОЖКА ВЫПУСКА
        ======================================================== */
@@ -456,7 +434,7 @@
       margin: 20px 0 28px;
     }
 
-    /* ФОТОРАМКА ПАРЫ — БЕЗ CLIP-PATH НА ВНЕШНЕМ КОНТЕЙНЕРЕ (НЕТ СРЕЗА СКОТЧА И ПЕЧАТИ) */
+    /* ФОТОРАМКА ПАРЫ */
     .couple-photo-frame {
       position: relative;
       margin: 28px auto;
@@ -481,14 +459,6 @@
       display: block;
       filter: contrast(1.05) saturate(0.96);
       clip-path: polygon(0.6% 1%, 99.4% 0.6%, 99% 99.4%, 0.6% 99%);
-    }
-
-    .tape-top {
-      top: -14px;
-      left: 36%;
-      width: 140px;
-      height: 28px;
-      transform: rotate(-2.5deg);
     }
 
     .photo-caption-scrap {
@@ -563,14 +533,6 @@
       position: relative;
       filter: drop-shadow(3px 8px 16px rgba(0, 0, 0, 0.06));
       border-radius: 4px;
-    }
-
-    .tape-venue {
-      top: -14px;
-      right: 36px;
-      width: 120px;
-      height: 26px;
-      transform: rotate(3deg);
     }
 
     .venue-photo-wrapper {
@@ -929,7 +891,7 @@
       clip-path: polygon(1% 3%, 98% 1%, 99% 97%, 2% 98%);
     }
 
-    /* Памятка о гравии — без среза скотча */
+    /* Памятка о гравии */
     .manor-sticker-frame {
       position: relative;
       margin-top: 30px;
@@ -949,52 +911,18 @@
       line-height: 1.5;
     }
 
-    .tape-sticker {
-      top: -12px;
-      left: 30px;
-      width: 90px;
-      height: 22px;
-      transform: rotate(-2deg);
-    }
-
     /* ========================================================
-       5. АНКЕТА ГОСТЯ / RSVP (ВЫРЕЗНОЙ БЛАНК КУПОНА)
+       5. АНКЕТА ГОСТЯ / RSVP (ПАНЕЛЬ АНКЕТЫ)
        ======================================================== */
     .rsvp-section {
       background-color: #ffffff;
       background-image:
         linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(240, 230, 220, 0.2) 100%);
-      padding: 42px 36px;
-      filter: drop-shadow(4px 12px 28px rgba(104, 20, 39, 0.16));
+      padding: 42px 38px;
       position: relative;
-      transform: rotate(-0.5deg);
-      border: 2px dashed rgba(104, 20, 39, 0.35);
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      border-radius: 4px;
       margin-bottom: 42px;
-      /* Фигурный срез зигзаг ножницами сверху */
-      clip-path: polygon(0% 0%, 2% 5px, 4% 0%, 6% 5px, 8% 0%, 10% 5px, 12% 0%, 14% 5px, 16% 0%, 18% 5px,
-          20% 0%, 22% 5px, 24% 0%, 26% 5px, 28% 0%, 30% 5px, 32% 0%, 34% 5px, 36% 0%, 38% 5px,
-          40% 0%, 42% 5px, 44% 0%, 46% 5px, 48% 0%, 50% 5px, 52% 0%, 54% 5px, 56% 0%, 58% 5px,
-          60% 0%, 62% 5px, 64% 0%, 66% 5px, 68% 0%, 70% 5px, 72% 0%, 74% 5px, 76% 0%, 78% 5px,
-          80% 0%, 82% 5px, 84% 0%, 86% 5px, 88% 0%, 90% 5px, 92% 0%, 94% 5px, 96% 0%, 98% 5px, 100% 0%,
-          99.2% 99.2%, 0.8% 99%);
-    }
-
-    .cut-line {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.9rem;
-      color: var(--burgundy);
-      margin-bottom: 26px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 700;
-    }
-
-    .cut-line hr {
-      flex: 1;
-      border: none;
-      border-top: 2px dashed rgba(104, 20, 39, 0.45);
     }
 
     .rsvp-group {
@@ -1578,7 +1506,6 @@
 
       <!-- Вырезанная фотография пары -->
       <div class="couple-photo-frame">
-        <div class="washi-strip tape-top washi-blue" aria-hidden="true"></div>
         <div class="postal-seal-round" aria-hidden="true">
           <span class="stamp-sub">МОСКВА</span>
           <span class="stamp-date">05.08</span>
@@ -1606,8 +1533,6 @@
           src="./assets/keepsakes/flowers.webp" alt="" loading="lazy" decoding="async" width="1312" height="1199"
           data-layout-id="decoration-05"><img class="decor-object decor-key" src="./assets/keepsakes/key.webp" alt=""
           loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-06"></div>
-
-      <div class="washi-strip tape-venue washi-burgundy"></div>
 
       <section class="venue-card-inner">
         <div style="margin-bottom: 14px;">
@@ -1900,9 +1825,8 @@
           </div>
         </div>
 
-        <!-- Памятка о гравии (внешний контейнер не срезает скотч) -->
+        <!-- Памятка о гравии -->
         <div class="manor-sticker-frame">
-          <div class="washi-strip tape-sticker washi-blue"></div>
           <div class="manor-sticker-inner cut-scissor-5">
             <strong>МАЛЕНЬКАЯ ЗАМЕТКА ДЛЯ ВСЕХ:</strong> Выбирайте удобную обувь для танцев. А для вечерней прогулки
             захватите лёгкую накидку — пусть ничто не мешает наслаждаться нашим днём.
@@ -1912,7 +1836,7 @@
     </div>
 
     <!-- ==========================================
-         5. АНКЕТА ГОСТЯ / RSVP (ОТРЫВНОЙ КУПОН)
+         5. АНКЕТА ГОСТЯ / RSVP (ПАНЕЛЬ АНКЕТЫ)
          ========================================== -->
     <div class="decorated-section">
       <div class="decoration-pair" aria-hidden="true">
@@ -1926,12 +1850,6 @@
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-22">
       </div>
       <section class="rsvp-section" id="rsvp">
-        <div class="cut-line">
-          <span>✂ ОТРЕЗАТЬ ПО ЛИНИИ</span>
-          <hr>
-          <span>КУПОН ГОСТЯ</span>
-        </div>
-
         <div style="text-align: center; margin-bottom: 24px;">
           <h2 class="section-heading"><span class="scrap-clip" style="transform: rotate(-1.5deg);">
               <span class="clip-body cut-scissor-2 bg-burgundy-rich"

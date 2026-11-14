@@ -245,9 +245,6 @@ body { background: #484644; color: #f0e9e1; }
 .dresscode-section .section-heading > .scrap-clip:last-child .clip-body { background: #b9cbd2; color: #493139; }
 .dresscode-section .cute-scribble, .rsvp-section .cute-scribble { color: #643e49; }
 .manor-sticker-inner { background: #d2dde0; color: #40363a; }
-.washi-blue { background: #bdd9eacc; }
-.washi-burgundy { background: #dacbd0bb; }
-.rsvp-section { border-top-color: #a99096; }
 .rsvp-section::after { content: none; }
 .rsvp-group .clip-body { color: #3c3534; }
 .choice-btn input:checked + .choice-box { background: #643e49; color: #f3ece3; border-color: #643e49; }
@@ -544,24 +541,10 @@ body { background: #484644; color: #f0e9e1; }
   }
 }
 
-/* 5. Текстура шёлка/ткани и мини-скотч на карточках палитры дресс-кода */
+/* 5. Текстура шёлка/ткани на карточках палитры дресс-кода */
 .swatch-card {
   position: relative;
   overflow: visible;
-}
-.swatch-card::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: 34px;
-  height: 10px;
-  transform: translateX(-50%) rotate(-2deg);
-  background: rgba(216, 229, 234, 0.78);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-  clip-path: polygon(2% 10%, 98% 0%, 100% 90%, 0% 100%);
-  pointer-events: none;
-  z-index: 3;
 }
 .swatch-color {
   position: relative;
@@ -581,8 +564,7 @@ body { background: #484644; color: #f0e9e1; }
   pointer-events: none;
 }
 
-/* 6. Почтовый штемпель и японский скотч на полароиде пары */
-.couple-photo-frame .tape-top,
+/* 6. Почтовый штемпель на полароиде пары */
 .couple-photo-frame .postal-seal-round {
   z-index: 12;
 }
@@ -604,31 +586,20 @@ body { background: #484644; color: #f0e9e1; }
   box-shadow: 0 0 0 2px rgba(241, 236, 228, 0.55);
 }
 
-/* 8. Перфорация отрывного купона RSVP и лёгкое движение ножниц */
+/* 8. Обычная панелька RSVP в едином стиле с остальными секциями */
 .rsvp-section {
-  border-top: 0 !important;
+  border: 0 !important;
   position: relative;
-  margin-top: 46px;
+  margin-top: 0;
+  margin-bottom: 30px;
+  padding: 86px 36px 38px;
+  clip-path: var(--scissor-a);
+  border-radius: 4px;
 }
-.rsvp-section::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: 0;
-  right: 0;
-  height: 10px;
-  background: radial-gradient(circle at 10px 0, transparent 5.5px, var(--paper-surface) 6px) repeat-x;
-  background-size: 20px 10px;
-  pointer-events: none;
-}
-@keyframes scissorSnip {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  40% { transform: translateX(8px) rotate(-1.5deg); }
-  70% { transform: translateX(3px) rotate(0.5deg); }
-}
-.rsvp-section.is-revealed .cut-line > span:first-child {
-  display: inline-block;
-  animation: scissorSnip 1.1s ease-in-out 0.25s 1;
+@media (max-width: 780px) {
+  .rsvp-section {
+    padding: 28px 18px;
+  }
 }
 
 /* 9. Ровные маюскульные цифры на карточках обратного отсчёта и плавное появление при скролле */
@@ -722,7 +693,6 @@ body { background: #484644; color: #f0e9e1; }
     opacity: 1 !important;
     translate: none !important;
   }
-  .rsvp-section.is-revealed .cut-line > span:first-child,
   .countdown-card.is-ticking .countdown-num {
     animation: none !important;
     transform: none !important;
@@ -838,7 +808,13 @@ body {
 }
 
 .envelope-box {
+  box-shadow: none !important;
+}
+.envelope-back {
   box-shadow: 0 2px 2px rgba(49, 8, 19, 0.3), 0 18px 28px rgba(35, 8, 16, 0.36) !important;
+}
+.envelope-letter {
+  box-shadow: 0 10px 26px rgba(35, 8, 16, 0.32) !important;
 }
 .couple-photo-inner {
   clip-path: none !important;

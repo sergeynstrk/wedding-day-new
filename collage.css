@@ -56,7 +56,6 @@ body {
 .venue-photo-wrapper { float: right; width: 44%; margin: 12px 0 14px 22px; transform: rotate(2deg); }
 .venue-photo-wrapper img { width: 100%; height: 210px; object-fit: cover; border: 5px solid #e8ddc6; }
 .venue-card-inner > p { font-family: 'Oswald', sans-serif; font-size: 18px !important; }
-.tape-venue { display: none; }
 .btn-actions-row { gap: 10px; flex-wrap: wrap; }
 .btn-paper-scrap { font-size: 16px; padding: 11px 16px; filter: drop-shadow(1px 2px 1px #49362b30); }
 .timing-section { margin-bottom: 30px; }
@@ -83,7 +82,7 @@ body {
 .dress-note-box { background: transparent; padding: 0; border: 0; filter: none; }
 .dress-figure-img { height: 220px; object-fit: contain; border: 0; }
 .manor-sticker-inner { background: #d3be7b; border: 0; padding: 14px 20px; filter: drop-shadow(1px 2px 1px #49362b30); }
-.rsvp-section { margin-top: 40px; background-color: #e5dfd0; border-top: 2px dashed #705746; clip-path: none; }
+.rsvp-section { margin-top: 20px; background-color: #e5dfd0; border: 0; clip-path: var(--scissor-a); }
 .rsvp-input { clip-path: none; background: #f4eee2; font-family: inherit; box-shadow: none; }
 .choice-box, .chip-box { background: #f4eee2; font-family: inherit; filter: none; }
 .btn-submit-collage { margin-top: 10px; padding: 14px; font-size: 23px; filter: drop-shadow(1px 2px 1px #49362b30); }
@@ -159,7 +158,6 @@ body {
   .postal-seal-round { width: 61px; height: 61px; right: -6px; top: -12px; }
   .postal-seal-round .stamp-date { font-size: 20px; }
   .postal-seal-round .stamp-sub, .postal-seal-round .stamp-year { font-size: 9px; }
-  .tape-top { width: 75px; height: 20px; left: 15%; }
 
   .hero-details {
     width: 100%;
