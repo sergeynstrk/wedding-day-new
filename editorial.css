@@ -37,7 +37,7 @@ p { text-wrap: pretty; }
 .char-c3 { font-family: 'Cormorant Garamond', Georgia, serif; color: #f5ebd9; background: #3f6269; clip-path: var(--scissor-b); font-style: italic; font-size: clamp(52px, 11.2vw, 119px); transform: rotate(-4deg) translateY(-3px); }
 .char-c4 { font-family: 'Montserrat', Arial, sans-serif; color: #843d33; background: #dfc586; font-size: clamp(35px, 8vw, 85px); font-weight: 900; clip-path: var(--scissor-c); transform: rotate(6deg); }
 .char-c5 { font-family: 'Playfair Display', Georgia, serif; background: #ab5143; color: #f9ead7; clip-path: var(--scissor-b); transform: rotate(-6deg) translateY(7px); font-size: clamp(44px, 9vw, 96px); }
-.char-c6 { font-family: 'Courier Prime', 'Courier New', monospace; background: #e9dfcc; color: #302e28; clip-path: var(--scissor-a); transform: rotate(5deg) translateY(-4px); font-size: clamp(47px, 10.1vw, 108px); }
+.char-c6 { font-family: 'Playfair Display', Georgia, serif; background: #e9dfcc; color: #302e28; clip-path: var(--scissor-a); transform: rotate(5deg) translateY(-4px); font-size: clamp(47px, 10.1vw, 108px); }
 .char-c7 { font-family: 'Oswald', Impact, sans-serif; background: #76806a; color: #fff1dc; clip-path: var(--scissor-c); transform: rotate(-4deg); font-size: clamp(43px, 9.1vw, 97px); }
 .hero-huge-title { filter: drop-shadow(1px 2px 0 #51382738) drop-shadow(2px 5px 3px #51382720); }
 .scrap-clip { filter: drop-shadow(0 1px 0 #48311f45) drop-shadow(2px 3px 1px #48311f25); }
@@ -51,7 +51,7 @@ p { text-wrap: pretty; }
 .bg-black-sans { font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; }
 .bg-burgundy-rich { font-family: 'Oswald', sans-serif; background-color: #8b3c32; }
 .bg-blue-powder { font-family: 'Oswald', sans-serif; background-color: #446771; color: #fff4e5; }
-.bg-news-typewriter { font-family: 'Courier Prime', 'Courier New', monospace; color: #342b25; font-size: 15px; }
+.bg-news-typewriter { font-family: 'Montserrat', sans-serif; font-weight: 600; letter-spacing: 0.02em; color: #342b25; font-size: 14.5px; }
 .hero-top-row .scrap-clip:first-child { transform: rotate(-5deg) !important; }
 .hero-top-row .scrap-clip:last-child { transform: rotate(4deg) translateY(5px) !important; }
 .hero-top-row .bg-black-sans { font-family: 'Montserrat', sans-serif; background: #342d28; color: #f8ecdb; font-size: 25px !important; padding: 4px 10px !important; }
@@ -86,10 +86,10 @@ p { text-wrap: pretty; }
 .timing-text-box { gap: 7px; }
 .sm-timing__item.item-2 .bg-white-serif { font-family: 'Montserrat', sans-serif; font-size: 21px !important; background: #d8c48e; }
 .sm-timing__item.item-3 .bg-white-serif { font-family: 'Oswald', sans-serif; font-size: 27px !important; }
-.sm-timing__item.item-4 .bg-white-serif { font-family: 'Courier Prime', monospace; font-size: 22px !important; }
+.sm-timing__item.item-4 .bg-white-serif { font-family: 'Oswald', sans-serif; font-size: 22px !important; }
 .b1 { color: #fff4e5; background: #446771; }.b3 { background: #dec580; color: #653023; }.b4 { background: #53694b; color: #fff6e6; }
 .dresscode-section { clip-path: var(--scissor-a); padding: 35px 27px; transform: rotate(.7deg); }
-.dresscode-section .section-heading > .scrap-clip:last-child .clip-body { font-family: 'Courier Prime', monospace; background: #d4bd7b; color: #3d3226; font-size: 19px !important; }
+.dresscode-section .section-heading > .scrap-clip:last-child .clip-body { font-family: 'Oswald', sans-serif; background: #d4bd7b; color: #3d3226; font-size: 19px !important; }
 .dresscode-section > p { font-size: 15px !important; line-height: 1.85 !important; }
 .dress-note-box p { font-size: 14px !important; line-height: 1.7 !important; }
 .palette-swatches { gap: 15px; }
@@ -631,29 +631,79 @@ body { background: #484644; color: #f0e9e1; }
   animation: scissorSnip 1.1s ease-in-out 0.25s 1;
 }
 
-/* 9. Мини-скотч на карточках обратного отсчёта и плавное появление при скролле */
+/* 9. Ровные маюскульные цифры на карточках обратного отсчёта и плавное появление при скролле */
 .countdown-card {
   position: relative;
-  overflow: visible;
-}
-.countdown-card::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: 42px;
-  height: 11px;
-  transform: translateX(-50%) rotate(1.5deg);
-  background: rgba(235, 216, 183, 0.72);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14);
-  clip-path: polygon(2% 10%, 98% 0%, 100% 90%, 0% 100%);
-  pointer-events: none;
-}
-.countdown-card.cd-tilt-2::before {
-  transform: translateX(-50%) rotate(-2deg);
 }
 .countdown-num {
+  font-variant-numeric: lining-nums tabular-nums !important;
+  font-feature-settings: "lnum" 1, "tnum" 1 !important;
   transition: transform 0.18s ease-out;
+}
+
+/* 10. Исправление обрезки тени в RSVP (#rsvpDrinksGroup), рамок чипсов/полей и кириллического шрифта в тайминге */
+#rsvpDrinksGroup {
+  padding: 8px 12px 10px;
+  margin-left: -12px;
+  margin-right: -12px;
+}
+#rsvpDrinksGroup.is-collapsed {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.choice-box,
+.chip-box {
+  clip-path: none !important;
+  border: 1px solid #bfb5ac !important;
+  border-radius: 2px;
+  background-color: #f6f2eb !important;
+  box-shadow: 0 2px 5px rgba(60, 53, 52, 0.07);
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.choice-box {
+  display: flex !important;
+}
+.choice-btn:hover .choice-box,
+.chip-btn:hover .chip-box {
+  border-color: #8c7f75 !important;
+  background-color: #fbf8f3 !important;
+}
+.choice-btn input:checked + .choice-box {
+  background-color: #643e49 !important;
+  border-color: #643e49 !important;
+  color: #f3ece3 !important;
+  box-shadow: 0 4px 10px rgba(73, 49, 57, 0.25) !important;
+}
+.chip-btn input:checked + .chip-box {
+  background-color: #b9cbd2 !important;
+  border-color: #8ca4af !important;
+  color: #493139 !important;
+  text-shadow: none !important;
+  box-shadow: 0 3px 8px rgba(73, 49, 57, 0.16) !important;
+}
+
+.rsvp-input {
+  clip-path: none !important;
+  border: 1px solid #bfb5ac !important;
+  border-radius: 2px;
+  background-color: #f6f2eb !important;
+  box-shadow: inset 0 1px 3px rgba(60, 53, 52, 0.05);
+}
+.rsvp-input:focus {
+  border-color: #643e49 !important;
+  background-color: #fbf8f3 !important;
+}
+
+.timing-text-box .bg-news-typewriter {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.02em !important;
+  color: #393135 !important;
+  padding: 5px 12px !important;
 }
 .countdown-card.is-ticking .countdown-num {
   transform: scale(1.06);
