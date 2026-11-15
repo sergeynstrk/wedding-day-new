@@ -12,9 +12,9 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "flipY": false
       },
       "decoration-11": {
-        "x": 623.727294921875,
-        "y": -2968.3457946777344,
-        "scale": 1,
+        "x": 235,
+        "y": 215,
+        "scale": 0.85,
         "rotation": -2,
         "flipX": false,
         "flipY": false
@@ -46,7 +46,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": 0
       },
       "decoration-03": {
-        "x": 410,
+        "x": 190,
         "y": -287,
         "scale": 1,
         "rotation": 29

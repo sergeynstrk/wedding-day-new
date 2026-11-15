@@ -792,9 +792,61 @@ body {
 .envelope-letter {
   box-shadow: 0 10px 26px rgba(35, 8, 16, 0.32) !important;
 }
+.hero-section > .couple-photo-frame {
+  grid-column: 1 / -1 !important;
+  grid-row: 3 !important;
+  width: 100%;
+  max-width: 340px;
+  margin: 2px auto 10px !important;
+  justify-self: center;
+}
 .couple-photo-inner {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
   clip-path: none !important;
-  box-shadow: 0 8px 22px rgba(24, 6, 11, 0.28) !important;
+}
+.couple-photo-inner img {
+  display: block;
+  width: 100%;
+  height: 265px !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  clip-path: none !important;
+  margin: 0 auto;
+}
+.hero-section > .hero-names-row {
+  grid-column: 1 / -1 !important;
+  grid-row: 4 !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin: 4px auto 10px !important;
+}
+.hero-names-row .scrap-clip:nth-child(2) {
+  margin: 0 !important;
+}
+.hero-section > .hero-invitation-note {
+  grid-column: 1 / -1 !important;
+  grid-row: 5 !important;
+  text-align: center !important;
+  justify-self: center !important;
+  margin: 2px auto 12px !important;
+  padding-right: 0 !important;
+}
+.hero-section > .hero-details {
+  grid-column: 1 / -1 !important;
+  grid-row: 6 !important;
+  align-items: center !important;
+  text-align: center !important;
+  padding: 8px 0 0 !important;
 }
 .dresscode-section,
 .rsvp-section {
@@ -930,6 +982,15 @@ body {
 }
 
 @media (max-width: 780px) {
+  .hero-section > .couple-photo-frame {
+    max-width: 280px;
+    margin: 0 auto 6px !important;
+  }
+  .couple-photo-inner img {
+    height: 220px !important;
+    padding: 0 !important;
+  }
+
   .dress-figure-img {
     max-width: 220px;
   }
