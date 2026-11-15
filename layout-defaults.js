@@ -52,9 +52,9 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": 29
       },
       "decoration-01": {
-        "x": 844,
-        "y": -200,
-        "scale": 1,
+        "x": 882,
+        "y": -242,
+        "scale": 0.92,
         "rotation": 0
       },
       "decoration-13": {
@@ -83,13 +83,13 @@ window.WEDDING_LAYOUT_DEFAULTS = {
       },
       "decoration-20": {
         "x": -176,
-        "y": -1898,
+        "y": -1823,
         "scale": 1,
         "rotation": 8
       },
       "decoration-21": {
         "x": 919,
-        "y": -3191,
+        "y": -3116,
         "scale": 0.95,
         "rotation": 6
       },
@@ -100,9 +100,9 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": -12
       },
       "decoration-16": {
-        "x": -157,
-        "y": 16,
-        "scale": 1,
+        "x": -115,
+        "y": -10,
+        "scale": 0.92,
         "rotation": 24,
         "flipX": false,
         "flipY": false
@@ -111,8 +111,8 @@ window.WEDDING_LAYOUT_DEFAULTS = {
     "mobile": {
       "decoration-01": { "x": 238, "y": 754, "scale": 1.0, "rotation": -6 },
       "decoration-02": { "x": 8, "y": 756, "scale": 0.92, "rotation": 12 },
-      "decoration-03": { "x": 255, "y": 135, "scale": 0.85, "rotation": 15 },
-      "decoration-04": { "x": 4, "y": 215, "scale": 0.9, "rotation": -18 },
+      "decoration-03": { "x": 268, "y": 108, "scale": 0.78, "rotation": 15 },
+      "decoration-04": { "x": -18, "y": 242, "scale": 0.82, "rotation": -18 },
       "decoration-05": { "x": 4, "y": 118, "scale": 0.95, "rotation": -12 },
       "decoration-06": { "x": 268, "y": 118, "scale": 0.9, "rotation": 22 },
       "decoration-11": { "x": -6, "y": 35, "scale": 0.95, "rotation": 8 },
@@ -121,9 +121,9 @@ window.WEDDING_LAYOUT_DEFAULTS = {
       "decoration-14": { "x": 6, "y": 930, "scale": 0.95, "rotation": -14 },
       "decoration-15": { "x": 240, "y": 1380, "scale": 1.0, "rotation": 10 },
       "decoration-19": { "x": 252, "y": 16, "scale": 0.95, "rotation": 35 },
-      "decoration-20": { "x": 265, "y": 210, "scale": 0.85, "rotation": -5 },
+      "decoration-20": { "x": 282, "y": 174, "scale": 0.72, "rotation": -5 },
       "decoration-21": { "x": 8, "y": 15, "scale": 0.85, "rotation": -10 },
-      "decoration-22": { "x": 262, "y": 380, "scale": 0.85, "rotation": 14 },
+      "decoration-22": { "x": 268, "y": 302, "scale": 0.75, "rotation": 14 },
       "decoration-16": { "x": 238, "y": -8, "scale": 0.92, "rotation": 8 }
     }
   }

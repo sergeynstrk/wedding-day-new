@@ -29,7 +29,9 @@
 html.envelope-active .envelope-screen { display: flex; }
 html.envelope-active, body.envelope-locked, html.envelope-active body { overflow: hidden; }
 /* The main sheet stays in the document: only its contents are hidden. */
-html { scrollbar-gutter: stable; }
+@media (min-width: 781px) {
+  html { scrollbar-gutter: stable; }
+}
 html.envelope-active #invitation > * { visibility: hidden; opacity: 0; }
 html.envelope-active.envelope-revealing #invitation > * {
   visibility: visible;
@@ -63,7 +65,7 @@ html.fonts-loading .envelope-stage {
   align-items: center;
   justify-content: center;
 }
-.envelope-eyebrow { color: #e1ccd0; font: 400 11px/1.5 'Montserrat', sans-serif; margin-bottom: 14px; letter-spacing: .05em; }
+.envelope-eyebrow { color: #e1ccd0; font: 400 11px/1.5 'Montserrat', sans-serif; margin-bottom: 14px; letter-spacing: .05em; text-wrap: balance; }
 .envelope-intro h2 { font-weight: 700; font-size: inherit; line-height: 1.2; white-space: nowrap; }
 .envelope-intro h2 > span {
   display: inline-block;
@@ -115,7 +117,7 @@ html.fonts-loading .envelope-stage {
 .letter-name-first { font: 700 clamp(24px, 4.2vw, 44px)/1 'Cormorant Garamond', Georgia, serif; transform: rotate(-2deg); }
 .letter-amp { color: #7b4f5a; font: 700 clamp(22px, 3vw, 34px)/1 'Caveat', cursive; }
 .letter-name-second { background: #bdd5e2; background-image: var(--env-grain); padding: 7px 11px 10px; color: #681427; font: 900 clamp(20px, 3.2vw, 34px)/1 'Montserrat', sans-serif; clip-path: var(--scissor-b); transform: rotate(3deg); }
-.letter-note { margin-top: 13px; color: #70414e; font: 700 clamp(17px, 2.4vw, 25px)/1.2 'Caveat', cursive; }
+.letter-note { margin-top: 13px; color: #70414e; font: 700 clamp(17px, 2.4vw, 25px)/1.2 'Caveat', cursive; text-wrap: balance; }
 .letter-monogram-wrap { text-align: center; }
 .letter-date { display: inline-block; padding: 4px 10px 6px; background: #d0dee4; clip-path: var(--scissor-a); color: #4d343c; font: 600 18px/1.2 'Oswald', sans-serif; }
 .letter-location { margin-top: 6px; font: 400 10px/1.5 'Montserrat', sans-serif; }
@@ -136,9 +138,15 @@ html.fonts-loading .envelope-stage {
 .wax-seal { display: block; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .wax-seal-image { display: block; width: clamp(70px, 13vw, 108px); height: auto; filter: drop-shadow(0 3px 2px #41132135); transition: transform .2s ease, filter .2s ease; }
 .wax-seal:disabled { cursor: default; }
-.wax-seal:focus-visible { outline: none; }
+.wax-seal:focus-visible {
+  outline: 3px solid #f5ece1;
+  outline-offset: 6px;
+}
+.wax-seal:focus-visible .wax-seal-image {
+  filter: brightness(1.12) drop-shadow(0 3px 3px #41132145);
+}
 .envelope-caption { position: relative; z-index: 1; text-align: center; padding-top: 18px; min-height: 78px; }
-#envelopeOpenHint { color: #dbdfe2; font: 400 11px/1.6 'Montserrat', sans-serif; }
+#envelopeOpenHint { color: #dbdfe2; font: 400 11px/1.6 'Montserrat', sans-serif; text-wrap: balance; }
 .envelope-signature { display: inline-block; margin-top: 10px; color: #c7dbe6; font: 700 26px/1.2 'Caveat', cursive; transform: rotate(-2deg); white-space: nowrap; }
 @media (hover: hover) {
   .wax-seal:not(:disabled):hover .wax-seal-image { transform: translateY(-2px) rotate(-3deg); filter: drop-shadow(0 5px 3px #41132145); }
@@ -157,11 +165,11 @@ html.fonts-loading .envelope-stage {
   .letter-names { gap: 7px; }
   .letter-note { margin-top: 9px; font-size: 18px; }
   .letter-date { font-size: 14px; padding: 3px 8px 5px; }
-  .letter-location { font-size: 8px; margin-top: 4px; }
+  .letter-location { font-size: 10px; margin-top: 4px; }
   .envelope-address { bottom: 18px; left: 18px; font-size: 21px; }
-  .envelope-postmark { width: 49px; height: 49px; right: 16px; bottom: 15px; font-size: 7px; }
+  .envelope-postmark { width: 54px; height: 54px; right: 16px; bottom: 15px; font-size: 8.5px; }
   .envelope-postmark b { font-size: 16px; }
-  .envelope-postmark small { font-size: 7px; }
+  .envelope-postmark small { font-size: 8.5px; }
   .wax-seal-image { width: 78px; }
   #envelopeOpenHint { font-size: 10px; }
   .envelope-signature { font-size: 24px; }
@@ -179,13 +187,12 @@ html.fonts-loading .envelope-stage {
 }
 
 .envelope-screen:focus { outline: none; }
-.envelope-screen:not(.envelope-keyboard) .wax-seal:focus-visible { outline: none; }
 @media (max-height: 560px) {
   .wax-seal-image { width: 76px; }
   .envelope-address { bottom: 18px; left: 18px; font-size: 18px; }
-  .envelope-postmark { width: 49px; height: 49px; right: 16px; bottom: 15px; font-size: 7px; }
+  .envelope-postmark { width: 54px; height: 54px; right: 16px; bottom: 15px; font-size: 8.5px; }
   .envelope-postmark b { font-size: 16px; }
-  .envelope-postmark small { font-size: 7px; }
+  .envelope-postmark small { font-size: 8.5px; }
   .envelope-letter { padding: 12px; }
   .letter-name-first { font-size: 30px; }
   .letter-name-second { font-size: 22px; }
@@ -194,6 +201,4 @@ html.fonts-loading .envelope-stage {
   .letter-top-label span { font-size: 11px; }
 }
 
-/* Keep keyboard focus visible on the wax itself, without a coloured ring. */
-.envelope-keyboard .wax-seal:focus-visible .wax-seal-image { filter: brightness(1.18) drop-shadow(0 3px 3px #41132145); }
 .magazine-canvas:focus { outline: none; }

@@ -67,7 +67,7 @@ body {
 .sm-timing__item { gap: 5px; padding: 0 !important; min-width: 0; }
 .sm-timing__item.item-2, .sm-timing__item.item-4 { margin-top: -65px; }
 .item-top-row { gap: 8px; }
-.num-cutout-box { width: 36px; height: 42px; font-size: 36px; filter: none; }
+.num-cutout-box { width: 36px; min-block-size: 42px; height: auto; display: inline-flex; align-items: center; justify-content: center; font-size: 36px; filter: none; }
 .b1 { background: #73949c; }.b2 { background: #ede3d2; border: 0; }.b3 { background: #b39955; color: #a34738; }.b4 { background: #7e9976; color: #f4ecdf; }
 .timing-icon-cutout { width: 100px; height: 95px; padding: 4px; background: transparent; border: 0; filter: none; }
 .timing-text-box { max-width: 100%; gap: 3px; }
@@ -351,11 +351,12 @@ body {
   .drinks-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
   }
   .chip-box {
-    font-size: 13px;
-    padding: 8px 10px;
+    font-size: 13.5px;
+    padding: 8px 12px;
+    min-block-size: 44px;
   }
   .farewell-footer {
     margin-top: 10px;
@@ -382,7 +383,12 @@ body {
   .modal-box { padding: 25px 18px; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: color, background-color, border-color, outline-color, opacity !important;
+  }
   .sm-timing__item.item-active { transform: none; }
 }
 

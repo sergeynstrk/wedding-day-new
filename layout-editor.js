@@ -4,7 +4,7 @@
   const defaults = window.WEDDING_LAYOUT_DEFAULTS?.layouts || {};
   const editing = new URLSearchParams(location.search).get('edit') === '1';
   const items = [...document.querySelectorAll('.decor-object, .flatlay-bouquet')];
-  const profile = () => innerWidth >= 1400 ? 'desktop' : innerWidth >= 781 ? 'tablet' : 'mobile';
+  const profile = () => innerWidth >= 781 ? 'desktop' : 'mobile';
   let layouts = {};
   try { layouts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
   if (!layouts || typeof layouts !== 'object' || Array.isArray(layouts)) layouts = {};

@@ -11,7 +11,8 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:title" content="Сергей & Юля — Приглашение на свадьбу · 05.08.2027">
-  <meta property="og:description" content="Для самых близких ♡ 5 августа 2027 года, Москва, старинная усадьба Братцево. Откройте конверт с приглашением!">
+  <meta property="og:description"
+    content="Для самых близких ♡ 5 августа 2027 года, Москва, старинная усадьба Братцево. Откройте конверт с приглашением!">
   <meta property="og:url" content="https://sergeynstrk.github.io/wedding-day-new/">
   <meta property="og:image" content="https://sergeynstrk.github.io/wedding-day-new/assets/og-preview.jpg">
   <meta property="og:image:width" content="1200">
@@ -21,7 +22,8 @@
   <meta name="twitter:title" content="Сергей & Юля — Приглашение на свадьбу · 05.08.2027">
   <meta name="twitter:description" content="Для самых близких ♡ 5 августа 2027 года, Москва, усадьба Братцево.">
   <meta name="twitter:image" content="https://sergeynstrk.github.io/wedding-day-new/assets/og-preview.jpg">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
 
   <!-- Изящная и кристально чёткая типографика: журнальные заголовки, нежная каллиграфия и чёткий гротеск -->
   <link rel="preload" as="image" href="./assets/burgundy-paper-user.jpg">
@@ -61,9 +63,8 @@
       --ink-soft: #282124;
       --ink-muted: #483e42;
 
-      /* Осязаемая фактура дорогой хлопковой бумаги на общем фоне и холсте */
-      --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cfilter id='paperGrain' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch' result='noise'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.38  0 0 0 0 0.26  0 0 0 0 0.20  0 0 0 0 0.12 0' result='coloredNoise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)'/%3E%3C/svg%3E");
-      --paper-fibers: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='fibers'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.04 0.9' numOctaves='2' result='turb'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.32 0 0 0 0 0.22 0 0 0 0 0.16 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fibers)'/%3E%3C/svg%3E");
+      --paper-grain: none;
+      --paper-fibers: none;
     }
 
     * {
@@ -118,29 +119,6 @@
       padding: 60px 54px;
       border: 1px solid rgba(226, 215, 200, 0.85);
       border-radius: 4px;
-    }
-
-    /* Верхняя ленточка спецвыпуска */
-    .edition-ribbon {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px dashed rgba(104, 20, 39, 0.25);
-      padding-bottom: 12px;
-      margin-bottom: 34px;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--burgundy-rich);
-      font-weight: 700;
-    }
-
-    .edition-ribbon .cute-tag {
-      font-family: 'Caveat', cursive;
-      font-size: 1.35rem;
-      color: var(--powder-blue-dark);
-      text-transform: none;
-      letter-spacing: normal;
     }
 
     /* ========================================================
@@ -1345,7 +1323,7 @@
       }
 
       .countdown-label {
-        font-size: 0.62rem;
+        font-size: 0.6875rem;
         letter-spacing: 0.04em;
       }
 
@@ -1386,8 +1364,8 @@
 
 <body>
   <!-- Бумажный конверт: открытие по нажатию на сургучную печать. -->
-  <div id="envelopeScreen" class="envelope-screen" role="dialog" aria-modal="true"
-    aria-labelledby="envelopeTitle" aria-describedby="envelopeOpenHint" tabindex="-1" hidden>
+  <div id="envelopeScreen" class="envelope-screen" role="dialog" aria-modal="true" aria-labelledby="envelopeTitle"
+    aria-describedby="envelopeOpenHint" tabindex="-1" hidden>
     <div class="envelope-stage">
 
       <header class="envelope-intro">
@@ -1403,7 +1381,8 @@
           <div class="envelope-letter">
             <p class="letter-top-label"><span>Приглашение</span></p>
             <div class="letter-couple">
-              <h3 class="letter-names"><span class="letter-name-first">Сергей</span><span class="letter-amp">&amp;</span><span class="letter-name-second">Юля</span></h3>
+              <h3 class="letter-names"><span class="letter-name-first">Сергей</span><span
+                  class="letter-amp">&amp;</span><span class="letter-name-second">Юля</span></h3>
               <p class="letter-note">Разделите с нами этот день ♡</p>
             </div>
             <div class="letter-monogram-wrap">
@@ -1416,7 +1395,8 @@
             <div class="envelope-front-side paper-texture-side"></div>
             <div class="envelope-front-bottom paper-texture-bottom"></div>
             <svg class="envelope-seams-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path fill="none" stroke="#b7a992" stroke-width="1" vector-effect="non-scaling-stroke" d="M0 0L50 56L100 0M0 100L50 56L100 100"/>
+              <path fill="none" stroke="#b7a992" stroke-width="1" vector-effect="non-scaling-stroke"
+                d="M0 0L50 56L100 0M0 100L50 56L100 100" />
             </svg>
             <span class="envelope-address">для наших<br><strong>любимых людей</strong></span>
             <span class="envelope-postmark">Москва<b>05.08</b><small>2027</small></span>
@@ -1425,13 +1405,16 @@
           <div class="envelope-flap paper-texture-flap" aria-hidden="true">
             <div class="envelope-flap-liner paper-texture-liner"></div>
             <svg class="envelope-flap-svg" viewBox="0 0 100 58" preserveAspectRatio="none">
-              <path fill="none" stroke="#b7a992" stroke-width="1" vector-effect="non-scaling-stroke" d="M0 0L50 56L100 0"/>
+              <path fill="none" stroke="#b7a992" stroke-width="1" vector-effect="non-scaling-stroke"
+                d="M0 0L50 56L100 0" />
             </svg>
           </div>
           <div class="envelope-border" aria-hidden="true"></div>
           <div class="envelope-btn">
-            <button type="button" id="waxSealBtn" class="wax-seal" aria-label="Открыть свадебное приглашение" aria-describedby="envelopeOpenHint">
-              <img class="wax-seal-image" src="./assets/keepsakes/wax-seal.webp" alt="" width="285" height="269" decoding="async" fetchpriority="high">
+            <button type="button" id="waxSealBtn" class="wax-seal" aria-label="Открыть свадебное приглашение"
+              aria-describedby="envelopeOpenHint">
+              <img class="wax-seal-image" src="./assets/keepsakes/wax-seal.webp" alt="" width="285" height="269"
+                decoding="async" fetchpriority="high">
             </button>
           </div>
         </div>
@@ -1512,7 +1495,7 @@
           <span class="stamp-year">2027</span>
         </div>
         <div class="couple-photo-inner cut-scissor-1">
-          <img src="./assets/couple-photo.webp" alt="Сергей и Юля" decoding="async" fetchpriority="high">
+          <img src="./assets/couple-photo.webp" alt="Сергей и Юля" width="719" height="960" decoding="async" fetchpriority="high">
           <div class="photo-caption-scrap cut-scissor-2">
             Это мы ♡
           </div>
@@ -1577,8 +1560,8 @@
           <button type="button" class="btn-paper-scrap btn-paper-blue" onclick="addToCalendar()">
             Google Календарь ↗
           </button>
-          <a href="https://yandex.ru/maps/?text=Усадьба+Братцево+Светлогорский+проезд+13" target="_blank" rel="noopener noreferrer"
-            class="btn-paper-scrap btn-paper-burgundy">
+          <a href="https://yandex.ru/maps/?text=Усадьба+Братцево+Светлогорский+проезд+13" target="_blank"
+            rel="noopener noreferrer" class="btn-paper-scrap btn-paper-burgundy">
             Маршрут на карте ↗
           </a>
         </div>
@@ -1618,26 +1601,12 @@
                 <rect id="timelineClipRect" x="-10" y="-10" width="65" height="0" />
               </clipPath>
             </defs>
-            <path
-              class="timeline-path-base"
-              fill="none"
-              stroke="#c5d6dc"
-              stroke-opacity="0.38"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              vector-effect="non-scaling-stroke"
+            <path class="timeline-path-base" fill="none" stroke="#c5d6dc" stroke-opacity="0.38" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"
               d="M41.19,4.43 C41.19,42 3.87,48 3.87,85.32 C3.87,124 40.86,128 40.86,166.93 C40.86,204 4.6,200 4.6,238 C4.6,276 40.3,276 40.3,314 C40.3,352 4.39,354 4.39,392 C4.39,430 41.46,430 41.46,468 C41.46,506 6,510 3.5,543.87">
             </path>
-            <path
-              class="timeline-path-progress"
-              clip-path="url(#timelineProgressClip)"
-              fill="none"
-              stroke="#f1ece4"
-              stroke-width="2.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              vector-effect="non-scaling-stroke"
+            <path class="timeline-path-progress" clip-path="url(#timelineProgressClip)" fill="none" stroke="#f1ece4"
+              stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"
               d="M41.19,4.43 C41.19,42 3.87,48 3.87,85.32 C3.87,124 40.86,128 40.86,166.93 C40.86,204 4.6,200 4.6,238 C4.6,276 40.3,276 40.3,314 C40.3,352 4.39,354 4.39,392 C4.39,430 41.46,430 41.46,468 C41.46,506 6,510 3.5,543.87">
             </path>
           </svg>
@@ -1756,7 +1725,8 @@
           loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-14"></div>
       <section class="dresscode-section">
         <div class="flatlay-bouquet" aria-hidden="true" data-layout-id="decoration-15"><img
-            src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="1103" height="1426">
+            src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="1103"
+            height="1426">
         </div>
         <h2 class="section-heading" style="text-align: center;">
           <span class="scrap-clip" style="transform: rotate(-2deg);">
@@ -1807,7 +1777,7 @@
                 ДЛЯ ДАМ</span>
             </span>
             <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/dress-burgundy.webp"
-              alt="Пример дресс-кода: длинное бордовое платье">
+              alt="Пример дресс-кода: длинное бордовое платье" width="735" height="1030">
             <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
               Вечерние или коктейльные платья, шёлковые комбинации, костюмы в благородных цветах палитры.
             </p>
@@ -1818,7 +1788,7 @@
                 ДЛЯ КАВАЛЕРОВ</span>
             </span>
             <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/suit-burgundy.webp"
-              alt="Пример дресс-кода: бордовый костюм">
+              alt="Пример дресс-кода: бордовый костюм" width="679" height="1018">
             <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
               Классические костюмы или блейзеры в глубоких графитовых, тёмно-синих или бордовых тонах.
             </p>
@@ -1844,10 +1814,12 @@
           alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-19">
         <img class="decor-object decor-inkwell decor-secondary-right" src="./assets/keepsakes/inkwell.webp" alt=""
           loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-20">
-        <img class="decor-object decor-reply-card decor-secondary-left" src="./assets/keepsakes/reply-card.webp" alt=""
-          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-21">
-        <img class="decor-object decor-binder-clips decor-secondary-right" src="./assets/keepsakes/binder-clips.webp"
-          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-22">
+        <img class="decor-object decor-secondary decor-reply-card decor-secondary-left"
+          src="./assets/keepsakes/reply-card.webp" alt="" loading="lazy" decoding="async" width="1536" height="1024"
+          data-layout-id="decoration-21">
+        <img class="decor-object decor-secondary decor-binder-clips decor-secondary-right"
+          src="./assets/keepsakes/binder-clips.webp" alt="" loading="lazy" decoding="async" width="1536" height="1024"
+          data-layout-id="decoration-22">
       </div>
       <section class="rsvp-section" id="rsvp">
         <div style="text-align: center; margin-bottom: 24px;">
@@ -1877,7 +1849,7 @@
               <span class="clip-body cut-scissor-3 bg-news-typewriter">1. ВАШЕ ИМЯ И ФАМИЛИЯ:</span>
             </span>
             <input type="text" id="guestName" aria-label="Ваши имена и фамилия" autocomplete="name" class="rsvp-input"
-              placeholder="Например: Иван и Анна Смирновы" required>
+              placeholder="Иван и Анна Смирновы" required>
           </div>
 
           <!-- Присутствие -->
@@ -1905,27 +1877,27 @@
             <div class="drinks-chips">
               <label class="chip-btn">
                 <input type="checkbox" name="drinks" value="Шампанское">
-                <div class="chip-box"> Шампанское</div>
+                <div class="chip-box">Шампанское</div>
               </label>
               <label class="chip-btn">
                 <input type="checkbox" name="drinks" value="Белое вино">
-                <div class="chip-box"> Белое вино</div>
+                <div class="chip-box">Белое вино</div>
               </label>
               <label class="chip-btn">
                 <input type="checkbox" name="drinks" value="Красное вино">
-                <div class="chip-box"> Красное вино</div>
+                <div class="chip-box">Красное вино</div>
               </label>
               <label class="chip-btn">
                 <input type="checkbox" name="drinks" value="Крепкие напитки">
-                <div class="chip-box"> Крепкое</div>
+                <div class="chip-box">Крепкое</div>
               </label>
               <label class="chip-btn">
                 <input type="checkbox" name="drinks" value="Безалкогольное">
-                <div class="chip-box"> Безалкогольное</div>
+                <div class="chip-box">Безалкогольное</div>
               </label>
             </div>
             <input type="text" id="customDrink" aria-label="Свой вариант напитка" class="rsvp-input"
-              style="margin-top: 10px;" placeholder="Или напишите свой вариант (например: джин, виски, сидр)...">
+              style="margin-top: 10px;" placeholder="Например: джин, виски, сидр">
           </div>
 
           <!-- Пожелания / Аллергии -->
@@ -1934,7 +1906,7 @@
               <span id="rsvpCommentLabel" class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
             </span>
             <input type="text" id="guestComment" aria-label="Особые пожелания и аллергии" class="rsvp-input"
-              placeholder="Вегетарианское меню / аллергия / любимая музыка">
+              placeholder="Меню, аллергия или песня">
           </div>
 
           <p style="font-size: 14px; margin-top: 12px; color: var(--ink-soft); opacity: 0.85;">Ответ сразу будет
@@ -1977,7 +1949,7 @@
          ========================================== -->
     <footer class="farewell-footer">
       <div class="farewell-decor" aria-hidden="true">
-        <img class="decor-object decor-cat sticker-cat" src="./assets/cat-sticker.webp" alt="Кот в шляпе" loading="lazy"
+        <img class="decor-object decor-cat sticker-cat" src="./assets/cat-sticker.webp" alt="" loading="lazy"
           decoding="async" width="248" height="275" data-layout-id="decoration-16">
       </div>
       <span class="scrap-clip" style="transform: rotate(-2deg);">
@@ -1998,8 +1970,8 @@
           С любовью, Сергей и Юля ♡
         </span>
       </div>
-      <div style="margin-top: 22px; opacity: 0.28;">
-        <a href="./?edit=1" style="font-size: 11px; color: var(--burgundy); text-decoration: none; font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em;">✎ расстановка декора</a>
+      <div class="editor-entry-wrap">
+        <a href="./?edit=1" class="editor-entry-link">✎ расстановка декора</a>
       </div>
     </footer>
 
@@ -2154,8 +2126,8 @@
 
       if (commentInput) {
         commentInput.placeholder = isDeclining
-          ? 'Напишите пару тёплых слов для Сергея и Юли ♡'
-          : 'Вегетарианское меню / аллергия / любимая музыка';
+          ? 'Пара тёплых слов для Сергея и Юли ♡'
+          : 'Меню, аллергия или песня';
       }
     }
 
@@ -2404,6 +2376,7 @@
       if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
       const secondsCard = secondsEl.closest('.countdown-card');
       let tickTimeout = null;
+      let timerId = null;
 
       function tick() {
         const diff = targetMs - Date.now();
@@ -2417,6 +2390,10 @@
           if (minutesLabel) minutesLabel.textContent = 'минут';
           if (secondsLabel) secondsLabel.textContent = 'секунд';
           if (eyebrowEl) eyebrowEl.textContent = 'ЭТОТ ДЕНЬ НАСТАЛ! ♡';
+          if (timerId !== null) {
+            clearInterval(timerId);
+            timerId = null;
+          }
           return;
         }
 
@@ -2446,7 +2423,7 @@
       }
 
       tick();
-      setInterval(tick, 1000);
+      timerId = setInterval(tick, 1000);
     }
 
     if (document.readyState === 'loading') {

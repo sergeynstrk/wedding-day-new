@@ -350,18 +350,7 @@ body { background: #484644; color: #f0e9e1; }
 .decor-cat { position: absolute; width: 175px !important; height: 195px !important; top: -30px !important; right: -130px !important; left: auto !important; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32)); transform-origin: center center; z-index: 10 !important; }
 .hero-details { padding-right: 0; }
 .flatlay-bouquet { width: 290px; height: 235px; top: -20px; right: 0; }
-.dresscode-section { padding-top: 190px; }
-@media (max-width: 1399px) {
-  .magazine-canvas { max-width: 900px; padding: 30px 38px 40px; }
-  .decoration-pair { position: relative; inset: auto; display: flex; align-items: center; justify-content: space-around; gap: 6px; height: 210px; margin: 8px 0 20px; }
-  .decor-object, .decor-object + .decor-object { position: static; inset: auto; width: 48%; height: 100%; max-width: 280px; }
-  .hero-section > .decoration-pair { grid-column: 1 / -1; grid-row: 6; margin-top: 8px; margin-bottom: 0; }
-  .hero-section > .hero-details { grid-row: 5; }
-  .decorated-section > .decoration-pair { margin-bottom: -15px; }
-  .decor-spool { top: auto !important; }
-  .flatlay-bouquet { width: 230px; height: 210px; }
-  .dresscode-section { padding-top: 165px; }
-}
+.dresscode-section { padding-top: 115px; }
 @media (max-width: 780px) {
   .magazine-canvas { padding: 16px 14px 28px; }
   .hero-details { padding-right: 0; }
@@ -374,20 +363,14 @@ body { background: #484644; color: #f0e9e1; }
   .magazine-canvas { padding-inline: 12px; }
   .hero-details time { font-size: 20px; }
 }
-@media (min-width: 1400px) {
+@media (min-width: 781px) {
   .decor-object { width: 200px; left: -205px; }
   .decor-object + .decor-object { right: -205px; }
-}
-@media (min-width: 1400px) {
   .decoration-pair .decor-secondary-left { left: -205px; right: auto; top: 480px !important; height: 260px; }
   .decoration-pair .decor-secondary-right { left: auto; right: -205px; top: 550px !important; height: 300px; }
   .hero-section .decor-secondary-right { top: 410px !important; }
   .decorated-section .decor-secondary-left { top: 620px !important; }
   .decorated-section .decor-secondary-right { top: 720px !important; }
-}
-@media (max-width: 1399px) {
-  .decor-secondary { display: none; }
-  .decor-cat { position: absolute !important; right: -10px !important; top: -45px !important; width: 140px !important; height: 155px !important; }
 }
 @media (max-width: 780px) {
   .decor-secondary { display: block !important; }
@@ -397,9 +380,6 @@ body { background: #484644; color: #f0e9e1; }
 .decor-object { z-index: 2; }
 .decor-lace { z-index: 0; }
 .dresscode-section { z-index: 1; }
-@media (min-width: 1400px) {
-  .decoration-pair .decor-lace { width: 240px; left: -185px; }
-}
 @media (max-width: 780px) {
   .decoration-pair { position: absolute !important; inset: 0 !important; pointer-events: none !important; z-index: 6 !important; height: auto !important; margin: 0 !important; display: block !important; overflow: visible !important; }
   .flatlay-bouquet { position: absolute !important; left: 0 !important; top: 0 !important; right: auto !important; bottom: auto !important; width: 85px !important; height: 85px !important; pointer-events: none !important; display: block !important; z-index: 6 !important; }
@@ -408,16 +388,12 @@ body { background: #484644; color: #f0e9e1; }
 }
 
 /* Keep the original paper width; enlarge objects in the surrounding space. */
-@media (min-width: 1400px) {
+@media (min-width: 781px) {
   .decoration-pair .decor-object { width: 270px; height: 330px; left: -275px; right: auto; transform: rotate(-4deg); }
   .decoration-pair .decor-object + .decor-object { left: auto; right: -275px; transform: rotate(4deg); }
   .decoration-pair .decor-object.decor-secondary-left { left: -275px; right: auto; height: 300px; }
   .decoration-pair .decor-object.decor-secondary-right { left: auto; right: -275px; height: 330px; }
   .decoration-pair .decor-object.decor-lace, .decoration-pair .decor-lace { left: -255px !important; right: auto !important; top: 120px !important; bottom: auto !important; width: 295px !important; height: 360px !important; z-index: 10 !important; }
-}
-@media (min-width: 781px) and (max-width: 1399px) {
-  .decoration-pair { height: 280px; }
-  .decoration-pair .decor-object { max-width: 360px; }
 }
 /* Пользовательская фактура ватмана: бесшовное вертикальное соединение, исходный цвет бордо #681427 */
 .magazine-canvas {
@@ -890,4 +866,90 @@ body {
 .hero-details time,
 .b1, .b2, .b3, .b4 {
   color: #24161b !important;
+}
+
+/* 12. Полировка фото дресс-кода, балансировки текста, адаптива (>=781px / <=780px) и контрастности */
+html,
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+.cute-scribble,
+.countdown-eyebrow,
+.countdown-sub,
+.dresscode-section > p,
+.dress-note-box p,
+.venue-card-inner > p {
+  text-wrap: balance;
+}
+
+.dress-figure-img {
+  width: 100%;
+  max-width: 268px;
+  aspect-ratio: 3 / 4;
+  height: auto !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  background: #f4efe7 !important;
+  padding: 6px !important;
+  border: 1px solid #d5cabd !important;
+  box-shadow: 0 4px 14px rgba(36, 22, 27, 0.08) !important;
+  clip-path: none !important;
+  margin: 10px auto 14px !important;
+  display: block !important;
+}
+
+.rsvp-input::placeholder {
+  color: #6b5e55;
+  opacity: 1;
+}
+
+.editor-entry-wrap {
+  margin-top: 18px;
+}
+
+.editor-entry-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding: 6px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: #e8ded5 !important;
+  opacity: 0.55;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.editor-entry-link:hover,
+.editor-entry-link:focus-visible {
+  opacity: 0.95;
+}
+
+@media (max-width: 780px) {
+  .dress-figure-img {
+    max-width: 220px;
+  }
+
+  .timing-text-box .bg-news-typewriter {
+    font-size: 13px !important;
+    padding: 4px 10px !important;
+    white-space: nowrap;
+  }
+
+  .palette-swatches {
+    gap: 6px;
+  }
+
+  .swatch-card {
+    padding: 4px 2px 7px;
+  }
+
+  .swatch-name {
+    font-size: 9.5px;
+    letter-spacing: 0.01em;
+  }
 }
