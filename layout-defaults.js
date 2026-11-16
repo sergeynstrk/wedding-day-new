@@ -124,7 +124,12 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": 24,
         "flipX": false,
         "flipY": false
-      }
+      },
+      "decoration-23": { "x": -110, "y": -55, "scale": 0.85, "rotation": 90, "flipX": false, "flipY": false },
+      "decoration-24": { "x": 700, "y": -75, "scale": 0.9, "rotation": -4, "flipX": false, "flipY": false },
+      "decoration-25": { "x": -135, "y": 15, "scale": 0.82, "rotation": -8, "flipX": false, "flipY": false },
+      "decoration-26": { "x": 745, "y": -40, "scale": 0.82, "rotation": 90, "flipX": false, "flipY": false },
+      "decoration-27": { "x": 765, "y": 135, "scale": 0.85, "rotation": 0, "flipX": false, "flipY": false }
     },
     "mobile": {
       "decoration-01": { "x": 238, "y": 754, "scale": 1, "rotation": -6 },
@@ -142,7 +147,12 @@ window.WEDDING_LAYOUT_DEFAULTS = {
       "decoration-20": { "x": 282, "y": 174, "scale": 0.72, "rotation": -5 },
       "decoration-21": { "x": 8, "y": 15, "scale": 0.85, "rotation": -10 },
       "decoration-22": { "x": 268, "y": 302, "scale": 0.75, "rotation": 14 },
-      "decoration-16": { "x": 238, "y": -8, "scale": 0.92, "rotation": 8 }
+      "decoration-16": { "x": 238, "y": -8, "scale": 0.92, "rotation": 8 },
+      "decoration-23": { "x": -10, "y": -18, "scale": 0.85, "rotation": 90 },
+      "decoration-24": { "x": 245, "y": -16, "scale": 0.9, "rotation": -4 },
+      "decoration-25": { "x": -14, "y": 12, "scale": 0.85, "rotation": -6 },
+      "decoration-26": { "x": 256, "y": -14, "scale": 0.85, "rotation": 90 },
+      "decoration-27": { "x": 260, "y": 160, "scale": 0.85, "rotation": 0 }
     }
   }
 };

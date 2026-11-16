@@ -11,7 +11,7 @@
   let selected = null;
   let drag = null;
   let undoState = null;
-  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки',lace:'Кружево',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы',cat:'Кот в шляпе'};
+  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки',lace:'Кружево','lace-corner':'Кружевной уголок с розами','lace-strip':'Кружевная лента','lace-oval':'Ажурный овал','lace-bow-corner':'Уголок кружева с бантом','lace-vertical':'Вертикальная кружевная кайма',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы',cat:'Кот в шляпе'};
   items.forEach((item, i) => {
     item.dataset.layoutId ||= 'decoration-' + String(i + 1).padStart(2, '0');
     const name = Object.keys(names).find(key => item.classList.contains('decor-' + key));
@@ -30,11 +30,13 @@
       scale: number(raw.scale, 1, .4, 2.5),
       rotation: number(raw.rotation, 0, -180, 180),
       flipX: Boolean(raw.flipX),
-      flipY: Boolean(raw.flipY)
+      flipY: Boolean(raw.flipY),
+      hidden: Boolean(raw.hidden)
     };
   }
   function render(item) {
     const state = getState(item);
+    item.style.display = state.hidden ? 'none' : '';
     item.style.translate = `${state.x}px ${state.y}px`;
     const sx = (state.flipX ? -1 : 1) * state.scale;
     const sy = (state.flipY ? -1 : 1) * state.scale;
@@ -62,6 +64,7 @@
     document.head.append(editorStyles);
   }
   document.documentElement.classList.add('layout-editing');
+  const itemThumbSrc = it => (it.tagName === 'IMG' ? it.getAttribute('src') : it.querySelector('img')?.getAttribute('src')) || '';
   const toolbar = document.createElement('section');
   toolbar.className = 'layout-toolbar';
   toolbar.setAttribute('aria-label', 'Редактор расстановки декора');
@@ -69,6 +72,7 @@
     <div class="layout-heading">
       <strong>Расстановка декора</strong>
       <span id="layoutStatus" role="status">Потяните предмет</span>
+      <button type="button" id="layoutToggleGallery" class="layout-btn-mini">Превью стикеров ▲</button>
       <button type="button" id="layoutTogglePanel" class="layout-btn-mini">Свернуть ▼</button>
       <a href="./">Без редактора ↗</a>
     </div>
@@ -88,12 +92,24 @@
         <label>Поворот <input id="layoutRotation" type="range" min="-180" max="180" value="0" step="1" disabled><output id="layoutRotationValue">0°</output></label>
         <button type="button" id="layoutFlipX" disabled title="Отразить слева направо (клавиша H)">↔ Отразить</button>
         <button type="button" id="layoutFlipY" disabled title="Отразить сверху вниз (клавиша V)">↕ По вертикали</button>
+        <button type="button" id="layoutDelete" disabled title="Удалить или вернуть стикер (Delete)">🗑 Удалить</button>
         <button type="button" id="layoutReset" disabled>Вернуть предмет</button>
         <button type="button" id="layoutUndo" disabled>Отменить</button>
         <button type="button" id="layoutResetAll">Сбросить экран</button>
         <button type="button" id="layoutExport">Скачать расстановку</button>
       </div>
-      <p>Положение сохраняется в телефоне автоматически. Двигайте предметы пальцем или стрелками. Выберите предмет в списке, чтобы перейти к нему.</p>
+      <div class="layout-gallery" id="layoutGallery" role="list" aria-label="Превью стикеров">
+        ${items.map(it => `
+          <div class="layout-thumb" role="listitem" data-thumb-id="${it.dataset.layoutId}" title="${it.dataset.layoutName}">
+            <button type="button" class="layout-thumb-pick" aria-label="Выбрать: ${it.dataset.layoutName}">
+              <img src="${itemThumbSrc(it)}" alt="" loading="lazy" decoding="async">
+              <span>${it.dataset.layoutName}</span>
+            </button>
+            <button type="button" class="layout-thumb-action" aria-label="Удалить: ${it.dataset.layoutName}" title="Удалить стикер">×</button>
+          </div>
+        `).join('')}
+      </div>
+      <p>Нажмите на превьюшку в меню, чтобы выбрать стикер, или на ×, чтобы удалить/вернуть его. Положение сохраняется в браузере автоматически.</p>
     </div>`;
   document.body.append(toolbar);
   const field = id => toolbar.querySelector('#' + id);
@@ -103,16 +119,31 @@
   }
   function remember() { undoState = JSON.stringify(layouts); field('layoutUndo').disabled = false; }
   function controls() {
-    const state = selected ? getState(selected) : {scale:1, rotation:0, flipX:false, flipY:false};
+    const state = selected ? getState(selected) : {scale:1, rotation:0, flipX:false, flipY:false, hidden:false};
     if (field('layoutItemSelect')) field('layoutItemSelect').value = selected ? selected.dataset.layoutId : '';
     ['nudgeUp','nudgeDown','nudgeLeft','nudgeRight'].forEach(id => { if (field(id)) field(id).disabled = !selected; });
-    field('layoutScale').disabled = field('layoutRotation').disabled = field('layoutReset').disabled = field('layoutFlipX').disabled = field('layoutFlipY').disabled = !selected;
+    field('layoutScale').disabled = field('layoutRotation').disabled = field('layoutReset').disabled = field('layoutFlipX').disabled = field('layoutFlipY').disabled = field('layoutDelete').disabled = !selected;
+    field('layoutDelete').textContent = state.hidden ? '↩ Вернуть' : '🗑 Удалить';
+    field('layoutDelete').classList.toggle('layout-btn-active', Boolean(selected && state.hidden));
     field('layoutScale').value = state.scale * 100;
     field('layoutScaleValue').textContent = Math.round(state.scale * 100) + '%';
     field('layoutRotation').value = state.rotation;
     field('layoutRotationValue').textContent = state.rotation + '°';
     field('layoutFlipX').classList.toggle('layout-btn-active', Boolean(state.flipX));
     field('layoutFlipY').classList.toggle('layout-btn-active', Boolean(state.flipY));
+    toolbar.querySelectorAll('.layout-thumb').forEach(card => {
+      const it = items.find(el => el.dataset.layoutId === card.dataset.thumbId);
+      if (!it) return;
+      const st = getState(it);
+      card.classList.toggle('is-selected', it === selected);
+      card.classList.toggle('is-hidden', st.hidden);
+      const act = card.querySelector('.layout-thumb-action');
+      if (act) {
+        act.textContent = st.hidden ? '↩' : '×';
+        act.title = st.hidden ? 'Вернуть стикер' : 'Удалить стикер';
+        act.setAttribute('aria-label', `${st.hidden ? 'Вернуть' : 'Удалить'}: ${it.dataset.layoutName}`);
+      }
+    });
   }
   function select(item) {
     selected?.classList.remove('layout-selected');
@@ -214,9 +245,47 @@
   window.addEventListener('touchcancel', () => {
     if (drag) finishDrag();
   });
+  field('layoutToggleGallery')?.addEventListener('click', () => {
+    const hidden = toolbar.classList.toggle('layout-gallery-collapsed');
+    field('layoutToggleGallery').textContent = hidden ? 'Превью стикеров ▼' : 'Превью стикеров ▲';
+  });
   field('layoutTogglePanel')?.addEventListener('click', () => {
     const isCollapsed = toolbar.classList.toggle('layout-toolbar-collapsed');
     field('layoutTogglePanel').textContent = isCollapsed ? 'Развернуть ▲' : 'Свернуть ▼';
+  });
+  function toggleHidden(item, forceHidden) {
+    if (!item) return;
+    remember();
+    const state = getState(item);
+    const nextHidden = typeof forceHidden === 'boolean' ? forceHidden : !state.hidden;
+    update(item, { hidden: nextHidden });
+    if (nextHidden && selected === item) {
+      field('layoutStatus').textContent = 'Удалён: ' + item.dataset.layoutName;
+    } else if (!nextHidden) {
+      select(item);
+      field('layoutStatus').textContent = 'Возвращён: ' + item.dataset.layoutName;
+    }
+    controls();
+    save();
+  }
+  field('layoutGallery')?.addEventListener('click', event => {
+    const card = event.target.closest('.layout-thumb');
+    if (!card) return;
+    const targetItem = items.find(it => it.dataset.layoutId === card.dataset.thumbId);
+    if (!targetItem) return;
+    if (event.target.closest('.layout-thumb-action')) {
+      toggleHidden(targetItem);
+      return;
+    }
+    if (getState(targetItem).hidden) {
+      toggleHidden(targetItem, false);
+    } else {
+      select(targetItem);
+    }
+    targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  field('layoutDelete')?.addEventListener('click', () => {
+    toggleHidden(selected);
   });
   field('layoutItemSelect')?.addEventListener('change', event => {
     const id = event.target.value;
@@ -291,6 +360,8 @@
       update(selected, {x:state.x+dx*step,y:state.y+dy*step}); save();
     } else if (event.key === 'Escape') {
       finishDrag(); select(null);
+    } else if (event.key === 'Delete' || event.key === 'Backspace') {
+      event.preventDefault(); toggleHidden(selected, true);
     } else if (event.key === 'h' || event.key === 'H' || event.key === 'р' || event.key === 'Р') {
       event.preventDefault(); remember(); const state = getState(selected);
       update(selected, { flipX: !state.flipX }); controls(); save();
@@ -300,4 +371,5 @@
     }
   });
   addEventListener('resize', () => {finishDrag(); items.forEach(render); controls();});
+  controls();
 })();

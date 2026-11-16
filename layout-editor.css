@@ -45,6 +45,78 @@
 .layout-controls button.layout-btn-active { background: #681427 !important; color: #fff4ec !important; border-color: #681427 !important; font-weight: 600; }
 #layoutExport { background: #681427; color: #fff4ec; border-color: #681427; font-weight: 600; }
 .layout-toolbar p { margin-top: 10px; color: #6a5b5c; font-size: 11px; line-height: 1.4; }
+.layout-toolbar.layout-gallery-collapsed .layout-gallery { display: none; }
+.layout-gallery {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 2px 4px;
+  margin-top: 8px;
+  border-top: 1px solid #d8cfc5;
+  scrollbar-width: thin;
+}
+.layout-thumb {
+  position: relative;
+  flex: 0 0 74px;
+  border-radius: 6px;
+  border: 2px solid #c7bdb3;
+  background: #681427;
+  overflow: hidden;
+  transition: border-color 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+}
+.layout-thumb.is-selected {
+  border-color: #ff2d55;
+  box-shadow: 0 0 0 2px rgba(255, 45, 85, 0.28);
+}
+.layout-thumb.is-hidden {
+  opacity: 0.42;
+  filter: grayscale(0.5);
+}
+.layout-thumb-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 5px 4px 4px;
+  border: 0;
+  background: transparent;
+  color: #f7efe8;
+  cursor: pointer;
+  font: 500 9px/1.15 'Montserrat', sans-serif;
+}
+.layout-thumb-pick img {
+  width: 48px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
+}
+.layout-thumb-pick span {
+  margin-top: 3px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+.layout-thumb-action {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(28, 8, 14, 0.84);
+  color: #fff4ec;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.layout-thumb-action:hover {
+  background: #ff2d55;
+}
 @media (max-width: 600px) {
   .layout-toolbar { inset: auto 6px 6px; padding: 10px 12px; max-height: 48vh; overflow: auto; border-radius: 6px; }
   .layout-heading { gap: 6px 10px; }

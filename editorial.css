@@ -185,7 +185,12 @@ p { text-wrap: pretty; }
   --ink-soft: #eee6df;
   --cut-paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .12 0 0 0 0 .08 0 0 0 0 .06 0 0 0 .19 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23p)'/%3E%3C/svg%3E");
 }
-body { background: #484644; color: #f0e9e1; }
+body {
+  background: #484644;
+  color: #f0e9e1;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 .magazine-canvas { background: #681427; box-shadow: 0 8px 35px #241d2030; }
 .giant-char, .clip-body { position: relative; isolation: isolate; }
 .giant-char { background-image: linear-gradient(135deg, #fff8e518, #48302112); }
@@ -1301,7 +1306,7 @@ body {
   margin-bottom: clamp(88px, 11vw, 136px);
 }
 
-.collage-canvas > .decorated-section {
+.magazine-canvas > .decorated-section {
   margin-block: clamp(84px, 10.5vw, 128px);
 }
 
@@ -1336,7 +1341,7 @@ body {
   .future-photos-section,
   .story-section,
   .details-faq-section,
-  .collage-canvas > .decorated-section,
+  .magazine-canvas > .decorated-section,
   .countdown-section,
   .guest-chat-section {
     margin-block: 70px;
