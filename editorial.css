@@ -92,8 +92,8 @@ p { text-wrap: pretty; }
 .palette-swatches { gap: 15px; }
 .swatch-name { font-size: 12px; }
 .swatch-card { padding: 7px 7px 10px; }
-.swatch-card:nth-child(2) { transform: rotate(5deg) translateY(6px); }
-.swatch-card:nth-child(4) { transform: rotate(7deg) translateY(4px); }
+.swatch-card:nth-child(2) { transform: rotate(1.8deg) translateY(2px); }
+.swatch-card:nth-child(4) { transform: rotate(-2.2deg) translateY(2px); }
 .manor-sticker-inner { font-size: 14px; line-height: 1.75; }
 .rsvp-section { transform: none; padding: 30px; background: #eee5d4; border-top: 2px dashed #705746; }
 .rsvp-input { min-height: 48px; font-size: 16px; border-radius: 0; }
@@ -150,17 +150,17 @@ p { text-wrap: pretty; }
 }
 /* Fixed-depth scissor cuts keep the edges irregular without biting into text. */
 :root {
-  --scissor-a: polygon(1px 4px, 18% 1px, 39% 3px, 62% 0, 81% 4px, calc(100% - 2px) 1px, 100% 30%, calc(100% - 2px) 61%, calc(100% - 1px) calc(100% - 3px), 76% 100%, 51% calc(100% - 3px), 29% 100%, 0 calc(100% - 4px), 2px 66%, 0 34%);
-  --scissor-b: polygon(0 3px, 23% 0, 49% 5px, 72% 2px, 100% 4px, calc(100% - 2px) 27%, 100% 58%, calc(100% - 3px) calc(100% - 1px), 72% calc(100% - 4px), 45% 100%, 18% calc(100% - 2px), 2px 100%, 0 70%, 3px 39%);
-  --scissor-c: polygon(3px 1px, 28% 4px, 55% 0, 78% 3px, calc(100% - 1px) 0, calc(100% - 3px) 30%, 100% 55%, calc(100% - 2px) 100%, 79% calc(100% - 3px), 53% 100%, 26% calc(100% - 4px), 0 calc(100% - 1px), 2px 73%, 0 46%);
+  --scissor-a: polygon(1px 3px, 6% 1px, 12% 3px, 18% 0, 25% 2px, 31% 1px, 39% 3px, 46% 1px, 54% 3px, 62% 0, 70% 2px, 77% 1px, 84% 4px, 92% 1px, calc(100% - 2px) 2px, calc(100% - 1px) 15%, 100% 30%, calc(100% - 3px) 46%, 100% 62%, calc(100% - 2px) 79%, calc(100% - 1px) calc(100% - 3px), 91% calc(100% - 1px), 83% calc(100% - 3px), 75% 100%, 67% calc(100% - 2px), 58% calc(100% - 4px), 50% calc(100% - 1px), 42% calc(100% - 3px), 34% 100%, 25% calc(100% - 2px), 16% calc(100% - 4px), 8% calc(100% - 1px), 0 calc(100% - 3px), 2px 83%, 0 67%, 3px 51%, 1px 34%, 2px 17%);
+  --scissor-b: polygon(0 3px, 7% 1px, 15% 3px, 23% 0, 31% 2px, 39% 4px, 48% 1px, 56% 3px, 64% 1px, 72% 3px, 81% 0, 89% 2px, 96% 1px, 100% 3px, calc(100% - 2px) 18%, 100% 34%, calc(100% - 3px) 51%, 100% 68%, calc(100% - 1px) 84%, calc(100% - 3px) calc(100% - 1px), 90% 100%, 81% calc(100% - 3px), 72% calc(100% - 1px), 63% calc(100% - 4px), 54% calc(100% - 2px), 45% 100%, 36% calc(100% - 3px), 27% calc(100% - 1px), 18% calc(100% - 3px), 9% 100%, 2px calc(100% - 2px), 0 84%, 3px 68%, 0 52%, 2px 35%, 1px 19%);
+  --scissor-c: polygon(2px 1px, 8% 3px, 16% 1px, 24% 4px, 33% 1px, 41% 3px, 50% 0, 58% 2px, 67% 1px, 75% 3px, 84% 1px, 92% 3px, calc(100% - 1px) 0, calc(100% - 3px) 16%, 100% 32%, calc(100% - 2px) 49%, 100% 65%, calc(100% - 3px) 82%, calc(100% - 1px) calc(100% - 2px), 91% 100%, 82% calc(100% - 3px), 73% calc(100% - 1px), 64% 100%, 54% calc(100% - 3px), 45% calc(100% - 1px), 35% calc(100% - 4px), 26% calc(100% - 2px), 17% 100%, 8% calc(100% - 3px), 0 calc(100% - 1px), 2px 83%, 0 66%, 3px 49%, 0 33%, 2px 17%);
 }
 .cut-scissor-4 { clip-path: var(--scissor-b); }
 .cut-scissor-5 { clip-path: var(--scissor-c); }
 .hero-section > .hero-invitation-note { grid-column: 1; grid-row: 4; }
 .hero-section > .couple-photo-frame { grid-column: 2; grid-row: 3 / 5; }
 .hero-section > .hero-details { grid-column: 1 / -1; grid-row: 5; }
-.hero-huge-title .giant-char:nth-child(odd) { clip-path: polygon(2% 5%, 29% 1%, 58% 4%, 96% 0, 100% 32%, 97% 64%, 99% 96%, 68% 100%, 36% 96%, 0 100%, 2% 67%, 0 35%); }
-.hero-huge-title .giant-char:nth-child(even) { clip-path: polygon(0 2%, 27% 5%, 61% 0, 99% 3%, 97% 41%, 100% 75%, 96% 100%, 71% 96%, 39% 100%, 2% 96%, 0 60%); }
+.hero-huge-title .giant-char:nth-child(odd) { clip-path: polygon(2% 4%, 14% 1%, 28% 3%, 43% 0, 58% 3%, 73% 1%, 87% 3%, 98% 0, 100% 19%, 97% 38%, 100% 58%, 97% 78%, 99% 97%, 85% 100%, 70% 97%, 54% 100%, 38% 97%, 22% 100%, 8% 97%, 0 100%, 2% 80%, 0 60%, 3% 40%, 0 20%); }
+.hero-huge-title .giant-char:nth-child(even) { clip-path: polygon(0 2%, 13% 4%, 27% 1%, 42% 3%, 57% 0, 72% 3%, 86% 1%, 99% 3%, 97% 22%, 100% 42%, 97% 62%, 100% 81%, 97% 100%, 83% 97%, 68% 100%, 52% 97%, 37% 100%, 21% 97%, 7% 100%, 1% 97%, 0 78%, 3% 58%, 0 38%, 2% 19%); }
 .dresscode-section { clip-path: var(--scissor-a); }
 @media (max-width: 780px) {
   .hero-section > .hero-invitation-note .cute-scribble { font-size: 21px !important; }
@@ -652,8 +652,7 @@ body {
   backface-visibility: visible !important;
 }
 
-/* Отключаем поворот (rotate), scale и 3D-слои на всех текстовых плашках и секциях,
-   чтобы штрихи букв ложились строго по пиксельной сетке экрана */
+/* Вырезкам возвращаем лёгкий естественный наклон, но оставляем штрихи букв чёткими */
 .scrap-clip,
 .hero-top-row .scrap-clip:first-child,
 .hero-top-row .scrap-clip:last-child,
@@ -662,15 +661,12 @@ body {
 .btn-paper-scrap,
 .btn-paper-burgundy,
 .btn-paper-blue,
-.dresscode-section,
-.rsvp-section,
 .manor-sticker-inner,
 .countdown-card,
 .countdown-card.cd-tilt-1,
 .countdown-card.cd-tilt-2,
 .countdown-card.cd-tilt-3,
 .countdown-card.cd-tilt-4,
-.countdown-card.is-ticking .countdown-num,
 .swatch-card,
 .swatch-card:nth-child(1),
 .swatch-card:nth-child(2),
@@ -678,17 +674,9 @@ body {
 .swatch-card:nth-child(4),
 .swatch-card:nth-child(5),
 .hero-details time,
-.couple-photo-inner,
 .num-cutout-box,
 .b1, .b2, .b3, .b4,
-.sm-timing__item,
-.sm-timing__item.item-active,
 .timing-section .sm-timing__item.item-active .num-cutout-box,
-.choice-box,
-.chip-box,
-.choice-btn input:checked + .choice-box,
-.chip-btn input:checked + .chip-box,
-.btn-submit-collage,
 .rsvp-saved-notice,
 .envelope-intro h2 > span,
 .envelope-intro h2 em,
@@ -698,25 +686,34 @@ body {
 .envelope-address,
 .envelope-postmark,
 .envelope-signature {
+  text-shadow: none !important;
+  backface-visibility: visible !important;
+}
+
+/* Структурные панели, сетка и элементы формы остаются строго горизонтальными */
+.dresscode-section,
+.rsvp-section,
+.countdown-card.is-ticking .countdown-num,
+.couple-photo-inner,
+.sm-timing__item,
+.sm-timing__item.item-active,
+.choice-box,
+.chip-box,
+.choice-btn input:checked + .choice-box,
+.chip-btn input:checked + .chip-box,
+.btn-submit-collage {
   transform: none !important;
   text-shadow: none !important;
   backface-visibility: visible !important;
 }
 
-/* Убираем растровый filter: drop-shadow с текстовых контейнеров и конверта,
-   заменяя его на векторный box-shadow и чёткие контуры */
-.scrap-clip,
-.giant-char,
-.hero-huge-title,
+/* Отключаем фильтр у больших текстовых панелей и рукописного текста, чтобы не размывать шрифт,
+   но сохраняем короткие контактные тени у бумажных вырезок */
 .cute-scribble,
-.btn-paper-scrap,
-.num-cutout-box,
 .dresscode-section,
 .rsvp-section,
 .venue-card-inner,
 .dress-note-box,
-.manor-sticker-inner,
-.swatch-card,
 .countdown-card,
 .couple-photo-inner,
 .choice-box,
@@ -726,6 +723,17 @@ body {
 .btn-submit-collage,
 .envelope-box {
   filter: none !important;
+}
+
+.scrap-clip,
+.btn-paper-scrap,
+.num-cutout-box {
+  filter: drop-shadow(0 1px 0 rgba(22, 4, 10, 0.34)) drop-shadow(0 3px 5px rgba(20, 4, 9, 0.24));
+}
+
+.manor-sticker-inner,
+.swatch-card {
+  filter: drop-shadow(0 1px 1px rgba(45, 22, 16, 0.22)) drop-shadow(0 3px 6px rgba(35, 14, 18, 0.16));
 }
 
 .envelope-box {
@@ -892,19 +900,20 @@ body {
 .dress-collage-item {
   position: absolute;
   margin: 0;
-  background: #f4efe7;
-  padding: 5px;
-  border: 1px solid #d5cabd;
-  box-shadow: 0 5px 14px rgba(36, 22, 27, 0.16);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 2px 1px rgba(28, 10, 15, 0.22)) drop-shadow(0 7px 14px rgba(28, 10, 15, 0.2));
+  transition: transform 0.22s ease, filter 0.22s ease;
 }
 
 .dress-collage-item img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .dress-collage-women > .dress-collage-item:nth-child(1) { left: 0%; top: 13.32%; width: 31.85%; height: 42.35%; transform: rotate(-2.5deg); }
@@ -922,8 +931,9 @@ body {
 @media (hover: hover) {
   .dress-collage-item:hover {
     z-index: 10;
-    transform: scale(1.05) rotate(0deg);
-    box-shadow: 0 10px 24px rgba(36, 22, 27, 0.28);
+    transform: scale(1.06) rotate(0deg);
+    box-shadow: none;
+    filter: drop-shadow(0 3px 2px rgba(28, 10, 15, 0.28)) drop-shadow(0 12px 22px rgba(28, 10, 15, 0.3));
   }
 }
 
@@ -972,7 +982,7 @@ body {
   }
 
   .dress-collage-item {
-    padding: 3.5px;
+    padding: 0;
   }
 
   .timing-text-box .bg-news-typewriter {
@@ -1011,6 +1021,8 @@ body {
 }
 
 .photo-slot-card {
+  position: relative;
+  overflow: visible;
   background-color: #ece6dc;
   padding: 10px 10px 14px;
   margin: 0;
@@ -1069,6 +1081,30 @@ body {
   }
 }
 
+.applique-pin {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translateX(-50%) rotate(4deg);
+  pointer-events: none;
+  user-select: none;
+  z-index: 4;
+}
+
+.photo-slot-card.slot-tilt-2 .applique-pin,
+.photo-slot-card.slot-tilt-4 .applique-pin {
+  transform: translateX(-50%) rotate(-6deg);
+}
+
+.applique-pin-note {
+  top: -17px;
+  left: auto;
+  right: 22px;
+  transform: rotate(8deg);
+}
+
 @media (max-width: 480px) {
   .photo-slot-card {
     padding: 7px 7px 10px;
@@ -1080,5 +1116,15 @@ body {
 
   .photo-slot-caption {
     font-size: 17px;
+  }
+
+  .applique-pin {
+    top: -15px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .applique-pin-note {
+    right: 14px;
   }
 }
