@@ -1278,3 +1278,71 @@ body {
     padding: 24px 18px 22px;
   }
 }
+
+/* Воздушный ритм между разделами страницы */
+.hero-section {
+  margin-bottom: clamp(88px, 11vw, 136px);
+}
+
+.venue-card-frame {
+  margin-bottom: clamp(84px, 10.5vw, 128px);
+}
+
+.future-photos-section {
+  margin-block: clamp(84px, 10.5vw, 128px);
+}
+
+.story-section,
+.details-faq-section {
+  margin-block: clamp(88px, 11vw, 136px);
+}
+
+.timing-section {
+  margin-bottom: clamp(88px, 11vw, 136px);
+}
+
+.collage-canvas > .decorated-section {
+  margin-block: clamp(84px, 10.5vw, 128px);
+}
+
+.decorated-section > .dresscode-section,
+.decorated-section > .rsvp-section {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.countdown-section {
+  margin-block: clamp(84px, 10.5vw, 128px);
+}
+
+.guest-chat-section {
+  margin-block: clamp(78px, 10vw, 120px);
+}
+
+.farewell-footer {
+  margin-top: clamp(84px, 10.5vw, 128px);
+}
+
+@media (max-width: 780px) {
+  .hero-section,
+  .timing-section {
+    margin-bottom: 72px;
+  }
+
+  .venue-card-frame {
+    margin-bottom: 68px;
+  }
+
+  .future-photos-section,
+  .story-section,
+  .details-faq-section,
+  .collage-canvas > .decorated-section,
+  .countdown-section,
+  .guest-chat-section {
+    margin-block: 70px;
+  }
+
+  .farewell-footer {
+    margin-top: 72px;
+  }
+}
