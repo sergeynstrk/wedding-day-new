@@ -252,17 +252,7 @@ body { background: #484644; color: #f0e9e1; }
   .hero-details { padding-right: 92px; }
 }
 .num-cutout-box { background-image: var(--cut-paper-grain); background-size: 180px 180px; }
-/* Editorial fashion references supplied with the project. */
-.dress-figure-img { height: 320px; object-fit: contain; background: #ebe7df; padding: 8px; clip-path: var(--scissor-c); }
-.dress-note-box:nth-child(1) .dress-figure-img { transform: rotate(-1.5deg); }
-.dress-note-box:nth-child(2) .dress-figure-img { transform: rotate(1.8deg); }
 .timing-icon-cutout { object-fit: contain; }
-@media (max-width: 780px) {
-  .dress-figure-img { height: 230px; padding: 5px; }
-}
-@media (max-width: 360px) {
-  .dress-figure-img { height: 205px; }
-}
 
 /* Neutral ivory unifies the paper layers; blue is reserved for accents. */
 :root { --paper-surface: #eae5dc; --paper-light: #f1ece4; --paper-ink: #3c3534; }
@@ -880,20 +870,57 @@ body {
   text-wrap: balance;
 }
 
-.dress-figure-img {
+.dress-collage {
+  position: relative;
   width: 100%;
-  max-width: 268px;
-  aspect-ratio: 3 / 4;
-  height: auto !important;
-  object-fit: cover !important;
-  object-position: top center !important;
-  background: #f4efe7 !important;
-  padding: 6px !important;
-  border: 1px solid #d5cabd !important;
-  box-shadow: 0 4px 14px rgba(36, 22, 27, 0.08) !important;
-  clip-path: none !important;
-  margin: 10px auto 14px !important;
-  display: block !important;
+  max-width: 370px;
+  margin: 14px auto 18px;
+}
+
+.dress-collage-women {
+  aspect-ratio: 920 / 1143;
+}
+
+.dress-collage-men {
+  aspect-ratio: 728 / 930;
+}
+
+.dress-collage-item {
+  position: absolute;
+  margin: 0;
+  background: #f4efe7;
+  padding: 5px;
+  border: 1px solid #d5cabd;
+  box-shadow: 0 5px 14px rgba(36, 22, 27, 0.16);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.dress-collage-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.dress-collage-women > .dress-collage-item:nth-child(1) { left: 0%; top: 13.32%; width: 31.85%; height: 42.35%; transform: rotate(-2.5deg); }
+.dress-collage-women > .dress-collage-item:nth-child(2) { left: 27.65%; top: 6.36%; width: 52.84%; height: 59.64%; transform: rotate(1.2deg); }
+.dress-collage-women > .dress-collage-item:nth-child(3) { left: 64.94%; top: 36.58%; width: 35.06%; height: 42.35%; transform: rotate(2.8deg); }
+.dress-collage-women > .dress-collage-item:nth-child(4) { left: 14.32%; top: 57.65%; width: 35.06%; height: 42.35%; transform: rotate(-1.8deg); }
+.dress-collage-women > .dress-collage-item:nth-child(5) { left: 72.59%; top: 0%; width: 22.06%; height: 26.64%; transform: rotate(3.2deg); }
+
+.dress-collage-men > .dress-collage-item:nth-child(1) { left: 65.51%; top: 0%; width: 34.49%; height: 44.56%; transform: rotate(2.4deg); }
+.dress-collage-men > .dress-collage-item:nth-child(2) { left: 17.65%; top: 7.74%; width: 57.22%; height: 62.76%; transform: rotate(-1.4deg); }
+.dress-collage-men > .dress-collage-item:nth-child(3) { left: 0%; top: 55.44%; width: 37.97%; height: 44.56%; transform: rotate(-2.6deg); }
+.dress-collage-men > .dress-collage-item:nth-child(4) { left: 60.16%; top: 47.28%; width: 33.98%; height: 46.62%; transform: rotate(2deg); }
+.dress-collage-men > .dress-collage-item:nth-child(5) { left: 2.14%; top: 19.25%; width: 23.89%; height: 28.03%; transform: rotate(-3deg); }
+
+@media (hover: hover) {
+  .dress-collage-item:hover {
+    z-index: 10;
+    transform: scale(1.05) rotate(0deg);
+    box-shadow: 0 10px 24px rgba(36, 22, 27, 0.28);
+  }
 }
 
 .rsvp-input::placeholder {
@@ -935,8 +962,13 @@ body {
     padding: 0 !important;
   }
 
-  .dress-figure-img {
-    max-width: 220px;
+  .dress-collage {
+    max-width: 310px;
+    margin: 10px auto 14px;
+  }
+
+  .dress-collage-item {
+    padding: 3.5px;
   }
 
   .timing-text-box .bg-news-typewriter {

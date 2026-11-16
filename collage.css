@@ -75,7 +75,6 @@ body {
 .swatch-name { font-family: 'Oswald', sans-serif; font-size: 11px; }
 .dress-notes-grid { gap: 22px; margin-top: 15px; }
 .dress-note-box { background: transparent; padding: 0; border: 0; filter: none; }
-.dress-figure-img { height: 220px; object-fit: contain; border: 0; }
 .manor-sticker-inner { background: #d3be7b; border: 0; padding: 14px 20px; filter: drop-shadow(1px 2px 1px #49362b30); }
 .rsvp-section { margin-top: 20px; background-color: #e5dfd0; border: 0; clip-path: var(--scissor-a); }
 .rsvp-input { clip-path: none; background: #f4eee2; font-family: inherit; box-shadow: none; }
@@ -318,13 +317,6 @@ body {
   .dress-note-box {
     padding: 16px 12px;
     text-align: center;
-  }
-  .dress-figure-img {
-    height: 240px;
-    width: auto;
-    max-width: 100%;
-    margin: 10px auto;
-    display: block;
   }
   .dress-note-box p { font-size: 14px !important; line-height: 1.5; }
   .palette-swatches { gap: 8px; justify-content: center; }
