@@ -138,9 +138,11 @@ html.fonts-loading .envelope-stage {
 .wax-seal { display: block; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .wax-seal-image { display: block; width: clamp(70px, 13vw, 108px); height: auto; filter: drop-shadow(0 3px 2px #41132135); transition: transform .2s ease, filter .2s ease; }
 .wax-seal:disabled { cursor: default; }
+.wax-seal,
+.wax-seal:focus,
 .wax-seal:focus-visible {
-  outline: 3px solid #f5ece1;
-  outline-offset: 6px;
+  outline: none !important;
+  box-shadow: none !important;
 }
 .wax-seal:focus-visible .wax-seal-image {
   filter: brightness(1.12) drop-shadow(0 3px 3px #41132145);

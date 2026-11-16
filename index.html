@@ -26,14 +26,10 @@
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
 
   <!-- Изящная и кристально чёткая типографика: журнальные заголовки, нежная каллиграфия и чёткий гротеск -->
-  <link rel="preload" as="image" href="./assets/burgundy-paper-user.jpg">
-  <link rel="preload" as="image" href="./assets/keepsakes/wax-seal.webp">
+  <link rel="preload" as="image" href="./assets/burgundy-paper-user.jpg" fetchpriority="high">
   <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/playfair-display-normal-900.ttf" crossorigin>
   <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/caveat-normal-700.ttf" crossorigin>
   <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/montserrat-normal-400.ttf" crossorigin>
-  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/montserrat-normal-900.ttf" crossorigin>
-  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/oswald-normal-600.ttf" crossorigin>
-  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/cormorant-garamond-normal-700.ttf" crossorigin>
   <link rel="stylesheet" href="fonts.css">
 
   <style>
@@ -42,6 +38,8 @@
        Никакого картона — нежный хлопок, бархатный бордо и пудровый голубой
        ======================================================== */
     :root {
+      interpolate-size: allow-keywords;
+
       --burgundy: #681427;
       --burgundy-rich: #7e1730;
       --burgundy-deep: #480918;
@@ -62,9 +60,6 @@
       --ink: #141011;
       --ink-soft: #282124;
       --ink-muted: #483e42;
-
-      --paper-grain: none;
-      --paper-fibers: none;
     }
 
     * {
@@ -86,9 +81,7 @@
       background-image:
         radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.85) 0%, transparent 55%),
         radial-gradient(circle at 85% 85%, rgba(196, 220, 240, 0.42) 0%, transparent 60%),
-        radial-gradient(circle at 50% 50%, rgba(248, 232, 236, 0.35) 0%, transparent 65%),
-        var(--paper-fibers),
-        var(--paper-grain);
+        radial-gradient(circle at 50% 50%, rgba(248, 232, 236, 0.35) 0%, transparent 65%);
       font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-weight: 500;
       color: var(--ink);
@@ -109,9 +102,7 @@
       background-image:
         radial-gradient(ellipse at 15% 10%, rgba(255, 255, 255, 0.95) 0%, transparent 55%),
         radial-gradient(ellipse at 88% 88%, rgba(228, 241, 252, 0.45) 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 50%, rgba(253, 248, 242, 0.6) 0%, transparent 65%),
-        var(--paper-fibers),
-        var(--paper-grain);
+        radial-gradient(ellipse at 50% 50%, rgba(253, 248, 242, 0.6) 0%, transparent 65%);
       box-shadow:
         0 28px 80px rgba(95, 18, 35, 0.12),
         0 8px 24px rgba(0, 0, 0, 0.05),
@@ -437,62 +428,6 @@
       display: block;
       filter: contrast(1.05) saturate(0.96);
       clip-path: polygon(0.6% 1%, 99.4% 0.6%, 99% 99.4%, 0.6% 99%);
-    }
-
-    .photo-caption-scrap {
-      position: absolute;
-      bottom: 12px;
-      left: 20px;
-      background-color: #ffffff;
-      padding: 6px 16px;
-      font-size: 0.98rem;
-      font-weight: 600;
-      transform: rotate(0.8deg);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      font-style: italic;
-      color: var(--burgundy);
-    }
-
-    /* Изящный почтовый штемпель с датой (не срезается родителем) */
-    .postal-seal-round {
-      position: absolute;
-      top: -24px;
-      right: -24px;
-      width: 104px;
-      height: 104px;
-      border-radius: 50%;
-      background-color: var(--powder-blue-light);
-      border: 2px dashed var(--burgundy);
-      color: var(--burgundy);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Oswald', sans-serif;
-      text-transform: uppercase;
-      transform: rotate(14deg);
-      filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.16));
-      z-index: 12;
-      line-height: 1.1;
-      clip-path: polygon(4% 0%, 96% 2%, 100% 92%, 92% 100%, 8% 98%, 0% 86%);
-    }
-
-    .postal-seal-round .stamp-sub {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-    .postal-seal-round .stamp-date {
-      font-size: 1.55rem;
-      font-weight: 900;
-      color: var(--burgundy-deep);
-      margin: 2px 0;
-    }
-
-    .postal-seal-round .stamp-year {
-      font-size: 0.82rem;
-      letter-spacing: 0.12em;
     }
 
     /* ========================================================
@@ -1165,17 +1100,6 @@
       .hero-names-row {
         gap: 8px;
       }
-
-      .postal-seal-round {
-        width: 86px;
-        height: 86px;
-        top: -14px;
-        right: -10px;
-      }
-
-      .postal-seal-round .stamp-date {
-        font-size: 1.25rem;
-      }
     }
 
     /* ========================================================
@@ -1201,13 +1125,15 @@
 
     #rsvpDrinksGroup {
       overflow: hidden;
+      block-size: auto;
       max-height: 620px;
       opacity: 1;
-      transition: opacity 0.28s ease, max-height 0.32s ease, margin 0.28s ease;
+      transition: opacity 0.28s ease, block-size 0.32s ease, max-height 0.32s ease, margin 0.28s ease, padding 0.28s ease;
     }
 
     #rsvpDrinksGroup.is-collapsed {
       opacity: 0;
+      block-size: 0;
       max-height: 0;
       margin-bottom: 0 !important;
       pointer-events: none;
@@ -1334,7 +1260,6 @@
   </style>
   <link rel="stylesheet" href="collage.css">
   <link rel="stylesheet" href="editorial.css">
-  <link rel="stylesheet" href="layout-editor.css">
   <link rel="stylesheet" href="envelope.css">
   <script>
     const entryParams = new URLSearchParams(location.search);
@@ -1413,7 +1338,7 @@
           <div class="envelope-btn">
             <button type="button" id="waxSealBtn" class="wax-seal" aria-label="Открыть свадебное приглашение"
               aria-describedby="envelopeOpenHint">
-              <img class="wax-seal-image" src="./assets/keepsakes/wax-seal.webp" alt="" width="285" height="269"
+              <img class="wax-seal-image" src="./assets/keepsakes/wax-seal.webp" alt="" width="289" height="272"
                 decoding="async" fetchpriority="high">
             </button>
           </div>
@@ -1436,13 +1361,13 @@
          ========================================== -->
     <section class="hero-section" aria-label="Приглашение на свадьбу">
       <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-rings"
-          src="./assets/wedding-rings-topdown.webp" alt="" loading="lazy" decoding="async" width="1536" height="1024"
+          src="./assets/wedding-rings-topdown.webp" alt="" loading="lazy" decoding="async" width="640" height="427"
           data-layout-id="decoration-01"><img class="decor-object decor-envelope" src="./assets/keepsakes/envelope.webp"
-          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-02"><img
+          alt="" loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-02"><img
           class="decor-object decor-secondary decor-secondary-left decor-hearts" src="./assets/keepsakes/hearts.webp"
-          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-03"><img
+          alt="" loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-03"><img
           class="decor-object decor-secondary decor-secondary-right decor-pearls" src="./assets/keepsakes/pearls.webp"
-          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-04"></div>
+          alt="" loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-04"></div>
 
       <!-- Верхняя строчка вырезок (как в референсе: "планы на") -->
       <div class="hero-top-row">
@@ -1505,9 +1430,9 @@
          ========================================== -->
     <div class="venue-card-frame">
       <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-flowers"
-          src="./assets/keepsakes/flowers.webp" alt="" loading="lazy" decoding="async" width="1312" height="1199"
+          src="./assets/keepsakes/flowers.webp" alt="" loading="lazy" decoding="async" width="640" height="585"
           data-layout-id="decoration-05"><img class="decor-object decor-key" src="./assets/keepsakes/key.webp" alt=""
-          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-06"></div>
+          loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-06"></div>
 
       <section class="venue-card-inner">
         <div style="margin-bottom: 14px;">
@@ -1529,8 +1454,8 @@
         <!-- Иллюстрация Братцево по фотографии пользователя -->
         <div class="venue-photo-wrapper venue-illustration">
           <img loading="lazy" decoding="async" src="./assets/bratsevo-icon.webp"
-            alt="Усадьба Братцево: фасад с куполом, балконом и колоннами — рисунок по фотографии" width="1945"
-            height="808">
+            alt="Усадьба Братцево: фасад с куполом, балконом и колоннами — рисунок по фотографии" width="840"
+            height="349">
         </div>
 
         <p
@@ -1559,6 +1484,26 @@
         </div>
       </section>
     </div>
+
+    <!-- Места для будущих фотографий пары (блок 1) -->
+    <section class="future-photos-section" aria-label="Фотографии пары">
+      <div class="future-photos-grid">
+        <figure class="photo-slot-card slot-tilt-1">
+          <div class="photo-slot-frame">
+            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 1" width="800" height="713"
+              loading="lazy" decoding="async">
+          </div>
+          <figcaption class="photo-slot-caption">Наше фото · 01 ♡</figcaption>
+        </figure>
+        <figure class="photo-slot-card slot-tilt-2">
+          <div class="photo-slot-frame">
+            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 2" width="800" height="713"
+              loading="lazy" decoding="async">
+          </div>
+          <figcaption class="photo-slot-caption">Наше фото · 02 ♡</figcaption>
+        </figure>
+      </div>
+    </section>
 
     <!-- ==========================================
          3. ТАЙМИНГ С АНИМАЦИЕЙ (ЗНАМЕНИТАЯ ВОЛНА И ВЫРЕЗКИ)
@@ -1639,7 +1584,7 @@
             </span>
           </div>
           <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-rings.webp"
-            alt="Церемония регистрации: обручальные кольца" width="1536" height="1024">
+            alt="Церемония регистрации: обручальные кольца" width="720" height="480">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(2deg);">
               <span class="clip-body cut-scissor-4 bg-white-serif" style="font-size: 1.25rem;">ЦЕРЕМОНИЯ</span>
@@ -1663,7 +1608,7 @@
             </span>
           </div>
           <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-dinner.webp"
-            alt="Званый ужин: праздничный стол" width="1536" height="1024">
+            alt="Званый ужин: праздничный стол" width="720" height="480">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(-2deg);">
               <span class="clip-body cut-scissor-1 bg-white-serif" style="font-size: 1.25rem;">ЗВАНЫЙ УЖИН</span>
@@ -1687,7 +1632,7 @@
             </span>
           </div>
           <img loading="lazy" decoding="async" class="timing-icon-cutout" src="./assets/timing-cake.webp"
-            alt="Завершение вечера: свадебный торт и бенгальские огни" width="1312" height="1199">
+            alt="Завершение вечера: свадебный торт и бенгальские огни" width="720" height="658">
           <div class="timing-text-box">
             <span class="scrap-clip" style="transform: rotate(2deg);">
               <span class="clip-body cut-scissor-5 bg-white-serif" style="font-size: 1.25rem;">ФИНАЛ ВЕЧЕРА</span>
@@ -1708,17 +1653,17 @@
          ========================================== -->
     <div class="decorated-section">
       <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-lace"
-          src="./assets/keepsakes/lace.webp" alt="" loading="lazy" decoding="async" width="1402" height="1122"
+          src="./assets/keepsakes/lace.webp" alt="" loading="lazy" decoding="async" width="640" height="512"
           data-layout-id="decoration-11"><img class="decor-object decor-lace" src="./assets/keepsakes/lace.webp" alt=""
-          loading="lazy" decoding="async" width="1402" height="1122" data-layout-id="decoration-12"><img
+          loading="lazy" decoding="async" width="640" height="512" data-layout-id="decoration-12"><img
           class="decor-object decor-secondary decor-secondary-left decor-spool" src="./assets/keepsakes/spool.webp"
-          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-13"><img
+          alt="" loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-13"><img
           class="decor-object decor-secondary decor-secondary-right decor-bow" src="./assets/keepsakes/bow.webp" alt=""
-          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-14"></div>
+          loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-14"></div>
       <section class="dresscode-section">
         <div class="flatlay-bouquet" aria-hidden="true" data-layout-id="decoration-15"><img
-            src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="1103"
-            height="1426">
+            src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="495"
+            height="640">
         </div>
         <h2 class="section-heading" style="text-align: center;">
           <span class="scrap-clip" style="transform: rotate(-2deg);">
@@ -1768,7 +1713,7 @@
               <span class="clip-body cut-scissor-1 bg-black-sans" style="font-size: 0.95rem; margin-bottom: 8px;">01 /
                 ДЛЯ ДАМ</span>
             </span>
-            <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/dress-burgundy.webp"
+            <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/dress-burgundy.webp"
               alt="Пример дресс-кода: длинное бордовое платье" width="735" height="1030">
             <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
               Вечерние или коктейльные платья, шёлковые комбинации, костюмы в благородных цветах палитры.
@@ -1779,7 +1724,7 @@
               <span class="clip-body cut-scissor-2 bg-blue-powder" style="font-size: 0.95rem; margin-bottom: 8px;">02 /
                 ДЛЯ КАВАЛЕРОВ</span>
             </span>
-            <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/reference/suit-burgundy.webp"
+            <img loading="lazy" decoding="async" class="dress-figure-img" src="./assets/suit-burgundy.webp"
               alt="Пример дресс-кода: бордовый костюм" width="679" height="1018">
             <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
               Классические костюмы или блейзеры в глубоких графитовых, тёмно-синих или бордовых тонах.
@@ -1803,14 +1748,14 @@
     <div class="decorated-section">
       <div class="decoration-pair" aria-hidden="true">
         <img class="decor-object decor-fountain-pen decor-secondary-left" src="./assets/keepsakes/fountain-pen.webp"
-          alt="" loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-19">
+          alt="" loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-19">
         <img class="decor-object decor-inkwell decor-secondary-right" src="./assets/keepsakes/inkwell.webp" alt=""
-          loading="lazy" decoding="async" width="1536" height="1024" data-layout-id="decoration-20">
+          loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-20">
         <img class="decor-object decor-secondary decor-reply-card decor-secondary-left"
-          src="./assets/keepsakes/reply-card.webp" alt="" loading="lazy" decoding="async" width="1536" height="1024"
+          src="./assets/keepsakes/reply-card.webp" alt="" loading="lazy" decoding="async" width="640" height="427"
           data-layout-id="decoration-21">
         <img class="decor-object decor-secondary decor-binder-clips decor-secondary-right"
-          src="./assets/keepsakes/binder-clips.webp" alt="" loading="lazy" decoding="async" width="1536" height="1024"
+          src="./assets/keepsakes/binder-clips.webp" alt="" loading="lazy" decoding="async" width="640" height="427"
           data-layout-id="decoration-22">
       </div>
       <section class="rsvp-section" id="rsvp">
@@ -1909,6 +1854,26 @@
         </form>
       </section>
     </div>
+
+    <!-- Места для будущих фотографий пары (блок 2) -->
+    <section class="future-photos-section" aria-label="Ещё фотографии пары">
+      <div class="future-photos-grid">
+        <figure class="photo-slot-card slot-tilt-3">
+          <div class="photo-slot-frame">
+            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 3" width="800" height="713"
+              loading="lazy" decoding="async">
+          </div>
+          <figcaption class="photo-slot-caption">Наше фото · 03 ♡</figcaption>
+        </figure>
+        <figure class="photo-slot-card slot-tilt-4">
+          <div class="photo-slot-frame">
+            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 4" width="800" height="713"
+              loading="lazy" decoding="async">
+          </div>
+          <figcaption class="photo-slot-caption">Наше фото · 04 ♡</figcaption>
+        </figure>
+      </div>
+    </section>
 
     <!-- ==========================================
          5.5 ОБРАТНЫЙ ОТСЧЁТ ДО СВАДЬБЫ

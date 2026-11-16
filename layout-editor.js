@@ -11,7 +11,7 @@
   let selected = null;
   let drag = null;
   let undoState = null;
-  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки','lace-tr':'Кружево (правый угол)','lace-br':'Кружево (нижний угол)',lace:'Кружево',scissors:'Ножницы',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы',cat:'Кот в шляпе'};
+  const names = {rings:'Кольца',envelope:'Конверт',flowers:'Цветы',key:'Ключик',bow:'Бант',hearts:'Сердечки',lace:'Кружево',pearls:'Жемчуг',spool:'Катушка','fountain-pen':'Перьевая ручка',inkwell:'Чернильница','reply-card':'Карточка ответа','binder-clips':'Зажимы',cat:'Кот в шляпе'};
   items.forEach((item, i) => {
     item.dataset.layoutId ||= 'decoration-' + String(i + 1).padStart(2, '0');
     const name = Object.keys(names).find(key => item.classList.contains('decor-' + key));
@@ -54,6 +54,12 @@
   if (!editing) {
     addEventListener('resize', () => items.forEach(render));
     return;
+  }
+  if (!document.querySelector('link[href="layout-editor.css"]')) {
+    const editorStyles = document.createElement('link');
+    editorStyles.rel = 'stylesheet';
+    editorStyles.href = 'layout-editor.css';
+    document.head.append(editorStyles);
   }
   document.documentElement.classList.add('layout-editing');
   const toolbar = document.createElement('section');
@@ -284,7 +290,7 @@
       event.preventDefault(); remember(); const [dx,dy] = directions[event.key]; const state=getState(selected); const step=event.shiftKey?10:1;
       update(selected, {x:state.x+dx*step,y:state.y+dy*step}); save();
     } else if (event.key === 'Escape') {
-      endDrag(); select(null);
+      finishDrag(); select(null);
     } else if (event.key === 'h' || event.key === 'H' || event.key === 'р' || event.key === 'Р') {
       event.preventDefault(); remember(); const state = getState(selected);
       update(selected, { flipX: !state.flipX }); controls(); save();
@@ -293,5 +299,5 @@
       update(selected, { flipY: !state.flipY }); controls(); save();
     }
   });
-  addEventListener('resize', () => {endDrag(); items.forEach(render); controls();});
+  addEventListener('resize', () => {finishDrag(); items.forEach(render); controls();});
 })();

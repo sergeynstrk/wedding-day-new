@@ -4,7 +4,7 @@
   --scissor-b: polygon(0 4%, 23% 0, 49% 6%, 72% 2%, 100% 5%, 98% 27%, 100% 58%, 96% 98%, 72% 95%, 45% 100%, 18% 96%, 2% 100%, 0 70%, 3% 39%);
   --scissor-c: polygon(3% 1%, 28% 5%, 55% 0, 78% 3%, 98% 0, 96% 30%, 100% 55%, 97% 100%, 79% 97%, 53% 100%, 26% 94%, 0 98%, 2% 73%, 0 46%);
 }
-body { font-family: 'Montserrat', Arial, sans-serif; font-size: 16px; font-weight: 400; }
+body { font-family: 'Montserrat', Arial, sans-serif; font-size: 16px; font-weight: 400; font-size-adjust: from-font; }
 p { text-wrap: pretty; }
 .magazine-canvas { isolation: isolate; }
 .skip-link:not(:focus-visible) {
@@ -28,7 +28,6 @@ p { text-wrap: pretty; }
   z-index: 1001;
 }
 .section-heading, .venue-heading { font-size: inherit; font-weight: inherit; line-height: 1.5; }
-.edition-ribbon { font-family: 'Oswald', sans-serif; font-size: 11px; }
 .hero-section { padding-bottom: 18px; margin-bottom: 35px; }
 .hero-huge-title { align-items: center; gap: 5px; padding: 10px 0 14px; margin-bottom: 22px; }
 .giant-char { flex: 1 1 0; font-size: clamp(46px, 9.8vw, 105px); line-height: 1.1; padding: 8px 2px 15px; text-shadow: none; filter: none; border: 0; letter-spacing: -.045em; }
@@ -68,8 +67,6 @@ p { text-wrap: pretty; }
 .hero-details > span { font-size: 13px; line-height: 1.6; }
 .hero-details a { display: inline-flex; align-items: center; gap: 20px; min-height: 44px; color: #603227; text-decoration-thickness: 1px; text-underline-offset: 5px; font-size: 14px; font-weight: 600; }
 .hero-details a span { font-size: 26px; }
-.wedding-keepsakes { position: absolute; width: 235px; height: 235px; right: -35px; bottom: -22px; z-index: 3; pointer-events: none; transform: rotate(9deg); }
-.wedding-keepsakes img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(4px 9px 6px #51351e35); }
 .venue-card-inner { border-bottom: 1px solid #795b444d; padding-bottom: 28px; }
 .venue-card-inner > p { font-family: 'Montserrat', Arial, sans-serif; font-size: 15px !important; line-height: 1.85 !important; }
 .venue-photo-wrapper { padding: 5px 5px 16px; filter: drop-shadow(2px 4px 2px #49362b2b); clip-path: var(--scissor-b); }
@@ -126,7 +123,6 @@ p { text-wrap: pretty; }
   .hero-details time { font-size: 19px; }
   .hero-details > span { font-size: 12px; }
   .hero-details a { font-size: 12px; gap: 8px; }
-  .wedding-keepsakes { width: 165px; height: 165px; right: -20px; bottom: 0; }
   .ll-timeline { row-gap: 30px; }
   .sm-timing__item.item-2, .sm-timing__item.item-4 { margin-top: 0; }
   .timing-icon-cutout { width: 58px; height: 58px; right: 0; opacity: 1; }
@@ -141,7 +137,6 @@ p { text-wrap: pretty; }
   .swatch-name { font-size: 10px; }
   .swatch-card { padding: 5px; }
   .rsvp-section { padding: 24px 18px; }
-  .edition-ribbon { font-size: 10px; }
 }
 @media (max-width: 360px) {
   .magazine-canvas { padding-inline: 15px; }
@@ -150,7 +145,6 @@ p { text-wrap: pretty; }
   .hero-names-row .scrap-clip:last-child .clip-body { font-size: 25px !important; }
   .hero-details { padding-right: 98px; }
   .hero-details time { font-size: 16px; }
-  .wedding-keepsakes { width: 140px; height: 140px; }
   .palette-swatches { gap: 5px; }
   .swatch-color { width: 39px; }
 }
@@ -165,12 +159,10 @@ p { text-wrap: pretty; }
 .hero-section > .hero-invitation-note { grid-column: 1; grid-row: 4; }
 .hero-section > .couple-photo-frame { grid-column: 2; grid-row: 3 / 5; }
 .hero-section > .hero-details { grid-column: 1 / -1; grid-row: 5; }
-.hero-section > .wedding-keepsakes { grid-column: auto; grid-row: auto; }
 .hero-huge-title .giant-char:nth-child(odd) { clip-path: polygon(2% 5%, 29% 1%, 58% 4%, 96% 0, 100% 32%, 97% 64%, 99% 96%, 68% 100%, 36% 96%, 0 100%, 2% 67%, 0 35%); }
 .hero-huge-title .giant-char:nth-child(even) { clip-path: polygon(0 2%, 27% 5%, 61% 0, 99% 3%, 97% 41%, 100% 75%, 96% 100%, 71% 96%, 39% 100%, 2% 96%, 0 60%); }
 .dresscode-section { clip-path: var(--scissor-a); }
 @media (max-width: 780px) {
-  .wedding-keepsakes { right: 3px; width: 145px; height: 145px; }
   .hero-section > .hero-invitation-note .cute-scribble { font-size: 21px !important; }
   .palette-swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
   .swatch-card { min-width: 0; padding: 4px 4px 8px; }
@@ -195,13 +187,7 @@ p { text-wrap: pretty; }
 }
 body { background: #484644; color: #f0e9e1; }
 .magazine-canvas { background: #681427; box-shadow: 0 8px 35px #241d2030; }
-.edition-ribbon { color: #d9cbc8; border-bottom-color: #e9ddd13b; }
-.edition-ribbon .cute-tag { color: #c5d3d8; }
 .giant-char, .clip-body { position: relative; isolation: isolate; }
-.giant-char::after, .clip-body::after {
-  content: ''; position: absolute; inset: 0; background-image: var(--cut-paper-grain);
-  background-size: 180px 180px; opacity: .6; mix-blend-mode: multiply; pointer-events: none;
-}
 .giant-char { background-image: linear-gradient(135deg, #fff8e518, #48302112); }
 .char-c1 { background-color: #eae4d9; color: #643e49; }
 .char-c2 { background-color: #b9cbd2; color: #3d3338; }
@@ -222,8 +208,6 @@ body { background: #484644; color: #f0e9e1; }
 .bg-white-serif { color: #393135; }
 .bg-burgundy-rich { background-color: #79535e; color: #f5eee6; }
 .bg-news-typewriter { color: #3c3534; }
-.postal-seal-round { background-color: #d3dfe2; color: #643e49; border-color: #643e49; }
-.postal-seal-round .stamp-date { color: #643e49; }
 .venue-card-inner { border-bottom-color: #e2d5cd38; }
 .venue-card-inner > p { color: #eee6df !important; }
 .venue-card-inner .cute-scribble { color: #c5d3d8; }
@@ -252,15 +236,12 @@ body { background: #484644; color: #f0e9e1; }
 .btn-submit-collage { background: #643e49; color: #f3ece3; }
 .btn-submit-collage:hover { background: #76505d; }
 .farewell-footer .cute-scribble { color: #c9d8de !important; }
-.wedding-keepsakes { right: 0; bottom: -10px; width: 225px; height: 190px; transform: none; }
-.wedding-keepsakes img { filter: none; }
 .flatlay-bouquet { position: absolute; top: -12px; right: 20px; width: 230px; height: 185px; pointer-events: none; transform: rotate(-8deg); }
 .flatlay-bouquet img { width: 100%; height: 100%; object-fit: contain; }
 .modal-box { color: #3c3534; --ink-soft: #3c3534; }
 .modal-box .cute-scribble { color: #643e49; }
 @media (max-width: 780px) {
   .magazine-canvas { box-shadow: none; }
-  .wedding-keepsakes { right: 0; bottom: -8px; width: 145px; height: 130px; }
   .hero-details { padding-right: 100px; }
   .hero-details time { position: relative; z-index: 1; }
   .dresscode-section { padding-top: 130px; }
@@ -268,7 +249,6 @@ body { background: #484644; color: #f0e9e1; }
   .timing-icon-cutout { padding: 5px; }
 }
 @media (max-width: 360px) {
-  .wedding-keepsakes { width: 120px; height: 115px; right: -2px; }
   .hero-details { padding-right: 92px; }
 }
 .num-cutout-box { background-image: var(--cut-paper-grain); background-size: 180px 180px; }
@@ -289,7 +269,6 @@ body { background: #484644; color: #f0e9e1; }
 .dresscode-section, .rsvp-section, .modal-box { background-color: var(--paper-surface); background-image: none; color: var(--paper-ink); }
 .clip-body.bg-white-serif, .clip-body.bg-news-typewriter { background-color: var(--paper-light); }
 .couple-photo-inner, .swatch-card { background-color: #ece6dc; }
-.photo-caption-scrap { color: #68454e; }
 .rsvp-input, .choice-box, .chip-box { background-color: #f3efe8; border-color: #c4bbb4; color: var(--paper-ink); }
 .manor-sticker-inner { background-color: #d1dcde; }
 .hero-details time { background-color: #e4ded5; color: #563d45; }
@@ -344,7 +323,6 @@ body { background: #484644; color: #f0e9e1; }
 .decor-bow { top: 50px; height: 380px; width: 200px; left: -205px; transform: rotate(-10deg); }
 .decor-hearts { transform: rotate(13deg); }
 .decor-lace { top: 120px; width: 220px; left: -210px !important; right: auto !important; height: 360px; transform: rotate(-8deg); z-index: 10 !important; }
-.decor-scissors { transform: rotate(16deg); }
 .decor-pearls { top: 100px; height: 380px; transform: rotate(-14deg); }
 .decor-spool { top: 300px !important; height: 300px; transform: rotate(12deg); }
 .decor-cat { position: absolute; width: 175px !important; height: 195px !important; top: -30px !important; right: -130px !important; left: auto !important; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32)); transform-origin: center center; z-index: 10 !important; }
@@ -540,22 +518,6 @@ body { background: #484644; color: #f0e9e1; }
   pointer-events: none;
 }
 
-/* 6. Почтовый штемпель на полароиде пары */
-.couple-photo-frame .postal-seal-round {
-  z-index: 12;
-}
-.couple-photo-frame .postal-seal-round {
-  border: 2px dashed #643e49;
-  background-color: rgba(211, 223, 226, 0.92);
-  backdrop-filter: blur(1px);
-  box-shadow: inset 0 0 0 3px rgba(100, 62, 73, 0.18);
-}
-@media (max-width: 780px) {
-  .couple-photo-frame .postal-seal-round {
-    right: -4px;
-  }
-}
-
 /* 7. Подсветка активного бейджа тайминга */
 .timing-section .sm-timing__item.item-active .num-cutout-box {
   transform: scale(1.08) rotate(0deg);
@@ -673,6 +635,9 @@ body { background: #484644; color: #f0e9e1; }
     animation: none !important;
     transform: none !important;
   }
+  #rsvpDrinksGroup {
+    transition: none !important;
+  }
 }
 
 /* 11. Кристальная резкость всего текста без мыла и растрового размытия */
@@ -684,12 +649,6 @@ body {
   text-rendering: geometricPrecision !important;
 }
 
-/* Убираем шумовую плёнку (feTurbulence + multiply) поверх букв и под текстом */
-.giant-char::after,
-.clip-body::after {
-  content: none !important;
-  display: none !important;
-}
 .countdown-card,
 .envelope-intro h2 > span,
 .letter-name-second,
@@ -726,8 +685,6 @@ body {
 .swatch-card:nth-child(5),
 .hero-details time,
 .couple-photo-inner,
-.photo-caption-scrap,
-.postal-seal-round,
 .num-cutout-box,
 .b1, .b2, .b3, .b4,
 .sm-timing__item,
@@ -768,7 +725,6 @@ body {
 .swatch-card,
 .countdown-card,
 .couple-photo-inner,
-.postal-seal-round,
 .choice-box,
 .chip-box,
 .choice-btn input:checked + .choice-box,
@@ -776,11 +732,6 @@ body {
 .btn-submit-collage,
 .envelope-box {
   filter: none !important;
-}
-
-.couple-photo-frame .postal-seal-round {
-  backdrop-filter: none !important;
-  background-color: #d3dfe2 !important;
 }
 
 .envelope-box {
@@ -866,13 +817,6 @@ body {
 }
 
 /* Повышенная контрастность текста на бордовом и бумажном фонах */
-.edition-ribbon {
-  color: #f5ede6 !important;
-  font-weight: 600 !important;
-}
-.edition-ribbon .cute-tag {
-  color: #dcebf2 !important;
-}
 .venue-card-inner > p {
   color: #faf5ef !important;
   font-weight: 600 !important;
@@ -1012,5 +956,93 @@ body {
   .swatch-name {
     font-size: 9.5px;
     letter-spacing: 0.01em;
+  }
+}
+
+/* Места для будущих фотографий (полароиды с шаблоном-заглушкой) */
+.future-photos-section {
+  margin: 28px auto 36px;
+  position: relative;
+  z-index: 2;
+}
+
+.future-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.photo-slot-card {
+  background-color: #ece6dc;
+  padding: 10px 10px 14px;
+  margin: 0;
+  border: 1px solid #d5cabd;
+  box-shadow: 0 8px 22px rgba(24, 6, 11, 0.28);
+}
+
+.photo-slot-card.slot-tilt-1 {
+  transform: rotate(-1.5deg);
+}
+
+.photo-slot-card.slot-tilt-2 {
+  transform: rotate(1.4deg);
+}
+
+.photo-slot-card.slot-tilt-3 {
+  transform: rotate(1.2deg);
+}
+
+.photo-slot-card.slot-tilt-4 {
+  transform: rotate(-1.4deg);
+}
+
+.photo-slot-frame {
+  background-color: #faf7f2;
+  border: 1px dashed rgba(104, 20, 39, 0.25);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  overflow: hidden;
+}
+
+.photo-slot-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.photo-slot-caption {
+  font-family: 'Caveat', cursive;
+  font-size: 21px;
+  font-weight: 700;
+  color: #68454e;
+  text-align: center;
+  margin-top: 8px;
+  line-height: 1.1;
+}
+
+@media (max-width: 780px) {
+  .future-photos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-slot-card {
+    padding: 7px 7px 10px;
+  }
+
+  .photo-slot-frame {
+    padding: 10px;
+  }
+
+  .photo-slot-caption {
+    font-size: 17px;
   }
 }

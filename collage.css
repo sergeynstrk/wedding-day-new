@@ -17,8 +17,6 @@ body {
   background-image: linear-gradient(110deg, #d2b39c 0%, #c7a58f 65%, #c3a18b 100%);
   box-shadow: 0 5px 25px #33251f35;
 }
-.edition-ribbon { font-size: 10px; letter-spacing: .13em; border-bottom: 1px solid #49362b70; margin-bottom: 24px; gap: 16px; color: #49362b; }
-.edition-ribbon .cute-tag { font-size: 17px; }
 .hero-section { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; text-align: left; margin-bottom: 45px; }
 .hero-top-row { grid-column: 1 / -1; justify-content: flex-start; margin: 0 0 5px; gap: 7px; }
 .hero-top-row .clip-body { font-family: 'Playfair Display', Georgia, serif; font-size: 38px !important; font-weight: 900; padding: 0 12px !important; line-height: 1; }
@@ -38,9 +36,6 @@ body {
 .couple-photo-frame { grid-column: 2; grid-row: 3 / 5; width: 100%; margin: 0; align-self: center; }
 .couple-photo-inner { padding: 5px 5px 36px; transform: rotate(4deg); background: #eee3cc; filter: drop-shadow(2px 4px 2px #49362b30); }
 .couple-photo-inner img { height: 270px; object-fit: cover; object-position: center 32%; filter: none; }
-.photo-caption-scrap { font-family: 'Caveat', cursive; font-size: 19px; left: 8px; right: 8px; bottom: 5px; padding: 2px; text-align: center; border: 0; background: transparent; }
-.postal-seal-round { width: 80px; height: 80px; top: -17px; right: -15px; background: #d8cc9e; border: 2px solid #8e4139; border-radius: 50%; clip-path: none; box-shadow: none; filter: none; }
-.postal-seal-round .stamp-date { font-size: 24px; }
 .cute-scribble { color: #713a31; font-size: 24px; filter: none; }
 .cute-scribble-blue { color: #355861; }
 .scrap-clip { filter: drop-shadow(1px 2px 1px #49362b25); }
@@ -98,8 +93,6 @@ body {
     box-shadow: none;
     overflow-x: hidden;
   }
-  .edition-ribbon { font-size: 8px; letter-spacing: .04em; gap: 10px; margin-bottom: 18px; }
-  .edition-ribbon .cute-tag { display: none; }
 
   /* Hero: clean single-column presentation */
   .hero-section {
@@ -154,10 +147,6 @@ body {
     object-fit: cover;
     object-position: center 32%;
   }
-  .photo-caption-scrap { font-size: 16px; line-height: 1; }
-  .postal-seal-round { width: 61px; height: 61px; right: -6px; top: -12px; }
-  .postal-seal-round .stamp-date { font-size: 20px; }
-  .postal-seal-round .stamp-sub, .postal-seal-round .stamp-year { font-size: 9px; }
 
   .hero-details {
     width: 100%;
@@ -391,7 +380,3 @@ body {
   }
   .sm-timing__item.item-active { transform: none; }
 }
-
-
-/* Paper grain is applied only to cutouts, never to the page background. */
-:root { --paper-grain: none; --paper-fibers: none; }
