@@ -1128,3 +1128,153 @@ body {
     right: 14px;
   }
 }
+
+/* 2.5 Наша история (Love Story) */
+.story-section,
+.details-faq-section {
+  position: relative;
+  z-index: 2;
+  margin: 42px auto 46px;
+}
+
+.story-header,
+.details-faq-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.story-tickets,
+.details-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.story-ticket,
+.faq-scrap-card {
+  background-color: #f3ede3;
+  background-image: var(--cut-paper-grain);
+  background-size: 180px 180px;
+  padding: 20px 18px 22px;
+  color: #201a19;
+  text-align: left;
+  filter: drop-shadow(0 2px 1px rgba(24, 6, 11, 0.28)) drop-shadow(0 6px 14px rgba(24, 6, 11, 0.2));
+}
+
+.story-ticket.story-tilt-2 {
+  background-color: #d9e2e6;
+}
+
+.story-ticket.story-tilt-3 {
+  background-color: #efe4cf;
+}
+
+.story-tilt-1 { transform: rotate(-1.4deg); }
+.story-tilt-2 { transform: rotate(1.1deg); }
+.story-tilt-3 { transform: rotate(-1deg); }
+
+.faq-scrap-card.faq-tilt-2 {
+  background-color: #d1dcde;
+}
+
+.faq-scrap-card.faq-tilt-3 {
+  background-color: #f1e6d2;
+}
+
+.faq-tilt-1 { transform: rotate(1.2deg); }
+.faq-tilt-2 { transform: rotate(-1.3deg); }
+.faq-tilt-3 { transform: rotate(0.9deg); }
+
+.story-ticket-num {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #681427;
+  margin-bottom: 6px;
+}
+
+.story-ticket-title,
+.faq-scrap-title {
+  margin: 0 0 8px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #201a19;
+}
+
+.story-ticket-text,
+.faq-scrap-text {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #3d3331;
+}
+
+/* 5.8 Чат гостей (Telegram) */
+.guest-chat-section {
+  position: relative;
+  z-index: 2;
+  margin: 26px auto 34px;
+  max-width: 560px;
+}
+
+.guest-chat-frame {
+  position: relative;
+  overflow: visible;
+}
+
+.guest-chat-card {
+  background-color: #f3ede3;
+  background-image: var(--cut-paper-grain);
+  background-size: 180px 180px;
+  padding: 28px 26px 26px;
+  text-align: center;
+  color: #201a19;
+  transform: rotate(-0.7deg);
+  filter: drop-shadow(0 2px 1px rgba(24, 6, 11, 0.3)) drop-shadow(0 8px 18px rgba(24, 6, 11, 0.24));
+}
+
+.guest-chat-title {
+  margin: 14px 0 8px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #201a19;
+}
+
+.guest-chat-text {
+  margin: 0 auto 14px;
+  max-width: 440px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.94rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #3d3331;
+}
+
+.applique-pin-chat {
+  top: -17px;
+  left: 24px;
+  transform: rotate(-9deg);
+}
+
+@media (max-width: 780px) {
+  .story-tickets,
+  .details-faq-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .story-ticket,
+  .faq-scrap-card {
+    padding: 16px 16px 18px;
+  }
+
+  .guest-chat-card {
+    padding: 24px 18px 22px;
+  }
+}

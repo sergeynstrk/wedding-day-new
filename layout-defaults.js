@@ -12,38 +12,44 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "flipY": false
       },
       "decoration-11": {
-        "x": 235,
-        "y": 215,
-        "scale": 0.85,
-        "rotation": -2,
+        "x": 612.8179931640625,
+        "y": -2096.527847290039,
+        "scale": 0.8,
+        "rotation": 5,
         "flipX": false,
         "flipY": false
       },
       "decoration-12": {
-        "x": 846,
-        "y": -2754,
-        "scale": 1,
+        "x": 784.36376953125,
+        "y": -1910.727294921875,
+        "scale": 0.75,
         "rotation": 177,
         "flipX": false,
         "flipY": false
       },
       "decoration-04": {
-        "x": -383,
-        "y": 269,
+        "x": -831.1817626953125,
+        "y": 173.54541015625,
         "scale": 1,
-        "rotation": 0
+        "rotation": 0,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-05": {
-        "x": 184,
-        "y": -6,
+        "x": 281.272705078125,
+        "y": -17.81817626953125,
         "scale": 1,
-        "rotation": 10
+        "rotation": 10,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-06": {
-        "x": -168,
-        "y": -130,
+        "x": -278,
+        "y": -108.18179321289062,
         "scale": 1,
-        "rotation": 0
+        "rotation": 0,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-03": {
         "x": 190,
@@ -58,16 +64,20 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": 0
       },
       "decoration-13": {
-        "x": 169,
-        "y": -71,
+        "x": 160.81817626953125,
+        "y": 90.81817626953125,
         "scale": 0.75,
-        "rotation": 32
+        "rotation": 75,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-14": {
-        "x": -181,
-        "y": -430,
+        "x": -101,
+        "y": -67.27285766601562,
         "scale": 1,
-        "rotation": -10
+        "rotation": -10,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-15": {
         "x": -576,
@@ -76,32 +86,40 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "rotation": 0
       },
       "decoration-19": {
-        "x": 911,
-        "y": -657,
+        "x": 885.545654296875,
+        "y": -689.7272644042969,
         "scale": 1,
-        "rotation": -15
+        "rotation": -23,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-20": {
-        "x": -176,
-        "y": -1823,
+        "x": -258.727294921875,
+        "y": -1961.1818237304688,
         "scale": 1,
-        "rotation": 8
+        "rotation": 8,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-21": {
-        "x": 919,
-        "y": -3116,
+        "x": 217.18194580078125,
+        "y": 989.4547424316406,
         "scale": 0.95,
-        "rotation": 6
+        "rotation": -44,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-22": {
-        "x": -866,
-        "y": -835,
+        "x": -898.7272338867188,
+        "y": -777.7272644042969,
         "scale": 1.35,
-        "rotation": -12
+        "rotation": 89,
+        "flipX": false,
+        "flipY": false
       },
       "decoration-16": {
-        "x": -115,
-        "y": -10,
+        "x": -158.6363525390625,
+        "y": 44.54547119140625,
         "scale": 0.92,
         "rotation": 24,
         "flipX": false,
