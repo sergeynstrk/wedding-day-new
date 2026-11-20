@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const STORAGE_KEY = 'wedding-decor-layout-v2';
+  const STORAGE_KEY = 'wedding-decor-layout-v3';
   const defaults = window.WEDDING_LAYOUT_DEFAULTS?.layouts || {};
   const editing = new URLSearchParams(location.search).get('edit') === '1';
   const items = [...document.querySelectorAll('.decor-object, .flatlay-bouquet')];
@@ -72,8 +72,8 @@
     <div class="layout-heading">
       <strong>Расстановка декора</strong>
       <span id="layoutStatus" role="status">Потяните предмет</span>
-      <button type="button" id="layoutToggleGallery" class="layout-btn-mini">Превью стикеров ▲</button>
-      <button type="button" id="layoutTogglePanel" class="layout-btn-mini">Свернуть ▼</button>
+      <button type="button" id="layoutToggleGallery" class="layout-btn-mini" aria-expanded="true">Превью стикеров ▲</button>
+      <button type="button" id="layoutTogglePanel" class="layout-btn-mini" aria-expanded="true">Свернуть ▼</button>
       <a href="./">Без редактора ↗</a>
     </div>
     <div class="layout-body" id="layoutToolbarBody">
@@ -83,10 +83,10 @@
           ${items.map(it => `<option value="${it.dataset.layoutId}">${it.dataset.layoutName}</option>`).join('')}
         </select>
         <div class="layout-nudge-group">
-          <button type="button" id="nudgeUp" title="Вверх (10px)" disabled>↑</button>
-          <button type="button" id="nudgeDown" title="Вниз (10px)" disabled>↓</button>
-          <button type="button" id="nudgeLeft" title="Влево (10px)" disabled>←</button>
-          <button type="button" id="nudgeRight" title="Вправо (10px)" disabled>→</button>
+          <button type="button" id="nudgeUp" title="Вверх (10px)" aria-label="Сдвинуть вверх на 10px" disabled>↑</button>
+          <button type="button" id="nudgeDown" title="Вниз (10px)" aria-label="Сдвинуть вниз на 10px" disabled>↓</button>
+          <button type="button" id="nudgeLeft" title="Влево (10px)" aria-label="Сдвинуть влево на 10px" disabled>←</button>
+          <button type="button" id="nudgeRight" title="Вправо (10px)" aria-label="Сдвинуть вправо на 10px" disabled>→</button>
         </div>
         <label>Размер <input id="layoutScale" type="range" min="40" max="250" value="100" step="5" disabled><output id="layoutScaleValue">100%</output></label>
         <label>Поворот <input id="layoutRotation" type="range" min="-180" max="180" value="0" step="1" disabled><output id="layoutRotationValue">0°</output></label>
@@ -102,7 +102,7 @@
         ${items.map(it => `
           <div class="layout-thumb" role="listitem" data-thumb-id="${it.dataset.layoutId}" title="${it.dataset.layoutName}">
             <button type="button" class="layout-thumb-pick" aria-label="Выбрать: ${it.dataset.layoutName}">
-              <img src="${itemThumbSrc(it)}" alt="" loading="lazy" decoding="async">
+              <img src="${itemThumbSrc(it)}" alt="" width="48" height="44" loading="lazy" decoding="async">
               <span>${it.dataset.layoutName}</span>
             </button>
             <button type="button" class="layout-thumb-action" aria-label="Удалить: ${it.dataset.layoutName}" title="Удалить стикер">×</button>
@@ -248,10 +248,12 @@
   field('layoutToggleGallery')?.addEventListener('click', () => {
     const hidden = toolbar.classList.toggle('layout-gallery-collapsed');
     field('layoutToggleGallery').textContent = hidden ? 'Превью стикеров ▼' : 'Превью стикеров ▲';
+    field('layoutToggleGallery').setAttribute('aria-expanded', String(!hidden));
   });
   field('layoutTogglePanel')?.addEventListener('click', () => {
     const isCollapsed = toolbar.classList.toggle('layout-toolbar-collapsed');
     field('layoutTogglePanel').textContent = isCollapsed ? 'Развернуть ▲' : 'Свернуть ▼';
+    field('layoutTogglePanel').setAttribute('aria-expanded', String(!isCollapsed));
   });
   function toggleHidden(item, forceHidden) {
     if (!item) return;
@@ -337,6 +339,7 @@
     remember(); delete layouts[profile()]?.[selected.dataset.layoutId]; render(selected); controls(); save();
   });
   field('layoutResetAll').addEventListener('click', () => {
+    if (!window.confirm('Сбросить расстановку всех элементов на этом экране?')) return;
     remember(); delete layouts[profile()]; items.forEach(render); controls(); save();
   });
   field('layoutUndo').addEventListener('click', () => {

@@ -3,62 +3,62 @@
   font-family: 'Caveat';
   font-style: normal;
   font-weight: 400 900;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/caveat-normal-700.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Cormorant Garamond';
   font-style: italic;
   font-weight: 400 700;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/cormorant-garamond-italic-600.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Cormorant Garamond';
   font-style: normal;
   font-weight: 600 900;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/cormorant-garamond-normal-700.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 300 400;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/montserrat-normal-400.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 500 700;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/montserrat-normal-600.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 800 900;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/montserrat-normal-900.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Oswald';
   font-style: normal;
   font-weight: 400 600;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/oswald-normal-600.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Oswald';
   font-style: normal;
   font-weight: 700 900;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/oswald-normal-700.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Playfair Display';
   font-style: normal;
   font-weight: 700 900;
-  font-display: block;
+  font-display: swap;
   src: url(./assets/fonts/playfair-display-normal-900.ttf) format('truetype');
 }

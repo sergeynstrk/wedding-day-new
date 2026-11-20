@@ -11,7 +11,7 @@
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
   background: transparent;
   overflow: hidden;
   overscroll-behavior: contain;
@@ -144,6 +144,10 @@ html.fonts-loading .envelope-stage {
   outline: none !important;
   box-shadow: none !important;
 }
+.envelope-screen.envelope-keyboard .wax-seal:focus-visible {
+  outline: 3px solid #c9e0ec !important;
+  outline-offset: 6px;
+}
 .wax-seal:focus-visible .wax-seal-image {
   filter: brightness(1.12) drop-shadow(0 3px 3px #41132145);
 }
@@ -155,7 +159,7 @@ html.fonts-loading .envelope-stage {
 }
 @media (max-width: 600px) {
   .envelope-screen { padding: 0; }
-  .envelope-stage { width: 100%; height: 100svh; max-height: none; padding: 80px 16px 35px; }
+  .envelope-stage { width: 100%; height: 100svh; max-height: none; padding: max(80px, calc(env(safe-area-inset-top) + 48px)) max(16px, env(safe-area-inset-right)) max(35px, calc(env(safe-area-inset-bottom) + 16px)) max(16px, env(safe-area-inset-left)); }
   .envelope-intro { min-height: 76px; }
   .envelope-caption { min-height: 68px; }
   .envelope-eyebrow { font-size: 10px; margin-bottom: 13px; }
@@ -188,7 +192,8 @@ html.fonts-loading .envelope-stage {
   .envelope-screen *, html.envelope-active.envelope-revealing #invitation > * { transition: none !important; }
 }
 
-.envelope-screen:focus { outline: none; }
+.envelope-screen:focus,
+.envelope-screen:focus-visible { outline: none; }
 @media (max-height: 560px) {
   .wax-seal-image { width: 76px; }
   .envelope-address { bottom: 18px; left: 18px; font-size: 18px; }
@@ -203,4 +208,5 @@ html.fonts-loading .envelope-stage {
   .letter-top-label span { font-size: 11px; }
 }
 
-.magazine-canvas:focus { outline: none; }
+.magazine-canvas:focus,
+.magazine-canvas:focus-visible { outline: none; }

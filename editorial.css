@@ -596,7 +596,7 @@ body {
   background-color: #f6f2eb !important;
   box-shadow: inset 0 1px 3px rgba(60, 53, 52, 0.05);
 }
-.rsvp-input:focus {
+.rsvp-input:focus-visible {
   border-color: #643e49 !important;
   background-color: #fbf8f3 !important;
 }
@@ -1207,6 +1207,7 @@ body {
   font-weight: 800;
   line-height: 1.25;
   color: #201a19;
+  text-wrap: balance;
 }
 
 .story-ticket-text,
@@ -1249,6 +1250,15 @@ body {
   font-size: 1.4rem;
   font-weight: 800;
   color: #201a19;
+  text-wrap: balance;
+}
+
+#story,
+#timing,
+#details,
+#rsvp,
+#guestChat {
+  scroll-margin-top: 24px;
 }
 
 .guest-chat-text {
