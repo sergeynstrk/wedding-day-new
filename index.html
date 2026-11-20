@@ -76,40 +76,63 @@
       text-rendering: optimizeLegibility;
     }
 
+    html {
+      background-color: #484644;
+    }
+
+    @media (min-width: 781px) {
+      html {
+        overflow-y: scroll;
+      }
+    }
+
     body {
-      background-color: var(--cotton-base);
-      background-image:
-        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.85) 0%, transparent 55%),
-        radial-gradient(circle at 85% 85%, rgba(196, 220, 240, 0.42) 0%, transparent 60%),
-        radial-gradient(circle at 50% 50%, rgba(248, 232, 236, 0.35) 0%, transparent 65%);
+      background-color: #484644;
+      background-image: none;
       font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-weight: 500;
-      color: var(--ink);
+      color: #f0e9e1;
       line-height: 1.55;
-      padding: 36px 16px 110px;
+      padding: 0 20px;
       overflow-x: hidden;
     }
 
+    html.envelope-active #invitation > * {
+      visibility: hidden;
+      opacity: 0;
+    }
+
     /* ========================================================
-       ПРОСТОРНАЯ ШИРОКАЯ КОЛОНКА (ЖУРНАЛЬНЫЙ РАЗВОРОТ)
-       Ширина 1040px исключает сдавливание и коллизии
+       ЖУРНАЛЬНЫЙ РАЗВОРОТ (900px, бордовый ватман с первого кадра)
        ======================================================== */
     .magazine-canvas {
       position: relative;
-      max-width: 1040px;
+      max-width: 900px;
+      min-height: 100svh;
       margin: 0 auto;
-      background-color: var(--cotton-paper);
-      background-image:
-        radial-gradient(ellipse at 15% 10%, rgba(255, 255, 255, 0.95) 0%, transparent 55%),
-        radial-gradient(ellipse at 88% 88%, rgba(228, 241, 252, 0.45) 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 50%, rgba(253, 248, 242, 0.6) 0%, transparent 65%);
-      box-shadow:
-        0 28px 80px rgba(95, 18, 35, 0.12),
-        0 8px 24px rgba(0, 0, 0, 0.05),
-        0 2px 4px rgba(0, 0, 0, 0.03);
-      padding: 60px 54px;
-      border: 1px solid rgba(226, 215, 200, 0.85);
-      border-radius: 4px;
+      background-color: #681427;
+      background-image: url('./assets/burgundy-paper-user.jpg');
+      background-size: 900px auto;
+      background-position: top center;
+      background-repeat: repeat-y;
+      box-shadow: 0 8px 35px #241d2030;
+      padding: 36px 40px 48px;
+      border: 0;
+      border-radius: 0;
+    }
+
+    @media (max-width: 780px) {
+      html,
+      body {
+        background-color: #681427;
+        padding: 0;
+      }
+      .magazine-canvas {
+        padding: 16px 14px 28px;
+        width: 100%;
+        background-size: 100% auto;
+        box-shadow: none;
+      }
     }
 
     /* ========================================================
@@ -1421,7 +1444,7 @@
     <!-- ==========================================
          2. ЛОКАЦИЯ (УСАДЬБА БРАТЦЕВО)
          ========================================== -->
-    <div class="venue-card-frame">
+    <div class="venue-card-frame" id="venue">
       <div class="decoration-pair" aria-hidden="true"><img class="decor-object decor-flowers"
           src="./assets/keepsakes/flowers.webp" alt="" loading="lazy" decoding="async" width="640" height="585"
           data-layout-id="decoration-05"><img class="decor-object decor-key" src="./assets/keepsakes/key.webp" alt=""
@@ -1540,6 +1563,27 @@
           <h3 class="story-ticket-title">Самое главное «Да»</h3>
           <p class="story-ticket-text">Тот самый момент, с которого начался отсчёт до нашего общего дня — 5 августа 2027.</p>
         </article>
+      </div>
+
+      <div class="future-photos-grid story-photos-grid" aria-label="Ещё фотографии пары">
+        <figure class="photo-slot-card slot-tilt-3">
+          <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
+            loading="lazy" decoding="async" aria-hidden="true">
+          <div class="photo-slot-frame">
+            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 3" width="800" height="713"
+              loading="lazy" decoding="async">
+          </div>
+          <figcaption class="photo-slot-caption">Наше фото · 03 ♡</figcaption>
+        </figure>
+        <figure class="photo-slot-card slot-tilt-4">
+          <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
+            loading="lazy" decoding="async" aria-hidden="true">
+          <div class="photo-slot-frame">
+            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 4" width="800" height="713"
+              loading="lazy" decoding="async">
+          </div>
+          <figcaption class="photo-slot-caption">Наше фото · 04 ♡</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -1698,7 +1742,7 @@
           alt="" loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-13"><img
           class="decor-object decor-secondary decor-secondary-right decor-bow" src="./assets/keepsakes/bow.webp" alt=""
           loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-14"></div>
-      <section class="dresscode-section">
+      <section class="dresscode-section" id="dresscode">
         <div class="flatlay-bouquet" aria-hidden="true" data-layout-id="decoration-15"><img
             src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="495"
             height="640">
@@ -1976,30 +2020,6 @@
       </section>
     </div>
 
-    <!-- Места для будущих фотографий пары (блок 2) -->
-    <section class="future-photos-section" aria-label="Ещё фотографии пары">
-      <div class="future-photos-grid">
-        <figure class="photo-slot-card slot-tilt-3">
-          <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
-            loading="lazy" decoding="async" aria-hidden="true">
-          <div class="photo-slot-frame">
-            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 3" width="800" height="713"
-              loading="lazy" decoding="async">
-          </div>
-          <figcaption class="photo-slot-caption">Наше фото · 03 ♡</figcaption>
-        </figure>
-        <figure class="photo-slot-card slot-tilt-4">
-          <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
-            loading="lazy" decoding="async" aria-hidden="true">
-          <div class="photo-slot-frame">
-            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 4" width="800" height="713"
-              loading="lazy" decoding="async">
-          </div>
-          <figcaption class="photo-slot-caption">Наше фото · 04 ♡</figcaption>
-        </figure>
-      </div>
-    </section>
-
     <!-- ==========================================
          5.5 ОБРАТНЫЙ ОТСЧЁТ ДО СВАДЬБЫ
          ========================================== -->
@@ -2079,6 +2099,16 @@
     </footer>
 
   </main>
+
+  <nav class="floating-nav" id="floatingNav" aria-label="Навигация по разделам">
+    <div class="floating-nav-strip">
+      <a href="#venue" class="floating-nav-link">Место</a>
+      <a href="#timing" class="floating-nav-link">Тайминг</a>
+      <a href="#dresscode" class="floating-nav-link">Дресс-код</a>
+      <a href="#details" class="floating-nav-link">Детали</a>
+      <a href="#rsvp" class="floating-nav-link floating-nav-cta">Анкета</a>
+    </div>
+  </nav>
 
   <!-- Модальное окно подтверждения с печатью -->
   <div class="modal-backdrop" id="successModal" role="dialog" aria-modal="true" aria-label="Ответ отправлен">
@@ -2533,9 +2563,16 @@
         return;
       }
       const targets = document.querySelectorAll(
-        '.venue-card-frame, .timing-section .sm-timing__item, .dresscode-section, .rsvp-section, .countdown-section, .farewell-footer'
+        '.venue-card-frame, .photo-slot-card, .story-header, .story-ticket, .timing-section .sm-timing__item, .dresscode-section, .details-faq-header, .faq-scrap-card, .rsvp-section, .countdown-section, .guest-chat-card, .farewell-footer'
       );
       if (!targets.length) return;
+
+      // Каскадная задержка для карточек внутри одной сетки
+      document.querySelectorAll('.future-photos-grid, .story-tickets, .details-faq-grid').forEach((grid) => {
+        Array.from(grid.children).forEach((child, idx) => {
+          child.style.setProperty('--reveal-delay', `${idx * 90}ms`);
+        });
+      });
 
       const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach((entry) => {
@@ -2547,8 +2584,9 @@
       }, { threshold: 0.08, rootMargin: '0px 0px -15px 0px' });
 
       const foldY = window.innerHeight * 0.96;
-      targets.forEach((el) => {
-        if (el.getBoundingClientRect().top > foldY) {
+      const rects = Array.from(targets).map((el) => el.getBoundingClientRect().top);
+      targets.forEach((el, idx) => {
+        if (rects[idx] > foldY) {
           el.classList.add('reveal-pending');
           observer.observe(el);
         } else {
@@ -2561,6 +2599,146 @@
       document.addEventListener('DOMContentLoaded', initScrollReveal);
     } else {
       initScrollReveal();
+    }
+
+    // ==========================================
+    // 6. ЛЁГКИЙ БУМАЖНЫЙ ПАРАЛЛАКС ДЕКОРА ПРИ СКРОЛЛЕ
+    // ==========================================
+    function initDecorParallax() {
+      const isEditing = new URLSearchParams(location.search).get('edit') === '1';
+      if (isEditing || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const items = Array.from(document.querySelectorAll('.decor-object, .flatlay-bouquet'));
+      if (!items.length) return;
+
+      const speeds = [-14, 16, -12, 14, -15, 13, -11, 15, -13, 12];
+      let entries = [];
+      let rafId = null;
+
+      function parseTranslate(str) {
+        const parts = (str || '').trim().split(/\s+/);
+        return {
+          x: parseFloat(parts[0]) || 0,
+          y: parseFloat(parts[1]) || 0
+        };
+      }
+
+      function snapshotBase() {
+        entries = items.map((el, index) => {
+          const base = parseTranslate(el.style.translate);
+          const anchor = el.closest('section, .venue-card-frame, .decorated-section, .farewell-footer') || el.parentElement;
+          return {
+            el,
+            anchor,
+            baseX: base.x,
+            baseY: base.y,
+            speed: speeds[index % speeds.length]
+          };
+        });
+      }
+
+      function update() {
+        rafId = null;
+        const vh = window.innerHeight || 1;
+        const anchorRects = new Map();
+        entries.forEach(({ anchor }) => {
+          if (anchor && !anchorRects.has(anchor)) {
+            anchorRects.set(anchor, anchor.getBoundingClientRect());
+          }
+        });
+
+        entries.forEach(({ el, anchor, baseX, baseY, speed }) => {
+          if (el.style.display === 'none' || !anchor) return;
+          const rect = anchorRects.get(anchor);
+          if (!rect || rect.bottom < -200 || rect.top > vh + 200) return;
+          const centerY = rect.top + rect.height * 0.5;
+          const progress = Math.max(-1, Math.min(1, (centerY / vh) - 0.5));
+          const offsetY = progress * speed;
+          el.style.translate = `${baseX}px ${(baseY + offsetY).toFixed(1)}px`;
+        });
+      }
+
+      function queue() {
+        if (rafId === null) rafId = window.requestAnimationFrame(update);
+      }
+
+      snapshotBase();
+      queue();
+
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', () => {
+        if (rafId !== null) {
+          window.cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        snapshotBase();
+        queue();
+      }, { passive: true });
+    }
+
+    document.addEventListener('DOMContentLoaded', initDecorParallax);
+
+    // ==========================================
+    // 7. КОМПАКТНАЯ ПЛАВАЮЩАЯ НАВИГАЦИЯ ПО РАЗДЕЛАМ
+    // ==========================================
+    function initFloatingNav() {
+      const nav = document.getElementById('floatingNav');
+      if (!nav) return;
+      const links = Array.from(nav.querySelectorAll('.floating-nav-link'));
+      const sections = links
+        .map((link) => {
+          const id = (link.getAttribute('href') || '').slice(1);
+          const el = id ? document.getElementById(id) : null;
+          return el ? { id, el, link } : null;
+        })
+        .filter(Boolean);
+
+      if (!sections.length) return;
+
+      let activeId = null;
+      function setActive(id) {
+        if (activeId === id) return;
+        activeId = id;
+        sections.forEach(({ id: secId, link }) => {
+          const isCurrent = secId === id;
+          link.classList.toggle('is-active', isCurrent);
+          if (isCurrent) {
+            link.setAttribute('aria-current', 'location');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        });
+      }
+
+      let navRaf = null;
+      function updateNavState() {
+        navRaf = null;
+        const show = window.scrollY > 260;
+        nav.classList.toggle('is-visible', show);
+        nav.inert = !show;
+
+        const marker = window.innerHeight * 0.35;
+        let current = sections[0].id;
+        const tops = sections.map(({ el }) => el.getBoundingClientRect().top);
+        sections.forEach(({ id }, idx) => {
+          if (tops[idx] <= marker) current = id;
+        });
+        setActive(current);
+      }
+
+      function queueNav() {
+        if (navRaf === null) navRaf = window.requestAnimationFrame(updateNavState);
+      }
+
+      updateNavState();
+      window.addEventListener('scroll', queueNav, { passive: true });
+      window.addEventListener('resize', queueNav, { passive: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFloatingNav);
+    } else {
+      initFloatingNav();
     }
   </script>
   <!-- Вспомогательные библиотеки для 3D-анимации конверта и салюта конфетти -->

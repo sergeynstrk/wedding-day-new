@@ -308,6 +308,25 @@ body {
 .magazine-canvas { max-width: 900px; padding: 36px 40px 48px; }
 .hero-section, .venue-card-frame, .timing-section, .decorated-section, .farewell-footer { position: relative; }
 .decoration-pair, .farewell-decor { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.custom-decor-layer { position: absolute; inset: 0; pointer-events: none; z-index: 6; }
+.custom-decor-layer .decor-custom {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 220px !important;
+  height: 220px !important;
+  transform: none !important;
+  object-fit: contain;
+  pointer-events: none;
+}
+@media (max-width: 780px) {
+  .custom-decor-layer .decor-custom {
+    width: 90px !important;
+    height: 90px !important;
+  }
+}
 .farewell-decor { z-index: 5; }
 .decor-object { position: absolute; top: 40px; left: -185px; width: 175px; height: 260px; display: block; object-fit: contain; }
 .decor-object + .decor-object { left: auto; right: -185px; top: 160px; }
@@ -370,10 +389,17 @@ body {
 }
 /* Пользовательская фактура ватмана: бесшовное вертикальное соединение, исходный цвет бордо #681427 */
 .magazine-canvas {
+  min-height: 100svh;
   background-color: #681427;
   background-image: url('./assets/burgundy-paper-user.jpg');
-  background-size: 100% auto;
+  background-size: 900px auto;
+  background-position: top center;
   background-repeat: repeat-y;
+}
+@media (max-width: 780px) {
+  .magazine-canvas {
+    background-size: 100% auto;
+  }
 }
 /* Program illustrations share the manor's linework and sit directly on the page. */
 .timing-section .sm-timing__item .timing-icon-cutout {
@@ -619,12 +645,73 @@ body {
 .is-revealed {
   opacity: 1;
   translate: 0 0;
-  transition: opacity 0.48s cubic-bezier(0.22, 0.61, 0.36, 1), translate 0.48s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition:
+    opacity 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0ms),
+    translate 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1) 0ms;
 }
+
+/* Каскадное появление обложки после открытия конверта */
+.hero-top-row,
+.hero-huge-title .giant-char,
+.couple-photo-frame,
+.hero-names-row,
+.hero-invitation-note,
+.hero-details {
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) var(--hero-delay, 0ms),
+    translate 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) var(--hero-delay, 0ms),
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) 0ms;
+}
+.hero-top-row { --hero-delay: 40ms; }
+.hero-huge-title .giant-char:nth-child(1) { --hero-delay: 90ms; }
+.hero-huge-title .giant-char:nth-child(2) { --hero-delay: 130ms; }
+.hero-huge-title .giant-char:nth-child(3) { --hero-delay: 170ms; }
+.hero-huge-title .giant-char:nth-child(4) { --hero-delay: 210ms; }
+.hero-huge-title .giant-char:nth-child(5) { --hero-delay: 250ms; }
+.hero-huge-title .giant-char:nth-child(6) { --hero-delay: 290ms; }
+.hero-huge-title .giant-char:nth-child(7) { --hero-delay: 330ms; }
+.couple-photo-frame { --hero-delay: 370ms; }
+.hero-names-row { --hero-delay: 460ms; }
+.hero-invitation-note { --hero-delay: 540ms; }
+.hero-details { --hero-delay: 620ms; }
+
+html.envelope-active:not(.envelope-revealing) .hero-top-row,
+html.envelope-active:not(.envelope-revealing) .hero-huge-title .giant-char,
+html.envelope-active:not(.envelope-revealing) .couple-photo-frame,
+html.envelope-active:not(.envelope-revealing) .hero-names-row,
+html.envelope-active:not(.envelope-revealing) .hero-invitation-note,
+html.envelope-active:not(.envelope-revealing) .hero-details {
+  opacity: 0;
+  translate: 0 20px;
+}
+
+@media (hover: hover) {
+  .photo-slot-card,
+  .story-ticket,
+  .faq-scrap-card {
+    transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .photo-slot-card:hover {
+    transform: translateY(-4px) rotate(0deg);
+  }
+  .story-ticket:hover,
+  .faq-scrap-card:hover {
+    transform: translateY(-3px) rotate(0deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal-pending {
+  .reveal-pending,
+  html.envelope-active:not(.envelope-revealing) .hero-top-row,
+  html.envelope-active:not(.envelope-revealing) .hero-huge-title .giant-char,
+  html.envelope-active:not(.envelope-revealing) .couple-photo-frame,
+  html.envelope-active:not(.envelope-revealing) .hero-names-row,
+  html.envelope-active:not(.envelope-revealing) .hero-invitation-note,
+  html.envelope-active:not(.envelope-revealing) .hero-details {
     opacity: 1 !important;
     translate: none !important;
+    transition: none !important;
   }
   .countdown-card.is-ticking .countdown-num {
     animation: none !important;
@@ -1253,12 +1340,118 @@ body {
   text-wrap: balance;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-bottom: 84px;
+}
+
+#venue,
 #story,
 #timing,
+#dresscode,
 #details,
 #rsvp,
 #guestChat {
   scroll-margin-top: 24px;
+}
+
+/* Компактная плавающая навигация в стиле бумажной вырезки */
+.floating-nav {
+  position: fixed;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 900;
+  max-width: calc(100vw - 20px);
+  opacity: 0;
+  transform: translate(-50%, 16px) rotate(-0.4deg);
+  pointer-events: none;
+  filter:
+    drop-shadow(0 2px 1px rgba(24, 6, 11, 0.36))
+    drop-shadow(0 8px 20px rgba(20, 4, 9, 0.4));
+  transition: opacity 0.26s ease, transform 0.26s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.floating-nav.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0) rotate(-0.4deg);
+  pointer-events: auto;
+}
+html.envelope-active .floating-nav,
+html.layout-editing .floating-nav {
+  display: none !important;
+}
+.floating-nav-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 6px 10px;
+  background-color: #f1ece4;
+  background-image: var(--cut-paper-grain);
+  background-size: 180px 180px;
+  clip-path: var(--scissor-a);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.floating-nav-strip::-webkit-scrollbar {
+  display: none;
+}
+.floating-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 5px 11px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #393135;
+  text-decoration: none;
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.floating-nav-link:hover {
+  background-color: #dce6ea;
+  color: #24161b;
+  clip-path: var(--scissor-c);
+}
+.floating-nav-link.is-active {
+  background-color: #681427;
+  color: #f7efe8;
+  clip-path: var(--scissor-b);
+  transform: rotate(-1.2deg);
+}
+.floating-nav-cta:not(.is-active) {
+  background-color: #b9cbd2;
+  color: #24161b;
+  clip-path: var(--scissor-c);
+  transform: rotate(0.9deg);
+}
+.floating-nav-cta:not(.is-active):hover {
+  background-color: #a8bec7;
+}
+@media (max-width: 480px) {
+  .floating-nav {
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .floating-nav-strip {
+    gap: 2px;
+    padding: 5px 7px;
+  }
+  .floating-nav-link {
+    min-height: 38px;
+    padding: 5px 8px;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floating-nav,
+  .floating-nav-link {
+    transition: none !important;
+  }
 }
 
 .guest-chat-text {
@@ -1296,28 +1489,29 @@ body {
 
 /* Воздушный ритм между разделами страницы */
 .hero-section {
-  margin-bottom: clamp(88px, 11vw, 136px);
+  margin-top: max(0px, calc((100svh - 810px) / 2));
+  margin-bottom: clamp(256px, 28vw, 352px);
 }
 
 .venue-card-frame {
-  margin-bottom: clamp(84px, 10.5vw, 128px);
+  margin-bottom: clamp(240px, 27vw, 336px);
 }
 
 .future-photos-section {
-  margin-block: clamp(84px, 10.5vw, 128px);
+  margin-block: clamp(224px, 25vw, 312px);
 }
 
 .story-section,
 .details-faq-section {
-  margin-block: clamp(88px, 11vw, 136px);
+  margin-block: clamp(256px, 28vw, 352px);
 }
 
 .timing-section {
-  margin-bottom: clamp(88px, 11vw, 136px);
+  margin-bottom: clamp(256px, 28vw, 352px);
 }
 
 .magazine-canvas > .decorated-section {
-  margin-block: clamp(84px, 10.5vw, 128px);
+  margin-block: clamp(248px, 27vw, 344px);
 }
 
 .decorated-section > .dresscode-section,
@@ -1326,38 +1520,122 @@ body {
   margin-bottom: 0;
 }
 
+.story-photos-grid {
+  margin-top: 32px;
+}
+
+.future-photos-section:has(+ .countdown-section) {
+  margin-bottom: 48px;
+}
+
 .countdown-section {
-  margin-block: clamp(84px, 10.5vw, 128px);
+  margin-block: 48px;
 }
 
 .guest-chat-section {
-  margin-block: clamp(78px, 10vw, 120px);
+  margin-block: 48px;
 }
 
 .farewell-footer {
-  margin-top: clamp(84px, 10.5vw, 128px);
+  margin-top: 52px;
+  padding-bottom: 84px;
 }
 
 @media (max-width: 780px) {
+  .hero-section {
+    margin-top: max(0px, calc((100svh - 700px) / 2));
+  }
+
   .hero-section,
   .timing-section {
-    margin-bottom: 72px;
+    margin-bottom: 208px;
   }
 
   .venue-card-frame {
-    margin-bottom: 68px;
+    margin-bottom: 196px;
   }
 
   .future-photos-section,
   .story-section,
   .details-faq-section,
-  .magazine-canvas > .decorated-section,
+  .magazine-canvas > .decorated-section {
+    margin-block: 204px;
+  }
+
+  .future-photos-section:has(+ .countdown-section) {
+    margin-bottom: 40px;
+  }
+
   .countdown-section,
   .guest-chat-section {
-    margin-block: 70px;
+    margin-block: 40px;
   }
 
   .farewell-footer {
-    margin-top: 72px;
+    margin-top: 44px;
+    padding-bottom: 88px;
+  }
+}
+
+/* Выразительные крупные заголовки тем/разделов по центру */
+.venue-card-inner > div:first-child,
+.venue-heading,
+.timing-header-box {
+  text-align: center;
+}
+
+.venue-heading .clip-body,
+.story-header .section-heading .clip-body,
+.timing-header-box > div:nth-child(2) .clip-body,
+.dresscode-section .section-heading > .scrap-clip:first-child .clip-body,
+.details-faq-header .section-heading .clip-body,
+.rsvp-section .section-heading .clip-body {
+  font-size: clamp(28px, 3.6vw, 44px) !important;
+  padding: 11px 26px !important;
+  line-height: 1.12;
+}
+
+.farewell-footer > .scrap-clip .clip-body {
+  font-size: clamp(20px, 2.5vw, 28px) !important;
+  padding: 9px 22px !important;
+  line-height: 1.15;
+}
+
+.venue-card-inner > div:first-child .clip-body,
+.timing-header-box .section-heading .clip-body,
+.dresscode-section .section-heading > .scrap-clip:last-child .clip-body,
+.rsvp-section > div:first-child > div:nth-child(2) .clip-body,
+.guest-chat-card > .scrap-clip .clip-body {
+  font-size: clamp(19px, 2.2vw, 26px) !important;
+  padding: 8px 18px !important;
+}
+
+.guest-chat-title {
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+@media (max-width: 780px) {
+  .venue-heading .clip-body,
+  .story-header .section-heading .clip-body,
+  .timing-header-box > div:nth-child(2) .clip-body,
+  .dresscode-section .section-heading > .scrap-clip:first-child .clip-body,
+  .details-faq-header .section-heading .clip-body,
+  .rsvp-section .section-heading .clip-body {
+    font-size: clamp(22px, 6.2vw, 30px) !important;
+    padding: 8px 16px !important;
+  }
+
+  .farewell-footer > .scrap-clip .clip-body {
+    font-size: clamp(18px, 5vw, 24px) !important;
+    padding: 7px 14px !important;
+  }
+
+  .venue-card-inner > div:first-child .clip-body,
+  .timing-header-box .section-heading .clip-body,
+  .dresscode-section .section-heading > .scrap-clip:last-child .clip-body,
+  .rsvp-section > div:first-child > div:nth-child(2) .clip-body,
+  .guest-chat-card > .scrap-clip .clip-body {
+    font-size: clamp(15px, 4.2vw, 20px) !important;
+    padding: 6px 12px !important;
   }
 }

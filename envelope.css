@@ -27,10 +27,12 @@
   }
 }
 html.envelope-active .envelope-screen { display: flex; }
-html.envelope-active, body.envelope-locked, html.envelope-active body { overflow: hidden; }
-/* The main sheet stays in the document: only its contents are hidden. */
 @media (min-width: 781px) {
-  html { scrollbar-gutter: stable; }
+  html, html.envelope-active { overflow-y: scroll; }
+  html.envelope-active body, body.envelope-locked { height: 100svh; overflow: hidden; }
+}
+@media (max-width: 780px) {
+  html.envelope-active, body.envelope-locked, html.envelope-active body { overflow: hidden; }
 }
 html.envelope-active #invitation > * { visibility: hidden; opacity: 0; }
 html.envelope-active.envelope-revealing #invitation > * {

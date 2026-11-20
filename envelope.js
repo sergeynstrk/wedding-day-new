@@ -45,7 +45,7 @@
     document.body.classList.remove('envelope-locked');
     background().forEach(element => { element.inert = false; });
     main.style.opacity = '1';
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     main.focus({ preventScroll: true });
     requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
   }
@@ -72,6 +72,7 @@
     overlay.removeAttribute('aria-busy');
     document.documentElement.classList.add('envelope-active');
     document.body.classList.add('envelope-locked');
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     background().forEach(element => { element.inert = true; });
     // The editor is initialised after this script on first load.
     requestAnimationFrame(() => {
@@ -117,7 +118,7 @@
       .call(celebrate, [], 'envelope-dissolve+=0.275')
       .call(() => {
         document.documentElement.classList.add('envelope-revealing');
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       })
       .to(overlay, { opacity: 0, duration: 1.05, ease: 'power1.inOut' });
   }

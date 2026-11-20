@@ -1,6 +1,6 @@
 .layout-editing { scroll-padding-bottom: 200px; }
 .layout-editing body { padding-bottom: 210px; }
-.layout-editing .decoration-pair, .layout-editing .farewell-decor { z-index: 40 !important; pointer-events: none !important; }
+.layout-editing .decoration-pair, .layout-editing .farewell-decor, .layout-editing .custom-decor-layer { z-index: 40 !important; pointer-events: none !important; }
 .layout-editing .decor-object, .layout-editing .flatlay-bouquet {
   pointer-events: auto !important;
   touch-action: none !important;
@@ -46,8 +46,10 @@
 .layout-controls button.layout-btn-active { background: #681427 !important; color: #fff4ec !important; border-color: #681427 !important; font-weight: 600; }
 #layoutExport { background: #681427; color: #fff4ec; border-color: #681427; font-weight: 600; }
 .layout-toolbar p { margin-top: 10px; color: #6a5b5c; font-size: 11px; line-height: 1.4; }
-.layout-toolbar.layout-gallery-collapsed .layout-gallery { display: none; }
-.layout-gallery {
+.layout-toolbar.layout-gallery-collapsed .layout-gallery,
+.layout-toolbar.layout-catalog-collapsed .layout-catalog { display: none; }
+.layout-gallery,
+.layout-catalog {
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -55,6 +57,61 @@
   margin-top: 8px;
   border-top: 1px solid #d8cfc5;
   scrollbar-width: thin;
+}
+.layout-catalog-card {
+  position: relative;
+  flex: 0 0 82px;
+  border-radius: 6px;
+  border: 2px solid #9db4bf;
+  background: #4d1020;
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.layout-catalog-card:hover {
+  border-color: #f1ece4;
+  transform: translateY(-2px);
+}
+.layout-catalog-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 5px 4px 5px;
+  border: 0;
+  background: transparent;
+  color: #f7efe8;
+  cursor: pointer;
+  touch-action: manipulation;
+  font: 500 9px/1.15 'Montserrat', sans-serif;
+}
+.layout-catalog-add img {
+  width: 48px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
+}
+.layout-catalog-add span {
+  margin-top: 3px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+.layout-catalog-plus {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #b9cbd2;
+  color: #24161b;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 18px;
+  text-align: center;
+  pointer-events: none;
 }
 .layout-thumb {
   position: relative;
