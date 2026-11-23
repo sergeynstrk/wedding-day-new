@@ -4,8 +4,8 @@ window.WEDDING_LAYOUT_DEFAULTS = {
   "layouts": {
     "desktop": {
       "decoration-01": {
-        "x": 882,
-        "y": -248,
+        "x": 1150,
+        "y": -210,
         "scale": 0.88,
         "rotation": 0,
         "flipX": false,
@@ -39,7 +39,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": true
       },
       "decoration-05": {
-        "x": 852,
+        "x": 1192,
         "y": -141,
         "scale": 0.82,
         "rotation": 8,
@@ -48,7 +48,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-06": {
-        "x": -872,
+        "x": -1212,
         "y": -117,
         "scale": 0.75,
         "rotation": -12,
@@ -75,7 +75,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-13": {
-        "x": 961,
+        "x": 1301,
         "y": -398,
         "scale": 0.76,
         "rotation": 18,
@@ -84,7 +84,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-14": {
-        "x": -957,
+        "x": -1297,
         "y": -92,
         "scale": 0.78,
         "rotation": 8,
@@ -119,7 +119,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-20": {
-        "x": -868,
+        "x": -1208,
         "y": -789,
         "scale": 0.78,
         "rotation": 19,
@@ -128,7 +128,7 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-21": {
-        "x": 941,
+        "x": 1281,
         "y": 984,
         "scale": 0.78,
         "rotation": -14,

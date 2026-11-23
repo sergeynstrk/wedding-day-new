@@ -51,9 +51,11 @@
   }
   function celebrate() {
     if (reducedMotion.matches || typeof window.confetti !== 'function') return;
-    confetti({ particleCount: 30, spread: 65, origin: { y: .65 },
+    confetti({
+      particleCount: 30, spread: 65, origin: { y: .65 },
       colors: ['#681427', '#bdd5e2', '#eee7db'], ticks: 110, gravity: .9,
-      scalar: .85, disableForReducedMotion: true, zIndex: 100000 });
+      scalar: .85, disableForReducedMotion: true, zIndex: 100000
+    });
   }
 
   function show() {
@@ -61,7 +63,7 @@
     window.confetti?.reset?.();
     if (window.gsap) gsap.set([overlay, ...parts], { clearProps: 'all' });
     // These inline properties are owned only by this controller.
-    else [overlay, ...parts].forEach(element => element.removeAttribute('style'));
+    else[overlay, ...parts].forEach(element => element.removeAttribute('style'));
     document.documentElement.classList.remove('envelope-revealing');
     visible = true;
     opening = false;
@@ -105,42 +107,42 @@
       .to(stationery, { y: height * .9 + 60, opacity: 0, duration: .55, ease: 'power2.in' }, '+=.06')
       .set(letter, { zIndex: 40 })
       .to(letter, { y: -height * .06, rotation: -1, duration: .45, ease: 'power2.out' }, '-=.1')
-      .addPause('+=.72', () => {
+      .addPause('+=1.45', () => {
         // Keep the letter in place if its cover images still need a moment to decode.
         // Timeout protects the entrance if an asset is unavailable.
         let timeout;
         Promise.race([coverReady, new Promise(resolve => { timeout = setTimeout(resolve, 2500); })])
           .then(() => { clearTimeout(timeout); if (opening && animation === timeline) timeline.resume(); });
       })
-      .addLabel('envelope-dissolve')
-      .to(letter, { opacity: 0, y: -height * .1, scale: 1.025, duration: .55, ease: 'power1.inOut' })
-      .to(find('.envelope-caption'), { opacity: 0, duration: .45, ease: 'power1.inOut' }, 'envelope-dissolve')
-      .call(celebrate, [], 'envelope-dissolve+=0.275')
-      .call(() => {
-        document.documentElement.classList.add('envelope-revealing');
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      })
-      .to(overlay, { opacity: 0, duration: 1.05, ease: 'power1.inOut' });
-  }
+          .addLabel('envelope-dissolve')
+          .to(letter, { opacity: 0, y: -height * .1, scale: 1.025, duration: .55, ease: 'power1.inOut' })
+          .to(find('.envelope-caption'), { opacity: 0, duration: .45, ease: 'power1.inOut' }, 'envelope-dissolve')
+          .call(celebrate, [], 'envelope-dissolve+=0.275')
+          .call(() => {
+            document.documentElement.classList.add('envelope-revealing');
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+          })
+          .to(overlay, { opacity: 0, duration: 1.05, ease: 'power1.inOut' });
+      }
   overlay.addEventListener('pointerdown', () => overlay.classList.remove('envelope-keyboard'));
-  seal.addEventListener('click', open);
-  document.addEventListener('keydown', event => {
-    if (!visible) return;
-    if (event.key === 'Escape') {
+    seal.addEventListener('click', open);
+    document.addEventListener('keydown', event => {
+      if (!visible) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        reveal();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      overlay.classList.add('envelope-keyboard');
       event.preventDefault();
-      event.stopImmediatePropagation();
-      reveal();
-      return;
-    }
-    if (event.key !== 'Tab') return;
-    overlay.classList.add('envelope-keyboard');
-    event.preventDefault();
-    if (seal.disabled) overlay.focus({ preventScroll: true });
-    else seal.focus({ preventScroll: true });
-  }, true);
-  reducedMotion.addEventListener('change', () => { if (opening && reducedMotion.matches) reveal(); });
-  if (params.get('edit') === '1' && params.get('envelope') !== '1') {
-    overlay.hidden = true;
-    document.documentElement.classList.remove('envelope-active');
-  } else show();
-})();
+      if (seal.disabled) overlay.focus({ preventScroll: true });
+      else seal.focus({ preventScroll: true });
+    }, true);
+    reducedMotion.addEventListener('change', () => { if (opening && reducedMotion.matches) reveal(); });
+    if (params.get('edit') === '1' && params.get('envelope') !== '1') {
+      overlay.hidden = true;
+      document.documentElement.classList.remove('envelope-active');
+    } else show();
+  }) ();

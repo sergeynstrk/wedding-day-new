@@ -29,6 +29,23 @@ p { text-wrap: pretty; }
 }
 .section-heading, .venue-heading { font-size: inherit; font-weight: inherit; line-height: 1.5; }
 .hero-section { padding-bottom: 18px; margin-bottom: 35px; }
+.hero-garland-title {
+  grid-column: 1 / -1;
+  margin: 0 auto 18px;
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+.hero-garland-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 6px 14px #24060d55);
+  user-select: none;
+}
 .hero-huge-title { align-items: center; gap: 5px; padding: 10px 0 14px; margin-bottom: 22px; }
 .giant-char { flex: 1 1 0; font-size: clamp(46px, 9.8vw, 105px); line-height: 1.1; padding: 8px 2px 15px; text-shadow: none; filter: none; border: 0; letter-spacing: -.045em; }
 .char-c1 { font-family: 'Playfair Display', Georgia, serif; color: #f7e9d7; background: #923f35; clip-path: var(--scissor-a); transform: rotate(-7deg); font-weight: 900; }
@@ -392,7 +409,7 @@ body {
   min-height: 100svh;
   background-color: #681427;
   background-image: url('./assets/burgundy-paper-user.jpg');
-  background-size: 900px auto;
+  background-size: 100% auto;
   background-position: top center;
   background-repeat: repeat-y;
 }
@@ -652,6 +669,7 @@ body {
 }
 
 /* Каскадное появление обложки после открытия конверта */
+.hero-garland-title,
 .hero-top-row,
 .hero-huge-title .giant-char,
 .couple-photo-frame,
@@ -663,6 +681,7 @@ body {
     translate 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) var(--hero-delay, 0ms),
     transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) 0ms;
 }
+.hero-garland-title { --hero-delay: 80ms; }
 .hero-top-row { --hero-delay: 40ms; }
 .hero-huge-title .giant-char:nth-child(1) { --hero-delay: 90ms; }
 .hero-huge-title .giant-char:nth-child(2) { --hero-delay: 130ms; }
@@ -676,6 +695,7 @@ body {
 .hero-invitation-note { --hero-delay: 540ms; }
 .hero-details { --hero-delay: 620ms; }
 
+html.envelope-active:not(.envelope-revealing) .hero-garland-title,
 html.envelope-active:not(.envelope-revealing) .hero-top-row,
 html.envelope-active:not(.envelope-revealing) .hero-huge-title .giant-char,
 html.envelope-active:not(.envelope-revealing) .couple-photo-frame,
@@ -703,6 +723,7 @@ html.envelope-active:not(.envelope-revealing) .hero-details {
 
 @media (prefers-reduced-motion: reduce) {
   .reveal-pending,
+  html.envelope-active:not(.envelope-revealing) .hero-garland-title,
   html.envelope-active:not(.envelope-revealing) .hero-top-row,
   html.envelope-active:not(.envelope-revealing) .hero-huge-title .giant-char,
   html.envelope-active:not(.envelope-revealing) .couple-photo-frame,
@@ -1637,5 +1658,238 @@ html.layout-editing .floating-nav {
   .guest-chat-card > .scrap-clip .clip-body {
     font-size: clamp(15px, 4.2vw, 20px) !important;
     padding: 6px 12px !important;
+  }
+}
+
+/* ========================================================
+   ШИРОКАЯ ПК-ВЕРСИЯ (лист 1350px, рабочая область ~1160px)
+   Чистый воздушный ритм с сохранением коллажного характера
+   ======================================================== */
+@media (min-width: 781px) {
+  .magazine-canvas {
+    max-width: 1350px;
+    padding: 20px clamp(40px, 7vw, 95px) 60px;
+    background-color: #681427;
+    background-image: url('./assets/burgundy-paper-user.jpg');
+    background-size: 100% auto;
+    box-shadow: 0 8px 35px #241d2030;
+  }
+
+  /* 1. Hero: широкая гирлянда + крупный стикер пары + центрированная колонка по центру экрана */
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    min-height: calc(100svh - 48px);
+    margin-top: 0;
+    padding-bottom: 12px;
+  }
+
+  .hero-garland-title {
+    max-width: 1060px;
+    margin: 0 auto 2px;
+  }
+
+  .hero-section > .couple-photo-frame {
+    width: 100%;
+    max-width: 576px;
+    margin: -8px auto 4px !important;
+  }
+
+  .hero-section > .couple-photo-frame .couple-photo-inner {
+    padding: 0 !important;
+    transform: rotate(1.6deg);
+  }
+
+  .hero-section > .couple-photo-frame .couple-photo-inner img {
+    height: clamp(348px, 38.4svh, 444px) !important;
+    max-height: none;
+    object-fit: contain !important;
+  }
+
+  .hero-names-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 6px auto 4px;
+  }
+
+  .hero-names-row .scrap-clip:nth-child(2) {
+    margin: 0;
+  }
+
+  .hero-section > .hero-invitation-note {
+    align-self: center;
+    margin: 4px auto 8px !important;
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .hero-details {
+    align-items: center;
+    text-align: center;
+    padding: 10px 0 0;
+    gap: 8px;
+  }
+
+  /* 2. Локация (Усадьба Братцево): по центру с крупной иллюстрацией */
+  .venue-card-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 18px 0 28px;
+  }
+
+  .venue-photo-wrapper.venue-illustration {
+    float: none;
+    width: 100%;
+    max-width: 780px;
+    margin: 22px auto 18px;
+    transform: rotate(0.6deg);
+  }
+
+  .venue-photo-wrapper.venue-illustration img {
+    width: 100%;
+    height: auto;
+    border: 0;
+    object-fit: contain;
+  }
+
+  .venue-card-inner > p {
+    max-width: 760px;
+    margin: 14px auto !important;
+    font-size: 16.5px !important;
+    line-height: 1.8 !important;
+  }
+
+  .btn-actions-row {
+    justify-content: center;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  /* 2.3 Полароиды пары */
+  .future-photos-grid {
+    max-width: 860px;
+    gap: 32px;
+  }
+
+  .photo-slot-card {
+    padding: 14px 14px 18px;
+  }
+
+  .photo-slot-caption {
+    font-size: 23px;
+    margin-top: 10px;
+  }
+
+  /* 2.5 История и 5.5 Важные детали (FAQ): 3 просторные карточки */
+  .story-header,
+  .details-faq-header {
+    margin-bottom: 30px;
+  }
+
+  .story-tickets,
+  .details-faq-grid {
+    gap: 28px;
+  }
+
+  .story-ticket,
+  .faq-scrap-card {
+    padding: 26px 24px 28px;
+  }
+
+  .story-ticket-title,
+  .faq-scrap-title {
+    font-size: 1.24rem;
+    margin-bottom: 10px;
+  }
+
+  .story-ticket-text,
+  .faq-scrap-text {
+    font-size: 0.96rem;
+    line-height: 1.66;
+  }
+
+  /* 3. Тайминг дня: расширенный ритм с воздухом */
+  .timing-header-box {
+    margin-bottom: 24px;
+  }
+
+  .ll-timeline {
+    max-width: 1160px;
+    margin: 0 auto;
+    grid-template-columns: 1fr 84px 1fr;
+    gap: 18px 56px;
+    padding-top: 16px;
+  }
+
+  .sm-timing__item {
+    gap: 14px;
+  }
+
+  .sm-timing__item.item-2,
+  .sm-timing__item.item-4 {
+    margin-top: -22px;
+  }
+
+  .timing-text-box {
+    gap: 6px;
+  }
+
+  .timing-text-box .clip-body {
+    padding: 5px 12px;
+  }
+
+  /* 4. Дресс-код */
+  .dresscode-section {
+    padding: 46px 48px 48px;
+  }
+
+  .palette-swatches {
+    gap: 20px;
+    margin: 26px 0;
+  }
+
+  .swatch-color {
+    width: 96px;
+    height: 82px;
+  }
+
+  .dress-notes-grid {
+    gap: 32px;
+    margin-top: 24px;
+  }
+
+  /* 5. RSVP и Чат гостей — комфортная читабельная ширина */
+  .rsvp-section {
+    max-width: 840px;
+    margin-inline: auto;
+    padding: 40px 48px 44px;
+  }
+
+  .countdown-grid {
+    max-width: 840px;
+    margin-inline: auto;
+    gap: 24px;
+  }
+
+  .guest-chat-section {
+    max-width: 720px;
+  }
+
+  .guest-chat-card {
+    padding: 34px 36px 32px;
+  }
+
+  .guest-chat-text {
+    max-width: 540px;
+    font-size: 1rem;
+    line-height: 1.62;
   }
 }

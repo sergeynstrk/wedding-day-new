@@ -27,6 +27,8 @@
 
   <!-- Изящная и кристально чёткая типографика: журнальные заголовки, нежная каллиграфия и чёткий гротеск -->
   <link rel="preload" as="image" href="./assets/burgundy-paper-user.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/cotton-paper-texture.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/hero-garland-doves.webp" fetchpriority="high">
   <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/playfair-display-normal-900.ttf" crossorigin>
   <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/caveat-normal-700.ttf" crossorigin>
   <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/montserrat-normal-400.ttf" crossorigin>
@@ -103,10 +105,11 @@
     }
 
     /* ========================================================
-       ЖУРНАЛЬНЫЙ РАЗВОРОТ (900px, бордовый ватман с первого кадра)
+       ЖУРНАЛЬНЫЙ РАЗВОРОТ (1350px на ПК, бордовый ватман с первого кадра)
        ======================================================== */
     .magazine-canvas {
       position: relative;
+      isolation: isolate;
       max-width: 900px;
       min-height: 100svh;
       margin: 0 auto;
@@ -119,6 +122,14 @@
       padding: 36px 40px 48px;
       border: 0;
       border-radius: 0;
+    }
+
+    @media (min-width: 781px) {
+      .magazine-canvas {
+        max-width: 1350px;
+        padding: 20px clamp(40px, 7vw, 95px) 60px;
+        background-size: 100% auto;
+      }
     }
 
     @media (max-width: 780px) {
@@ -1333,21 +1344,21 @@
           </div>
 
           <div class="envelope-front" aria-hidden="true">
-            <div class="envelope-front-side paper-texture-side"></div>
+            <div class="envelope-front-left paper-texture-side"></div>
+            <div class="envelope-front-right paper-texture-side"></div>
             <div class="envelope-front-bottom paper-texture-bottom"></div>
             <svg class="envelope-seams-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path fill="none" stroke="#b7a992" stroke-width="1" vector-effect="non-scaling-stroke"
+              <path fill="none" stroke="#b9a992" stroke-width="1" vector-effect="non-scaling-stroke"
                 d="M0 0L50 56L100 0M0 100L50 56L100 100" />
             </svg>
-            <span class="envelope-address">для наших<br><strong>любимых людей</strong></span>
-            <span class="envelope-postmark">Москва<b>05.08</b><small>2027</small></span>
           </div>
 
-          <div class="envelope-flap paper-texture-flap" aria-hidden="true">
+          <div class="envelope-flap" aria-hidden="true">
+            <div class="envelope-flap-face paper-texture-flap"></div>
             <div class="envelope-flap-liner paper-texture-liner"></div>
             <svg class="envelope-flap-svg" viewBox="0 0 100 58" preserveAspectRatio="none">
-              <path fill="none" stroke="#b7a992" stroke-width="1" vector-effect="non-scaling-stroke"
-                d="M0 0L50 56L100 0" />
+              <path fill="none" stroke="#c0b09a" stroke-width="1" vector-effect="non-scaling-stroke"
+                d="M0 15L50 56L100 15" />
             </svg>
           </div>
           <div class="envelope-border" aria-hidden="true"></div>
@@ -1385,26 +1396,10 @@
           class="decor-object decor-secondary decor-secondary-right decor-pearls" src="./assets/keepsakes/pearls.webp"
           alt="" loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-04"></div>
 
-      <!-- Верхняя строчка вырезок ("приглашение на") -->
-      <div class="hero-top-row">
-        <span class="scrap-clip" style="transform: rotate(-3deg);">
-          <span class="clip-body cut-scissor-1 bg-white-serif"
-            style="font-size: 1.8rem; padding: 7px 20px;">приглашение</span>
-        </span>
-        <span class="scrap-clip" style="transform: rotate(2.5deg);">
-          <span class="clip-body cut-scissor-2 bg-black-sans" style="font-size: 1.4rem; padding: 7px 18px;">на</span>
-        </span>
-      </div>
-
-      <!-- Главный вырезанный заголовок из букв (точь-в-точь как Л-Е-Т-О на референсе) -->
-      <h1 class="hero-huge-title" aria-label="Приглашение на свадьбу Сергея и Юли">
-        <span class="giant-char char-c1">С</span>
-        <span class="giant-char char-c2">В</span>
-        <span class="giant-char char-c3">А</span>
-        <span class="giant-char char-c4">Д</span>
-        <span class="giant-char char-c5">Ь</span>
-        <span class="giant-char char-c6">Б</span>
-        <span class="giant-char char-c7">У</span>
+      <!-- Главный заголовок: гирлянда «приглашение на СВАДЬБУ» с двумя голубями -->
+      <h1 class="hero-garland-title">
+        <img class="hero-garland-img" src="./assets/hero-garland-doves.webp"
+          alt="Приглашение на свадьбу Сергея и Юли" width="1334" height="589" decoding="async" fetchpriority="high">
       </h1>
 
       <!-- Стикер пары по центру -->
@@ -1437,7 +1432,6 @@
       <div class="hero-details">
         <time datetime="2027-08-05T12:00:00+03:00">5 августа 2027 · с 12:00</time>
         <span>Москва · усадьба Братцево</span>
-        <a href="#rsvp">Заполнить анкету гостя <span aria-hidden="true">↘</span></a>
       </div>
     </section>
 
