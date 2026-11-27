@@ -8,8 +8,7 @@
 body {
   font-family: 'Montserrat', Arial, sans-serif;
   font-size: 16px;
-  font-weight: 400;
-  font-size-adjust: from-font;
+  font-weight: 500;
 }
 
 p {
@@ -1841,19 +1840,16 @@ body {
 
 .reveal-pending {
   opacity: 0;
-  translate: 0 26px;
-  scale: 1.035;
+  translate: 0 20px;
 }
 
 .is-revealed {
   opacity: 1;
-  translate: 0 0;
-  scale: 1;
+  translate: none;
+  scale: none;
   transition:
-    opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    translate 0.76s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    scale 0.76s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1) 0ms;
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    translate 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
 }
 
 /* Живой бумажный стол: мягкое покачивание гирлянды с голубями и дыхание стикера пары */
@@ -2016,7 +2012,7 @@ body {
   -webkit-font-smoothing: auto !important;
   -moz-osx-font-smoothing: auto !important;
   font-synthesis: none !important;
-  text-rendering: geometricPrecision !important;
+  text-rendering: optimizeLegibility !important;
 }
 
 .countdown-card,
@@ -2631,6 +2627,67 @@ body {
   gap: 18px;
 }
 
+.story-tickets {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1160px;
+  margin: 0 auto;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.story-ticket {
+  display: flex;
+  flex-direction: column;
+  min-height: 330px;
+  transition: transform 0.25s cubic-bezier(0.2, 0.85, 0.3, 1.2), filter 0.25s ease;
+}
+
+.story-ticket:hover {
+  transform: translateY(-6px) rotate(0deg) scale(1.03) !important;
+  filter: drop-shadow(0 4px 4px rgba(24, 6, 11, 0.3)) drop-shadow(0 14px 24px rgba(24, 6, 11, 0.32));
+  z-index: 6;
+}
+
+.story-ticket-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.story-ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 8px;
+  background-color: #ffffff;
+  color: #141011;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.16)) drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.12));
+  transform: rotate(4deg);
+}
+
+.story-ticket-badge svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.story-ticket-note {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1.5px dashed rgba(104, 20, 39, 0.22);
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #7e1730;
+  line-height: 1.15;
+}
+
 .story-ticket,
 .faq-scrap-card {
   background-color: #f3ede3;
@@ -2642,12 +2699,56 @@ body {
   filter: drop-shadow(0 2px 1px rgba(24, 6, 11, 0.28)) drop-shadow(0 6px 14px rgba(24, 6, 11, 0.2));
 }
 
+.story-ticket.story-tilt-1 {
+  background-color: #fde8ec;
+}
+
 .story-ticket.story-tilt-2 {
-  background-color: #d9e2e6;
+  background-color: #d7ecfb;
 }
 
 .story-ticket.story-tilt-3 {
-  background-color: #efe4cf;
+  background-color: #fcebc4;
+}
+
+.story-ticket.story-tilt-4 {
+  background-color: #8a1c36;
+  color: #fff8f0;
+}
+
+.story-ticket.story-tilt-4 .story-ticket-title,
+.story-ticket.story-tilt-4 .story-ticket-text {
+  color: #fff8f0;
+}
+
+.story-ticket.story-tilt-4 .story-ticket-num {
+  background: #fcebc4;
+  color: #681427;
+}
+
+.story-ticket.story-tilt-4 .story-ticket-note {
+  border-top-color: rgba(255, 248, 240, 0.28);
+  color: #fcebc4;
+}
+
+.story-ticket.story-tilt-2 .story-ticket-num {
+  background: #275273;
+  color: #ffffff;
+}
+
+.story-ticket.story-tilt-2 .story-ticket-note {
+  border-top-color: rgba(39, 82, 115, 0.25);
+  color: #275273;
+}
+
+.story-ticket.story-tilt-3 .story-ticket-num {
+  background: #a35217;
+  color: #ffffff;
+}
+
+.story-ticket.story-tilt-3 .story-ticket-note {
+  border-top-color: rgba(163, 82, 23, 0.25);
+  color: #8c4310;
 }
 
 .story-tilt-1 {
@@ -2660,6 +2761,10 @@ body {
 
 .story-tilt-3 {
   transform: rotate(-1deg);
+}
+
+.story-tilt-4 {
+  transform: rotate(1.3deg);
 }
 
 .faq-scrap-card.faq-tilt-2 {
@@ -2685,10 +2790,14 @@ body {
 .story-ticket-num {
   display: inline-block;
   font-family: 'Oswald', sans-serif;
-  font-size: 12px;
+  font-size: 11.5px;
+  font-weight: 700;
   letter-spacing: 0.08em;
-  color: #681427;
-  margin-bottom: 6px;
+  background: #8a1c36;
+  color: #ffffff;
+  padding: 4px 9px;
+  border-radius: 3px;
+  margin-bottom: 0;
 }
 
 .story-ticket-title,
@@ -2894,6 +3003,10 @@ html.layout-editing .floating-nav {
   .details-faq-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
+  }
+
+  .story-ticket {
+    min-height: auto;
   }
 
   .story-ticket,
@@ -3216,7 +3329,7 @@ html.layout-editing .floating-nav {
   }
 
   .section-eyebrow-row>.scrap-clip {
-    transform: translateX(-54px) translateY(-4px) rotate(-5deg) !important;
+    transform: translateY(-4px) rotate(-5deg) !important;
   }
 
   .story-header>div:last-child,
@@ -3226,7 +3339,7 @@ html.layout-editing .floating-nav {
 
   .story-header>div:last-child .cute-scribble,
   .details-faq-header>div:last-child .cute-scribble {
-    transform: translateX(34px) rotate(-2.5deg) !important;
+    transform: rotate(-2.5deg) !important;
   }
 
   .venue-card-inner>div:first-child .scrap-clip:first-child {
@@ -3234,21 +3347,31 @@ html.layout-editing .floating-nav {
   }
 
   .venue-card-inner>div:first-child .scrap-clip:last-child {
-    transform: translateX(8px) translateY(5px) rotate(-4.5deg) !important;
+    transform: translateY(5px) rotate(-4.5deg) !important;
   }
 
   .timing-header-box .section-heading .scrap-clip {
-    transform: translateX(-28px) rotate(-3.6deg) !important;
+    transform: rotate(-3.6deg) !important;
   }
 
   .timing-header-box>div:nth-child(2) .scrap-clip {
-    transform: translateX(22px) translateY(-2px) rotate(3.2deg) !important;
+    transform: translateY(-2px) rotate(3.2deg) !important;
   }
 
   .story-tickets,
   .details-faq-grid {
     gap: 30px;
     align-items: start;
+  }
+
+  .story-tickets {
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .story-ticket {
+    padding: 24px 20px 22px;
+    min-height: 360px;
   }
 
   .story-ticket,
@@ -3266,6 +3389,10 @@ html.layout-editing .floating-nav {
 
   .story-tilt-3 {
     transform: rotate(-2.8deg) translateY(18px);
+  }
+
+  .story-tilt-4 {
+    transform: rotate(2.4deg) translateY(-8px);
   }
 
   .faq-tilt-1 {
@@ -3384,4 +3511,819 @@ html.layout-editing .floating-nav {
     font-size: 1rem;
     line-height: 1.62;
   }
+}
+
+/* ========================================================
+   UX/UI ПОЛИРОВКА: HERO CTA, КОПИРОВАНИЕ АДРЕСА, ЧАТ В MAX,
+   УМНАЯ АНКЕТА RSVP, НАТИВНЫЙ DIALOG И ИНТЕРАКТИВ ПАЛИТРЫ
+   ======================================================== */
+
+/* Канонический скрытый инпут с сохранением в дереве доступности */
+.visually-hidden {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* 1. Кнопка повторного открытия конверта в футере */
+.editor-entry-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.reopen-envelope-btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding: 6px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #e8ded5;
+  opacity: 0.72;
+  cursor: pointer;
+  touch-action: manipulation;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.reopen-envelope-btn:hover,
+.reopen-envelope-btn:focus-visible {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.footer-links-sep {
+  color: #e8ded5;
+  opacity: 0.4;
+  font-size: 12px;
+  user-select: none;
+}
+
+/* 2. Hero: кликабельная локация и точка действия «Подтвердить участие» */
+.hero-details a.hero-venue-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 2px 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #f7efe8 !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(247, 239, 232, 0.55);
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+}
+
+.hero-details a.hero-venue-link:hover {
+  color: #ffffff !important;
+  text-decoration-color: #ffffff;
+}
+
+.hero-cta-row {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-details a.hero-rsvp-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 22px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  background-color: #f1ece4 !important;
+  color: #493139 !important;
+  clip-path: var(--scissor-b);
+  transform: rotate(-1.2deg);
+  filter: drop-shadow(0 1px 0 rgba(22, 4, 10, 0.36)) drop-shadow(0 5px 12px rgba(20, 4, 9, 0.32));
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .hero-details a.hero-rsvp-cta:hover {
+    background-color: #fbf8f3 !important;
+    color: #24161b !important;
+    transform: translateY(-2px) rotate(0deg);
+  }
+}
+
+/* 3. Блок «Место»: точный адрес и кнопка копирования в 1 тап */
+.venue-address-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  margin: 10px auto 6px;
+}
+
+.venue-address-text-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #faf5ef;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.venue-pin-svg {
+  flex-shrink: 0;
+  color: #cbdbe2;
+}
+
+.venue-copy-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.venue-copy-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-inline-size: 44px;
+  min-block-size: 42px;
+  padding: 8px 16px;
+  background-color: #f3ede3;
+  color: #24161b;
+  border: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.venue-copy-btn .venue-pin-svg {
+  color: #681427;
+}
+
+.venue-copy-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 8px;
+  border-left: 1px solid rgba(104, 20, 39, 0.22);
+  color: #681427;
+}
+
+@media (pointer: coarse) {
+  .venue-copy-btn {
+    min-block-size: 44px;
+    padding: 9px 15px;
+  }
+}
+
+@media (hover: hover) {
+  .venue-copy-btn:hover {
+    background-color: #f4f0e8;
+    transform: translateY(-1px);
+  }
+}
+
+.venue-copy-btn .copy-icon {
+  flex-shrink: 0;
+}
+
+.venue-copy-btn .copy-icon-check {
+  display: none;
+}
+
+.venue-copy-btn[data-copied] {
+  background-color: #bfd6e2;
+  color: #201a19;
+}
+
+.venue-copy-btn[data-copied] .copy-icon-default {
+  display: none;
+}
+
+.venue-copy-btn[data-copied] .copy-icon-check {
+  display: block;
+}
+
+.venue-copy-btn[data-failed] {
+  background-color: #f3d7d4;
+  color: #541422;
+}
+
+.venue-copy-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 7px);
+  transform: translateX(-50%) translateY(4px);
+  padding: 5px 11px;
+  background-color: #24161b;
+  color: #faf5ef;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 30;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.venue-copy-btn[data-copied] + .venue-copy-tip,
+.venue-copy-btn[data-failed] + .venue-copy-tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 4. Заглушка ссылки на чат гостей в мессенджере MAX */
+.guest-chat-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 11px 20px;
+  background-color: #dce6ea;
+  color: #2f2528;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  border: 1px dashed rgba(104, 20, 39, 0.34);
+}
+
+.guest-chat-clock-icon {
+  flex-shrink: 0;
+  color: #681427;
+}
+
+/* 5. Интерактивная связка палитры и нарядов в «Дресс-коде» */
+button.swatch-card {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  background-color: #ece6dc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+button.swatch-card .swatch-color,
+button.swatch-card .swatch-name {
+  display: block;
+}
+
+button.swatch-card:focus-visible {
+  outline: 3px solid #681427 !important;
+  outline-offset: 3px !important;
+  z-index: 15;
+}
+
+button.swatch-card.is-selected {
+  background-color: #ffffff;
+  transform: translateY(-6px) scale(1.06) rotate(0deg) !important;
+  box-shadow: 0 0 0 2px #681427, 0 8px 18px rgba(104, 20, 39, 0.26) !important;
+  z-index: 14;
+}
+
+.palette-interactive-hint {
+  margin: -10px auto 20px !important;
+  max-width: 520px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1.45 !important;
+  color: #5a3841 !important;
+}
+
+.dress-collage-item {
+  cursor: pointer;
+  transition: transform 0.26s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.24s ease, filter 0.24s ease;
+}
+
+.dress-collage-item.is-color-active {
+  z-index: 16 !important;
+  opacity: 1 !important;
+  transform: scale(1.09) rotate(0deg) !important;
+  filter: drop-shadow(0 4px 3px rgba(28, 10, 15, 0.3)) drop-shadow(0 14px 26px rgba(104, 20, 39, 0.36)) !important;
+}
+
+.dress-collage-item.is-color-muted {
+  opacity: 0.3 !important;
+  filter: saturate(0.65) drop-shadow(0 2px 4px rgba(28, 10, 15, 0.1)) !important;
+}
+
+@media (max-width: 780px) {
+  .palette-swatches {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    max-width: 360px;
+    margin: 20px auto 18px !important;
+  }
+
+  button.swatch-card {
+    flex: 0 1 calc(33.333% - 8px);
+    min-width: 92px;
+    max-width: 112px;
+    padding: 6px 6px 9px !important;
+  }
+
+  button.swatch-card .swatch-color {
+    width: 100% !important;
+    height: 52px !important;
+    margin-bottom: 7px;
+  }
+
+  button.swatch-card .swatch-name {
+    font-size: 11px !important;
+    letter-spacing: 0.03em !important;
+  }
+
+  .palette-interactive-hint {
+    margin: -6px auto 16px !important;
+    font-size: 12.5px !important;
+  }
+}
+
+/* 6. Улучшения анкеты RSVP: дедлайн, <fieldset>, состав гостей, фокус и многострочное поле */
+.rsvp-deadline-row {
+  margin-top: 12px;
+}
+
+.rsvp-deadline-badge {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background-color: #d8e5ea !important;
+  color: #3a232a !important;
+  padding: 6px 15px !important;
+  border: 1px dashed rgba(104, 20, 39, 0.35);
+}
+
+.rsvp-fieldset {
+  border: 0;
+  padding: 0;
+  min-inline-size: 0;
+}
+
+.rsvp-legend {
+  padding: 0;
+  margin-bottom: 2px;
+  float: none;
+  width: auto;
+}
+
+.party-chips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 620px) {
+  .party-chips {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+.party-chips .chip-box {
+  width: 100%;
+  text-align: center;
+}
+
+.rsvp-sublabel {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #3c3130;
+  margin-bottom: 6px;
+}
+
+#rsvpPartyGroup {
+  overflow: hidden;
+  block-size: auto;
+  max-height: 440px;
+  opacity: 1;
+  padding: 8px 12px 10px;
+  margin-left: -12px;
+  margin-right: -12px;
+  transition: opacity 0.28s ease, block-size 0.32s ease, max-height 0.32s ease, margin 0.28s ease, padding 0.28s ease;
+}
+
+#rsvpPartyGroup.is-collapsed {
+  opacity: 0;
+  block-size: 0;
+  max-height: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  pointer-events: none;
+}
+
+.rsvp-companion-wrap {
+  overflow: hidden;
+  block-size: auto;
+  max-height: 180px;
+  opacity: 1;
+  margin-top: 14px;
+  padding: 2px 4px 4px;
+  transition: opacity 0.24s ease, block-size 0.28s ease, max-height 0.28s ease, margin 0.24s ease;
+}
+
+.rsvp-companion-wrap.is-collapsed {
+  opacity: 0;
+  block-size: 0;
+  max-height: 0;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  pointer-events: none;
+}
+
+/* Чёткая рамка фокуса для клавиатурной навигации (контраст > 3:1) */
+.choice-btn input:focus-visible + .choice-box,
+.chip-btn input:focus-visible + .chip-box {
+  outline: 3px solid #681427 !important;
+  outline-offset: 3px !important;
+}
+
+@media (pointer: coarse) {
+  .choice-box,
+  .chip-box,
+  .rsvp-input {
+    min-block-size: 48px;
+  }
+}
+
+.rsvp-textarea {
+  field-sizing: content;
+  height: auto;
+  width: 100%;
+  min-block-size: 3.2lh;
+  max-block-size: 9lh;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* 7. Нативный <dialog> подтверждения с полезными действиями */
+dialog.rsvp-dialog {
+  margin: auto;
+  max-width: 540px;
+  width: calc(100% - 32px);
+  padding: 36px 28px 32px;
+  border: 3px solid #681427;
+  background-color: var(--paper-surface);
+  color: var(--paper-ink);
+  text-align: center;
+  filter: none !important;
+  box-shadow: 0 22px 50px rgba(14, 3, 7, 0.55);
+}
+
+dialog.rsvp-dialog[open] {
+  transform: rotate(-0.8deg);
+  animation: modalSlam 0.3s ease-out;
+}
+
+dialog.rsvp-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.rsvp-dialog::backdrop {
+  background: rgba(35, 12, 18, 0.72);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.rsvp-dialog-heading {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.2;
+  margin: 0 0 6px;
+}
+
+.modal-next-steps {
+  margin: 0 0 22px;
+  padding: 16px 16px 18px;
+  background-color: #f6f2eb;
+  border: 1px dashed rgba(104, 20, 39, 0.32);
+}
+
+.modal-next-steps[hidden] {
+  display: none !important;
+}
+
+.modal-next-label {
+  margin: 0 0 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #3a262c;
+}
+
+.modal-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.modal-action-btn {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 12px !important;
+  font-size: 14px !important;
+  transform: none !important;
+}
+
+.modal-action-wide {
+  grid-column: 1 / -1;
+  background-color: #dce6ea !important;
+}
+
+.modal-close-form {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  dialog.rsvp-dialog {
+    padding: 28px 18px 24px;
+  }
+
+  .modal-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-action-wide {
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rsvpPartyGroup,
+  .rsvp-companion-wrap,
+  .venue-copy-tip,
+  button.swatch-card,
+  .dress-collage-item {
+    transition: none !important;
+  }
+
+  dialog.rsvp-dialog[open] {
+    animation: none !important;
+  }
+}
+
+/* ========================================================
+   МАКСИМАЛЬНАЯ ЧЁТКОСТЬ ТЕКСТА С ПОЛНЫМ СОХРАНЕНИЕМ КОЛЛАЖНОГО ДИЗАЙНА
+   Все наклоны (rotate) и вырезанные ножницами края (clip-path) сохранены!
+   Резкость достигается за счёт:
+   1. Пиксельного хинтинга шрифтов (optimizeLegibility вместо geometricPrecision)
+   2. Отказа от filter: drop-shadow и translateZ(0) на текстовых узлах:
+      бумажные тени рисуются через псевдоэлементы ::before/::after позади текста,
+      чтобы браузер рендерил векторные глифы напрямую без мыльной GPU-текстуры
+   3. Чистой поверхности бумаги без шума feTurbulence под буквами и высокого контраста
+   ======================================================== */
+:root {
+  --cut-paper-grain: none !important;
+}
+
+/* Отключаем постоянное субпиксельное покачивание главного заголовка-гирлянды */
+html.envelope-revealing .hero-garland-img,
+html:not(.envelope-active) .hero-garland-img {
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Убираем мутную sepia/saturate дымку с иллюстраций усадьбы и тайминга */
+.venue-photo-wrapper.venue-illustration img,
+.timing-section .sm-timing__item .timing-icon-cutout,
+.timing-section .sm-timing__item.item-active .timing-icon-cutout {
+  filter: drop-shadow(0 4px 10px rgba(20, 4, 9, 0.28)) !important;
+}
+
+/* Никакого filter: drop-shadow и text-shadow на самих текстовых контейнерах
+   (все наклоны rotate и вырезные края clip-path остаются нетронутыми!) */
+.scrap-clip,
+.story-ticket,
+.story-ticket-badge,
+.faq-scrap-card,
+.guest-chat-card,
+.btn-paper-scrap,
+.venue-copy-btn,
+.num-cutout-box,
+.swatch-card,
+.manor-sticker-inner,
+.countdown-card,
+.floating-nav {
+  filter: none !important;
+  text-shadow: none !important;
+  backface-visibility: visible !important;
+}
+
+/* Тень для вырезных плашек .scrap-clip через ::before (не затрагивает растеризацию текста в .clip-body) */
+.scrap-clip {
+  position: relative;
+}
+
+.scrap-clip::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 2px;
+  box-shadow: 0 2px 1px rgba(18, 4, 9, 0.34), 0 4px 8px rgba(18, 4, 9, 0.24);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-names-row .scrap-clip:nth-child(2)::before {
+  display: none;
+}
+
+.scrap-clip > .clip-body {
+  position: relative;
+  z-index: 1;
+  transform: none !important;
+}
+
+/* Вырезные карточки Истории, FAQ и Чата: сохраняем и наклон, и ножничный срез (на ::after),
+   и живую тень (на ::before), оставляя сам текст идеально резким векторным слоем */
+.story-ticket,
+.faq-scrap-card,
+.guest-chat-card {
+  position: relative;
+  isolation: isolate;
+  background: transparent !important;
+  clip-path: none !important;
+}
+
+.story-ticket::before,
+.faq-scrap-card::before,
+.guest-chat-card::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: -2;
+  border-radius: 2px;
+  box-shadow: 0 3px 2px rgba(20, 4, 9, 0.32), 0 10px 22px rgba(20, 4, 9, 0.26);
+  pointer-events: none;
+}
+
+.story-ticket::after,
+.faq-scrap-card::after,
+.guest-chat-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #f3ede3;
+  clip-path: var(--scissor-a);
+  pointer-events: none;
+}
+
+.story-ticket.cut-scissor-2::after,
+.faq-scrap-card.cut-scissor-2::after {
+  clip-path: var(--scissor-b);
+}
+
+.story-ticket.cut-scissor-3::after,
+.faq-scrap-card.cut-scissor-3::after,
+.guest-chat-card.cut-scissor-3::after {
+  clip-path: var(--scissor-c);
+}
+
+.story-ticket.cut-scissor-4::after {
+  clip-path: var(--scissor-b);
+}
+
+.story-ticket.story-tilt-1::after {
+  background-color: #fde8ec;
+}
+
+.story-ticket.story-tilt-2::after {
+  background-color: #d7ecfb;
+}
+
+.story-ticket.story-tilt-3::after {
+  background-color: #fcebc4;
+}
+
+.story-ticket.story-tilt-4::after {
+  background-color: #8a1c36;
+}
+
+.faq-scrap-card.faq-tilt-2::after {
+  background-color: #d9e5e8;
+}
+
+.faq-scrap-card.faq-tilt-3::after {
+  background-color: #f4ead6;
+}
+
+/* Тень плавающей навигации без filter: drop-shadow, с сохранением выреза и лёгкого наклона */
+.floating-nav::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: -1;
+  border-radius: 4px;
+  box-shadow: 0 6px 20px rgba(18, 4, 9, 0.42);
+  pointer-events: none;
+}
+
+/* Повышенный контраст текста для комфортного чтения */
+.story-ticket-title,
+.faq-scrap-title,
+.guest-chat-title {
+  color: #141011;
+}
+
+.story-ticket-text,
+.faq-scrap-text,
+.guest-chat-text,
+.dresscode-section > p,
+.dress-note-box p,
+.manor-sticker-inner,
+.rsvp-sublabel {
+  color: #1c1517 !important;
+  font-weight: 500;
+}
+
+.story-ticket.story-tilt-4 .story-ticket-title,
+.story-ticket.story-tilt-4 .story-ticket-text {
+  color: #fffaf3 !important;
+}
+
+.bg-white-serif,
+.bg-news-typewriter {
+  color: #141011 !important;
+}
+
+.venue-card-inner > p,
+.venue-address-text-wrap,
+.hero-details a.hero-venue-link {
+  color: #faf5ef !important;
+}
+
+/* Реальное фото в полароидной рамке (без пунктира и внутренних полей, с аккуратным кадрированием) */
+.photo-slot-card.photo-slot-real {
+  background-color: #faf7f2;
+  padding: 12px 12px 18px;
+  border: 1px solid #dfd6c9;
+  box-shadow: 0 10px 26px rgba(24, 6, 11, 0.34);
+}
+
+.photo-slot-card.photo-slot-real .photo-slot-frame {
+  padding: 0;
+  border: 1px solid rgba(20, 16, 17, 0.08);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.photo-slot-card.photo-slot-real .photo-slot-frame img,
+.photo-slot-card.photo-slot-real .photo-slot-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
 }

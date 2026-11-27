@@ -11,7 +11,13 @@
     return;
   }
   const params = new URLSearchParams(location.search);
+  const ENVELOPE_SEEN_KEY = 'wedding_envelope_opened_v1';
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let alreadySeen = false;
+  try {
+    alreadySeen = localStorage.getItem(ENVELOPE_SEEN_KEY) === '1';
+  } catch {}
+  const hasSectionHash = Boolean(location.hash && location.hash.length > 1 && document.querySelector(location.hash));
   const find = selector => overlay.querySelector(selector);
   const parts = ['.envelope-btn', '.envelope-flap', '.envelope-flap-liner', '.envelope-letter',
     '.envelope-back', '.envelope-liner', '.envelope-front', '.envelope-border', '.envelope-intro'].map(find);
@@ -34,18 +40,26 @@
     animation = null;
     if (window.gsap) gsap.killTweensOf([main, overlay, ...parts]);
   }
-  function reveal() {
+  function markSeen() {
+    try {
+      localStorage.setItem(ENVELOPE_SEEN_KEY, '1');
+    } catch {}
+  }
+  function reveal(options = {}) {
     if (!visible) return;
     cancelAnimation();
     visible = false;
     opening = false;
+    markSeen();
     overlay.hidden = true;
     overlay.removeAttribute('aria-busy');
     document.documentElement.classList.remove('envelope-active', 'envelope-revealing');
     document.body.classList.remove('envelope-locked');
     background().forEach(element => { element.inert = false; });
     main.style.opacity = '1';
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    if (!options.preserveScroll) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
     main.focus({ preventScroll: true });
     requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
   }
@@ -141,7 +155,13 @@
       else seal.focus({ preventScroll: true });
     }, true);
     reducedMotion.addEventListener('change', () => { if (opening && reducedMotion.matches) reveal(); });
-    if (params.get('edit') === '1' && params.get('envelope') !== '1') {
+    window.reopenWeddingEnvelope = show;
+    document.getElementById('reopenEnvelopeBtn')?.addEventListener('click', () => show());
+    const forceEnvelope = params.get('envelope') === '1';
+    const skipForEdit = params.get('edit') === '1' && !forceEnvelope;
+    const skipForRepeatOrHash = !forceEnvelope && (alreadySeen || hasSectionHash);
+    if (skipForEdit || skipForRepeatOrHash) {
+      if (hasSectionHash) markSeen();
       overlay.hidden = true;
       document.documentElement.classList.remove('envelope-active');
     } else show();

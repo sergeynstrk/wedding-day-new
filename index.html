@@ -73,8 +73,8 @@
     /* РЕЗКОСТЬ И ЧЁТКОСТЬ ШРИФТОВ НА ВСЕХ ЭКРАНАХ */
     html,
     body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: auto;
+      -moz-osx-font-smoothing: auto;
       text-rendering: optimizeLegibility;
     }
 
@@ -99,7 +99,7 @@
       overflow-x: hidden;
     }
 
-    html.envelope-active #invitation > * {
+    html.envelope-active #invitation>* {
       visibility: hidden;
       opacity: 0;
     }
@@ -133,11 +133,13 @@
     }
 
     @media (max-width: 780px) {
+
       html,
       body {
         background-color: #681427;
         padding: 0;
       }
+
       .magazine-canvas {
         padding: 16px 14px 28px;
         width: 100%;
@@ -155,18 +157,12 @@
       vertical-align: middle;
       user-select: none;
       position: relative;
-      filter:
-        drop-shadow(0 1px 1px rgba(45, 15, 22, 0.22)) drop-shadow(2px 4px 7px rgba(70, 18, 30, 0.16));
-      transition: transform 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28), filter 0.22s ease;
+      transition: transform 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28);
       line-height: 1.15;
-      transform: translateZ(0);
-      backface-visibility: hidden;
     }
 
     .scrap-clip:hover {
-      transform: scale(1.05) rotate(0deg) translateZ(0) !important;
-      filter:
-        drop-shadow(0 2px 3px rgba(45, 15, 22, 0.25)) drop-shadow(3px 8px 16px rgba(104, 20, 39, 0.28));
+      transform: scale(1.05) rotate(0deg) !important;
       z-index: 25;
     }
 
@@ -176,7 +172,6 @@
       padding: 7px 16px;
       background-image: linear-gradient(145deg, #ffffff 0%, #f6f1e8 100%);
       position: relative;
-      transform: translateZ(0);
     }
 
     /* РЕАЛИСТИЧНЫЕ НЕСТАНДАРТНЫЕ СРЕЗЫ НОЖНИЦАМИ ВРУЧНУЮ (14-20 ТОЧЕК) */
@@ -249,12 +244,10 @@
       filter:
         drop-shadow(0 2px 2px rgba(45, 15, 22, 0.25)) drop-shadow(3px 6px 9px rgba(104, 20, 39, 0.22));
       transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-      transform: translateZ(0);
-      backface-visibility: hidden;
     }
 
     .giant-char:hover {
-      transform: scale(1.1) rotate(0deg) translateZ(0) !important;
+      transform: scale(1.1) rotate(0deg) !important;
       z-index: 20;
     }
 
@@ -367,9 +360,6 @@
       font-size: 2rem;
       font-weight: 900;
       flex-shrink: 0;
-      filter:
-        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.18));
-      transform: translateZ(0);
     }
 
     .b1 {
@@ -1290,7 +1280,15 @@
   <link rel="stylesheet" href="envelope.css">
   <script>
     const entryParams = new URLSearchParams(location.search);
-    if (entryParams.get('edit') !== '1' || entryParams.get('envelope') === '1') {
+    const forceEnvelopeEntry = entryParams.get('envelope') === '1';
+    const skipForEditMode = entryParams.get('edit') === '1' && !forceEnvelopeEntry;
+    const knownSectionHashes = new Set(['#invitation', '#story', '#venue', '#timing', '#dresscode', '#details', '#rsvp', '#guestChat']);
+    let envelopeAlreadyOpened = false;
+    try {
+      envelopeAlreadyOpened = localStorage.getItem('wedding_envelope_opened_v1') === '1';
+    } catch (e) { }
+    const skipForRepeatOrAnchor = !forceEnvelopeEntry && (envelopeAlreadyOpened || knownSectionHashes.has(location.hash));
+    if (!skipForEditMode && !skipForRepeatOrAnchor) {
       document.documentElement.classList.add('envelope-active');
     }
     if (document.fonts && typeof document.fonts.load === 'function') {
@@ -1398,14 +1396,15 @@
 
       <!-- Главный заголовок: гирлянда «приглашение на СВАДЬБУ» с двумя голубями -->
       <h1 class="hero-garland-title">
-        <img class="hero-garland-img" src="./assets/hero-garland-doves.webp"
-          alt="Приглашение на свадьбу Сергея и Юли" width="1334" height="589" decoding="async" fetchpriority="high">
+        <img class="hero-garland-img" src="./assets/hero-garland-doves.webp" alt="Приглашение на свадьбу Сергея и Юли"
+          width="1334" height="589" decoding="async" fetchpriority="high">
       </h1>
 
       <!-- Стикер пары по центру -->
       <div class="couple-photo-frame">
         <div class="couple-photo-inner">
-          <img src="./assets/couple-sticker.webp" alt="Сергей и Юля" width="800" height="713" decoding="async" fetchpriority="high">
+          <img src="./assets/couple-sticker.webp" alt="Сергей и Юля" width="800" height="713" decoding="async"
+            fetchpriority="high">
         </div>
       </div>
 
@@ -1431,7 +1430,7 @@
       </div>
       <div class="hero-details">
         <time datetime="2027-08-05T12:00:00+03:00">5 августа 2027 · с 12:00</time>
-        <span>Москва · усадьба Братцево</span>
+        <a href="#venue" class="hero-venue-link">Москва · усадьба Братцево ↓</a>
       </div>
     </section>
 
@@ -1440,10 +1439,10 @@
          ========================================== -->
     <section class="story-section" id="story" aria-label="Наша история">
       <div class="decoration-pair" aria-hidden="true">
-        <img class="decor-object decor-lace-corner" src="./assets/keepsakes/lace-corner.webp" alt=""
-          loading="lazy" decoding="async" width="640" height="640" data-layout-id="decoration-23">
-        <img class="decor-object decor-lace-strip" src="./assets/keepsakes/lace-strip.webp" alt=""
-          loading="lazy" decoding="async" width="720" height="402" data-layout-id="decoration-24">
+        <img class="decor-object decor-lace-corner" src="./assets/keepsakes/lace-corner.webp" alt="" loading="lazy"
+          decoding="async" width="640" height="640" data-layout-id="decoration-23">
+        <img class="decor-object decor-lace-strip" src="./assets/keepsakes/lace-strip.webp" alt="" loading="lazy"
+          decoding="async" width="720" height="402" data-layout-id="decoration-24">
       </div>
       <div class="story-header">
         <div class="section-eyebrow-row">
@@ -1457,62 +1456,131 @@
           </span>
         </h2>
         <div style="margin-top: 8px;">
-          <span class="cute-scribble" style="font-size: 1.45rem; transform: rotate(-1.5deg);">как всё начиналось ♡</span>
+          <span class="cute-scribble" style="font-size: 1.45rem; transform: rotate(-1.5deg);">как всё начиналось
+            ♡</span>
         </div>
       </div>
 
       <div class="story-tickets">
         <article class="story-ticket story-tilt-1 cut-scissor-1">
-          <span class="story-ticket-num">01 · ПЕРВАЯ ВСТРЕЧА</span>
-          <h3 class="story-ticket-title">Искра и разговоры до ночи</h3>
-          <p class="story-ticket-text">Случайное знакомство, прогулки по вечернему городу и ощущение, что вы знакомы целую вечность.</p>
+          <div class="story-ticket-top">
+            <span class="story-ticket-num">01 · ПЕРВАЯ ВСТРЕЧА</span>
+            <span class="story-ticket-badge cut-scissor-2" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="10" y="21" width="44" height="22" rx="11" transform="rotate(-35 32 32)" />
+                <line x1="25" y1="22" x2="36" y2="38" />
+                <line x1="28" y1="26" x2="39" y2="42" />
+                <path
+                  d="M32 35.5c-2.6-2-4.8-3.7-4.8-5.7a2.6 2.6 0 0 1 4.8-1.4 2.6 2.6 0 0 1 4.8 1.4c0 2-2.2 3.7-4.8 5.7Z"
+                  fill="currentColor" stroke="none" />
+                <circle cx="19" cy="40" r="1.6" fill="currentColor" stroke="none" />
+                <circle cx="22" cy="44" r="1.6" fill="currentColor" stroke="none" />
+                <circle cx="42" cy="20" r="1.6" fill="currentColor" stroke="none" />
+                <circle cx="45" cy="24" r="1.6" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+          </div>
+          <h3 class="story-ticket-title">Зимняя дача и первая помощь</h3>
+          <p class="story-ticket-text">Мы познакомились зимой на даче у друзей — всё началось с неловкого пореза пальца
+            и Юлиной первой помощи. Тот самый случай, когда маленькая неприятность обернулась большой любовью.</p>
+          <span class="story-ticket-note">зима · дача · забота ♡</span>
         </article>
         <article class="story-ticket story-tilt-2 cut-scissor-2">
-          <span class="story-ticket-num">02 · НАШ РИТМ</span>
-          <h3 class="story-ticket-title">Общие дороги и мечты</h3>
-          <p class="story-ticket-text">Первые совместные поездки, утренний кофе, поддержка во всём и сотни тёплых воспоминаний.</p>
+          <div class="story-ticket-top">
+            <span class="story-ticket-num">02 · НАШ УЮТНЫЙ ДОМ</span>
+            <span class="story-ticket-badge cut-scissor-3" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 41c0-11 9-19 20-19s20 8 20 19c0 4.5-3.5 7-8 7H20c-4.5 0-8-2.5-8-7Z" />
+                <path d="M23 23.5c-2 6-2 14 0 24.5" />
+                <path d="M41 23.5c2 6 2 14 0 24.5" />
+                <path d="M32 22v26" />
+                <path d="M23 14c0-2.5 2-3.5 2-6" />
+                <path d="M32 13c0-2.5 2-3.5 2-6" />
+                <path d="M41 14c0-2.5 2-3.5 2-6" />
+              </svg>
+            </span>
+          </div>
+          <h3 class="story-ticket-title">Выпечка, сериалы и опора</h3>
+          <p class="story-ticket-text">Мы обожаем вкусную еду и домашнюю выпечку — и никогда не упускаем повода расслабиться дома в уютной компании, под любимые сериалы и рядом с главным ценителем угощений — котом Пирожком.</p>
+          <span class="story-ticket-note">дом — это когда мы рядом ♡</span>
         </article>
         <article class="story-ticket story-tilt-3 cut-scissor-3">
-          <span class="story-ticket-num">03 · ПРЕДЛОЖЕНИЕ</span>
-          <h3 class="story-ticket-title">Самое главное «Да»</h3>
-          <p class="story-ticket-text">Тот самый момент, с которого начался отсчёт до нашего общего дня — 5 августа 2027.</p>
+          <div class="story-ticket-top">
+            <span class="story-ticket-num">03 · ДОСУГ</span>
+            <span class="story-ticket-badge cut-scissor-1" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="48" cy="15" r="5" />
+                <path d="M24 12L13 30h6l-8 14h26l-8-14h6L24 12Z" />
+                <line x1="24" y1="44" x2="24" y2="51" />
+                <path d="M10 53c4-3 8-3 12 0s8 3 12 0 8-3 12 0 8 3 10 0" />
+              </svg>
+            </span>
+          </div>
+          <h3 class="story-ticket-title">Дача, друзья и забавы</h3>
+          <p class="story-ticket-text">Мы часто проводим время на свежем дачном воздухе и обожаем сезонные забавы: зимой катаемся на ватрушках, а летом плаваем на сапах. И всегда рады провести время в весёлой и громкой компании с друзьями!</p>
+          <span class="story-ticket-note">дача · друзья · веселье ♡</span>
+        </article>
+        <article class="story-ticket story-tilt-4 cut-scissor-4">
+          <div class="story-ticket-top">
+            <span class="story-ticket-num">04 · ПРЕДЛОЖЕНИЕ</span>
+            <span class="story-ticket-badge cut-scissor-5" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="32" cy="40" r="15" />
+                <polygon points="24,18 32,12 40,18 32,26" />
+                <line x1="24" y1="18" x2="40" y2="18" />
+                <line x1="14" y1="13" x2="18" y2="16" />
+                <line x1="50" y1="13" x2="46" y2="16" />
+                <line x1="32" y1="5" x2="32" y2="8" />
+              </svg>
+            </span>
+          </div>
+          <h3 class="story-ticket-title">Влюбились заново</h3>
+          <p class="story-ticket-text">Уютным зимним вечером в красивом ресторане под живую музыку прозвучало самое
+            главное «Да». В тот вечер мы словно влюбились друг в друга заново — и даже снова немного смущались, как на
+            первом свидании. Так начался отсчёт до 5 августа 2027.</p>
+          <span class="story-ticket-note">05.08.2027 · скоро! ♡</span>
         </article>
       </div>
 
       <div class="future-photos-grid story-photos-grid" aria-label="Фотографии пары">
-        <figure class="photo-slot-card slot-tilt-1">
+        <figure class="photo-slot-card slot-tilt-1 photo-slot-real">
           <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
             loading="lazy" decoding="async" aria-hidden="true">
           <div class="photo-slot-frame">
-            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 1" width="800" height="713"
+            <img src="./assets/story-photo-01.webp" alt="Наше фото 01 — Сергей и Юля" width="576" height="1024"
               loading="lazy" decoding="async">
           </div>
           <figcaption class="photo-slot-caption">Наше фото · 01 ♡</figcaption>
         </figure>
-        <figure class="photo-slot-card slot-tilt-2">
+        <figure class="photo-slot-card slot-tilt-2 photo-slot-real">
           <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
             loading="lazy" decoding="async" aria-hidden="true">
           <div class="photo-slot-frame">
-            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 2" width="800" height="713"
-              loading="lazy" decoding="async">
+            <img src="./assets/story-photo-02.webp" alt="Наше фото 02 — Сергей и Юля едят манго" width="768" height="1024"
+              style="object-position: center 45%;" loading="lazy" decoding="async">
           </div>
           <figcaption class="photo-slot-caption">Наше фото · 02 ♡</figcaption>
         </figure>
-        <figure class="photo-slot-card slot-tilt-3">
+        <figure class="photo-slot-card slot-tilt-3 photo-slot-real">
           <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
             loading="lazy" decoding="async" aria-hidden="true">
           <div class="photo-slot-frame">
-            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 3" width="800" height="713"
-              loading="lazy" decoding="async">
+            <img src="./assets/story-photo-03.webp" alt="Наше фото 03 — Сергей и Юля зимой на катке" width="768" height="1024"
+              style="object-position: center 62%;" loading="lazy" decoding="async">
           </div>
           <figcaption class="photo-slot-caption">Наше фото · 03 ♡</figcaption>
         </figure>
-        <figure class="photo-slot-card slot-tilt-4">
+        <figure class="photo-slot-card slot-tilt-4 photo-slot-real">
           <img class="applique-pin" src="./assets/keepsakes/paper-pin.webp" alt="" width="160" height="160"
             loading="lazy" decoding="async" aria-hidden="true">
           <div class="photo-slot-frame">
-            <img src="./assets/couple-sticker.webp" alt="Место для будущей фотографии 4" width="800" height="713"
-              loading="lazy" decoding="async">
+            <video src="./assets/story-video-04.mp4" poster="./assets/story-photo-04.webp"
+              autoplay muted loop playsinline preload="metadata"
+              aria-label="Наше видео 04 — Сергей и Юля"></video>
           </div>
           <figcaption class="photo-slot-caption">Наше фото · 04 ♡</figcaption>
         </figure>
@@ -1545,6 +1613,32 @@
           </span>
         </h2>
 
+        <div class="venue-address-bar">
+          <span class="venue-copy-wrap">
+            <button type="button" class="venue-copy-btn cut-scissor-4" command="--copy" commandfor="venueAddressText"
+              aria-label="Скопировать адрес: Москва, Светлогорский проезд, 13" title="Нажмите, чтобы скопировать адрес">
+              <svg class="venue-pin-svg" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span id="venueAddressText" class="venue-address-text">Москва, Светлогорский проезд, 13</span>
+              <span class="venue-copy-icon-box" aria-hidden="true">
+                <svg class="copy-icon copy-icon-default" width="16" height="16" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                </svg>
+                <svg class="copy-icon copy-icon-check" width="16" height="16" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+            </button>
+            <span class="venue-copy-tip" role="status"></span>
+          </span>
+        </div>
+
         <!-- Иллюстрация Братцево по фотографии пользователя -->
         <div class="venue-photo-wrapper venue-illustration">
           <img loading="lazy" decoding="async" src="./assets/bratsevo-icon.webp"
@@ -1565,13 +1659,9 @@
         </div>
 
         <div class="btn-actions-row">
-          <button type="button" class="btn-paper-scrap btn-paper-blue" onclick="downloadIcsCalendar()">
-            iPhone Календарь
+          <button type="button" class="btn-paper-scrap btn-paper-blue" onclick="addToCalendarByDevice()">
+            Добавить в календарь
           </button>
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=%D0%A1%D0%B2%D0%B0%D0%B4%D1%8C%D0%B1%D0%B0+%D0%A1%D0%B5%D1%80%D0%B3%D0%B5%D1%8F+%D0%B8+%D0%AE%D0%BB%D0%B8&amp;dates=20270805T090000Z/20270805T200000Z&amp;details=%D0%9A%D0%B0%D0%BC%D0%B5%D1%80%D0%BD%D0%BE%D0%B5+%D1%81%D0%B2%D0%B0%D0%B4%D0%B5%D0%B1%D0%BD%D0%BE%D0%B5+%D1%82%D0%BE%D1%80%D0%B6%D0%B5%D1%81%D1%82%D0%B2%D0%BE+%D0%B2+%D1%83%D1%81%D0%B0%D0%B4%D1%8C%D0%B1%D0%B5+%D0%91%D1%80%D0%B0%D1%82%D1%86%D0%B5%D0%B2%D0%BE.+%D0%A1%D0%B1%D0%BE%D1%80+%D0%B3%D0%BE%D1%81%D1%82%D0%B5%D0%B9+%D0%B2+12%3A00.&amp;location=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C+%D0%A3%D1%81%D0%B0%D0%B4%D1%8C%D0%B1%D0%B0+%D0%91%D1%80%D0%B0%D1%82%D1%86%D0%B5%D0%B2%D0%BE"
-            target="_blank" rel="noopener noreferrer" class="btn-paper-scrap btn-paper-blue">
-            Google Календарь ↗
-          </a>
           <a href="https://yandex.ru/maps/?text=Усадьба+Братцево+Светлогорский+проезд+13" target="_blank"
             rel="noopener noreferrer" class="btn-paper-scrap btn-paper-burgundy">
             Маршрут на карте ↗
@@ -1737,8 +1827,7 @@
           loading="lazy" decoding="async" width="640" height="427" data-layout-id="decoration-14"></div>
       <section class="dresscode-section" id="dresscode">
         <div class="flatlay-bouquet" aria-hidden="true" data-layout-id="decoration-15"><img
-            src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="495"
-            height="640">
+            src="./assets/wedding-ribbon-topdown.webp" alt="" loading="lazy" decoding="async" width="495" height="640">
         </div>
         <h2 class="section-heading" style="text-align: center;">
           <span class="scrap-clip" style="transform: rotate(-2deg);">
@@ -1757,29 +1846,37 @@
           оттенков торжества:
         </p>
 
-        <!-- Образцы палитры (свотчи ткани с неровным резом) -->
-        <div class="palette-swatches">
-          <div class="swatch-card">
-            <div class="swatch-color" style="background: #681427;"></div>
-            <div class="swatch-name">БОРДО</div>
-          </div>
-          <div class="swatch-card">
-            <div class="swatch-color" style="background: #9dc2df;"></div>
-            <div class="swatch-name">ГОЛУБОЙ</div>
-          </div>
-          <div class="swatch-card">
-            <div class="swatch-color" style="background: #ffffff; border: 1px solid #d5cbbe;"></div>
-            <div class="swatch-name">МОЛОЧНЫЙ</div>
-          </div>
-          <div class="swatch-card">
-            <div class="swatch-color" style="background: #ebd8b7;"></div>
-            <div class="swatch-name">ШАМПАНЬ</div>
-          </div>
-          <div class="swatch-card">
-            <div class="swatch-color" style="background: #1a1617;"></div>
-            <div class="swatch-name">ГРАФИТ</div>
-          </div>
+        <!-- Образцы палитры (интерактивные свотчи ткани с неровным резом) -->
+        <div class="palette-swatches" role="group" aria-label="Оттенки дресс-кода">
+          <button type="button" class="swatch-card" data-swatch-color="burgundy" data-swatch-label="Бордо"
+            aria-pressed="false">
+            <span class="swatch-color" style="background: #681427;"></span>
+            <span class="swatch-name">БОРДО</span>
+          </button>
+          <button type="button" class="swatch-card" data-swatch-color="blue" data-swatch-label="Голубой"
+            aria-pressed="false">
+            <span class="swatch-color" style="background: #9dc2df;"></span>
+            <span class="swatch-name">ГОЛУБОЙ</span>
+          </button>
+          <button type="button" class="swatch-card" data-swatch-color="milk" data-swatch-label="Молочный"
+            aria-pressed="false">
+            <span class="swatch-color" style="background: #ffffff; border: 1px solid #d5cbbe;"></span>
+            <span class="swatch-name">МОЛОЧНЫЙ</span>
+          </button>
+          <button type="button" class="swatch-card" data-swatch-color="champagne" data-swatch-label="Шампань"
+            aria-pressed="false">
+            <span class="swatch-color" style="background: #ebd8b7;"></span>
+            <span class="swatch-name">ШАМПАНЬ</span>
+          </button>
+          <button type="button" class="swatch-card" data-swatch-color="graphite" data-swatch-label="Графит"
+            aria-pressed="false">
+            <span class="swatch-color" style="background: #1a1617;"></span>
+            <span class="swatch-name">ГРАФИТ</span>
+          </button>
         </div>
+        <p class="palette-interactive-hint" id="paletteHint" role="status" aria-live="polite">
+          Нажмите на любой оттенок, чтобы выделить образы в этом цвете ↓
+        </p>
 
         <!-- Вырезки фасонов для дам и кавалеров -->
         <div class="dress-notes-grid">
@@ -1790,23 +1887,23 @@
             </span>
             <div class="dress-collage dress-collage-women" role="group"
               aria-label="Примеры женских нарядов во всех цветах палитры">
-              <figure class="dress-collage-item" title="Графит">
+              <figure class="dress-collage-item" data-outfit-color="graphite">
                 <img loading="lazy" decoding="async" src="./assets/dress-graphite.webp"
                   alt="Пример дресс-кода: графитовое вечернее платье" width="594" height="981">
               </figure>
-              <figure class="dress-collage-item" title="Бордо">
+              <figure class="dress-collage-item" data-outfit-color="burgundy">
                 <img loading="lazy" decoding="async" src="./assets/dress-burgundy.webp"
                   alt="Пример дресс-кода: длинное бордовое платье" width="735" height="1030">
               </figure>
-              <figure class="dress-collage-item" title="Голубой">
+              <figure class="dress-collage-item" data-outfit-color="blue">
                 <img loading="lazy" decoding="async" src="./assets/dress-blue.webp"
                   alt="Пример дресс-кода: пудрово-голубое платье" width="680" height="1014">
               </figure>
-              <figure class="dress-collage-item" title="Шампань">
+              <figure class="dress-collage-item" data-outfit-color="champagne">
                 <img loading="lazy" decoding="async" src="./assets/dress-champagne.webp"
                   alt="Пример дресс-кода: шёлковое платье цвета шампань" width="684" height="1026">
               </figure>
-              <figure class="dress-collage-item" title="Молочный">
+              <figure class="dress-collage-item" data-outfit-color="milk">
                 <img loading="lazy" decoding="async" src="./assets/dress-milk.webp"
                   alt="Пример дресс-кода: молочное вечернее платье" width="736" height="1104">
               </figure>
@@ -1822,29 +1919,30 @@
             </span>
             <div class="dress-collage dress-collage-men" role="group"
               aria-label="Примеры мужских костюмов во всех цветах палитры">
-              <figure class="dress-collage-item" title="Графит">
+              <figure class="dress-collage-item" data-outfit-color="graphite">
                 <img loading="lazy" decoding="async" src="./assets/suit-graphite.webp"
                   alt="Пример дресс-кода: графитовый двубортный костюм" width="512" height="845">
               </figure>
-              <figure class="dress-collage-item" title="Бордо">
+              <figure class="dress-collage-item" data-outfit-color="burgundy">
                 <img loading="lazy" decoding="async" src="./assets/suit-burgundy.webp"
                   alt="Пример дресс-кода: бордовый костюм" width="679" height="1018">
               </figure>
-              <figure class="dress-collage-item" title="Шампань">
+              <figure class="dress-collage-item" data-outfit-color="champagne">
                 <img loading="lazy" decoding="async" src="./assets/suit-champagne.webp"
                   alt="Пример дресс-кода: костюм цвета шампань" width="680" height="1014">
               </figure>
-              <figure class="dress-collage-item" title="Молочный">
+              <figure class="dress-collage-item" data-outfit-color="milk">
                 <img loading="lazy" decoding="async" src="./assets/suit-milk.webp"
                   alt="Пример дресс-кода: светлый образ в молочных тонах" width="736" height="1291">
               </figure>
-              <figure class="dress-collage-item" title="Голубой">
+              <figure class="dress-collage-item" data-outfit-color="blue">
                 <img loading="lazy" decoding="async" src="./assets/suit-blue.webp"
                   alt="Пример дресс-кода: костюм в пудрово-голубых тонах" width="680" height="1014">
               </figure>
             </div>
             <p style="font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); font-weight: 500;">
-              Классические костюмы, блейзеры и брючные образы в оттенках нашей палитры: бордо, голубой, молочный, шампань и графит.
+              Классические костюмы, блейзеры и брючные образы в оттенках нашей палитры: бордо, голубой, молочный,
+              шампань и графит.
             </p>
           </div>
         </div>
@@ -1866,8 +1964,8 @@
          ========================================== -->
     <section class="details-faq-section" id="details" aria-label="Важные детали для гостей">
       <div class="decoration-pair" aria-hidden="true">
-        <img class="decor-object decor-lace-oval" src="./assets/keepsakes/lace-oval.webp" alt=""
-          loading="lazy" decoding="async" width="640" height="857" data-layout-id="decoration-25">
+        <img class="decor-object decor-lace-oval" src="./assets/keepsakes/lace-oval.webp" alt="" loading="lazy"
+          decoding="async" width="640" height="857" data-layout-id="decoration-25">
         <img class="decor-object decor-lace-bow-corner" src="./assets/keepsakes/lace-bow-corner.webp" alt=""
           loading="lazy" decoding="async" width="640" height="640" data-layout-id="decoration-26">
         <img class="decor-object decor-lace-vertical" src="./assets/keepsakes/lace-edge-vertical.webp" alt=""
@@ -1885,22 +1983,26 @@
           </span>
         </h2>
         <div style="margin-top: 8px;">
-          <span class="cute-scribble cute-scribble-blue" style="font-size: 1.45rem; transform: rotate(-1.2deg);">ответы на частые вопросы ♡</span>
+          <span class="cute-scribble cute-scribble-blue" style="font-size: 1.45rem; transform: rotate(-1.2deg);">ответы
+            на частые вопросы ♡</span>
         </div>
       </div>
 
       <div class="details-faq-grid">
         <article class="faq-scrap-card faq-tilt-1 cut-scissor-2">
           <h3 class="faq-scrap-title">Цветы и подарки</h3>
-          <p class="faq-scrap-text">Просим не дарить букеты — после праздника нам будет сложно забрать их с собой. Лучшим подарком станут ваши улыбки и пожелания в конверте.</p>
+          <p class="faq-scrap-text">Просим не дарить букеты — после праздника нам будет сложно забрать их с собой.
+            Лучшим подарком станут ваши улыбки и пожелания в конверте.</p>
         </article>
         <article class="faq-scrap-card faq-tilt-2 cut-scissor-3">
           <h3 class="faq-scrap-title">Дорога и парковка</h3>
-          <p class="faq-scrap-text">Удобнее всего приехать на такси к главным воротам усадьбы Братцево (Светлогорский пр-д, 13). Для машин предусмотрена парковка рядом со входом.</p>
+          <p class="faq-scrap-text">Удобнее всего приехать на такси к главным воротам усадьбы Братцево (Светлогорский
+            пр-д, 13). Для машин предусмотрена парковка рядом со входом.</p>
         </article>
         <article class="faq-scrap-card faq-tilt-3 cut-scissor-1">
           <h3 class="faq-scrap-title">Координатор дня</h3>
-          <p class="faq-scrap-text">По любым вопросам в день свадьбы (как пройти, тайминг, сюрпризы) можно будет обратиться к нашему координатору — контакт появится здесь ближе к дате.</p>
+          <p class="faq-scrap-text">По любым вопросам в день свадьбы (как пройти, тайминг, сюрпризы) можно будет
+            обратиться к нашему координатору — контакт появится здесь ближе к дате.</p>
         </article>
       </div>
     </section>
@@ -1923,7 +2025,7 @@
       </div>
       <section class="rsvp-section" id="rsvp">
         <div style="text-align: center; margin-bottom: 24px;">
-          <h2 class="section-heading"><span class="scrap-clip" style="transform: rotate(-1.5deg);">
+          <h2 id="rsvpFormHeading" class="section-heading"><span class="scrap-clip" style="transform: rotate(-1.5deg);">
               <span class="clip-body cut-scissor-2 bg-burgundy-rich"
                 style="font-size: 1.65rem; padding: 8px 22px;">АНКЕТА ГОСТЯ</span>
             </span></h2>
@@ -1938,75 +2040,117 @@
               Пожалуйста, подтвердите ваше присутствие, чтобы мы всё красиво подготовили ♡
             </span>
           </div>
+          <div class="rsvp-deadline-row">
+            <span class="scrap-clip" style="transform: rotate(-0.8deg);">
+              <span class="clip-body cut-scissor-3 rsvp-deadline-badge">Будем ждать ваш ответ до 1 июля 2027</span>
+            </span>
+          </div>
         </div>
 
-        <form id="weddingRsvpForm">
+        <form id="weddingRsvpForm" method="post"
+          action="https://script.google.com/macros/s/AKfycbxXXWaDim-BnbZE1LP50RiGm3HlDPaO3Xl6NQSdTQbwQ-ZOKnIMvWs25O-7CkoBDPyemA/exec"
+          aria-labelledby="rsvpFormHeading">
           <div id="rsvpSavedNotice" class="rsvp-saved-notice" role="status" aria-live="polite" hidden></div>
 
           <!-- ФИО -->
           <div class="rsvp-group">
             <label for="guestName" class="scrap-clip" style="transform: rotate(-1deg); cursor: pointer;">
-              <span class="clip-body cut-scissor-3 bg-news-typewriter">1. ВАШЕ ИМЯ И ФАМИЛИЯ:</span>
+              <span class="clip-body cut-scissor-3 bg-news-typewriter">1. ВАШЕ ИМЯ И ФАМИЛИЯ: <span
+                  aria-hidden="true">*</span></span>
             </label>
-            <input type="text" id="guestName" name="guestName" autocomplete="name" class="rsvp-input"
-              placeholder="Иван и Анна Смирновы…" required>
+            <input type="text" id="guestName" name="guestName" autocomplete="name" enterkeyhint="next"
+              class="rsvp-input" placeholder="Например: Анна Смирнова…" required>
           </div>
 
           <!-- Присутствие -->
-          <div class="rsvp-group">
-            <span class="scrap-clip" style="transform: rotate(1deg);">
-              <span class="clip-body cut-scissor-4 bg-news-typewriter">2. СМОЖЕТЕ ПРИЙТИ?</span>
-            </span>
+          <fieldset class="rsvp-group rsvp-fieldset">
+            <legend class="rsvp-legend">
+              <span class="scrap-clip" style="transform: rotate(1deg);">
+                <span class="clip-body cut-scissor-4 bg-news-typewriter">2. СМОЖЕТЕ ПРИЙТИ?</span>
+              </span>
+            </legend>
             <div class="choice-grid">
               <label class="choice-btn">
-                <input type="radio" name="attendance" value="yes" checked>
-                <div class="choice-box">✔ Буду с огромной радостью!</div>
+                <input type="radio" name="attendance" value="yes" class="visually-hidden" checked>
+                <span class="choice-box">✔ Буду с огромной радостью!</span>
               </label>
               <label class="choice-btn">
-                <input type="radio" name="attendance" value="no">
-                <div class="choice-box">✖ К сожалению, не смогу</div>
+                <input type="radio" name="attendance" value="no" class="visually-hidden">
+                <span class="choice-box">✖ К сожалению, не смогу</span>
               </label>
             </div>
-          </div>
+          </fieldset>
+
+          <!-- Состав гостей -->
+          <fieldset class="rsvp-group rsvp-fieldset" id="rsvpPartyGroup">
+            <legend class="rsvp-legend">
+              <span class="scrap-clip" style="transform: rotate(-1deg);">
+                <span class="clip-body cut-scissor-2 bg-news-typewriter">3. КАКИМ СОСТАВОМ БУДЕТЕ?</span>
+              </span>
+            </legend>
+            <div class="party-chips">
+              <label class="chip-btn">
+                <input type="radio" name="partyType" value="solo" class="visually-hidden" checked>
+                <span class="chip-box">Буду один / одна</span>
+              </label>
+              <label class="chip-btn">
+                <input type="radio" name="partyType" value="couple" class="visually-hidden">
+                <span class="chip-box">Будем вдвоём</span>
+              </label>
+              <label class="chip-btn">
+                <input type="radio" name="partyType" value="family" class="visually-hidden">
+                <span class="chip-box">С семьёй / детьми</span>
+              </label>
+            </div>
+            <div id="rsvpCompanionWrap" class="rsvp-companion-wrap is-collapsed" inert>
+              <label for="companionNames" id="companionNamesLabel" class="rsvp-sublabel">Имя вашего спутника или
+                спутницы:</label>
+              <input type="text" id="companionNames" name="companionNames" autocomplete="off" enterkeyhint="next"
+                class="rsvp-input" placeholder="Например: Иван Смирнов…" disabled>
+            </div>
+          </fieldset>
 
           <!-- Напитки -->
-          <div class="rsvp-group" id="rsvpDrinksGroup">
-            <span class="scrap-clip" style="transform: rotate(-1.5deg);">
-              <span class="clip-body cut-scissor-5 bg-news-typewriter">3. ПРЕДПОЧТЕНИЯ ПО БАРУ:</span>
-            </span>
+          <fieldset class="rsvp-group rsvp-fieldset" id="rsvpDrinksGroup">
+            <legend class="rsvp-legend">
+              <span class="scrap-clip" style="transform: rotate(-1.5deg);">
+                <span class="clip-body cut-scissor-5 bg-news-typewriter">4. ПРЕДПОЧТЕНИЯ ПО БАРУ:</span>
+              </span>
+            </legend>
             <div class="drinks-chips">
               <label class="chip-btn">
-                <input type="checkbox" name="drinks" value="Шампанское">
-                <div class="chip-box">Шампанское</div>
+                <input type="checkbox" name="drinks" value="Шампанское" class="visually-hidden">
+                <span class="chip-box">Шампанское</span>
               </label>
               <label class="chip-btn">
-                <input type="checkbox" name="drinks" value="Белое вино">
-                <div class="chip-box">Белое вино</div>
+                <input type="checkbox" name="drinks" value="Белое вино" class="visually-hidden">
+                <span class="chip-box">Белое вино</span>
               </label>
               <label class="chip-btn">
-                <input type="checkbox" name="drinks" value="Красное вино">
-                <div class="chip-box">Красное вино</div>
+                <input type="checkbox" name="drinks" value="Красное вино" class="visually-hidden">
+                <span class="chip-box">Красное вино</span>
               </label>
               <label class="chip-btn">
-                <input type="checkbox" name="drinks" value="Крепкие напитки">
-                <div class="chip-box">Крепкое</div>
+                <input type="checkbox" name="drinks" value="Крепкие напитки" class="visually-hidden">
+                <span class="chip-box">Крепкое</span>
               </label>
               <label class="chip-btn">
-                <input type="checkbox" name="drinks" value="Безалкогольное">
-                <div class="chip-box">Безалкогольное</div>
+                <input type="checkbox" name="drinks" value="Безалкогольное" class="visually-hidden">
+                <span class="chip-box">Безалкогольное</span>
               </label>
             </div>
-            <input type="text" id="customDrink" name="customDrink" autocomplete="off" aria-label="Свой вариант напитка" class="rsvp-input"
-              style="margin-top: 10px;" placeholder="Например: джин, виски, сидр…">
-          </div>
+            <label for="customDrink" class="rsvp-sublabel" style="margin-top: 12px;">Или укажите свой напиток:</label>
+            <input type="text" id="customDrink" name="customDrink" autocomplete="off" enterkeyhint="next"
+              class="rsvp-input" style="margin-top: 6px;" placeholder="Например: джин-тоник, виски, сидр…">
+          </fieldset>
 
           <!-- Пожелания / Аллергии -->
           <div class="rsvp-group">
             <label for="guestComment" class="scrap-clip" style="transform: rotate(1deg); cursor: pointer;">
-              <span id="rsvpCommentLabel" class="clip-body cut-scissor-1 bg-news-typewriter">4. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
+              <span id="rsvpCommentLabel" class="clip-body cut-scissor-1 bg-news-typewriter">5. ОСОБЫЕ ПОЖЕЛАНИЯ:</span>
             </label>
-            <input type="text" id="guestComment" name="guestComment" autocomplete="off" class="rsvp-input"
-              placeholder="Меню, аллергия или песня…">
+            <textarea id="guestComment" name="guestComment" rows="2" class="rsvp-input rsvp-textarea"
+              placeholder="Особое меню, аллергия или любимый трек для танцпола…"></textarea>
           </div>
 
           <p style="font-size: 14px; margin-top: 12px; color: var(--ink-soft); opacity: 0.85;">Ответ сразу будет
@@ -2019,7 +2163,7 @@
     </div>
 
     <!-- ==========================================
-         ЧАТ ГОСТЕЙ В TELEGRAM
+         ЧАТ ГОСТЕЙ В МЕССЕНДЖЕРЕ MAX
          ========================================== -->
     <section class="guest-chat-section" id="guestChat" aria-label="Общий чат гостей">
       <div class="guest-chat-frame">
@@ -2027,14 +2171,20 @@
           height="160" loading="lazy" decoding="async" aria-hidden="true">
         <div class="guest-chat-card cut-scissor-1">
           <span class="scrap-clip" style="transform: rotate(-1.3deg);">
-            <span class="clip-body cut-scissor-4 bg-burgundy-rich" style="font-size: 1.2rem; padding: 7px 16px;">ЧАТ ГОСТЕЙ</span>
+            <span class="clip-body cut-scissor-4 bg-burgundy-rich" style="font-size: 1.2rem; padding: 7px 16px;">ЧАТ
+              ГОСТЕЙ · MAX</span>
           </span>
-          <h2 class="guest-chat-title">Будем на связи в Telegram</h2>
-          <p class="guest-chat-text">Здесь появятся важные напоминания перед свадьбой, а после торжества мы соберём общий альбом живых фотографий и видео.</p>
-          <a class="btn-paper-scrap btn-paper-blue cut-scissor-3" href="https://t.me/" target="_blank"
-            rel="noopener noreferrer" style="text-decoration: none; display: inline-block; margin-top: 6px;">
-            ПРИСОЕДИНИТЬСЯ К ЧАТУ ↗
-          </a>
+          <h2 class="guest-chat-title">Будем на связи в мессенджере MAX</h2>
+          <p class="guest-chat-text">Здесь появятся важные напоминания перед свадьбой и контакты в день торжества, а
+            после праздника мы соберём общий альбом живых фотографий и видео.</p>
+          <div class="guest-chat-placeholder cut-scissor-3">
+            <svg class="guest-chat-clock-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span>Ссылка на чат в MAX появится ближе к дате</span>
+          </div>
         </div>
       </div>
     </section>
@@ -2079,7 +2229,8 @@
       </span>
       <div style="margin-top: 14px;">
         <span class="scrap-clip" style="transform: rotate(2deg);">
-          <span class="clip-body cut-scissor-3 bg-burgundy-rich" style="font-size: 1.25rem; padding: 7px 16px;">05 . 08 . 2027</span>
+          <span class="clip-body cut-scissor-3 bg-burgundy-rich" style="font-size: 1.25rem; padding: 7px 16px;">05 . 08
+            . 2027</span>
         </span>
         <span class="scrap-clip" style="transform: rotate(-1.5deg);">
           <span class="clip-body cut-scissor-4 bg-black-sans"
@@ -2092,6 +2243,8 @@
         </span>
       </div>
       <div class="editor-entry-wrap">
+        <button type="button" id="reopenEnvelopeBtn" class="reopen-envelope-btn">Открыть конверт заново</button>
+        <span class="footer-links-sep" aria-hidden="true">·</span>
         <a href="./?edit=1" class="editor-entry-link">✎ расстановка декора</a>
       </div>
     </footer>
@@ -2109,28 +2262,41 @@
     </div>
   </nav>
 
-  <!-- Модальное окно подтверждения с печатью -->
-  <div class="modal-backdrop" id="successModal" role="dialog" aria-modal="true" aria-label="Ответ отправлен">
-    <div class="modal-box">
-      <span class="scrap-clip" style="transform: rotate(-2deg); margin-bottom: 16px;">
+  <!-- Нативное модальное окно подтверждения с полезными действиями -->
+  <dialog class="rsvp-dialog modal-box" id="successModal" closedby="any" aria-labelledby="successModalTitle">
+    <h1 class="rsvp-dialog-heading">
+      <span class="scrap-clip" style="transform: rotate(-2deg);">
         <span id="successModalTitle" class="clip-body cut-scissor-1 bg-burgundy-rich"
           style="font-size: 1.8rem; padding: 10px 22px;">ОТВЕТ ОТПРАВЛЕН!</span>
       </span>
-      <p id="successModalDesc"
-        style="font-size: 1.1rem; margin: 20px 0 26px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
-        Ваш ответ успешно доставлен Сергею и Юле! Спасибо, мы с нетерпением ждём встречи с вами.
-      </p>
-      <div style="margin-bottom: 22px;">
-        <span class="cute-scribble" style="font-size: 1.4rem;">
-          Спасибо, что вы с нами в этот важный день ♡
-        </span>
+    </h1>
+    <p id="successModalDesc"
+      style="font-size: 1.05rem; margin: 18px 0 20px; line-height: 1.6; color: var(--ink-soft); font-weight: 500;">
+      Ваш ответ успешно доставлен Сергею и Юле! Спасибо, мы с нетерпением ждём встречи с вами.
+    </p>
+    <div id="modalNextSteps" class="modal-next-steps">
+      <p class="modal-next-label">Сохраните дату в календарь и будьте на связи:</p>
+      <div class="modal-actions-grid">
+        <button type="button" id="modalCalendarBtn" class="btn-paper-scrap btn-paper-blue modal-action-btn">
+          Добавить в календарь
+        </button>
+        <button type="button" id="modalChatJumpBtn"
+          class="btn-paper-scrap btn-paper-blue modal-action-btn">
+          Чат гостей в MAX ↓
+        </button>
       </div>
-      <button type="button" class="btn-paper-scrap btn-paper-burgundy" style="cursor: pointer;"
-        onclick="closeRsvpModal()">
+    </div>
+    <div style="margin-bottom: 18px;">
+      <span class="cute-scribble" style="font-size: 1.4rem;">
+        Спасибо, что вы с нами в этот важный день ♡
+      </span>
+    </div>
+    <form method="dialog" class="modal-close-form">
+      <button type="submit" class="btn-paper-scrap btn-paper-burgundy" autofocus>
         ОТЛИЧНО, ЗАКРЫТЬ
       </button>
-    </div>
-  </div>
+    </form>
+  </dialog>
 
   <script>
     // ==========================================
@@ -2226,23 +2392,65 @@
     }
 
     // ==========================================
-    // 2. УМНАЯ ЛОГИКА RSVP И ОТПРАВКА АНКЕТЫ (GOOGLE SHEETS + TELEGRAM)
+    // 2. УМНАЯ ЛОГИКА RSVP И ОТПРАВКА АНКЕТЫ (GOOGLE SHEETS)
     // ==========================================
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXXWaDim-BnbZE1LP50RiGm3HlDPaO3Xl6NQSdTQbwQ-ZOKnIMvWs25O-7CkoBDPyemA/exec';
     const RSVP_STORAGE_KEY = 'wedding_rsvp_latest';
 
+    const PARTY_LABELS = {
+      solo: '1 гость (один / одна)',
+      couple: 'Вдвоём',
+      family: 'С семьёй / детьми'
+    };
+
+    function syncTextareaHeight(textarea) {
+      if (!textarea || (window.CSS && CSS.supports('field-sizing', 'content'))) return;
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(260, Math.max(78, textarea.scrollHeight + 2))}px`;
+    }
+
     function updateRsvpAttendanceState() {
       const form = document.getElementById('weddingRsvpForm');
       if (!form) return;
+      const partyGroup = document.getElementById('rsvpPartyGroup');
+      const companionWrap = document.getElementById('rsvpCompanionWrap');
+      const companionLabel = document.getElementById('companionNamesLabel');
+      const companionInput = document.getElementById('companionNames');
       const drinksGroup = document.getElementById('rsvpDrinksGroup');
       const commentLabel = document.getElementById('rsvpCommentLabel');
       const commentInput = document.getElementById('guestComment');
+
       const attendanceEl = form.querySelector('input[name="attendance"]:checked');
       const isDeclining = attendanceEl && attendanceEl.value === 'no';
+      const partyEl = form.querySelector('input[name="partyType"]:checked');
+      const partyType = partyEl ? partyEl.value : 'solo';
+      const showCompanions = !isDeclining && (partyType === 'couple' || partyType === 'family');
+
+      if (partyGroup) {
+        partyGroup.classList.toggle('is-collapsed', isDeclining);
+        partyGroup.inert = isDeclining;
+        partyGroup.querySelectorAll('input[name="partyType"]').forEach((input) => {
+          input.disabled = isDeclining;
+        });
+      }
+
+      if (companionWrap && companionInput) {
+        companionWrap.classList.toggle('is-collapsed', !showCompanions);
+        companionWrap.inert = !showCompanions;
+        companionInput.disabled = !showCompanions;
+        if (companionLabel) {
+          companionLabel.textContent = partyType === 'family'
+            ? 'Имена спутника и детей (можно указать возраст деток):'
+            : 'Имя вашего спутника или спутницы:';
+        }
+        companionInput.placeholder = partyType === 'family'
+          ? 'Например: Иван Смирнов и сын Миша (5 лет)…'
+          : 'Например: Иван Смирнов…';
+      }
 
       if (drinksGroup) {
         drinksGroup.classList.toggle('is-collapsed', isDeclining);
-        drinksGroup.setAttribute('aria-hidden', isDeclining ? 'true' : 'false');
+        drinksGroup.inert = isDeclining;
         drinksGroup.querySelectorAll('input').forEach((input) => {
           input.disabled = isDeclining;
         });
@@ -2251,13 +2459,14 @@
       if (commentLabel) {
         commentLabel.textContent = isDeclining
           ? '3. ТЁПЛЫЕ СЛОВА ДЛЯ ПАРЫ:'
-          : '4. ОСОБЫЕ ПОЖЕЛАНИЯ:';
+          : '5. ОСОБЫЕ ПОЖЕЛАНИЯ:';
       }
 
       if (commentInput) {
         commentInput.placeholder = isDeclining
           ? 'Пара тёплых слов для Сергея и Юли…'
-          : 'Меню, аллергия или песня…';
+          : 'Особое меню, аллергия или любимый трек для танцпола…';
+        syncTextareaHeight(commentInput);
       }
     }
 
@@ -2291,11 +2500,25 @@
       }
 
       const nameInput = document.getElementById('guestName');
-      if (nameInput && typeof saved.name === 'string') nameInput.value = saved.name;
+      if (nameInput && typeof saved.rawName === 'string') {
+        nameInput.value = saved.rawName;
+      } else if (nameInput && typeof saved.name === 'string') {
+        nameInput.value = saved.name;
+      }
 
       if (saved.attendanceVal === 'no' || saved.attendanceVal === 'yes') {
         const targetRadio = form.querySelector(`input[name="attendance"][value="${saved.attendanceVal}"]`);
         if (targetRadio) targetRadio.checked = true;
+      }
+
+      if (saved.partyType && ['solo', 'couple', 'family'].includes(saved.partyType)) {
+        const partyRadio = form.querySelector(`input[name="partyType"][value="${saved.partyType}"]`);
+        if (partyRadio) partyRadio.checked = true;
+      }
+
+      const companionInput = document.getElementById('companionNames');
+      if (companionInput && typeof saved.companionNames === 'string') {
+        companionInput.value = saved.companionNames;
       }
 
       const selectedChips = Array.isArray(saved.selectedChips) ? saved.selectedChips : [];
@@ -2314,15 +2537,19 @@
       }
 
       updateRsvpAttendanceState();
-      showRsvpSavedNotice(saved.name || '');
+      showRsvpSavedNotice(saved.displaySummary || saved.name || '');
     }
 
     (function initRsvpSmartForm() {
       const form = document.getElementById('weddingRsvpForm');
       if (!form) return;
-      form.querySelectorAll('input[name="attendance"]').forEach((radio) => {
+      form.querySelectorAll('input[name="attendance"], input[name="partyType"]').forEach((radio) => {
         radio.addEventListener('change', updateRsvpAttendanceState);
       });
+      const commentInput = document.getElementById('guestComment');
+      if (commentInput) {
+        commentInput.addEventListener('input', () => syncTextareaHeight(commentInput));
+      }
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', restoreSavedRsvp);
       } else {
@@ -2330,16 +2557,69 @@
       }
     })();
 
+    const rsvpModal = document.getElementById('successModal');
+    if (rsvpModal) {
+      rsvpModal.addEventListener('close', () => {
+        rsvpModal.returnValue = '';
+      });
+      if (!('closedBy' in HTMLDialogElement.prototype)) {
+        const isOutsideDialog = (ev, dlg) => {
+          const r = dlg.getBoundingClientRect();
+          return ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom;
+        };
+        let pressedOutsideDialog = false;
+        rsvpModal.addEventListener('pointerdown', (ev) => {
+          pressedOutsideDialog = isOutsideDialog(ev, rsvpModal);
+        });
+        rsvpModal.addEventListener('pointerup', (ev) => {
+          if (pressedOutsideDialog && isOutsideDialog(ev, rsvpModal)) {
+            rsvpModal.close();
+          }
+          pressedOutsideDialog = false;
+        });
+      }
+      document.getElementById('modalCalendarBtn')?.addEventListener('click', () => {
+        addToCalendarByDevice();
+      });
+      document.getElementById('modalChatJumpBtn')?.addEventListener('click', () => {
+        rsvpModal.close();
+        const chatEl = document.getElementById('guestChat');
+        if (chatEl) {
+          const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          chatEl.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+        }
+      });
+    }
+
     document.getElementById('weddingRsvpForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const form = this;
       const submitBtn = document.getElementById('rsvpSubmitBtn') || form.querySelector('button[type="submit"]');
 
-      const name = (document.getElementById('guestName').value || '').trim();
+      const rawName = (document.getElementById('guestName').value || '').trim();
       const attendanceEl = form.querySelector('input[name="attendance"]:checked');
       const attendanceVal = attendanceEl ? attendanceEl.value : 'yes';
-      const attendanceText = attendanceVal === 'yes' ? '✔ Буду с огромной радостью!' : '✖ К сожалению, не смогу';
+      const partyEl = form.querySelector('input[name="partyType"]:checked');
+      const partyType = attendanceVal === 'yes' && partyEl ? partyEl.value : 'solo';
+      const companionNames = (attendanceVal === 'yes' && partyType !== 'solo')
+        ? (document.getElementById('companionNames')?.value || '').trim()
+        : '';
+
+      let formattedName = rawName;
+      if (attendanceVal === 'yes') {
+        if (partyType === 'couple') {
+          formattedName = companionNames ? `${rawName}, ${companionNames} (вдвоём)` : `${rawName} (вдвоём)`;
+        } else if (partyType === 'family') {
+          formattedName = companionNames ? `${rawName}, ${companionNames} (с семьёй)` : `${rawName} (с семьёй)`;
+        } else {
+          formattedName = `${rawName} (1 гость)`;
+        }
+      }
+
+      const attendanceText = attendanceVal === 'yes'
+        ? `✔ Буду с огромной радостью! · ${PARTY_LABELS[partyType] || PARTY_LABELS.solo}`
+        : '✖ К сожалению, не смогу';
       const selectedChips = attendanceVal === 'yes'
         ? Array.from(form.querySelectorAll('input[name="drinks"]:checked')).map(cb => cb.value)
         : [];
@@ -2355,15 +2635,23 @@
       const commentText = comment || 'Нет особых пожеланий';
       const timestamp = new Date().toISOString();
       const payload = {
-        name,
+        name: formattedName,
+        rawName,
+        partyType,
+        companions: companionNames,
         attendance: attendanceText,
         drinks,
         comment: commentText,
         timestamp
       };
 
+      const displaySummary = companionNames ? `${rawName} и ${companionNames}` : rawName;
       const savedState = {
-        name,
+        name: formattedName,
+        rawName,
+        displaySummary,
+        partyType,
+        companionNames,
         attendanceVal,
         attendance: attendanceText,
         selectedChips,
@@ -2396,6 +2684,11 @@
 
       const modalTitle = document.getElementById('successModalTitle');
       const modalDesc = document.getElementById('successModalDesc');
+      const modalNextSteps = document.getElementById('modalNextSteps');
+
+      if (modalNextSteps) {
+        modalNextSteps.hidden = attendanceVal === 'no';
+      }
 
       if (isSuccess) {
         if (modalTitle) modalTitle.textContent = 'ОТВЕТ ОТПРАВЛЕН!';
@@ -2407,35 +2700,37 @@
       } else {
         if (modalTitle) modalTitle.textContent = 'ОТВЕТ СОХРАНЁН!';
         if (modalDesc) {
-          modalDesc.innerHTML = 'Ответ сохранён на вашем устройстве. Из-за временной неполадки связи он может не дойти — вы также можете подтвердить участие Сергею: <a href="https://t.me/sergey_nstrk" target="_blank" rel="noopener" style="color:var(--burgundy);text-decoration:underline;font-weight:700;">@sergey_nstrk</a>.';
+          modalDesc.textContent = 'Ответ сохранён на вашем устройстве. Из-за временной неполадки сети он может не дойти — пожалуйста, при случае продублируйте его Сергею или Юле лично в MAX.';
         }
       }
 
-      showRsvpSavedNotice(name);
+      showRsvpSavedNotice(displaySummary);
       submitBtn.disabled = false;
-      document.getElementById('successModal').style.display = 'flex';
-      document.querySelector('#successModal button').focus();
-    });
-
-    function closeRsvpModal() {
-      document.getElementById('successModal').style.display = 'none';
-      document.querySelector('.btn-submit-collage').focus();
-    }
-    document.getElementById('successModal').addEventListener('click', (event) => {
-      if (event.target.id === 'successModal') closeRsvpModal();
-    });
-    document.addEventListener('keydown', (event) => {
-      if (document.getElementById('successModal').style.display !== 'flex') return;
-      if (event.key === 'Escape') closeRsvpModal();
-      if (event.key === 'Tab') {
-        event.preventDefault();
-        document.querySelector('#successModal button').focus();
+      if (rsvpModal && typeof rsvpModal.showModal === 'function') {
+        if (!rsvpModal.open) rsvpModal.showModal();
       }
     });
 
     // ==========================================
-    // 3. ДОБАВЛЕНИЕ В КАЛЕНДАРЬ (APPLE .ICS И GOOGLE)
+    // 3. ДОБАВЛЕНИЕ В КАЛЕНДАРЬ (APPLE .ICS И GOOGLE ПО УСТРОЙСТВУ)
     // ==========================================
+    const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=%D0%A1%D0%B2%D0%B0%D0%B4%D1%8C%D0%B1%D0%B0+%D0%A1%D0%B5%D1%80%D0%B3%D0%B5%D1%8F+%D0%B8+%D0%AE%D0%BB%D0%B8&dates=20270805T090000Z/20270805T200000Z&details=%D0%9A%D0%B0%D0%BC%D0%B5%D1%80%D0%BD%D0%BE%D0%B5+%D1%81%D0%B2%D0%B0%D0%B4%D0%B5%D0%B1%D0%BD%D0%BE%D0%B5+%D1%82%D0%BE%D1%80%D0%B6%D0%B5%D1%81%D1%82%D0%B2%D0%BE+%D0%B2+%D1%83%D1%81%D0%B0%D0%B4%D1%8C%D0%B1%D0%B5+%D0%91%D1%80%D0%B0%D1%82%D1%86%D0%B5%D0%B2%D0%BE.+%D0%A1%D0%B1%D0%BE%D1%80+%D0%B3%D0%BE%D1%81%D1%82%D0%B5%D0%B9+%D0%B2+12%3A00.&location=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C+%D0%A3%D1%81%D0%B0%D0%B4%D1%8C%D0%B1%D0%B0+%D0%91%D1%80%D0%B0%D1%82%D1%86%D0%B5%D0%B2%D0%BE';
+
+    function isAppleCalendarDevice() {
+      const ua = navigator.userAgent || '';
+      const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isMacSafari = /Macintosh/i.test(ua) && /Safari/i.test(ua) && !/Chrome|Chromium|Edg|OPR|YaBrowser/i.test(ua);
+      return isIOS || isMacSafari;
+    }
+
+    function addToCalendarByDevice() {
+      if (isAppleCalendarDevice()) {
+        downloadIcsCalendar();
+      } else {
+        window.open(GOOGLE_CALENDAR_URL, '_blank', 'noopener,noreferrer');
+      }
+    }
+
     function downloadIcsCalendar() {
       const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
       const icsLines = [
@@ -2734,11 +3029,135 @@
     document.addEventListener('DOMContentLoaded', initDecorParallax);
 
     // ==========================================
-    // 7. КОМПАКТНАЯ ПЛАВАЮЩАЯ НАВИГАЦИЯ ПО РАЗДЕЛАМ
+    // 7. КОМПАКТНАЯ ПЛАВАЮЩАЯ НАВИГАЦИЯ + ИНТЕРАКТИВ ПАЛИТРЫ И КОПИРОВАНИЕ АДРЕСА
     // ==========================================
+    function initCopyButtons() {
+      const copyTimers = new WeakMap();
+      let lastCopyAnnouncement = '';
+
+      function legacyCopyText(text) {
+        const previousFocus = document.activeElement;
+        const field = Object.assign(document.createElement('textarea'), { value: text });
+        field.setAttribute('readonly', '');
+        field.style.cssText = 'position:fixed;inset-block-start:0;opacity:0';
+        document.body.append(field);
+        field.select();
+        try {
+          return document.execCommand('copy');
+        } finally {
+          field.remove();
+          previousFocus?.focus?.({ preventScroll: true });
+        }
+      }
+
+      function reportCopyState(button, ok) {
+        const tip = button.nextElementSibling;
+        clearTimeout(copyTimers.get(button));
+        button.removeAttribute('data-copied');
+        button.removeAttribute('data-failed');
+        let message = ok ? 'Скопировано ✓' : 'Не удалось скопировать';
+        if (message === lastCopyAnnouncement) message += '\u00A0';
+        lastCopyAnnouncement = message;
+        if (tip) tip.textContent = '';
+        void button.offsetWidth;
+        button.setAttribute(ok ? 'data-copied' : 'data-failed', '');
+        if (tip) {
+          requestAnimationFrame(() => {
+            tip.textContent = message;
+          });
+        }
+        copyTimers.set(button, setTimeout(() => {
+          button.removeAttribute('data-copied');
+          button.removeAttribute('data-failed');
+          if (tip) tip.textContent = '';
+        }, 2200));
+      }
+
+      async function handleCopy(button, target) {
+        const text = target.matches('input, textarea') ? target.value : target.innerText.trim();
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          reportCopyState(button, true);
+        } catch {
+          if (legacyCopyText(text)) {
+            reportCopyState(button, true);
+          } else {
+            reportCopyState(button, false);
+          }
+        }
+      }
+
+      if ('CommandEvent' in window) {
+        document.addEventListener('command', (event) => {
+          if (event.command && event.command.startsWith('--copy')) {
+            handleCopy(event.source, event.target);
+          }
+        }, true);
+      } else {
+        document.addEventListener('click', (event) => {
+          if (event.defaultPrevented) return;
+          const button = event.target.closest('button[command^="--copy"]');
+          if (!button) return;
+          const target = document.getElementById(button.getAttribute('commandfor'));
+          if (target) handleCopy(button, target);
+        });
+      }
+    }
+
+    function initDresscodePaletteSync() {
+      const section = document.getElementById('dresscode');
+      if (!section) return;
+      const swatches = Array.from(section.querySelectorAll('.swatch-card[data-swatch-color]'));
+      const outfits = Array.from(section.querySelectorAll('.dress-collage-item[data-outfit-color]'));
+      const hint = document.getElementById('paletteHint');
+      if (!swatches.length || !outfits.length) return;
+
+      const defaultHint = 'Нажмите на любой оттенок, чтобы выделить образы в этом цвете ↓';
+      let activeColor = null;
+
+      function applyColor(nextColor) {
+        activeColor = activeColor === nextColor ? null : nextColor;
+        if (activeColor) {
+          section.setAttribute('data-active-color', activeColor);
+        } else {
+          section.removeAttribute('data-active-color');
+        }
+
+        let activeLabel = '';
+        swatches.forEach((btn) => {
+          const isMatch = btn.dataset.swatchColor === activeColor;
+          btn.classList.toggle('is-selected', isMatch);
+          btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+          if (isMatch) activeLabel = btn.dataset.swatchLabel || '';
+        });
+
+        outfits.forEach((item) => {
+          const isMatch = Boolean(activeColor) && item.dataset.outfitColor === activeColor;
+          const isMuted = Boolean(activeColor) && !isMatch;
+          item.classList.toggle('is-color-active', isMatch);
+          item.classList.toggle('is-color-muted', isMuted);
+        });
+
+        if (hint) {
+          hint.textContent = activeColor && activeLabel
+            ? `Выбран оттенок «${activeLabel}» — нажмите ещё раз, чтобы показать всю палитру`
+            : defaultHint;
+        }
+      }
+
+      swatches.forEach((btn) => {
+        btn.addEventListener('click', () => applyColor(btn.dataset.swatchColor));
+      });
+      outfits.forEach((item) => {
+        item.addEventListener('click', () => applyColor(item.dataset.outfitColor));
+      });
+    }
+
     function initFloatingNav() {
       const nav = document.getElementById('floatingNav');
       if (!nav) return;
+      const strip = nav.querySelector('.floating-nav-strip');
       const links = Array.from(nav.querySelectorAll('.floating-nav-link'));
       const sections = links
         .map((link) => {
@@ -2751,24 +3170,42 @@
       if (!sections.length) return;
 
       let activeId = null;
-      function setActive(id) {
-        if (activeId === id) return;
+      let wasVisible = false;
+
+      function centerActiveLinkInStrip(link, instant = false) {
+        if (!strip || !link || strip.scrollWidth <= strip.clientWidth + 2) return;
+        const targetLeft = link.offsetLeft - (strip.clientWidth - link.offsetWidth) / 2;
+        const clamped = Math.max(0, Math.min(strip.scrollWidth - strip.clientWidth, targetLeft));
+        const smooth = !instant && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        strip.scrollTo({ left: clamped, behavior: smooth ? 'smooth' : 'auto' });
+      }
+
+      function setActive(id, forceStripSync = false) {
+        const changed = activeId !== id;
+        if (!changed && !forceStripSync) return;
         activeId = id;
+        let currentLink = null;
         sections.forEach(({ id: secId, link }) => {
           const isCurrent = secId === id;
           link.classList.toggle('is-active', isCurrent);
           if (isCurrent) {
             link.setAttribute('aria-current', 'location');
+            currentLink = link;
           } else {
             link.removeAttribute('aria-current');
           }
         });
+        if (currentLink && nav.classList.contains('is-visible')) {
+          centerActiveLinkInStrip(currentLink, forceStripSync && !changed);
+        }
       }
 
       let navRaf = null;
       function updateNavState() {
         navRaf = null;
         const show = window.scrollY > 260;
+        const becameVisible = !wasVisible && show;
+        wasVisible = show;
         nav.classList.toggle('is-visible', show);
         nav.inert = !show;
 
@@ -2778,7 +3215,7 @@
         sections.forEach(({ id }, idx) => {
           if (tops[idx] <= marker) current = id;
         });
-        setActive(current);
+        setActive(current, becameVisible);
       }
 
       function queueNav() {
@@ -2791,8 +3228,14 @@
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initFloatingNav);
+      document.addEventListener('DOMContentLoaded', () => {
+        initCopyButtons();
+        initDresscodePaletteSync();
+        initFloatingNav();
+      });
     } else {
+      initCopyButtons();
+      initDresscodePaletteSync();
       initFloatingNav();
     }
   </script>
