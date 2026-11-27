@@ -4327,3 +4327,66 @@ html:not(.envelope-active) .hero-garland-img {
   object-fit: cover;
   object-position: center 42%;
 }
+
+/* Мобильная версия «Наша история»: чередование Карточка → Фото → Карточка → Фото */
+@media (max-width: 780px) {
+  .story-section {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .story-header {
+    order: 0;
+  }
+
+  .story-tickets,
+  .future-photos-grid.story-photos-grid {
+    display: contents !important;
+  }
+
+  .story-section .story-ticket {
+    width: 100%;
+    margin: 0 0 18px;
+  }
+
+  .story-section .photo-slot-card {
+    width: min(100%, 300px);
+    margin: 4px auto 28px;
+  }
+
+  .story-section .photo-slot-card.slot-tilt-4 {
+    margin-bottom: 8px;
+  }
+
+  .story-section .story-ticket.story-tilt-1 {
+    order: 1;
+  }
+
+  .story-section .photo-slot-card.slot-tilt-1 {
+    order: 2;
+  }
+
+  .story-section .story-ticket.story-tilt-2 {
+    order: 3;
+  }
+
+  .story-section .photo-slot-card.slot-tilt-2 {
+    order: 4;
+  }
+
+  .story-section .story-ticket.story-tilt-3 {
+    order: 5;
+  }
+
+  .story-section .photo-slot-card.slot-tilt-3 {
+    order: 6;
+  }
+
+  .story-section .story-ticket.story-tilt-4 {
+    order: 7;
+  }
+
+  .story-section .photo-slot-card.slot-tilt-4 {
+    order: 8;
+  }
+}
