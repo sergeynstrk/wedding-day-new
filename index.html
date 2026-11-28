@@ -3068,7 +3068,9 @@
       let lastCarMorph = -1;
 
       function projectCar3D(morph) {
-        if (Math.abs(morph - lastCarMorph) < 0.0015) return;
+        const eps = isDesktopMode ? 0.0015 : 0.008;
+        if (Math.abs(morph - lastCarMorph) < eps && morph > 0.001 && morph < 0.999) return;
+        if (Math.abs(morph - lastCarMorph) < 0.0005) return;
         lastCarMorph = morph;
 
         // Ортографический наклон камеры от 0° (чистый вид сверху) до 76° (вид спереди перед капотом).
@@ -3558,19 +3560,31 @@
           pathLength = trackPath.getTotalLength();
           exitStartFrac = pathLength > 0 ? clamp01(preExitLen / pathLength) : 0.8;
         } else {
-          // Живописная широкая бульварная дуга между Муравьёвых и Братцево на мобильном:
-          // плавно выезжает слева направо и паркуется строго по центру (90°) прямо над «УСАДЬБА БРАТЦЕВО»
-          const yTop = (fRect.bottom - sRect.top) + 14;
-          const yBot = Math.max(yTop + 115, (secRect.top - sRect.top) - 34);
-          const hGap = yBot - yTop;
-          const sx = W * 0.14;
-          const ex = W * 0.50;
-          carStartLocal = [sx, yTop];
-          carEndLocal = [ex, yBot];
-          d = `M ${sx.toFixed(1)} ${yTop.toFixed(1)} C ${(W * 0.88).toFixed(1)} ${(yTop + hGap * 0.12).toFixed(1)}, ${ex.toFixed(1)} ${(yTop + hGap * 0.46).toFixed(1)}, ${ex.toFixed(1)} ${yBot.toFixed(1)}`;
+          // Мобильный маршрут: от Муравьёвых плавно уходим в свободную правую полосу вдоль Братцево
+          // и заезжаем в центр площадки под Братцево строго курсом вниз (90°) для разворота передом и выхода пары
+          const yStart = (fRect.bottom - sRect.top) + 22;
+          const xStart = W * 0.16;
+          const xRight = W - 8;
+          const yTurn1 = Math.max(yStart + 62, (secRect.top - sRect.top) + 14);
+          const yTurn2 = Math.max(yTurn1 + 80, (secRect.bottom - sRect.top) - 116);
+          const xPark = W * 0.50;
+          const yPark = Math.max(yTurn2 + 64, (secRect.bottom - sRect.top) - 42);
+          carStartLocal = [xStart, yStart];
+          carEndLocal = [xPark, yPark];
+
+          const preParkD = [
+            `M ${xStart.toFixed(1)} ${yStart.toFixed(1)}`,
+            `C ${(xStart + (xRight - xStart) * 0.62).toFixed(1)} ${yStart.toFixed(1)}, ${xRight.toFixed(1)} ${(yStart + (yTurn1 - yStart) * 0.18).toFixed(1)}, ${xRight.toFixed(1)} ${yTurn1.toFixed(1)}`,
+            `L ${xRight.toFixed(1)} ${yTurn2.toFixed(1)}`
+          ].join(" ");
+          trackPath.setAttribute("d", preParkD);
+          const preParkLen = trackPath.getTotalLength();
+
+          const parkSeg = `C ${xRight.toFixed(1)} ${(yTurn2 + (yPark - yTurn2) * 0.56).toFixed(1)}, ${xPark.toFixed(1)} ${(yTurn2 + (yPark - yTurn2) * 0.34).toFixed(1)}, ${xPark.toFixed(1)} ${yPark.toFixed(1)}`;
+          d = `${preParkD} ${parkSeg}`;
           trackPath.setAttribute("d", d);
           pathLength = trackPath.getTotalLength();
-          exitStartFrac = 0.62;
+          exitStartFrac = pathLength > 0 ? clamp01(preParkLen / pathLength) : 0.78;
         }
 
         progressPath.setAttribute("d", d);
@@ -3674,8 +3688,25 @@
               }
               connD = segs.join(" ");
             } else {
-              // На мобильном единый <path> повторяет все 7 волн тайминга
-              const segs = [`M ${tlX(41.19).toFixed(1)} ${tlY(4.43).toFixed(1)}`];
+              // На мобильном соединяем машинку и пару точно так же, как на ПК:
+              // от бампера припаркованной машинки (по центру под Братцево) плавно уходим в левую 60px-полосу
+              // мимо заголовка «Тайминг» и бесшовно вливаемся во все 7 волн тайминга!
+              const p0x = (sRect.left - cRect.left) + carEndLocal[0];
+              const p0y = (sRect.top - cRect.top) + carEndLocal[1] + 24;
+              const tlStartX = tlX(41.19);
+              const tlStartY = tlY(4.43);
+              const dyMob = Math.max(60, tlStartY - p0y);
+
+              const mobBypass = [
+                `M ${p0x.toFixed(1)} ${p0y.toFixed(1)}`,
+                `C ${p0x.toFixed(1)} ${(p0y + dyMob * 0.36).toFixed(1)}, ${tlStartX.toFixed(1)} ${(p0y + dyMob * 0.24).toFixed(1)}, ${tlStartX.toFixed(1)} ${tlStartY.toFixed(1)}`
+              ];
+              coupleTrack.setAttribute("d", mobBypass.join(" "));
+              bypassLen = coupleTrack.getTotalLength();
+              bypassStartY = p0y;
+              bypassEndY = tlStartY;
+
+              const segs = [...mobBypass];
               for (let i = 0; i < TL_WAVES.length; i += 1) {
                 segs.push(waveSeg(TL_WAVES[i]));
               }
@@ -3823,22 +3854,20 @@
 
         let needsMoreFrames = Math.abs(carTarget - carCurrent) > 0.0004;
 
-        // 2) ЖЕНИХ И НЕВЕСТА (60fps без getPointAtLength и без пересчёта CSS-переменных на каждый кадр!)
+        // 2) ЖЕНИХ И НЕВЕСТА (единый сценарий и на ПК, и на мобильном — выходят из машинки и идут по таймингу!)
         if (hasTimeline && geo.tlHeight > 0 && connLength > 0 && coupleProgress) {
           const cTop = geo.canvasTop - sy;
-          const tlTop = geo.tlTop - sy;
-          const tlBottom = geo.tlBottom - sy;
           const walkAnchorY = isDesktopMode ? vh * 0.54 : vh * 0.56;
           const anchorCanvasY = walkAnchorY - cTop;
           const rawTargetS = arcLengthAtY(anchorCanvasY);
-          const carReadyGate = isDesktopMode ? smoothstep(0.90, 0.99, carCurrent) : 1;
+          const carReadyGate = smoothstep(0.90, 0.99, carCurrent);
           const targetS = rawTargetS * carReadyGate;
 
           if (connCurrent === null || isInitial) {
             connCurrent = targetS;
           } else {
             const sGap = targetS - connCurrent;
-            const desiredS = sGap * (1 - Math.exp(-elapsed / (isDesktopMode ? 185 : 145)));
+            const desiredS = sGap * (1 - Math.exp(-elapsed / (isDesktopMode ? 185 : 155)));
             const maxStepS = (elapsed / 1000) * (360 + Math.abs(sGap) * 1.45);
             connCurrent += Math.max(-maxStepS, Math.min(maxStepS, desiredS));
           }
@@ -3847,15 +3876,13 @@
             needsMoreFrames = true;
           }
 
-          const visible = isDesktopMode
-            ? smoothstep(0.89, 0.985, carCurrent)
-            : smoothstep(vh * 0.96, vh * 0.80, tlTop) * (tlBottom > 0 ? 1 : 0);
+          const visible = smoothstep(0.89, 0.985, carCurrent);
 
           coupleProgress.style.strokeDashoffset = `${Math.max(0, connLength - connCurrent).toFixed(1)}`;
 
           const pt = sampleCoupleAt(connCurrent);
           const wx = pt.x;
-          const wy = isDesktopMode ? pt.y - (1 - visible) * 10 : pt.y;
+          const wy = pt.y - (1 - visible) * 10;
 
           let stepDist = 0;
           if (!isInitial && lastWalkerPt && visible > 0.15) {
@@ -3870,7 +3897,7 @@
             needsMoreFrames = true;
           }
 
-          const scale = isDesktopMode ? 0.58 + 0.42 * visible : 1;
+          const scale = 0.58 + 0.42 * visible;
           placeCouple(wx, wy, visible, scale, walkStopTimer > 0);
 
           const coupleViewportY = visible > 0.4 && connCurrent > 8 ? (cTop + wy) : null;
@@ -5070,20 +5097,30 @@
       }
 
       let navRaf = null;
+      let sectionDocTops = [];
+      let lastNavWidth = window.innerWidth;
+
+      function cacheSectionTops() {
+        const sy = window.scrollY || window.pageYOffset || 0;
+        sectionDocTops = sections.map(({ el }) => el.getBoundingClientRect().top + sy);
+        lastNavWidth = window.innerWidth;
+      }
+
       function updateNavState() {
         navRaf = null;
-        const show = window.scrollY > 260;
+        const sy = window.scrollY || window.pageYOffset || 0;
+        const show = sy > 260;
         const becameVisible = !wasVisible && show;
         wasVisible = show;
         nav.classList.toggle('is-visible', show);
         nav.inert = !show;
 
-        const marker = window.innerHeight * 0.35;
+        if (!sectionDocTops.length) cacheSectionTops();
+        const marker = sy + window.innerHeight * 0.35;
         let current = sections[0].id;
-        const tops = sections.map(({ el }) => el.getBoundingClientRect().top);
-        sections.forEach(({ id }, idx) => {
-          if (tops[idx] <= marker) current = id;
-        });
+        for (let idx = 0; idx < sections.length; idx += 1) {
+          if (sectionDocTops[idx] <= marker) current = sections[idx].id;
+        }
         setActive(current, becameVisible);
       }
 
@@ -5091,9 +5128,19 @@
         if (navRaf === null) navRaf = window.requestAnimationFrame(updateNavState);
       }
 
+      cacheSectionTops();
       updateNavState();
       window.addEventListener('scroll', queueNav, { passive: true });
-      window.addEventListener('resize', queueNav, { passive: true });
+      window.addEventListener('resize', () => {
+        if (Math.abs(window.innerWidth - lastNavWidth) > 2) {
+          cacheSectionTops();
+          queueNav();
+        }
+      }, { passive: true });
+      window.addEventListener('load', () => {
+        cacheSectionTops();
+        queueNav();
+      }, { passive: true });
     }
 
     if (document.readyState === 'loading') {

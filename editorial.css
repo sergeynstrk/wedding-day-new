@@ -5880,7 +5880,22 @@ dialog.dress-lightbox::backdrop {
     height: 60px;
   }
 
-  /* Просторная дорожка слева в тайминге (60px), чтобы пара шла по центру своей полосы и не обрезалась у края экрана */
+  /* Единая левая 60px-полоса для пары на мобильном: от заголовка «Тайминг» до 6-го этапа без наезда на текст */
+  .timing-header-box {
+    padding-left: 58px !important;
+    text-align: left !important;
+    margin-bottom: 18px !important;
+  }
+
+  .timing-header-box > div:nth-child(2) {
+    margin-left: 0 !important;
+    text-align: left !important;
+  }
+
+  .timing-header-box .cute-scribble {
+    text-align: left !important;
+  }
+
   .ll-timeline {
     grid-template-columns: 60px minmax(0, 1fr) !important;
     column-gap: 10px !important;
@@ -5904,6 +5919,38 @@ dialog.dress-lightbox::backdrop {
   .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
     width: 86px !important;
     height: 54px !important;
+  }
+
+  /* Мобильная оптимизация рендеринга:
+     1) Убираем 60+ тяжёлых GPU-фильтров blur/drop-shadow (оставляем чистые бумажные тени со сдвигом)
+     2) Отключаем раскладку и отрисовку далёких нижних секций до попадания в экран (content-visibility) */
+  .scrap-clip::before,
+  .story-ticket::before,
+  .faq-scrap-card::before,
+  .guest-chat-card::before,
+  .manor-stickers-grid .manor-sticker-inner::before,
+  .dress-folder-sheet::before {
+    filter: none !important;
+    opacity: 0.42;
+  }
+
+  .decor-object,
+  .timing-section .sm-timing__item .timing-icon-cutout,
+  .timing-section .sm-timing__item.item-active .timing-icon-cutout,
+  .venue-photo-wrapper.venue-illustration img,
+  .dress-slide-zoom img,
+  .dress-slide.is-center .dress-slide-zoom img {
+    filter: none !important;
+  }
+
+  .dresscode-section,
+  .story-section,
+  .details-faq-section,
+  .guest-chat-section,
+  .countdown-section,
+  .rsvp-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
   }
 }
 
@@ -5931,11 +5978,17 @@ dialog.dress-lightbox::backdrop {
 
 @media (max-width: 780px) {
   .venue-locations-stack {
-    gap: 196px;
+    gap: 92px;
   }
 
   .venue-location-secondary {
-    padding-bottom: 12px;
+    padding-bottom: 10px;
+  }
+
+  /* Свободная правая полоса для дороги машинки вдоль Братцево + просторная площадка парковки и выхода пары снизу */
+  .venue-location-main {
+    padding-right: 26px;
+    padding-bottom: 138px;
   }
 
   .venue-kicker-badge {
