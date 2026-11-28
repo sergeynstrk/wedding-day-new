@@ -5743,13 +5743,19 @@ dialog.dress-lightbox::backdrop {
 
 @media (max-width: 780px) {
   .venue-route-car {
-    width: 56px;
-    height: 92px;
+    width: 64px;
+    height: 105px;
+    filter: none !important;
   }
 
   .venue-route-car svg {
-    width: 55px;
-    height: 90px;
+    width: 64px;
+    height: 105px;
+  }
+
+  .venue-route-progress,
+  .couple-connector-progress {
+    filter: none !important;
   }
 }
 
@@ -5807,17 +5813,50 @@ dialog.dress-lightbox::backdrop {
   overflow: visible;
 }
 
+@keyframes coupleWalkLegA {
+  0%, 100% { transform: rotate(-13deg); }
+  50% { transform: rotate(13deg); }
+}
+
+@keyframes coupleWalkLegB {
+  0%, 100% { transform: rotate(13deg); }
+  50% { transform: rotate(-13deg); }
+}
+
+@keyframes coupleWalkSkirt {
+  0%, 100% { transform: rotate(-2.4deg); }
+  50% { transform: rotate(2.4deg); }
+}
+
+@keyframes coupleWalkBob {
+  0%, 100% { transform: translateY(0) rotate(-1.6deg); }
+  25% { transform: translateY(-2.4px) rotate(0deg); }
+  50% { transform: translateY(0) rotate(1.6deg); }
+  75% { transform: translateY(-2.4px) rotate(0deg); }
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .wedding-couple-walker .walker-leg-a {
-    transform: rotate(var(--leg-a, 0deg));
+  .wedding-couple-walker .walker-leg-a,
+  .wedding-couple-walker .walker-leg-b,
+  .wedding-couple-walker .couple-skirt,
+  .wedding-couple-walker svg {
+    transition: transform 0.2s ease-out;
   }
 
-  .wedding-couple-walker .walker-leg-b {
-    transform: rotate(var(--leg-b, 0deg));
+  .wedding-couple-walker.is-walking .walker-leg-a {
+    animation: coupleWalkLegA 0.44s ease-in-out infinite;
   }
 
-  .wedding-couple-walker .couple-skirt {
-    transform: rotate(var(--skirt-sway, 0deg));
+  .wedding-couple-walker.is-walking .walker-leg-b {
+    animation: coupleWalkLegB 0.44s ease-in-out infinite;
+  }
+
+  .wedding-couple-walker.is-walking .couple-skirt {
+    animation: coupleWalkSkirt 0.44s ease-in-out infinite;
+  }
+
+  .wedding-couple-walker.is-walking svg {
+    animation: coupleWalkBob 0.44s ease-in-out infinite;
   }
 }
 
@@ -5831,13 +5870,40 @@ dialog.dress-lightbox::backdrop {
 
 @media (max-width: 780px) {
   .wedding-couple-walker {
-    width: 50px;
-    height: 54px;
+    width: 54px;
+    height: 60px;
+    filter: none !important;
   }
 
   .wedding-couple-walker svg {
-    width: 50px;
-    height: 54px;
+    width: 54px;
+    height: 60px;
+  }
+
+  /* Просторная дорожка слева в тайминге (60px), чтобы пара шла по центру своей полосы и не обрезалась у края экрана */
+  .ll-timeline {
+    grid-template-columns: 60px minmax(0, 1fr) !important;
+    column-gap: 10px !important;
+    row-gap: 26px !important;
+  }
+
+  .ob-timeline-line {
+    width: 28px !important;
+    justify-self: center !important;
+  }
+
+  .timing-section .sm-timing__item {
+    padding-right: 80px !important;
+  }
+
+  .timing-section .sm-timing__item .timing-icon-cutout {
+    width: 74px !important;
+    height: 64px !important;
+  }
+
+  .timing-section .sm-timing__item.item-1 .timing-icon-cutout {
+    width: 86px !important;
+    height: 54px !important;
   }
 }
 
@@ -5865,7 +5931,7 @@ dialog.dress-lightbox::backdrop {
 
 @media (max-width: 780px) {
   .venue-locations-stack {
-    gap: 62px;
+    gap: 196px;
   }
 
   .venue-location-secondary {

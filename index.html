@@ -3352,11 +3352,26 @@
 
       let pathLength = 0;
       let exitStartFrac = 0.8;
+      let carSamples = [];
       let connLength = 0;
       let unifiedSamples = [];
       let isDesktopMode = window.innerWidth >= 781;
       let carStartLocal = [0, 0];
       let carEndLocal = [0, 0];
+      let lastViewportW = window.innerWidth;
+      let lastStackH = 0;
+
+      // Кэш координат в пространстве документа (пересчитывается только в buildPath — 0 вызовов getBoundingClientRect в скролле!)
+      let geo = {
+        canvasTop: 0,
+        stackTop: 0,
+        mCenter: 0,
+        bCenter: 0,
+        tlTop: 0,
+        tlBottom: 0,
+        tlHeight: 0,
+        itemTops: []
+      };
 
       // 7 эталонных волн тайминга (в координатах 44.57 x 548.09), сшиваемых в единый <path> с обходом заголовка
       const TL_WAVES = [
@@ -3369,21 +3384,53 @@
         [41.46, 506, 6, 510, 3.5, 543.87]
       ];
 
+      function sampleCarAt(p) {
+        const n = carSamples.length;
+        if (!n) return { x: 0, y: 0, angle: 90 };
+        const idx = clamp01(p) * (n - 1);
+        const i0 = Math.floor(idx);
+        const i1 = Math.min(n - 1, i0 + 1);
+        const t = idx - i0;
+        const a = carSamples[i0];
+        const b = carSamples[i1];
+        const dAng = ((b.angle - a.angle + 540) % 360) - 180;
+        return {
+          x: a.x + (b.x - a.x) * t,
+          y: a.y + (b.y - a.y) * t,
+          angle: a.angle + dAng * t
+        };
+      }
+
+      function sampleCoupleAt(s) {
+        const n = unifiedSamples.length;
+        if (!n || !connLength) return { x: 0, y: 0 };
+        const idx = clamp01(s / connLength) * (n - 1);
+        const i0 = Math.floor(idx);
+        const i1 = Math.min(n - 1, i0 + 1);
+        const t = idx - i0;
+        const a = unifiedSamples[i0];
+        const b = unifiedSamples[i1];
+        return {
+          x: a.x + (b.x - a.x) * t,
+          y: a.y + (b.y - a.y) * t
+        };
+      }
+
       function arcLengthAtY(targetY) {
         const n = unifiedSamples.length;
         if (!n) return 0;
-        if (targetY <= unifiedSamples[0].y) return 0;
-        if (targetY >= unifiedSamples[n - 1].y) return unifiedSamples[n - 1].s;
+        if (targetY <= unifiedSamples[0].mappedY) return 0;
+        if (targetY >= unifiedSamples[n - 1].mappedY) return unifiedSamples[n - 1].s;
         let lo = 0;
         let hi = n - 1;
         while (hi - lo > 1) {
           const mid = (lo + hi) >> 1;
-          if (unifiedSamples[mid].y < targetY) lo = mid;
+          if (unifiedSamples[mid].mappedY < targetY) lo = mid;
           else hi = mid;
         }
         const a = unifiedSamples[lo];
         const b = unifiedSamples[hi];
-        const t = b.y > a.y ? (targetY - a.y) / (b.y - a.y) : 0;
+        const t = b.mappedY > a.mappedY ? (targetY - a.mappedY) / (b.mappedY - a.mappedY) : 0;
         return a.s + (b.s - a.s) * t;
       }
 
@@ -3391,11 +3438,12 @@
       let carCurrent = null;
       let connCurrent = null;
       let previousTime = 0;
-      let walkPhase = 0;
-      let walkAmp = 0;
       let lastWalkerPt = null;
+      let walkStopTimer = 0;
+      let isWalkingClass = false;
 
       function buildPath() {
+        const sy = window.scrollY || window.pageYOffset || 0;
         const cRect = canvas.getBoundingClientRect();
         const sRect = stack.getBoundingClientRect();
         const mRect = muravyovImg.getBoundingClientRect();
@@ -3403,6 +3451,15 @@
         const fRect = firstBlock.getBoundingClientRect();
         const secRect = secondBlock.getBoundingClientRect();
         if (!sRect.width || !sRect.height) return;
+
+        lastViewportW = window.innerWidth;
+        lastStackH = sRect.height;
+
+        geo.canvasTop = cRect.top + sy;
+        geo.stackTop = sRect.top + sy;
+        geo.mCenter = mRect.top + sy + mRect.height * 0.5;
+        geo.bCenter = bRect.top + sy + bRect.height * 0.5;
+        geo.itemTops = timingItems.map((item) => item.getBoundingClientRect().top + sy);
 
         const W = sRect.width;
         const H = sRect.height;
@@ -3501,25 +3558,47 @@
           pathLength = trackPath.getTotalLength();
           exitStartFrac = pathLength > 0 ? clamp01(preExitLen / pathLength) : 0.8;
         } else {
-          // Компактная плавная дорога в зазоре между карточками на мобильном (не перекрывает текст)
-          const y1 = (fRect.bottom - sRect.top) - 4;
-          const y2 = y1 + 28;
-          carStartLocal = [W * 0.12, y1];
-          carEndLocal = [W * 0.88, y2];
-          d = `M ${(W * 0.12).toFixed(1)} ${y1.toFixed(1)} C ${(W * 0.38).toFixed(1)} ${y1.toFixed(1)}, ${(W * 0.62).toFixed(1)} ${y2.toFixed(1)}, ${(W * 0.88).toFixed(1)} ${y2.toFixed(1)}`;
+          // Живописная широкая бульварная дуга между Муравьёвых и Братцево на мобильном:
+          // плавно выезжает слева направо и паркуется строго по центру (90°) прямо над «УСАДЬБА БРАТЦЕВО»
+          const yTop = (fRect.bottom - sRect.top) + 14;
+          const yBot = Math.max(yTop + 115, (secRect.top - sRect.top) - 34);
+          const hGap = yBot - yTop;
+          const sx = W * 0.14;
+          const ex = W * 0.50;
+          carStartLocal = [sx, yTop];
+          carEndLocal = [ex, yBot];
+          d = `M ${sx.toFixed(1)} ${yTop.toFixed(1)} C ${(W * 0.88).toFixed(1)} ${(yTop + hGap * 0.12).toFixed(1)}, ${ex.toFixed(1)} ${(yTop + hGap * 0.46).toFixed(1)}, ${ex.toFixed(1)} ${yBot.toFixed(1)}`;
           trackPath.setAttribute("d", d);
           pathLength = trackPath.getTotalLength();
-          exitStartFrac = 0.72;
+          exitStartFrac = 0.62;
         }
 
         progressPath.setAttribute("d", d);
         progressPath.style.strokeDasharray = `${pathLength}`;
         progressPath.style.strokeDashoffset = `${pathLength}`;
 
+        // Предвычисляем точки и касательные машинки (0 вызовов getPointAtLength в скролле!)
+        carSamples = [];
+        if (pathLength > 0) {
+          const steps = 220;
+          const eps = Math.min(8, pathLength * 0.01);
+          for (let i = 0; i <= steps; i += 1) {
+            const dist = (pathLength * i) / steps;
+            const pt = trackPath.getPointAtLength(dist);
+            const p0 = trackPath.getPointAtLength(Math.max(0, dist - eps));
+            const p1 = trackPath.getPointAtLength(Math.min(pathLength, dist + eps));
+            const angle = Math.atan2(p1.y - p0.y, p1.x - p0.x) * (180 / Math.PI);
+            carSamples.push({ x: pt.x, y: pt.y, angle });
+          }
+        }
+
         // Строим ЕДИНЫЙ непрерывный <path> от бампера машинки (в обход заголовка «ТАЙМИНГ» справа)
         // и дальше через все волны тайминга до самого финала — без стыков и смены цвета/толщины
         if (hasTimeline && coupleSvg && coupleTrack && coupleProgress) {
           const tlRect = tlTrack.getBoundingClientRect();
+          geo.tlTop = tlRect.top + sy;
+          geo.tlBottom = tlRect.bottom + sy;
+          geo.tlHeight = tlRect.height;
           if (tlRect.height > 0) {
             const tlX = (vx) => (tlRect.left - cRect.left) + (vx / 44.57) * tlRect.width;
             const tlY = (vy) => (tlRect.top - cRect.top) + (vy / 548.09) * tlRect.height;
@@ -3615,23 +3694,22 @@
             coupleProgress.style.strokeDasharray = `${connLength}`;
             coupleProgress.style.strokeDashoffset = `${connLength}`;
 
-            // Таблица s(scrollY): на обходе заголовка — строго постоянный темп шага пропорционально дуге s,
-            // а вдоль этапов 1..6 тайминга — точная привязка 1:1 к вертикальной координате этапа!
+            // Предвычисляем таблицу { s, x, y, mappedY } (0 вызовов getPointAtLength в скролле -> 60fps на телефоне!)
             unifiedSamples = [];
             if (connLength > 0) {
               let monoY = bypassLen > 0 ? bypassEndY : -Infinity;
-              const steps = 640;
+              const steps = isDesktopMode ? 520 : 320;
               for (let i = 0; i <= steps; i += 1) {
                 const s = (connLength * i) / steps;
+                const pt = coupleTrack.getPointAtLength(s);
                 let mappedY;
                 if (bypassLen > 0 && s <= bypassLen) {
                   mappedY = bypassStartY + (s / bypassLen) * (bypassEndY - bypassStartY);
                 } else {
-                  const pt = coupleTrack.getPointAtLength(s);
                   if (pt.y > monoY) monoY = pt.y;
                   mappedY = monoY;
                 }
-                unifiedSamples.push({ s, y: mappedY });
+                unifiedSamples.push({ s, x: pt.x, y: pt.y, mappedY });
               }
             }
           } else {
@@ -3643,20 +3721,14 @@
       }
 
       function placeCar(progress) {
-        if (!pathLength) return;
+        if (!pathLength || !carSamples.length) return;
         const p = clamp01(progress);
-        const dist = pathLength * p;
-        const pt = trackPath.getPointAtLength(dist);
-        const step = Math.min(10, pathLength * 0.012);
-        const ptPrev = trackPath.getPointAtLength(Math.max(0, dist - step));
-        const ptNext = trackPath.getPointAtLength(Math.min(pathLength, dist + step));
-        const angle = Math.atan2(ptNext.y - ptPrev.y, ptNext.x - ptPrev.x) * (180 / Math.PI);
+        const pt = sampleCarAt(p);
 
-        // Наклон в вид спереди начинается строго ПОСЛЕ выхода из правой петли (exitStartFrac),
-        // когда машинка уже идёт вниз к месту парковки у Братцево
-        const steerToFront = smoothstep(exitStartFrac, Math.min(0.97, exitStartFrac + 0.15), p);
+        // Наклон в вид спереди начинается строго ПОСЛЕ выхода из правой петли / поворота (exitStartFrac)
+        const steerToFront = smoothstep(exitStartFrac, Math.min(0.97, exitStartFrac + 0.16), p);
         const morph = smoothstep(Math.min(0.92, exitStartFrac + 0.02), 0.995, p);
-        const relDeg = ((angle - 90 + 540) % 360) - 180;
+        const relDeg = ((pt.angle - 90 + 540) % 360) - 180;
         const rotDeg = relDeg * (1 - steerToFront);
 
         projectCar3D(morph);
@@ -3666,31 +3738,33 @@
         progressPath.style.strokeDashoffset = `${(pathLength * (1 - p)).toFixed(1)}`;
       }
 
-      function placeCouple(wx, wy, opacity, scale, stride, bob) {
+      function placeCouple(wx, wy, opacity, scale, walking) {
         if (!walker) return;
         if (opacity <= 0.005) {
-          walker.hidden = true;
+          if (!walker.hidden) walker.hidden = true;
+          if (isWalkingClass) {
+            isWalkingClass = false;
+            walker.classList.remove("is-walking");
+          }
           return;
         }
-        const yOff = prefersReduced.matches ? 0 : -bob * 3.0;
-        const tilt = prefersReduced.matches ? 0 : stride * 2.2;
-        walker.hidden = false;
+        if (walker.hidden) walker.hidden = false;
         walker.style.opacity = String(opacity.toFixed(3));
-        walker.style.transform = `translate3d(${wx.toFixed(1)}px, ${(wy + yOff).toFixed(1)}px, 0) translate(-50%, -72%) rotate(${tilt.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-        if (!prefersReduced.matches) {
-          walker.style.setProperty("--leg-a", `${(stride * 14).toFixed(1)}deg`);
-          walker.style.setProperty("--leg-b", `${(-stride * 14).toFixed(1)}deg`);
-          walker.style.setProperty("--skirt-sway", `${(stride * 2.6).toFixed(1)}deg`);
+        walker.style.transform = `translate3d(${wx.toFixed(1)}px, ${wy.toFixed(1)}px, 0) translate(-50%, -72%) scale(${scale.toFixed(3)})`;
+        const shouldWalk = Boolean(walking && !prefersReduced.matches);
+        if (shouldWalk !== isWalkingClass) {
+          isWalkingClass = shouldWalk;
+          walker.classList.toggle("is-walking", shouldWalk);
         }
       }
 
-      function updateTimingHighlights(coupleViewportY) {
-        if (!timingItems.length) return;
-        const triggerY = coupleViewportY !== null ? coupleViewportY + 18 : window.innerHeight * 0.54;
-        const states = timingItems.map((item) => item.getBoundingClientRect().top + 20 <= triggerY);
-        timingItems.forEach((item, index) => {
-          item.classList.toggle("item-active", states[index]);
-        });
+      function updateTimingHighlights(coupleViewportY, sy, vh) {
+        if (!timingItems.length || !geo.itemTops.length) return;
+        const triggerY = coupleViewportY !== null ? coupleViewportY + 18 : vh * 0.54;
+        for (let index = 0; index < timingItems.length; index += 1) {
+          const itemTop = geo.itemTops[index] - sy;
+          timingItems[index].classList.toggle("item-active", itemTop + 20 <= triggerY);
+        }
       }
 
       function draw(now) {
@@ -3698,44 +3772,38 @@
         if (!pathLength) buildPath();
         if (!pathLength) return;
 
-        const cRect = canvas.getBoundingClientRect();
-        const sRect = stack.getBoundingClientRect();
-        const tlRect = hasTimeline ? tlTrack.getBoundingClientRect() : null;
+        const sy = window.scrollY || window.pageYOffset || 0;
+        const vh = window.innerHeight || 800;
 
         if (prefersReduced.matches) {
           placeCar(1);
-          if (hasTimeline && connLength > 0 && coupleTrack && coupleProgress) {
+          if (hasTimeline && connLength > 0 && coupleProgress) {
             coupleProgress.style.strokeDashoffset = `${(connLength * 0.5).toFixed(1)}`;
-            const midPt = coupleTrack.getPointAtLength(connLength * 0.5);
-            placeCouple(midPt.x, midPt.y, 1, 1, 0, 0);
-            updateTimingHighlights(null);
+            const midPt = sampleCoupleAt(connLength * 0.5);
+            placeCouple(midPt.x, midPt.y, 1, 1, false);
+            updateTimingHighlights(null, sy, vh);
           }
           return;
         }
 
-        const mRect = muravyovImg.getBoundingClientRect();
-        const bRect = bratsevoImg.getBoundingClientRect();
-        const vh = window.innerHeight || 800;
         const elapsed = previousTime ? Math.min(64, now - previousTime) : 16;
         previousTime = now;
 
-        // 1) МАШИНКА:
-        //    - Начинает ехать только после того, как картинка Усадьбы Муравьёвых окажется выше середины экрана (mCenterY < 48% vh).
-        //    - Цель доходит до 100%, когда Усадьба Братцево оказывается по центру экрана (52% vh).
-        //    - Едет с приятной задержкой и неспешным ограничением скорости (без жёсткой привязки к скроллу).
+        // 1) МАШИНКА (0 вызовов getBoundingClientRect — всё из кэша geo - scrollY):
+        //    - Стартует после того, как картинка Усадьбы Муравьёвых поднимется выше середины экрана (< 48% vh).
+        //    - Едет с мягкой задержкой и спокойной скоростью, паркуясь передом к зрителю.
+        const mCenterY = geo.mCenter - sy;
+        const bCenterY = geo.bCenter - sy;
         let rawCar = 0;
         if (isDesktopMode) {
-          const mCenterY = mRect.top + mRect.height * 0.5;
-          const bCenterY = bRect.top + bRect.height * 0.5;
           const startAnchor = vh * 0.48;
           const endAnchor = vh * 0.52;
           const scrollSpan = Math.max(240, (bCenterY - mCenterY) + (startAnchor - endAnchor));
           rawCar = clamp01((startAnchor - mCenterY) / scrollSpan);
         } else {
-          const mCenterY = mRect.top + mRect.height * 0.5;
-          const carEndScreenY = sRect.top + carEndLocal[1];
+          const carEndScreenY = (geo.stackTop + carEndLocal[1]) - sy;
           const startAnchor = vh * 0.48;
-          const endAnchor = vh * 0.46;
+          const endAnchor = vh * 0.48;
           const scrollSpan = Math.max(180, (carEndScreenY - mCenterY) + (startAnchor - endAnchor));
           rawCar = clamp01((startAnchor - mCenterY) / scrollSpan);
         }
@@ -3755,12 +3823,13 @@
 
         let needsMoreFrames = Math.abs(carTarget - carCurrent) > 0.0004;
 
-        // 2) ЖЕНИХ И НЕВЕСТА:
-        //    - Появляются перед капотом, когда машинка неспешно доезжает и разворачивается передом (carCurrent: 89% → 99%).
-        //    - Идут с мягкой инерцией и спокойной скоростью, зажигая этапы тайминга по мере прохождения.
-        if (hasTimeline && tlRect && tlRect.height > 0 && connLength > 0 && coupleTrack && coupleProgress) {
+        // 2) ЖЕНИХ И НЕВЕСТА (60fps без getPointAtLength и без пересчёта CSS-переменных на каждый кадр!)
+        if (hasTimeline && geo.tlHeight > 0 && connLength > 0 && coupleProgress) {
+          const cTop = geo.canvasTop - sy;
+          const tlTop = geo.tlTop - sy;
+          const tlBottom = geo.tlBottom - sy;
           const walkAnchorY = isDesktopMode ? vh * 0.54 : vh * 0.56;
-          const anchorCanvasY = walkAnchorY - cRect.top;
+          const anchorCanvasY = walkAnchorY - cTop;
           const rawTargetS = arcLengthAtY(anchorCanvasY);
           const carReadyGate = isDesktopMode ? smoothstep(0.90, 0.99, carCurrent) : 1;
           const targetS = rawTargetS * carReadyGate;
@@ -3769,48 +3838,43 @@
             connCurrent = targetS;
           } else {
             const sGap = targetS - connCurrent;
-            const desiredS = sGap * (1 - Math.exp(-elapsed / 185));
-            const maxStepS = (elapsed / 1000) * (340 + Math.abs(sGap) * 1.35);
+            const desiredS = sGap * (1 - Math.exp(-elapsed / (isDesktopMode ? 185 : 145)));
+            const maxStepS = (elapsed / 1000) * (360 + Math.abs(sGap) * 1.45);
             connCurrent += Math.max(-maxStepS, Math.min(maxStepS, desiredS));
           }
 
-          if (Math.abs(targetS - connCurrent) > 0.35) {
+          if (Math.abs(targetS - connCurrent) > 0.4) {
             needsMoreFrames = true;
           }
 
           const visible = isDesktopMode
             ? smoothstep(0.89, 0.985, carCurrent)
-            : smoothstep(vh * 0.94, vh * 0.80, tlRect.top) * (tlRect.bottom > 0 ? 1 : 0);
+            : smoothstep(vh * 0.96, vh * 0.80, tlTop) * (tlBottom > 0 ? 1 : 0);
 
           coupleProgress.style.strokeDashoffset = `${Math.max(0, connLength - connCurrent).toFixed(1)}`;
 
-          const pt = coupleTrack.getPointAtLength(Math.max(0, Math.min(connLength, connCurrent)));
+          const pt = sampleCoupleAt(connCurrent);
           const wx = pt.x;
           const wy = isDesktopMode ? pt.y - (1 - visible) * 10 : pt.y;
 
+          let stepDist = 0;
           if (!isInitial && lastWalkerPt && visible > 0.15) {
-            const stepDist = Math.hypot(wx - lastWalkerPt[0], wy - lastWalkerPt[1]);
-            if (stepDist > 0.15 && stepDist < 140) {
-              // Ограничиваем максимальную частоту маха ногами при резком скролле, чтобы походка всегда оставалась живой и плавной
-              walkPhase += Math.min(stepDist, elapsed * 0.42) * 0.15;
-              walkAmp = Math.min(1, walkAmp + elapsed * 0.011);
-            } else {
-              walkAmp = Math.max(0, walkAmp - elapsed * 0.006);
-            }
-          } else {
-            walkAmp = Math.max(0, walkAmp - elapsed * 0.006);
+            stepDist = Math.hypot(wx - lastWalkerPt[0], wy - lastWalkerPt[1]);
           }
           lastWalkerPt = [wx, wy];
 
-          if (walkAmp > 0.01) needsMoreFrames = true;
+          if (stepDist > 0.35 && stepDist < 160) {
+            walkStopTimer = 140;
+          } else if (walkStopTimer > 0) {
+            walkStopTimer = Math.max(0, walkStopTimer - elapsed);
+            needsMoreFrames = true;
+          }
 
-          const stride = Math.sin(walkPhase) * walkAmp;
-          const bob = Math.abs(Math.sin(walkPhase)) * walkAmp;
           const scale = isDesktopMode ? 0.58 + 0.42 * visible : 1;
-          placeCouple(wx, wy, visible, scale, stride, bob);
+          placeCouple(wx, wy, visible, scale, walkStopTimer > 0);
 
-          const coupleViewportY = visible > 0.4 && connCurrent > 8 ? (cRect.top + wy) : null;
-          updateTimingHighlights(coupleViewportY);
+          const coupleViewportY = visible > 0.4 && connCurrent > 8 ? (cTop + wy) : null;
+          updateTimingHighlights(coupleViewportY, sy, vh);
         }
 
         if (needsMoreFrames) {
@@ -3822,20 +3886,32 @@
         if (frame === null) frame = window.requestAnimationFrame(draw);
       }
 
-      function rebuild() {
+      function rebuild(resetProgress) {
         buildPath();
-        carCurrent = null;
-        connCurrent = null;
-        lastWalkerPt = null;
-        previousTime = 0;
+        if (resetProgress) {
+          carCurrent = null;
+          connCurrent = null;
+          lastWalkerPt = null;
+          previousTime = 0;
+        }
         queue();
       }
 
       window.addEventListener("scroll", queue, { passive: true });
-      window.addEventListener("resize", rebuild, { passive: true });
-      window.addEventListener("load", rebuild, { passive: true });
+      window.addEventListener("resize", () => {
+        // Игнорируем скрытие/показ адресной строки на мобильных (когда меняется только высота, а ширина та же)
+        if (Math.abs(window.innerWidth - lastViewportW) > 2) {
+          rebuild(true);
+        }
+      }, { passive: true });
+      window.addEventListener("load", () => rebuild(false), { passive: true });
       if (typeof ResizeObserver === "function") {
-        const ro = new ResizeObserver(rebuild);
+        const ro = new ResizeObserver(() => {
+          const curH = stack.getBoundingClientRect().height;
+          if (Math.abs(curH - lastStackH) > 10 || Math.abs(window.innerWidth - lastViewportW) > 2) {
+            rebuild(false);
+          }
+        });
         ro.observe(stack);
         if (tlTrack) ro.observe(tlTrack);
       }
