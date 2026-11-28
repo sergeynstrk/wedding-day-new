@@ -5727,8 +5727,8 @@ dialog.dress-lightbox::backdrop {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 108px;
-  height: 58px;
+  width: 78px;
+  height: 126px;
   will-change: transform;
   filter: drop-shadow(0 4px 10px rgba(18, 4, 9, 0.58));
   pointer-events: none;
@@ -5736,19 +5736,108 @@ dialog.dress-lightbox::backdrop {
 
 .venue-route-car svg {
   display: block;
-  width: 106px;
-  height: 56px;
+  width: 76px;
+  height: 125px;
+  overflow: visible;
 }
 
 @media (max-width: 780px) {
   .venue-route-car {
-    width: 78px;
-    height: 42px;
+    width: 56px;
+    height: 92px;
   }
 
   .venue-route-car svg {
-    width: 76px;
-    height: 40px;
+    width: 55px;
+    height: 90px;
+  }
+}
+
+/* Прогулка жениха и невесты от припаркованной машинки к таймингу и вниз по волне */
+.wedding-couple-journey {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+  overflow: visible;
+}
+
+.couple-connector-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.couple-connector-track {
+  stroke: rgba(214, 232, 240, 0.36);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 8 7;
+}
+
+.couple-connector-progress {
+  stroke: #f1ece4;
+  stroke-width: 3.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 5px rgba(18, 4, 9, 0.42));
+}
+
+.wedding-couple-walker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 68px;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 5px 11px rgba(18, 4, 9, 0.56));
+  pointer-events: none;
+}
+
+.wedding-couple-walker svg {
+  display: block;
+  width: 62px;
+  height: 68px;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wedding-couple-walker .walker-leg-a {
+    transform: rotate(var(--leg-a, 0deg));
+  }
+
+  .wedding-couple-walker .walker-leg-b {
+    transform: rotate(var(--leg-b, 0deg));
+  }
+
+  .wedding-couple-walker .couple-skirt {
+    transform: rotate(var(--skirt-sway, 0deg));
+  }
+}
+
+/* Скрываем старую отдельную SVG-линию и точку таймлайна: теперь весь путь от машинки до конца тайминга — один единый элемент */
+.ob-timeline-line.has-couple-walker > svg,
+.ob-timeline-line.has-couple-walker .ob-timeline-dot {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+@media (max-width: 780px) {
+  .wedding-couple-walker {
+    width: 50px;
+    height: 54px;
+  }
+
+  .wedding-couple-walker svg {
+    width: 50px;
+    height: 54px;
   }
 }
 

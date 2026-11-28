@@ -1614,61 +1614,90 @@
               <path id="venueRouteProgress" class="venue-route-progress" d="" />
             </svg>
             <span class="venue-route-car" id="venueRouteCar" hidden>
-              <svg viewBox="0 0 88 46" width="106" height="56" fill="none" aria-hidden="true">
-                <!-- Развевающиеся ленты позади заднего бампера (ч/б графика тушью) -->
-                <path d="M18 16 C12 13.5, 8 17.5, 2.5 15.2" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M18 23 C12 21, 8 25, 2 23" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M18 30 C12 32.5, 8 28.5, 2.5 30.8" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
-                <circle cx="4" cy="15.4" r="1.7" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
-                <circle cx="3.2" cy="23" r="1.7" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
-                <circle cx="4" cy="30.6" r="1.7" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+              <!-- Единая параметрическая 2.5D-модель ретро-автомобиля:
+                   ширина кузова, крыльев и капота остаётся строго 1:1 при переходе от вида сверху к виду спереди -->
+              <svg id="venueRouteCarSvg" viewBox="-34 -60 68 112" width="76" height="125" fill="none" aria-hidden="true">
+                <!-- Мягкая тень под передними колёсами (проявляется при наклоне камеры спереди) -->
+                <ellipse id="car3dShadow" cx="0" cy="24" rx="25" ry="3.4" fill="#141011" fill-opacity="0"/>
 
-                <!-- Задний и передний бамперы -->
-                <path d="M19.2 13 C17.2 18, 17.2 28, 19.2 33" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
-                <path d="M19.2 13 C17.2 18, 17.2 28, 19.2 33" stroke="#141011" stroke-width="1.6" stroke-linecap="round"/>
-                <path d="M81.2 13.5 C83.6 18.5, 83.6 27.5, 81.2 32.5" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
-                <path d="M81.2 13.5 C83.6 18.5, 83.6 27.5, 81.2 32.5" stroke="#141011" stroke-width="1.6" stroke-linecap="round"/>
+                <!-- Развевающиеся свадебные ленты позади заднего бампера -->
+                <g id="car3dRearRibbons">
+                  <path d="M-8 -40 C-10.5 -46.5, -6.5 -51, -9 -56.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M0 -40 C-2 -46.5, 2 -51, 0 -57" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M8 -40 C10.5 -46.5, 6.5 -51, 9 -56.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+                  <circle cx="-8.8" cy="-55" r="1.8" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                  <circle cx="0" cy="-56" r="1.8" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                  <circle cx="8.8" cy="-55" r="1.8" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                </g>
 
-                <!-- Рельефные классические крылья (4 арки колёс ретро-авто) -->
-                <path d="M23 9.5 C26 6.8, 35 6.8, 38 9.8 L38 11.8 L23 11.8 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M23 36.5 C26 39.2, 35 39.2, 38 36.2 L38 34.2 L23 34.2 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M61 9.8 C64.5 6.4, 74.5 6.8, 78 10.5 L76.5 12.2 L61 12.2 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M61 36.2 C64.5 39.6, 74.5 39.2, 78 35.5 L76.5 33.8 L61 33.8 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
+                <!-- Передние шины (под крыльями: скрыты сверху, естественно выходят снизу при виде спереди) -->
+                <rect id="car3dTireL" x="-19.8" y="30" width="6.8" height="2" rx="2.6" fill="#141011" stroke="#141011" stroke-width="1.3"/>
+                <rect id="car3dTireR" x="13.0" y="30" width="6.8" height="2" rx="2.6" fill="#141011" stroke="#141011" stroke-width="1.3"/>
 
-                <!-- Боковые зеркала -->
-                <ellipse cx="56" cy="8" rx="2.5" ry="1.6" fill="#ffffff" stroke="#141011" stroke-width="1.5"/>
-                <ellipse cx="56" cy="38" rx="2.5" ry="1.6" fill="#ffffff" stroke="#141011" stroke-width="1.5"/>
+                <!-- Задний бампер, задние крылья и габариты (естественно уходят за крышу при наклоне камеры) -->
+                <g id="car3dRearGroup">
+                  <path id="car3dRearBumperW" d="M-12 -39 C-6 -41.2, 6 -41.2, 12 -39" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
+                  <path id="car3dRearBumperB" d="M-12 -39 C-6 -41.2, 6 -41.2, 12 -39" stroke="#141011" stroke-width="1.6" stroke-linecap="round"/>
+                  <path id="car3dRearFenderL" d="M-16.2 -33.5 L-20.2 -30.5 C-20.8 -26, -20.8 -21, -20.2 -18 L-16.2 -16 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
+                  <path id="car3dRearFenderR" d="M16.2 -33.5 L20.2 -30.5 C20.8 -26, 20.8 -21, 20.2 -18 L16.2 -16 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
+                </g>
 
-                <!-- Основной кузов ретро-автомобиля -->
-                <path d="M21 13.5 C21 10.8, 23.5 9.8, 28 9.8 H64 C71 9.8, 79 11.2, 80.5 15.5 C81.3 18.2, 81.3 27.8, 80.5 30.5 C79 34.8, 71 36.2, 64 36.2 H28 C23.5 36.2, 21 35.2, 21 32.5 Z" fill="#ffffff" stroke="#141011" stroke-width="2.4" stroke-linejoin="round"/>
+                <!-- Передние рельефные крылья (строго ±20.6 по ширине в любом ракурсе) -->
+                <path id="car3dFrontFenderL" d="M-16.0 13.5 L-20.2 16.5 C-20.8 22, -20.8 31, -19.8 36.5 L-16.0 37.5 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
+                <path id="car3dFrontFenderR" d="M16.0 13.5 L20.2 16.5 C20.8 22, 20.8 31, 19.8 36.5 L16.0 37.5 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
 
-                <!-- Свадебные V-ленты на капоте (ч/б) -->
-                <path d="M59 12.2 L79 23 L59 33.8" stroke="#141011" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M60.8 14.6 L75.8 23 L60.8 31.4" stroke="#141011" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5 2"/>
+                <!-- Боковые зеркала (постоянный размах ±22.4) -->
+                <ellipse id="car3dMirrorL" cx="-22.4" cy="10.5" rx="2.3" ry="1.6" fill="#ffffff" stroke="#141011" stroke-width="1.6"/>
+                <ellipse id="car3dMirrorR" cx="22.4" cy="10.5" rx="2.3" ry="1.6" fill="#ffffff" stroke="#141011" stroke-width="1.6"/>
 
-                <!-- Ч/б букетик роз на капоте -->
-                <ellipse cx="68.2" cy="19.6" rx="2.2" ry="1.1" transform="rotate(-24 68.2 19.6)" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
-                <ellipse cx="68.2" cy="26.4" rx="2.2" ry="1.1" transform="rotate(24 68.2 26.4)" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
-                <circle cx="71.2" cy="23" r="2.5" fill="#ffffff" stroke="#141011" stroke-width="1.4"/>
-                <circle cx="67.8" cy="21.5" r="1.9" fill="#ffffff" stroke="#141011" stroke-width="1.3"/>
-                <circle cx="67.8" cy="24.5" r="1.9" fill="#ffffff" stroke="#141011" stroke-width="1.3"/>
-
-                <!-- Заднее стекло -->
-                <path d="M28.5 14 C30.5 13, 33 13.3, 34 14.5 V31.5 C33 32.7, 30.5 33, 28.5 32 C27 27.6, 27 18.4, 28.5 14 Z" fill="#141011" stroke="#141011" stroke-width="1.4"/>
-
-                <!-- Чистая крыша (без колец) -->
-                <rect x="34" y="13.5" width="19.5" height="19" rx="3.8" fill="#ffffff" stroke="#141011" stroke-width="1.8"/>
-
-                <!-- Лобовое стекло -->
-                <path d="M53.5 14 C56.2 13.7, 58.6 14.8, 60.2 16.2 V29.8 C58.6 31.2, 56.2 32.3, 53.5 32 V14 Z" fill="#141011" stroke="#141011" stroke-width="1.4"/>
-
-                <!-- Круглые передние фары -->
-                <circle cx="78.8" cy="14.2" r="2.6" fill="#ffffff" stroke="#141011" stroke-width="1.6"/>
-                <circle cx="78.8" cy="31.8" r="2.6" fill="#ffffff" stroke="#141011" stroke-width="1.6"/>
+                <!-- Основной кузов и длинный капот ретро-седана (неизменная ширина ±16.5 от багажника до капота) -->
+                <path id="car3dBody" d="M-16.5 -32 C-16.5 -36.5, -13 -37.5, -8 -37.5 H8 C13 -37.5, 16.5 -36.5, 16.5 -32 V33 C16.5 37.5, 11 39.2, 0 39.5 C-11 39.2, -16.5 37.5, -16.5 33 Z" fill="#ffffff" stroke="#141011" stroke-width="2.3" stroke-linejoin="round"/>
 
                 <!-- Задние габариты -->
-                <rect x="20.2" y="13" width="2" height="4.8" rx="0.9" fill="#141011"/>
-                <rect x="20.2" y="28.2" width="2" height="4.8" rx="0.9" fill="#141011"/>
+                <g id="car3dTailLights">
+                  <rect id="car3dTailL" x="-14.6" y="-38.2" width="4.6" height="2" rx="0.9" fill="#141011"/>
+                  <rect id="car3dTailR" x="10.0" y="-38.2" width="4.6" height="2" rx="0.9" fill="#141011"/>
+                </g>
+
+                <!-- Купол салона: внутри бортов при виде сверху, поднимается аркой со стойками при виде спереди -->
+                <path id="car3dCabinShell" d="" fill="#ffffff" stroke="#141011" stroke-width="1.9" stroke-linejoin="round"/>
+                <path id="car3dRearGlass" d="" fill="#141011" stroke="#141011" stroke-width="1.2" stroke-linejoin="round"/>
+                <path id="car3dWindshield" d="" fill="#141011" stroke="#141011" stroke-width="1.3" stroke-linejoin="round"/>
+                <g id="car3dWsDetails" opacity="0">
+                  <path id="car3dWsGlare" d="" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.72"/>
+                  <rect id="car3dRearviewMirror" x="-3.2" y="-14" width="6.4" height="1.9" rx="0.9" fill="#ffffff"/>
+                </g>
+
+                <!-- Рельефный капот (та же ширина ±16.5, V-ленты и букетик роз на одном месте) -->
+                <path id="car3dHoodCrease" d="" stroke="#141011" stroke-width="1.3" stroke-linecap="round"/>
+                <path id="car3dRibbonSolid" d="" stroke="#141011" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="car3dRibbonDash" d="" stroke="#141011" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5 2"/>
+                <g id="car3dBouquet">
+                  <ellipse cx="-3.4" cy="-0.4" rx="2.2" ry="1.05" transform="rotate(-22 -3.4 -0.4)" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                  <ellipse cx="3.4" cy="-0.4" rx="2.2" ry="1.05" transform="rotate(22 3.4 -0.4)" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                  <circle cx="0" cy="1.1" r="2.4" fill="#ffffff" stroke="#141011" stroke-width="1.4"/>
+                  <circle cx="-2.0" cy="-1.1" r="1.7" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                  <circle cx="2.0" cy="-1.1" r="1.7" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                </g>
+
+                <!-- Передок: классическая решётка радиатора, круглые фары и передний бампер -->
+                <g id="car3dFrontFace">
+                  <rect id="car3dGrille" x="-6.8" y="38.5" width="13.6" height="0.6" rx="2" fill="#ffffff" stroke="#141011" stroke-width="1.5"/>
+                  <path id="car3dGrilleSlats" d="" stroke="#141011" stroke-width="1.2" stroke-linecap="round"/>
+
+                  <ellipse id="car3dLampOuterL" cx="-14.4" cy="37.2" rx="2.6" ry="2.2" fill="#ffffff" stroke="#141011" stroke-width="1.7"/>
+                  <ellipse id="car3dLampInnerL" cx="-14.4" cy="37.2" rx="1.2" ry="1.0" fill="#ffffff" stroke="#141011" stroke-width="1.1"/>
+                  <ellipse id="car3dLampOuterR" cx="14.4" cy="37.2" rx="2.6" ry="2.2" fill="#ffffff" stroke="#141011" stroke-width="1.7"/>
+                  <ellipse id="car3dLampInnerR" cx="14.4" cy="37.2" rx="1.2" ry="1.0" fill="#ffffff" stroke="#141011" stroke-width="1.1"/>
+
+                  <rect id="car3dFrontBumper" x="-11.5" y="40" width="23" height="1.8" rx="0.9" fill="#ffffff" stroke="#141011" stroke-width="1.7"/>
+                  <g id="car3dBumperExtras" opacity="0">
+                    <rect id="car3dGuardL" x="-10.6" y="13.5" width="2.6" height="5.4" rx="1.1" fill="#ffffff" stroke="#141011" stroke-width="1.3"/>
+                    <rect id="car3dGuardR" x="8.0" y="13.5" width="2.6" height="5.4" rx="1.1" fill="#ffffff" stroke="#141011" stroke-width="1.3"/>
+                    <rect id="car3dPlate" x="-4.8" y="15" width="9.6" height="4.5" rx="1.0" fill="#ffffff" stroke="#141011" stroke-width="1.2"/>
+                    <path id="car3dPlateHeart" d="" fill="#141011"/>
+                  </g>
+                </g>
               </svg>
             </span>
           </div>
@@ -1799,6 +1828,104 @@
           </article>
         </div>
       </section>
+    </div>
+
+    <!-- Прогулка жениха и невесты от припаркованной машинки дальше по таймингу -->
+    <div class="wedding-couple-journey" id="weddingCoupleJourney" aria-hidden="true">
+      <svg class="couple-connector-svg" id="coupleConnectorSvg" fill="none" overflow="visible">
+        <path id="coupleConnectorTrack" class="couple-connector-track" d="" />
+        <path id="coupleConnectorProgress" class="couple-connector-progress" d="" />
+      </svg>
+      <span class="wedding-couple-walker" id="weddingCoupleWalker" hidden>
+        <svg viewBox="0 0 76 82" width="76" height="82" fill="none" aria-hidden="true">
+          <!-- Мягкая тень под ногами -->
+          <ellipse cx="38" cy="76.5" rx="22" ry="3.2" fill="#141011" fill-opacity="0.28"/>
+
+          <!-- Маленькое сердечко над сцепленными руками -->
+          <path class="couple-heart" d="M38 35.5 C38 35.5, 34.4 33.1, 34.4 31.1 C34.4 30, 35.2 29.2, 36.2 29.2 C37 29.2, 37.6 29.7, 38 30.4 C38.4 29.7, 39 29.2, 39.8 29.2 C40.8 29.2, 41.6 30, 41.6 31.1 C41.6 33.1, 38 35.5, 38 35.5 Z" fill="#ffffff" stroke="#141011" stroke-width="1.3" stroke-linejoin="round"/>
+
+          <!-- === ЖЕНИХ (слева, вид спереди в полный рост) === -->
+          <g class="couple-groom">
+            <!-- Ноги (шагают при скролле) -->
+            <g class="walker-leg walker-leg-a" style="transform-origin: 21px 55px;">
+              <path d="M18.5 53 L17.5 72.5" stroke="#141011" stroke-width="4.4" stroke-linecap="round"/>
+              <ellipse cx="16.8" cy="73.6" rx="3.4" ry="2" fill="#141011" stroke="#ffffff" stroke-width="0.9"/>
+            </g>
+            <g class="walker-leg walker-leg-b" style="transform-origin: 27px 55px;">
+              <path d="M26.5 53 L27.5 72.5" stroke="#141011" stroke-width="4.4" stroke-linecap="round"/>
+              <ellipse cx="28.2" cy="73.6" rx="3.4" ry="2" fill="#141011" stroke="#ffffff" stroke-width="0.9"/>
+            </g>
+
+            <!-- Левая рука -->
+            <path d="M15 34.5 C12.2 39.5, 11.8 45.5, 13.6 50.2" stroke="#141011" stroke-width="3.6" stroke-linecap="round"/>
+            <circle cx="13.8" cy="51.2" r="2.2" fill="#ffffff" stroke="#141011" stroke-width="1.4"/>
+
+            <!-- Правая рука тянется к невесте -->
+            <path d="M29.8 35.2 C32.6 39, 34.8 42.4, 37.2 44.2" stroke="#141011" stroke-width="3.6" stroke-linecap="round"/>
+
+            <!-- Пиджак / смокинг -->
+            <path d="M15.5 32.5 C17 30.2, 20 29.6, 22.5 29.6 C25 29.6, 28 30.2, 29.5 32.5 L30.8 54 C30.8 55.4, 29.4 56.2, 27.6 56.2 H17.4 C15.6 56.2, 14.2 55.4, 14.2 54 Z" fill="#141011" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+            <!-- Белая рубашка и бабочка -->
+            <path d="M19.4 30.2 L22.5 39.5 L25.6 30.2 Z" fill="#ffffff"/>
+            <path d="M20.2 31.4 L22.5 32.6 L24.8 31.4 L24.8 33.8 L22.5 32.6 L20.2 33.8 Z" fill="#141011"/>
+            <!-- Бутоньерка -->
+            <circle cx="26.5" cy="36.2" r="1.6" fill="#ffffff"/>
+
+            <!-- Голова и волосы жениха -->
+            <circle cx="22.5" cy="21" r="7.4" fill="#ffffff" stroke="#141011" stroke-width="2"/>
+            <path d="M15.4 19.8 C15.2 14.2, 19.2 12.2, 23 12.6 C26.8 13, 29.6 15, 29.6 19.4 C27.2 16.8, 23.6 16.4, 19.4 17.4 C17.6 17.8, 16.4 18.8, 15.4 19.8 Z" fill="#141011"/>
+            <circle cx="20.1" cy="21.4" r="1" fill="#141011"/>
+            <circle cx="24.9" cy="21.4" r="1" fill="#141011"/>
+            <path d="M20.6 24.4 C21.6 25.5, 23.4 25.5, 24.4 24.4" stroke="#141011" stroke-width="1.3" stroke-linecap="round"/>
+          </g>
+
+          <!-- === НЕВЕСТА (справа, вид спереди в полный рост) === -->
+          <g class="couple-bride">
+            <!-- Фата позади -->
+            <path class="couple-veil" d="M43.2 16.5 C39.5 23, 39.2 34, 41.2 44.5 C46.5 46.5, 59.5 46.5, 64.5 44 C66.2 33.5, 65.2 22.5, 60.8 16.5 C57.5 12, 46.5 12, 43.2 16.5 Z" fill="#ffffff" fill-opacity="0.92" stroke="#141011" stroke-width="1.6" stroke-linejoin="round"/>
+
+            <!-- Туфельки и шагающие ножки под подолом -->
+            <g class="walker-leg walker-leg-b" style="transform-origin: 48px 66px;">
+              <path d="M48.5 64 L48 72.5" stroke="#141011" stroke-width="2.6" stroke-linecap="round"/>
+              <ellipse cx="47.4" cy="73.6" rx="3" ry="1.8" fill="#ffffff" stroke="#141011" stroke-width="1.5"/>
+            </g>
+            <g class="walker-leg walker-leg-a" style="transform-origin: 55px 66px;">
+              <path d="M55.5 64 L56 72.5" stroke="#141011" stroke-width="2.6" stroke-linecap="round"/>
+              <ellipse cx="56.6" cy="73.6" rx="3" ry="1.8" fill="#ffffff" stroke="#141011" stroke-width="1.5"/>
+            </g>
+
+            <!-- Левая рука тянется к жениху -->
+            <path d="M45.5 36.2 C42.8 39.5, 40.6 42.4, 38.6 44.2" stroke="#141011" stroke-width="2.6" stroke-linecap="round"/>
+            <path d="M45.5 36.2 C42.8 39.5, 40.6 42.4, 38.6 44.2" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+
+            <!-- Свадебное платье (корсет + пышная юбка) -->
+            <g class="couple-skirt" style="transform-origin: 52px 42px;">
+              <path d="M46.5 33 C48 31.6, 56 31.6, 57.5 33 L56.6 42.5 C61.2 49.5, 64.5 58.5, 65.5 68 C58.5 70.4, 45.5 70.4, 38.5 68 C39.5 58.5, 42.8 49.5, 47.4 42.5 Z" fill="#ffffff" stroke="#141011" stroke-width="2" stroke-linejoin="round"/>
+              <!-- Пояс и складки юбки -->
+              <path d="M47.4 42.5 C50 43.6, 54 43.6, 56.6 42.5" stroke="#141011" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M52 45 V67 M47 47 L44 66.5 M57 47 L60 66.5" stroke="#141011" stroke-width="1.1" stroke-linecap="round" stroke-opacity="0.45"/>
+            </g>
+
+            <!-- Правая рука с мини-букетом невесты -->
+            <path d="M58 36 C60.5 39.5, 61.8 43.5, 60.4 47.2" stroke="#141011" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="60.4" cy="48.2" r="3.4" fill="#ffffff" stroke="#141011" stroke-width="1.5"/>
+            <circle cx="59.2" cy="47.2" r="1.3" fill="#ffffff" stroke="#141011" stroke-width="1.1"/>
+            <circle cx="61.6" cy="47.8" r="1.3" fill="#ffffff" stroke="#141011" stroke-width="1.1"/>
+
+            <!-- Голова, причёска и диадема невесты -->
+            <circle cx="52" cy="22" r="7" fill="#ffffff" stroke="#141011" stroke-width="2"/>
+            <path d="M45.2 21 C45.2 15.8, 48.2 13.8, 52 13.8 C55.8 13.8, 58.8 15.8, 58.8 21 C57 18.4, 54.6 17.6, 52 17.6 C49.4 17.6, 47 18.4, 45.2 21 Z" fill="#141011"/>
+            <circle cx="52" cy="12.6" r="2.4" fill="#141011"/>
+            <path d="M49.2 14.4 C50.8 13.6, 53.2 13.6, 54.8 14.4" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="49.7" cy="22.4" r="0.95" fill="#141011"/>
+            <circle cx="54.3" cy="22.4" r="0.95" fill="#141011"/>
+            <path d="M50.3 25.1 C51.2 26.1, 52.8 26.1, 53.7 25.1" stroke="#141011" stroke-width="1.3" stroke-linecap="round"/>
+          </g>
+
+          <!-- Сцепленные руки по центру -->
+          <circle cx="37.9" cy="44.4" r="2.4" fill="#ffffff" stroke="#141011" stroke-width="1.5"/>
+        </svg>
+      </span>
     </div>
 
     <!-- ==========================================
@@ -2792,6 +2919,12 @@
     // 1. АНИМАЦИЯ ВОЛНООБРАЗНОЙ ЛИНИИ ТАЙМЛАЙНА
     // ==========================================
     function initTimelineAnimation() {
+      // Если на странице есть единый маршрут «машинка → пара → тайминг»,
+      // он сам синхронно управляет и волной тайминга, и шагающей парой.
+      if (document.getElementById("weddingCoupleWalker") && document.getElementById("venueLocationsStack")) {
+        return;
+      }
+
       const track = document.querySelector(".ob-timeline-line");
       if (!track) return;
       const path = track.querySelector(".timeline-path-base") || track.querySelector("path");
@@ -2874,15 +3007,313 @@
       queue();
     }
 
-    // 1.5 АНИМАЦИЯ МАРШРУТА С МАШИНКОЙ МЕЖДУ УСАДЬБОЙ МУРАВЬЁВЫХ И БРАТЦЕВО
+    // 1.5 ЕДИНАЯ АНИМАЦИЯ: МАШИНКА (МУРАВЬЁВЫХ → БРАТЦЕВО, РАЗВОРОТ ПЕРЕДОМ) → ПАРА ИДЁТ ПО ТАЙМИНГУ
     function initVenueRouteAnimation() {
+      const canvas = document.getElementById("invitation") || document.querySelector(".magazine-canvas");
       const stack = document.getElementById("venueLocationsStack");
       const layer = document.getElementById("venueRouteLayer");
       const svg = document.getElementById("venueRouteSvg");
       const trackPath = document.getElementById("venueRouteTrack");
       const progressPath = document.getElementById("venueRouteProgress");
       const car = document.getElementById("venueRouteCar");
-      if (!stack || !layer || !svg || !trackPath || !progressPath || !car) return;
+      const carSvg = document.getElementById("venueRouteCarSvg");
+      const coupleSvg = document.getElementById("coupleConnectorSvg");
+      const coupleTrack = document.getElementById("coupleConnectorTrack");
+      const coupleProgress = document.getElementById("coupleConnectorProgress");
+      const walker = document.getElementById("weddingCoupleWalker");
+      if (!canvas || !stack || !layer || !svg || !trackPath || !progressPath || !car || !carSvg) return;
+
+      // Части единой 2.5D-модели ретро-автомобиля (проекция с сохранением ширины 1:1)
+      const c3d = {
+        shadow: document.getElementById("car3dShadow"),
+        rearRibbons: document.getElementById("car3dRearRibbons"),
+        tireL: document.getElementById("car3dTireL"),
+        tireR: document.getElementById("car3dTireR"),
+        rearGroup: document.getElementById("car3dRearGroup"),
+        rearBmpW: document.getElementById("car3dRearBumperW"),
+        rearBmpB: document.getElementById("car3dRearBumperB"),
+        rearFenL: document.getElementById("car3dRearFenderL"),
+        rearFenR: document.getElementById("car3dRearFenderR"),
+        frontFenL: document.getElementById("car3dFrontFenderL"),
+        frontFenR: document.getElementById("car3dFrontFenderR"),
+        mirrorL: document.getElementById("car3dMirrorL"),
+        mirrorR: document.getElementById("car3dMirrorR"),
+        body: document.getElementById("car3dBody"),
+        tailLights: document.getElementById("car3dTailLights"),
+        tailL: document.getElementById("car3dTailL"),
+        tailR: document.getElementById("car3dTailR"),
+        cabin: document.getElementById("car3dCabinShell"),
+        rearGlass: document.getElementById("car3dRearGlass"),
+        windshield: document.getElementById("car3dWindshield"),
+        wsDetails: document.getElementById("car3dWsDetails"),
+        wsGlare: document.getElementById("car3dWsGlare"),
+        rvMirror: document.getElementById("car3dRearviewMirror"),
+        hoodCrease: document.getElementById("car3dHoodCrease"),
+        ribSolid: document.getElementById("car3dRibbonSolid"),
+        ribDash: document.getElementById("car3dRibbonDash"),
+        bouquet: document.getElementById("car3dBouquet"),
+        grille: document.getElementById("car3dGrille"),
+        grilleSlats: document.getElementById("car3dGrilleSlats"),
+        lampOL: document.getElementById("car3dLampOuterL"),
+        lampIL: document.getElementById("car3dLampInnerL"),
+        lampOR: document.getElementById("car3dLampOuterR"),
+        lampIR: document.getElementById("car3dLampInnerR"),
+        frontBmp: document.getElementById("car3dFrontBumper"),
+        bmpExtras: document.getElementById("car3dBumperExtras"),
+        guardL: document.getElementById("car3dGuardL"),
+        guardR: document.getElementById("car3dGuardR"),
+        plate: document.getElementById("car3dPlate"),
+        plateHeart: document.getElementById("car3dPlateHeart")
+      };
+      let lastCarMorph = -1;
+
+      function projectCar3D(morph) {
+        if (Math.abs(morph - lastCarMorph) < 0.0015) return;
+        lastCarMorph = morph;
+
+        // Ортографический наклон камеры от 0° (чистый вид сверху) до 76° (вид спереди перед капотом).
+        // Горизонтальная ось X инвариантна: ширина кузова и капота (±16.5) и крыльев (±20.6) всегда строго 1:1!
+        const theta = (76 * morph * Math.PI) / 180;
+        const cosT = Math.cos(theta);
+        const sinT = Math.sin(theta);
+        const py = (y, z) => y * cosT - (z - 15) * sinT;
+        const f = (n) => n.toFixed(2);
+
+        const yRoofBack = py(-16.0, 32.5);
+        const yRoofFront = py(3.5, 32.5);
+        const yWsBase = py(13.0, 20.5);
+        const yRearBase = py(-23.0, 20.5);
+        const yNoseTop = py(38.0, 17.5);
+        const yFrontBot = py(38.8, 8.6);
+        const yCabinTop = Math.min(yRearBase, yRoofBack);
+        const rawRearBody = py(-37.5, 18.5);
+        // Не обрезаем багажник на виде сверху (morph <= 0.72), а на виде спереди он естественно уходит за купол салона
+        const yRearBody = morph > 0.72 ? Math.max(rawRearBody, yCabinTop + 2.2) : rawRearBody;
+
+        // 1. Тень под передними колёсами
+        if (c3d.shadow) {
+          c3d.shadow.setAttribute("cy", f(py(30.5, -0.5)));
+          c3d.shadow.setAttribute("rx", "22");
+          c3d.shadow.setAttribute("ry", f(2.2 + 1.8 * sinT));
+          c3d.shadow.setAttribute("fill-opacity", f(0.28 * morph));
+        }
+
+        // 2. Свадебные ленты позади заднего бампера (уходят за крышу по мере наклона камеры)
+        if (c3d.rearRibbons) {
+          const ribVis = 1 - smoothstep(0.45, 0.72, morph);
+          if (ribVis <= 0.01) {
+            c3d.rearRibbons.setAttribute("display", "none");
+          } else {
+            c3d.rearRibbons.removeAttribute("display");
+            c3d.rearRibbons.setAttribute("opacity", f(ribVis));
+            const yAnc = py(-39.0, 12.0);
+            c3d.rearRibbons.setAttribute("transform", `translate(0 ${f(yAnc + 40 * cosT)}) scale(1 ${f(Math.max(0.2, cosT))})`);
+          }
+        }
+
+        // 3. Передние шины под крыльями (естественно выходят снизу при виде спереди)
+        const yTireTop = py(30.5, 10.0);
+        const yTireBot = py(30.5, 0);
+        const tireH = Math.max(1.5, yTireBot - yTireTop);
+        if (c3d.tireL && c3d.tireR) {
+          c3d.tireL.setAttribute("y", f(yTireTop));
+          c3d.tireL.setAttribute("height", f(tireH));
+          c3d.tireR.setAttribute("y", f(yTireTop));
+          c3d.tireR.setAttribute("height", f(tireH));
+        }
+
+        // 4. Задний бампер, задние крылья и габариты (остаются цельными с кузовом и уходят за салон после 50..76%)
+        const rearVis = 1 - smoothstep(0.50, 0.76, morph);
+        if (c3d.rearGroup && c3d.tailLights) {
+          if (rearVis <= 0.01) {
+            c3d.rearGroup.setAttribute("display", "none");
+            c3d.tailLights.setAttribute("display", "none");
+          } else {
+            c3d.rearGroup.removeAttribute("display");
+            c3d.tailLights.removeAttribute("display");
+            c3d.rearGroup.setAttribute("opacity", f(rearVis));
+            c3d.tailLights.setAttribute("opacity", f(rearVis));
+            const yRB0 = py(-39.0, 12.0);
+            const yRB1 = py(-41.2, 12.0);
+            const rbD = `M-12 ${f(yRB0)} C-6 ${f(yRB1)}, 6 ${f(yRB1)}, 12 ${f(yRB0)}`;
+            c3d.rearBmpW.setAttribute("d", rbD);
+            c3d.rearBmpB.setAttribute("d", rbD);
+            const rfy0 = py(-33.5, 15.0);
+            const rfy1 = py(-30.5, 15.0);
+            const rfy2 = py(-18.5, 15.0);
+            const rfy3 = py(-16.2, 15.0);
+            c3d.rearFenL.setAttribute("d", `M-16.2 ${f(rfy0)} L-20.2 ${f(rfy1)} C-20.8 ${f(py(-26.5, 15))}, -20.8 ${f(py(-21.5, 15))}, -20.2 ${f(rfy2)} L-16.2 ${f(rfy3)} Z`);
+            c3d.rearFenR.setAttribute("d", `M16.2 ${f(rfy0)} L20.2 ${f(rfy1)} C20.8 ${f(py(-26.5, 15))}, 20.8 ${f(py(-21.5, 15))}, 20.2 ${f(rfy2)} L16.2 ${f(rfy3)} Z`);
+            const yTail = py(-38.2, 18.0);
+            c3d.tailL.setAttribute("y", f(yTail));
+            c3d.tailR.setAttribute("y", f(yTail));
+          }
+        }
+
+        // 5. Передние рельефные крылья (строго ±20.6 по ширине в любом ракурсе)
+        const ffy0 = py(12.5, 19.5);
+        const ffyMid = py(25.5, 18.0);
+        const ffyBot = py(37.8, 9.5);
+        if (c3d.frontFenL && c3d.frontFenR) {
+          c3d.frontFenL.setAttribute(
+            "d",
+            `M-16.0 ${f(ffy0)} C-19.8 ${f(ffy0)}, -20.6 ${f(py(18.5, 19))}, -20.6 ${f(ffyMid)} C-20.6 ${f(py(33.5, 15))}, -20.2 ${f(ffyBot + 1.4)}, -16.0 ${f(ffyBot + 1.4)} Z`
+          );
+          c3d.frontFenR.setAttribute(
+            "d",
+            `M16.0 ${f(ffy0)} C19.8 ${f(ffy0)}, 20.6 ${f(py(18.5, 19))}, 20.6 ${f(ffyMid)} C20.6 ${f(py(33.5, 15))}, 20.2 ${f(ffyBot + 1.4)}, 16.0 ${f(ffyBot + 1.4)} Z`
+          );
+        }
+
+        // 6. Боковые зеркала (постоянный размах ±22.4)
+        const yMir = py(10.5, 22.8);
+        if (c3d.mirrorL && c3d.mirrorR) {
+          c3d.mirrorL.setAttribute("cy", f(yMir));
+          c3d.mirrorL.setAttribute("ry", f(1.5 + 0.5 * sinT));
+          c3d.mirrorR.setAttribute("cy", f(yMir));
+          c3d.mirrorR.setAttribute("ry", f(1.5 + 0.5 * sinT));
+        }
+
+        // 7. Основной кузов и длинный капот ретро-седана (неизменная ширина ±16.5 от багажника до капота!)
+        const yFrontNose = Math.max(yNoseTop + 1.5, yFrontBot + 1.2);
+        if (c3d.body) {
+          c3d.body.setAttribute(
+            "d",
+            `M-16.5 ${f(yRearBody + 4.5 * cosT)} C-16.5 ${f(yRearBody)}, -13.0 ${f(yRearBody)}, -8.0 ${f(yRearBody)} H8.0 C13.0 ${f(yRearBody)}, 16.5 ${f(yRearBody)}, 16.5 ${f(yRearBody + 4.5 * cosT)} V${f(yFrontNose - 5.2)} C16.5 ${f(yFrontNose - 0.5)}, 10.5 ${f(yFrontNose + 1.0)}, 0 ${f(yFrontNose + 1.2)} C-10.5 ${f(yFrontNose + 1.0)}, -16.5 ${f(yFrontNose - 0.5)}, -16.5 ${f(yFrontNose - 5.2)} Z`
+          );
+        }
+
+        // 8. Купол салона: внутри бортов (±11.4) на виде сверху, поднимается со стойками (±14.2) на виде спереди
+        const cabTopW = 11.4 + 1.0 * sinT;
+        const cabBotW = 11.6 + 2.6 * sinT;
+        const roofCrown = 2.2 * sinT;
+        if (c3d.cabin) {
+          c3d.cabin.setAttribute(
+            "d",
+            `M${f(-cabTopW)} ${f(yCabinTop + 2.0)} C${f(-cabTopW + 1.5)} ${f(yCabinTop - roofCrown)}, ${f(cabTopW - 1.5)} ${f(yCabinTop - roofCrown)}, ${f(cabTopW)} ${f(yCabinTop + 2.0)} L${f(cabBotW)} ${f(yWsBase)} C${f(cabBotW * 0.6)} ${f(yWsBase + 0.9 * cosT)}, ${f(-cabBotW * 0.6)} ${f(yWsBase + 0.9 * cosT)}, ${f(-cabBotW)} ${f(yWsBase)} Z`
+          );
+        }
+
+        if (c3d.rearGlass) {
+          if (yRearBase < yRoofBack - 1.2) {
+            c3d.rearGlass.removeAttribute("display");
+            c3d.rearGlass.setAttribute(
+              "d",
+              `M-10.8 ${f(yRearBase + 1.2)} C-6.5 ${f(yRearBase + 0.3)}, 6.5 ${f(yRearBase + 0.3)}, 10.8 ${f(yRearBase + 1.2)} L10.4 ${f(yRoofBack - 0.6)} H-10.4 Z`
+            );
+          } else {
+            c3d.rearGlass.setAttribute("display", "none");
+          }
+        }
+
+        if (c3d.windshield) {
+          const wsTop = yRoofFront + 0.8;
+          const wsBot = yWsBase - 0.8;
+          const wsTopW = 10.5 + 0.7 * sinT;
+          const wsBotW = 11.0 + 1.9 * sinT;
+          c3d.windshield.setAttribute(
+            "d",
+            `M${f(-wsTopW)} ${f(wsTop)} C-6 ${f(wsTop - 0.9 * sinT)}, 6 ${f(wsTop - 0.9 * sinT)}, ${f(wsTopW)} ${f(wsTop)} L${f(wsBotW)} ${f(wsBot)} C7 ${f(wsBot + 0.8 * cosT)}, -7 ${f(wsBot + 0.8 * cosT)}, ${f(-wsBotW)} ${f(wsBot)} Z`
+          );
+          if (c3d.wsDetails && c3d.wsGlare && c3d.rvMirror) {
+            const detOp = smoothstep(0.28, 0.78, morph);
+            c3d.wsDetails.setAttribute("opacity", f(detOp));
+            c3d.wsGlare.setAttribute(
+              "d",
+              `M-8.8 ${f(wsBot - 1.6)} L-5.6 ${f(wsTop + 1.8)} M-5.2 ${f(wsBot - 1.6)} L-3.0 ${f(wsTop + 3.8)}`
+            );
+            c3d.rvMirror.setAttribute("y", f(wsTop + 1.5));
+          }
+        }
+
+        // 9. Длинный капот, V-ленты и букетик роз (строго та же ширина ±16.5!)
+        if (c3d.hoodCrease) {
+          c3d.hoodCrease.setAttribute(
+            "d",
+            `M-14.2 ${f(yWsBase + 0.5)} C-8 ${f(yWsBase - 1.2 * sinT)}, 8 ${f(yWsBase - 1.2 * sinT)}, 14.2 ${f(yWsBase + 0.5)}`
+          );
+        }
+        const yRibTip = yNoseTop - 0.4;
+        if (c3d.ribSolid && c3d.ribDash) {
+          c3d.ribSolid.setAttribute("d", `M-14.0 ${f(yWsBase + 0.7)} L0 ${f(yRibTip)} L14.0 ${f(yWsBase + 0.7)}`);
+          c3d.ribDash.setAttribute("d", `M-11.0 ${f(yWsBase + 0.8)} L0 ${f(yRibTip - 1.8)} L11.0 ${f(yWsBase + 0.8)}`);
+        }
+        if (c3d.bouquet) {
+          const yBq = py(27.5, 19.6);
+          const bqScaleY = 0.78 + 0.22 * cosT;
+          c3d.bouquet.setAttribute("transform", `translate(0 ${f(yBq)}) scale(1 ${f(bqScaleY)})`);
+        }
+
+        // 10. Передок: решётка радиатора, круглые фары (±14.4) и плавно раскрывающийся передний бампер
+        const yGrTop = py(38.6, 16.4);
+        const yGrBot = py(39.0, 9.2);
+        const grH = Math.max(0.6, yGrBot - yGrTop);
+        if (c3d.grille && c3d.grilleSlats) {
+          c3d.grille.setAttribute("y", f(yGrTop));
+          c3d.grille.setAttribute("height", f(grH));
+          c3d.grille.setAttribute("rx", f(Math.min(2.2, grH * 0.42)));
+          if (grH > 2.4) {
+            c3d.grilleSlats.removeAttribute("display");
+            const sTop = yGrTop + 0.9;
+            const sBot = yGrBot - 0.9;
+            c3d.grilleSlats.setAttribute(
+              "d",
+              `M-3.4 ${f(sTop)} V${f(sBot)} M0 ${f(sTop)} V${f(sBot)} M3.4 ${f(sTop)} V${f(sBot)}`
+            );
+          } else {
+            c3d.grilleSlats.setAttribute("display", "none");
+          }
+        }
+
+        const yLamp = py(37.4, 14.2);
+        const lampRx = 2.6 + 1.1 * sinT;
+        const lampRy = 2.1 + 1.6 * sinT;
+        if (c3d.lampOL && c3d.lampOR && c3d.lampIL && c3d.lampIR) {
+          c3d.lampOL.setAttribute("cy", f(yLamp));
+          c3d.lampOL.setAttribute("rx", f(lampRx));
+          c3d.lampOL.setAttribute("ry", f(lampRy));
+          c3d.lampOR.setAttribute("cy", f(yLamp));
+          c3d.lampOR.setAttribute("rx", f(lampRx));
+          c3d.lampOR.setAttribute("ry", f(lampRy));
+
+          const inOp = smoothstep(0.25, 0.7, morph);
+          c3d.lampIL.setAttribute("opacity", f(inOp));
+          c3d.lampIR.setAttribute("opacity", f(inOp));
+          c3d.lampIL.setAttribute("cy", f(yLamp));
+          c3d.lampIL.setAttribute("rx", f(lampRx * 0.45));
+          c3d.lampIL.setAttribute("ry", f(lampRy * 0.45));
+          c3d.lampIR.setAttribute("cy", f(yLamp));
+          c3d.lampIR.setAttribute("rx", f(lampRx * 0.45));
+          c3d.lampIR.setAttribute("ry", f(lampRy * 0.45));
+        }
+
+        // На виде сверху бампер аккуратный узкий по носу (±11.2), при наклоне камеры плавно охватывает крылья (±21.2)
+        const bmpHalfW = 11.2 + 10.0 * smoothstep(0.15, 0.75, morph);
+        const yBmpTop = py(40.2, 10.2);
+        const yBmpBot = py(40.2, 6.5);
+        const bmpH = Math.max(1.8, yBmpBot - yBmpTop);
+        if (c3d.frontBmp && c3d.bmpExtras) {
+          c3d.frontBmp.setAttribute("x", f(-bmpHalfW));
+          c3d.frontBmp.setAttribute("width", f(bmpHalfW * 2));
+          c3d.frontBmp.setAttribute("y", f(yBmpTop));
+          c3d.frontBmp.setAttribute("height", f(bmpH));
+          c3d.frontBmp.setAttribute("rx", f(bmpH * 0.48));
+
+          const extOp = smoothstep(0.45, 0.88, morph);
+          c3d.bmpExtras.setAttribute("opacity", f(extOp));
+          c3d.guardL.setAttribute("y", f(yBmpTop - 1.0));
+          c3d.guardL.setAttribute("height", f(bmpH + 2.0));
+          c3d.guardR.setAttribute("y", f(yBmpTop - 1.0));
+          c3d.guardR.setAttribute("height", f(bmpH + 2.0));
+          const pyPlate = yBmpTop + 0.3;
+          c3d.plate.setAttribute("y", f(pyPlate));
+          const hc = pyPlate + 2.3;
+          c3d.plateHeart.setAttribute(
+            "d",
+            `M0 ${f(hc + 1.3)} C0 ${f(hc + 1.3)}, -1.9 ${f(hc + 0.1)}, -1.9 ${f(hc - 0.8)} C-1.9 ${f(hc - 1.4)}, -1.4 ${f(hc - 1.8)}, -0.9 ${f(hc - 1.8)} C-0.4 ${f(hc - 1.8)}, -0.1 ${f(hc - 1.4)}, 0 ${f(hc - 1.0)} C0.1 ${f(hc - 1.4)}, 0.4 ${f(hc - 1.8)}, 0.9 ${f(hc - 1.8)} C1.4 ${f(hc - 1.8)}, 1.9 ${f(hc - 1.4)}, 1.9 ${f(hc - 0.8)} C1.9 ${f(hc + 0.1)}, 0 ${f(hc + 1.3)}, 0 ${f(hc + 1.3)} Z`
+          );
+        }
+      }
 
       const muravyovImg = stack.querySelector(".venue-location-secondary .venue-illustration");
       const bratsevoImg = stack.querySelector(".venue-location-main .venue-illustration");
@@ -2890,13 +3321,82 @@
       const secondBlock = stack.querySelector(".venue-location-main");
       if (!muravyovImg || !bratsevoImg || !firstBlock || !secondBlock) return;
 
+      const tlTrack = document.querySelector(".ob-timeline-line");
+      const tlPath = tlTrack ? (tlTrack.querySelector(".timeline-path-base") || tlTrack.querySelector("path")) : null;
+      const tlClipRect = document.getElementById("timelineClipRect");
+      const timingItems = Array.from(document.querySelectorAll(".sm-timing__item"));
+      const hasTimeline = Boolean(tlTrack && tlPath && typeof tlPath.getPointAtLength === "function" && walker);
+
+      let tlTop = { y: Infinity, length: 0, x: 41.19 };
+      let tlBottom = { y: -Infinity, length: 0, x: 3.5 };
+      if (hasTimeline) {
+        tlTrack.classList.add("has-couple-walker");
+        const tlTotal = tlPath.getTotalLength();
+        if (tlTotal) {
+          for (let index = 0; index <= 600; index += 1) {
+            const at = (tlTotal * index) / 600;
+            const pt = tlPath.getPointAtLength(at);
+            if (pt.y < tlTop.y) tlTop = { y: pt.y, length: at, x: pt.x };
+            if (pt.y > tlBottom.y) tlBottom = { y: pt.y, length: at, x: pt.x };
+          }
+        }
+        if (tlClipRect) tlClipRect.setAttribute("height", "0");
+      }
+
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const clamp01 = (v) => Math.max(0, Math.min(1, v));
+      const smoothstep = (a, b, x) => {
+        const t = clamp01((x - a) / (b - a));
+        return t * t * (3 - 2 * t);
+      };
+
       let pathLength = 0;
+      let exitStartFrac = 0.8;
+      let connLength = 0;
+      let unifiedSamples = [];
+      let isDesktopMode = window.innerWidth >= 781;
+      let carStartLocal = [0, 0];
+      let carEndLocal = [0, 0];
+
+      // 7 эталонных волн тайминга (в координатах 44.57 x 548.09), сшиваемых в единый <path> с обходом заголовка
+      const TL_WAVES = [
+        [41.19, 42, 3.87, 48, 3.87, 85.32],
+        [3.87, 124, 40.86, 128, 40.86, 166.93],
+        [40.86, 204, 4.6, 200, 4.6, 238],
+        [4.6, 276, 40.3, 276, 40.3, 314],
+        [40.3, 352, 4.39, 354, 4.39, 392],
+        [4.39, 430, 41.46, 430, 41.46, 468],
+        [41.46, 506, 6, 510, 3.5, 543.87]
+      ];
+
+      function arcLengthAtY(targetY) {
+        const n = unifiedSamples.length;
+        if (!n) return 0;
+        if (targetY <= unifiedSamples[0].y) return 0;
+        if (targetY >= unifiedSamples[n - 1].y) return unifiedSamples[n - 1].s;
+        let lo = 0;
+        let hi = n - 1;
+        while (hi - lo > 1) {
+          const mid = (lo + hi) >> 1;
+          if (unifiedSamples[mid].y < targetY) lo = mid;
+          else hi = mid;
+        }
+        const a = unifiedSamples[lo];
+        const b = unifiedSamples[hi];
+        const t = b.y > a.y ? (targetY - a.y) / (b.y - a.y) : 0;
+        return a.s + (b.s - a.s) * t;
+      }
+
       let frame = null;
-      let current = null;
+      let carCurrent = null;
+      let connCurrent = null;
       let previousTime = 0;
+      let walkPhase = 0;
+      let walkAmp = 0;
+      let lastWalkerPt = null;
 
       function buildPath() {
+        const cRect = canvas.getBoundingClientRect();
         const sRect = stack.getBoundingClientRect();
         const mRect = muravyovImg.getBoundingClientRect();
         const bRect = bratsevoImg.getBoundingClientRect();
@@ -2911,10 +3411,10 @@
         svg.setAttribute("height", String(H));
 
         const midY = ((fRect.bottom + secRect.top) / 2) - sRect.top;
-        const isDesktop = window.innerWidth >= 781;
+        isDesktopMode = window.innerWidth >= 781;
         let d = "";
 
-        if (isDesktop) {
+        if (isDesktopMode) {
           // Элегантная каллиграфическая лента с кривизной <= кривизны круга на всём протяжении:
           // обе петли — точные наклонные дуги окружности (-8°, K = 0.552285), соединённые мягкой S-волной без горизонталей
           const K = 0.55228475;
@@ -2935,6 +3435,8 @@
 
           const startPt = [mLeft - 56, mTop + mRect.height * 0.62];
           const endPt = [bRight + 68, bTop + bRect.height * 0.66];
+          carStartLocal = startPt;
+          carEndLocal = endPt;
 
           // Левая наклонная круговая петля (CW, радиус 90px, наклон -8°)
           const lR = 90;
@@ -2982,46 +3484,213 @@
             // 3 четверти точной окружности правой петли (постоянный радиус rR = 84px)
             segStr(add(rQ0, rot(K * rR, 0, rAng)), add(rQ1, rot(0, K * rR, rAng)), rQ1),
             segStr(add(rQ1, rot(0, -K * rR, rAng)), add(rQ2, rot(K * rR, 0, rAng)), rQ2),
-            segStr(add(rQ2, rot(-K * rR, 0, rAng)), add(rQ3, rot(0, -K * rR, rAng)), rQ3),
-            // Плавный выход и остановка рядом с Братцево (радиус изгиба > rR)
-            segStr(
-              [rQ3[0] + rOutDir[0] * (spanE * 0.46), rQ3[1] + rOutDir[1] * (spanE * 0.46)],
-              [endPt[0] + 46, endPt[1] - 92],
-              endPt
-            )
-          ].join(" ");
+            segStr(add(rQ2, rot(-K * rR, 0, rAng)), add(rQ3, rot(0, -K * rR, rAng)), rQ3)
+          ];
+          const preExitD = d.join(" ");
+          trackPath.setAttribute("d", preExitD);
+          const preExitLen = trackPath.getTotalLength();
+
+          // Плавный выход и парковка строго курсом вниз (90°, радиус изгиба > 1200px)
+          const exitSeg = segStr(
+            [rQ3[0] + rOutDir[0] * (spanE * 0.45), rQ3[1] + rOutDir[1] * (spanE * 0.45)],
+            [endPt[0], endPt[1] - spanE * 0.45],
+            endPt
+          );
+          d = `${preExitD} ${exitSeg}`;
+          trackPath.setAttribute("d", d);
+          pathLength = trackPath.getTotalLength();
+          exitStartFrac = pathLength > 0 ? clamp01(preExitLen / pathLength) : 0.8;
         } else {
           // Компактная плавная дорога в зазоре между карточками на мобильном (не перекрывает текст)
           const y1 = (fRect.bottom - sRect.top) - 4;
           const y2 = y1 + 28;
+          carStartLocal = [W * 0.12, y1];
+          carEndLocal = [W * 0.88, y2];
           d = `M ${(W * 0.12).toFixed(1)} ${y1.toFixed(1)} C ${(W * 0.38).toFixed(1)} ${y1.toFixed(1)}, ${(W * 0.62).toFixed(1)} ${y2.toFixed(1)}, ${(W * 0.88).toFixed(1)} ${y2.toFixed(1)}`;
+          trackPath.setAttribute("d", d);
+          pathLength = trackPath.getTotalLength();
+          exitStartFrac = 0.72;
         }
 
-        trackPath.setAttribute("d", d);
         progressPath.setAttribute("d", d);
-        pathLength = trackPath.getTotalLength();
         progressPath.style.strokeDasharray = `${pathLength}`;
         progressPath.style.strokeDashoffset = `${pathLength}`;
+
+        // Строим ЕДИНЫЙ непрерывный <path> от бампера машинки (в обход заголовка «ТАЙМИНГ» справа)
+        // и дальше через все волны тайминга до самого финала — без стыков и смены цвета/толщины
+        if (hasTimeline && coupleSvg && coupleTrack && coupleProgress) {
+          const tlRect = tlTrack.getBoundingClientRect();
+          if (tlRect.height > 0) {
+            const tlX = (vx) => (tlRect.left - cRect.left) + (vx / 44.57) * tlRect.width;
+            const tlY = (vy) => (tlRect.top - cRect.top) + (vy / 548.09) * tlRect.height;
+            const waveSeg = (w, c1yOverride) => {
+              const y1 = c1yOverride !== undefined ? c1yOverride : tlY(w[1]);
+              return `C ${tlX(w[0]).toFixed(1)} ${y1.toFixed(1)}, ${tlX(w[2]).toFixed(1)} ${tlY(w[3]).toFixed(1)}, ${tlX(w[4]).toFixed(1)} ${tlY(w[5]).toFixed(1)}`;
+            };
+
+            let connD = "";
+            let bypassLen = 0;
+            let bypassStartY = 0;
+            let bypassEndY = 0;
+            let maxX = cRect.width;
+
+            if (isDesktopMode) {
+              const p0x = (sRect.left - cRect.left) + carEndLocal[0];
+              const p0y = (sRect.top - cRect.top) + carEndLocal[1] + 24;
+              maxX = Math.max(maxX, p0x + 120);
+
+              // Точные правая и нижняя границы всех плашек и подписи в .timing-header-box, чтобы обойти их справа
+              const hdrBox = document.querySelector(".timing-header-box");
+              const hdrParts = document.querySelectorAll(".timing-header-box .scrap-clip, .timing-header-box .cute-scribble");
+              let hdrRight = tlX(41.19) + 180;
+              let hdrBottom = tlY(4.43) - 24;
+              if (hdrParts.length) {
+                hdrRight = -Infinity;
+                hdrBottom = -Infinity;
+                hdrParts.forEach((el) => {
+                  const r = el.getBoundingClientRect();
+                  if (r.width > 0 && r.height > 0) {
+                    hdrRight = Math.max(hdrRight, r.right - cRect.left);
+                    hdrBottom = Math.max(hdrBottom, r.bottom - cRect.top);
+                  }
+                });
+              } else if (hdrBox) {
+                const hr = hdrBox.getBoundingClientRect();
+                hdrRight = hr.right - cRect.left;
+                hdrBottom = hr.bottom - cRect.top;
+              }
+
+              const item2 = document.querySelector(".sm-timing__item.item-2");
+              const item2Top = item2 ? (item2.getBoundingClientRect().top - cRect.top) : Infinity;
+
+              const midX = Math.max(hdrRight + 50, Math.min(p0x - 24, tlX(41.19) + 240));
+              const midY2 = Math.max(p0y + 80, hdrBottom + 18);
+              maxX = Math.max(maxX, midX + 80);
+
+              const mergeX = tlX(3.87);
+              const mergeY = Math.max(midY2 + 125, Math.min(tlY(85.32), item2Top - 28));
+
+              const angM = (138 * Math.PI) / 180;
+              const txM = Math.cos(angM);
+              const tyM = Math.sin(angM);
+              const lenA = Math.hypot(midX - p0x, midY2 - p0y);
+              const lenB = Math.hypot(mergeX - midX, mergeY - midY2);
+
+              const bypassSegs = [
+                `M ${p0x.toFixed(1)} ${p0y.toFixed(1)}`,
+                `C ${p0x.toFixed(1)} ${(p0y + lenA * 0.44).toFixed(1)}, ${(midX - txM * lenA * 0.36).toFixed(1)} ${(midY2 - tyM * lenA * 0.36).toFixed(1)}, ${midX.toFixed(1)} ${midY2.toFixed(1)}`,
+                `C ${(midX + txM * lenB * 0.40).toFixed(1)} ${(midY2 + tyM * lenB * 0.40).toFixed(1)}, ${mergeX.toFixed(1)} ${(mergeY - lenB * 0.34).toFixed(1)}, ${mergeX.toFixed(1)} ${mergeY.toFixed(1)}`
+              ];
+              // Замеряем точную длину обходного участка, чтобы по нему пара шла равномерно без бокового «рывка»
+              coupleTrack.setAttribute("d", bypassSegs.join(" "));
+              bypassLen = coupleTrack.getTotalLength();
+              bypassStartY = p0y;
+              bypassEndY = mergeY;
+
+              const segs = [...bypassSegs];
+              // Бесшовно продолжаем остальные 6 волн тайминга в том же самом <path> (вертикальная касательная совпадает!)
+              for (let i = 1; i < TL_WAVES.length; i += 1) {
+                const overrideC1Y = i === 1 ? Math.max(mergeY + 26, tlY(TL_WAVES[1][1])) : undefined;
+                segs.push(waveSeg(TL_WAVES[i], overrideC1Y));
+              }
+              connD = segs.join(" ");
+            } else {
+              // На мобильном единый <path> повторяет все 7 волн тайминга
+              const segs = [`M ${tlX(41.19).toFixed(1)} ${tlY(4.43).toFixed(1)}`];
+              for (let i = 0; i < TL_WAVES.length; i += 1) {
+                segs.push(waveSeg(TL_WAVES[i]));
+              }
+              connD = segs.join(" ");
+            }
+
+            const svgH = Math.max((tlRect.bottom - cRect.top) + 80, 400);
+            coupleSvg.setAttribute("viewBox", `0 0 ${maxX.toFixed(1)} ${svgH.toFixed(1)}`);
+            coupleSvg.setAttribute("width", String(Math.ceil(maxX)));
+            coupleSvg.setAttribute("height", String(Math.ceil(svgH)));
+            coupleSvg.hidden = false;
+
+            coupleTrack.setAttribute("d", connD);
+            coupleProgress.setAttribute("d", connD);
+            connLength = coupleTrack.getTotalLength();
+            coupleProgress.style.strokeDasharray = `${connLength}`;
+            coupleProgress.style.strokeDashoffset = `${connLength}`;
+
+            // Таблица s(scrollY): на обходе заголовка — строго постоянный темп шага пропорционально дуге s,
+            // а вдоль этапов 1..6 тайминга — точная привязка 1:1 к вертикальной координате этапа!
+            unifiedSamples = [];
+            if (connLength > 0) {
+              let monoY = bypassLen > 0 ? bypassEndY : -Infinity;
+              const steps = 640;
+              for (let i = 0; i <= steps; i += 1) {
+                const s = (connLength * i) / steps;
+                let mappedY;
+                if (bypassLen > 0 && s <= bypassLen) {
+                  mappedY = bypassStartY + (s / bypassLen) * (bypassEndY - bypassStartY);
+                } else {
+                  const pt = coupleTrack.getPointAtLength(s);
+                  if (pt.y > monoY) monoY = pt.y;
+                  mappedY = monoY;
+                }
+                unifiedSamples.push({ s, y: mappedY });
+              }
+            }
+          } else {
+            coupleSvg.hidden = true;
+            connLength = 0;
+            unifiedSamples = [];
+          }
+        }
       }
 
       function placeCar(progress) {
         if (!pathLength) return;
-        const p = Math.max(0, Math.min(1, progress));
+        const p = clamp01(progress);
         const dist = pathLength * p;
         const pt = trackPath.getPointAtLength(dist);
         const step = Math.min(10, pathLength * 0.012);
         const ptPrev = trackPath.getPointAtLength(Math.max(0, dist - step));
         const ptNext = trackPath.getPointAtLength(Math.min(pathLength, dist + step));
-        const dx = ptNext.x - ptPrev.x;
-        const dy = ptNext.y - ptPrev.y;
+        const angle = Math.atan2(ptNext.y - ptPrev.y, ptNext.x - ptPrev.x) * (180 / Math.PI);
 
-        // Вид сверху: капот смотрит по направлению движения (0° = вправо),
-        // плавно поворачивается точно по касательной без переворотов и скачков
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        // Наклон в вид спереди начинается строго ПОСЛЕ выхода из правой петли (exitStartFrac),
+        // когда машинка уже идёт вниз к месту парковки у Братцево
+        const steerToFront = smoothstep(exitStartFrac, Math.min(0.97, exitStartFrac + 0.15), p);
+        const morph = smoothstep(Math.min(0.92, exitStartFrac + 0.02), 0.995, p);
+        const relDeg = ((angle - 90 + 540) % 360) - 180;
+        const rotDeg = relDeg * (1 - steerToFront);
 
-        car.style.transform = `translate3d(${pt.x.toFixed(1)}px, ${pt.y.toFixed(1)}px, 0) translate(-50%, -50%) rotate(${angle.toFixed(1)}deg)`;
+        projectCar3D(morph);
+
+        car.style.transform = `translate3d(${pt.x.toFixed(1)}px, ${pt.y.toFixed(1)}px, 0) translate(-50%, -50%) rotate(${rotDeg.toFixed(2)}deg)`;
         car.hidden = false;
         progressPath.style.strokeDashoffset = `${(pathLength * (1 - p)).toFixed(1)}`;
+      }
+
+      function placeCouple(wx, wy, opacity, scale, stride, bob) {
+        if (!walker) return;
+        if (opacity <= 0.005) {
+          walker.hidden = true;
+          return;
+        }
+        const yOff = prefersReduced.matches ? 0 : -bob * 3.0;
+        const tilt = prefersReduced.matches ? 0 : stride * 2.2;
+        walker.hidden = false;
+        walker.style.opacity = String(opacity.toFixed(3));
+        walker.style.transform = `translate3d(${wx.toFixed(1)}px, ${(wy + yOff).toFixed(1)}px, 0) translate(-50%, -72%) rotate(${tilt.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        if (!prefersReduced.matches) {
+          walker.style.setProperty("--leg-a", `${(stride * 14).toFixed(1)}deg`);
+          walker.style.setProperty("--leg-b", `${(-stride * 14).toFixed(1)}deg`);
+          walker.style.setProperty("--skirt-sway", `${(stride * 2.6).toFixed(1)}deg`);
+        }
+      }
+
+      function updateTimingHighlights(coupleViewportY) {
+        if (!timingItems.length) return;
+        const triggerY = coupleViewportY !== null ? coupleViewportY + 18 : window.innerHeight * 0.54;
+        const states = timingItems.map((item) => item.getBoundingClientRect().top + 20 <= triggerY);
+        timingItems.forEach((item, index) => {
+          item.classList.toggle("item-active", states[index]);
+        });
       }
 
       function draw(now) {
@@ -3029,35 +3698,122 @@
         if (!pathLength) buildPath();
         if (!pathLength) return;
 
+        const cRect = canvas.getBoundingClientRect();
+        const sRect = stack.getBoundingClientRect();
+        const tlRect = hasTimeline ? tlTrack.getBoundingClientRect() : null;
+
         if (prefersReduced.matches) {
-          placeCar(0.5);
+          placeCar(1);
+          if (hasTimeline && connLength > 0 && coupleTrack && coupleProgress) {
+            coupleProgress.style.strokeDashoffset = `${(connLength * 0.5).toFixed(1)}`;
+            const midPt = coupleTrack.getPointAtLength(connLength * 0.5);
+            placeCouple(midPt.x, midPt.y, 1, 1, 0, 0);
+            updateTimingHighlights(null);
+          }
           return;
         }
 
         const mRect = muravyovImg.getBoundingClientRect();
         const bRect = bratsevoImg.getBoundingClientRect();
-        // Цель достигает финиша ровно когда Усадьба Братцево оказывается по центру экрана,
-        // а мягкая инерция + ограничение скорости дают неспешный «доезд» по петлям
-        const startY = mRect.top - 40;
-        const endY = bRect.top + bRect.height * 0.5;
-        const span = Math.max(260, endY - startY);
-        const anchorY = window.innerHeight * 0.52;
-        const target = Math.max(0, Math.min(1, (anchorY - startY) / span));
-
+        const vh = window.innerHeight || 800;
         const elapsed = previousTime ? Math.min(64, now - previousTime) : 16;
         previousTime = now;
-        if (current === null) {
-          current = target;
+
+        // 1) МАШИНКА:
+        //    - Начинает ехать только после того, как картинка Усадьбы Муравьёвых окажется выше середины экрана (mCenterY < 48% vh).
+        //    - Цель доходит до 100%, когда Усадьба Братцево оказывается по центру экрана (52% vh).
+        //    - Едет с приятной задержкой и неспешным ограничением скорости (без жёсткой привязки к скроллу).
+        let rawCar = 0;
+        if (isDesktopMode) {
+          const mCenterY = mRect.top + mRect.height * 0.5;
+          const bCenterY = bRect.top + bRect.height * 0.5;
+          const startAnchor = vh * 0.48;
+          const endAnchor = vh * 0.52;
+          const scrollSpan = Math.max(240, (bCenterY - mCenterY) + (startAnchor - endAnchor));
+          rawCar = clamp01((startAnchor - mCenterY) / scrollSpan);
         } else {
-          const desiredDelta = (target - current) * (1 - Math.exp(-elapsed / 420));
-          const maxStep = (elapsed / 1000) * 0.34;
-          const clampedDelta = Math.max(-maxStep, Math.min(maxStep, desiredDelta));
-          current += clampedDelta;
+          const mCenterY = mRect.top + mRect.height * 0.5;
+          const carEndScreenY = sRect.top + carEndLocal[1];
+          const startAnchor = vh * 0.48;
+          const endAnchor = vh * 0.46;
+          const scrollSpan = Math.max(180, (carEndScreenY - mCenterY) + (startAnchor - endAnchor));
+          rawCar = clamp01((startAnchor - mCenterY) / scrollSpan);
+        }
+        const carTarget = 0.65 * rawCar + 0.35 * (rawCar * rawCar * (3 - 2 * rawCar));
+
+        const isInitial = carCurrent === null;
+        if (isInitial) {
+          carCurrent = carTarget;
+        } else {
+          const carGap = carTarget - carCurrent;
+          const desiredCarDelta = carGap * (1 - Math.exp(-elapsed / 420));
+          const maxCarStep = (elapsed / 1000) * 0.36;
+          carCurrent += Math.max(-maxCarStep, Math.min(maxCarStep, desiredCarDelta));
         }
 
-        placeCar(current);
+        placeCar(carCurrent);
 
-        if (Math.abs(target - current) > 0.0005) {
+        let needsMoreFrames = Math.abs(carTarget - carCurrent) > 0.0004;
+
+        // 2) ЖЕНИХ И НЕВЕСТА:
+        //    - Появляются перед капотом, когда машинка неспешно доезжает и разворачивается передом (carCurrent: 89% → 99%).
+        //    - Идут с мягкой инерцией и спокойной скоростью, зажигая этапы тайминга по мере прохождения.
+        if (hasTimeline && tlRect && tlRect.height > 0 && connLength > 0 && coupleTrack && coupleProgress) {
+          const walkAnchorY = isDesktopMode ? vh * 0.54 : vh * 0.56;
+          const anchorCanvasY = walkAnchorY - cRect.top;
+          const rawTargetS = arcLengthAtY(anchorCanvasY);
+          const carReadyGate = isDesktopMode ? smoothstep(0.90, 0.99, carCurrent) : 1;
+          const targetS = rawTargetS * carReadyGate;
+
+          if (connCurrent === null || isInitial) {
+            connCurrent = targetS;
+          } else {
+            const sGap = targetS - connCurrent;
+            const desiredS = sGap * (1 - Math.exp(-elapsed / 185));
+            const maxStepS = (elapsed / 1000) * (340 + Math.abs(sGap) * 1.35);
+            connCurrent += Math.max(-maxStepS, Math.min(maxStepS, desiredS));
+          }
+
+          if (Math.abs(targetS - connCurrent) > 0.35) {
+            needsMoreFrames = true;
+          }
+
+          const visible = isDesktopMode
+            ? smoothstep(0.89, 0.985, carCurrent)
+            : smoothstep(vh * 0.94, vh * 0.80, tlRect.top) * (tlRect.bottom > 0 ? 1 : 0);
+
+          coupleProgress.style.strokeDashoffset = `${Math.max(0, connLength - connCurrent).toFixed(1)}`;
+
+          const pt = coupleTrack.getPointAtLength(Math.max(0, Math.min(connLength, connCurrent)));
+          const wx = pt.x;
+          const wy = isDesktopMode ? pt.y - (1 - visible) * 10 : pt.y;
+
+          if (!isInitial && lastWalkerPt && visible > 0.15) {
+            const stepDist = Math.hypot(wx - lastWalkerPt[0], wy - lastWalkerPt[1]);
+            if (stepDist > 0.15 && stepDist < 140) {
+              // Ограничиваем максимальную частоту маха ногами при резком скролле, чтобы походка всегда оставалась живой и плавной
+              walkPhase += Math.min(stepDist, elapsed * 0.42) * 0.15;
+              walkAmp = Math.min(1, walkAmp + elapsed * 0.011);
+            } else {
+              walkAmp = Math.max(0, walkAmp - elapsed * 0.006);
+            }
+          } else {
+            walkAmp = Math.max(0, walkAmp - elapsed * 0.006);
+          }
+          lastWalkerPt = [wx, wy];
+
+          if (walkAmp > 0.01) needsMoreFrames = true;
+
+          const stride = Math.sin(walkPhase) * walkAmp;
+          const bob = Math.abs(Math.sin(walkPhase)) * walkAmp;
+          const scale = isDesktopMode ? 0.58 + 0.42 * visible : 1;
+          placeCouple(wx, wy, visible, scale, stride, bob);
+
+          const coupleViewportY = visible > 0.4 && connCurrent > 8 ? (cRect.top + wy) : null;
+          updateTimingHighlights(coupleViewportY);
+        }
+
+        if (needsMoreFrames) {
           frame = window.requestAnimationFrame(draw);
         }
       }
@@ -3068,16 +3824,20 @@
 
       function rebuild() {
         buildPath();
-        current = null;
+        carCurrent = null;
+        connCurrent = null;
+        lastWalkerPt = null;
         previousTime = 0;
         queue();
       }
 
       window.addEventListener("scroll", queue, { passive: true });
       window.addEventListener("resize", rebuild, { passive: true });
+      window.addEventListener("load", rebuild, { passive: true });
       if (typeof ResizeObserver === "function") {
         const ro = new ResizeObserver(rebuild);
         ro.observe(stack);
+        if (tlTrack) ro.observe(tlTrack);
       }
       buildPath();
       queue();
@@ -3085,11 +3845,12 @@
 
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () => {
-      initTimelineAnimation();
-      initVenueRouteAnimation();
-    });
+        initTimelineAnimation();
+        initVenueRouteAnimation();
+      });
     } else {
       initTimelineAnimation();
+      initVenueRouteAnimation();
     }
 
     // ==========================================
