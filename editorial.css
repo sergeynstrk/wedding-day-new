@@ -2610,7 +2610,7 @@ body {
 .story-section,
 .details-faq-section {
   position: relative;
-  z-index: 2;
+  z-index: auto;
   margin: 42px auto 46px;
 }
 
@@ -2660,15 +2660,20 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  padding: 8px;
-  background-color: #ffffff;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  background: transparent !important;
   color: #141011;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 0 !important;
+  clip-path: none !important;
   flex-shrink: 0;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.16)) drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.12));
+  filter: none;
   transform: rotate(4deg);
+}
+
+.story-ticket.story-tilt-4 .story-ticket-badge {
+  color: #fffaf3;
 }
 
 .story-ticket-badge svg {
@@ -2824,7 +2829,7 @@ body {
 /* 5.8 Чат гостей (Telegram) */
 .guest-chat-section {
   position: relative;
-  z-index: 2;
+  z-index: auto;
   margin: 26px auto 34px;
   max-width: 560px;
 }
@@ -3802,9 +3807,37 @@ button.swatch-card {
   transition: transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-button.swatch-card .swatch-color,
-button.swatch-card .swatch-name {
+.palette-swatches .swatch-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ece6dc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.palette-swatches .swatch-card .swatch-color,
+.palette-swatches .swatch-card .swatch-name {
   display: block;
+}
+
+@media (max-width: 780px) {
+  .palette-swatches .swatch-card {
+    flex: 0 1 calc(33.333% - 8px);
+    min-width: 92px;
+    max-width: 112px;
+    padding: 6px 6px 9px !important;
+  }
+
+  .palette-swatches .swatch-card .swatch-color {
+    width: 100% !important;
+    height: 52px !important;
+    margin-bottom: 7px;
+  }
+
+  .palette-swatches .swatch-card .swatch-name {
+    font-size: 11px !important;
+    letter-spacing: 0.03em !important;
+  }
 }
 
 button.swatch-card:focus-visible {
@@ -4160,19 +4193,41 @@ html:not(.envelope-active) .hero-garland-img {
   backface-visibility: visible !important;
 }
 
-/* Тень для вырезных плашек .scrap-clip через ::before (не затрагивает растеризацию текста в .clip-body) */
+/* Мягкая контурная бумажная тень для вырезных плашек .scrap-clip через ::before
+   (повторяет ножничный срез вырезки и не затрагивает векторную резкость текста в .clip-body) */
 .scrap-clip {
   position: relative;
+  isolation: isolate;
 }
 
 .scrap-clip::before {
   content: "";
   position: absolute;
-  inset: 3px;
-  border-radius: 2px;
-  box-shadow: 0 2px 1px rgba(18, 4, 9, 0.34), 0 4px 8px rgba(18, 4, 9, 0.24);
+  inset: 1px 2px 0 2px;
+  background-color: rgba(24, 6, 11, 0.28);
+  clip-path: var(--scissor-a);
+  transform: translate(1px, 3px);
+  filter: blur(4.5px);
   pointer-events: none;
   z-index: 0;
+}
+
+.scrap-clip:has(> .cut-scissor-2)::before,
+.scrap-clip:has(> .cut-scissor-4)::before {
+  clip-path: var(--scissor-b);
+}
+
+.scrap-clip:has(> .cut-scissor-3)::before,
+.scrap-clip:has(> .cut-scissor-5)::before {
+  clip-path: var(--scissor-c);
+}
+
+/* На светлой бумаге (внутри дресс-кода и RSVP) тень мягче и теплее, как от тонкой бумажной вырезки */
+.dresscode-section .scrap-clip::before,
+.rsvp-section .scrap-clip::before {
+  background-color: rgba(46, 24, 18, 0.16);
+  transform: translate(1px, 2.5px);
+  filter: blur(4px);
 }
 
 .hero-names-row .scrap-clip:nth-child(2)::before {
@@ -4186,7 +4241,7 @@ html:not(.envelope-active) .hero-garland-img {
 }
 
 /* Вырезные карточки Истории, FAQ и Чата: сохраняем и наклон, и ножничный срез (на ::after),
-   и живую тень (на ::before), оставляя сам текст идеально резким векторным слоем */
+   и мягкую контурную бумажную тень (на ::before), оставляя сам текст идеально резким векторным слоем */
 .story-ticket,
 .faq-scrap-card,
 .guest-chat-card {
@@ -4201,11 +4256,25 @@ html:not(.envelope-active) .hero-garland-img {
 .guest-chat-card::before {
   content: "";
   position: absolute;
-  inset: 4px;
+  inset: 3px 4px 1px 4px;
   z-index: -2;
-  border-radius: 2px;
-  box-shadow: 0 3px 2px rgba(20, 4, 9, 0.32), 0 10px 22px rgba(20, 4, 9, 0.26);
+  background-color: rgba(20, 4, 9, 0.26);
+  clip-path: var(--scissor-a);
+  transform: translate(2px, 6px);
+  filter: blur(8px);
   pointer-events: none;
+}
+
+.story-ticket.cut-scissor-2::before,
+.faq-scrap-card.cut-scissor-2::before,
+.story-ticket.cut-scissor-4::before {
+  clip-path: var(--scissor-b);
+}
+
+.story-ticket.cut-scissor-3::before,
+.faq-scrap-card.cut-scissor-3::before,
+.guest-chat-card.cut-scissor-3::before {
+  clip-path: var(--scissor-c);
 }
 
 .story-ticket::after,
@@ -4388,5 +4457,1338 @@ html:not(.envelope-active) .hero-garland-img {
 
   .story-section .photo-slot-card.slot-tilt-4 {
     order: 8;
+  }
+}
+
+/* Поддержка 6 этапов в блоке «Тайминг» (ПК и мобильная версия) */
+.ob-timeline-line {
+  grid-row: 1 / span 6 !important;
+}
+
+.b5 {
+  background: #b9cbd2;
+  color: #24161b !important;
+  transform: rotate(-2.5deg);
+  clip-path: var(--scissor-a);
+}
+
+.b6 {
+  background: #dec580;
+  color: #24161b !important;
+  transform: rotate(3deg);
+  clip-path: var(--scissor-c);
+}
+
+.sm-timing__item.item-5 {
+  grid-column: 1;
+  grid-row: 5;
+  justify-self: end;
+  align-items: flex-end;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.sm-timing__item.item-5 .item-top-row {
+  flex-direction: row-reverse;
+}
+
+.sm-timing__item.item-5 .timing-text-box {
+  align-items: flex-end;
+}
+
+.sm-timing__item.item-5 .bg-white-serif {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px !important;
+}
+
+.sm-timing__item.item-6 {
+  grid-column: 3;
+  grid-row: 6;
+  justify-self: start;
+  align-items: flex-start;
+  text-align: left;
+  padding-left: 20px;
+  margin-top: -22px;
+}
+
+.sm-timing__item.item-6 .timing-text-box {
+  align-items: flex-start;
+}
+
+.sm-timing__item.item-6 .bg-white-serif {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 21px !important;
+  background: #d8c48e !important;
+}
+
+@media (max-width: 780px) {
+  .ob-timeline-line {
+    grid-column: 1;
+    grid-row: 1 / span 6 !important;
+  }
+
+  .sm-timing__item.item-5,
+  .sm-timing__item.item-6 {
+    grid-column: 2;
+    margin-top: 0;
+    justify-self: start;
+    align-items: flex-start;
+    text-align: left;
+    padding-left: 0;
+  }
+
+  .sm-timing__item.item-5 {
+    grid-row: 5;
+  }
+
+  .sm-timing__item.item-6 {
+    grid-row: 6;
+  }
+
+  .sm-timing__item.item-5 .item-top-row {
+    flex-direction: row;
+  }
+
+  .sm-timing__item.item-5 .timing-text-box {
+    align-items: flex-start;
+  }
+}
+
+/* ========================================================
+   ОБНОВЛЁННАЯ КАРТОЧКА ДРЕСС-КОДА: КОЛЛАЖНЫЕ ВЫРЕЗКИ (БЕЗ СКРУГЛЕНИЙ),
+   КРУПНЫЕ СВОТЧИ ЦВЕТОВ И ЦЕНТРАЛЬНАЯ УВЕЛИЧИВАЮЩАЯСЯ КАРУСЕЛЬ СТИКЕРОВ
+   ======================================================== */
+.dresscode-section {
+  text-align: center;
+}
+
+/* Плашка названия стиля над папкой — вырезанная бумажная полоска с лёгким наклоном */
+.dress-style-callout {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px 10px;
+  margin: 18px auto 26px;
+  padding: 12px 26px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  transform: rotate(-1deg);
+}
+
+.dress-style-callout::before {
+  content: "";
+  position: absolute;
+  inset: 2px 3px 0 3px;
+  z-index: -2;
+  background-color: rgba(46, 24, 18, 0.15);
+  clip-path: var(--scissor-b);
+  transform: translate(1px, 3px);
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.dress-style-callout::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #fffaf3;
+  clip-path: var(--scissor-b);
+  pointer-events: none;
+}
+
+.dress-style-tag {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #681427;
+}
+
+.dress-style-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(19px, 2.3vw, 24px);
+  font-weight: 900;
+  color: #141011;
+}
+
+.dress-style-note {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(22px, 2.5vw, 26px);
+  font-weight: 700;
+  color: #681427;
+}
+
+/* Бумажная папка-досье в коллажном стиле сайта: ножничные срезы, лёгкие наклоны, стопка листов */
+.dress-folder {
+  max-width: 980px;
+  margin: 6px auto 0;
+  position: relative;
+}
+
+.dress-gender-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 0 28px;
+  position: relative;
+}
+
+.dress-tab-btn {
+  appearance: none;
+  position: relative;
+  isolation: isolate;
+  flex: 0 1 auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #2c1c21;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  min-height: 48px;
+  padding: 12px 30px 14px;
+  margin: 0 0 -7px;
+  cursor: pointer;
+  touch-action: manipulation;
+  z-index: 1;
+  transform: rotate(-1.4deg);
+  transition: color 0.18s ease, transform 0.2s ease;
+}
+
+.dress-tab-btn:nth-child(2) {
+  transform: rotate(1.2deg);
+}
+
+/* Вырезанная ножницами бумажная основа закладки (::after), чтобы текст оставался векторно-резким */
+.dress-tab-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #c8dae3;
+  clip-path: polygon(
+    2% 10%, 13% 3%, 28% 7%, 46% 2%, 65% 6%, 83% 2%, 96% 8%,
+    100% 24%, 99% 62%, 100% 100%, 0% 100%, 1% 56%
+  );
+  box-shadow: inset 0 -7px 10px rgba(24, 6, 11, 0.14);
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+  pointer-events: none;
+}
+
+.dress-tab-btn .dress-tab-num {
+  color: #681427;
+  margin-right: 3px;
+}
+
+.dress-tab-btn[aria-selected="false"]:hover {
+  color: #141011;
+}
+
+.dress-tab-btn[aria-selected="false"]:hover::after {
+  background-color: #d7e6ee;
+}
+
+/* Активная закладка: одного цвета с передним бумажным листом папки, бесшовно заходит в него + штамп-подчёркивание */
+.dress-tab-btn[aria-selected="true"] {
+  color: #681427;
+  z-index: 6;
+}
+
+.dress-tab-btn[aria-selected="true"]::after {
+  background-color: #faf5ec;
+  box-shadow: none;
+}
+
+/* Нецветовой индикатор активной вкладки (WCAG 1.4.1 + Forced Colors Mode) */
+.dress-tab-btn[aria-selected="true"]::before {
+  content: "";
+  position: absolute;
+  inset: auto 22px 9px 22px;
+  border-block-end: 2.5px solid #681427;
+  pointer-events: none;
+}
+
+.dress-tab-btn:focus-visible {
+  outline: 3px solid #275273;
+  outline-offset: 2px;
+}
+
+/* Корпус папки: подложенный крафтовый лист со смещённым наклоном (::before) + вырезанный передний лист */
+.dress-folder-body {
+  position: relative;
+  isolation: isolate;
+  z-index: 3;
+}
+
+.dress-folder-body::before {
+  content: "";
+  position: absolute;
+  inset: 4px -4px -6px 6px;
+  z-index: -1;
+  background-color: #dfd2be;
+  clip-path: var(--scissor-c);
+  transform: rotate(0.95deg);
+  box-shadow: 0 8px 22px rgba(24, 6, 11, 0.15);
+  pointer-events: none;
+}
+
+.dress-folder-sheet {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 34px 30px 28px;
+  box-shadow: none;
+  transform: rotate(-0.35deg);
+}
+
+/* Мягкая контурная бумажная тень под передним листом папки (::before) */
+.dress-folder-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 3px 5px 1px 5px;
+  z-index: -2;
+  background-color: rgba(42, 20, 14, 0.16);
+  clip-path: var(--scissor-a);
+  transform: translate(2px, 5px);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Вырезанная ножницами поверхность переднего листа папки (::after) */
+.dress-folder-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #faf5ec;
+  clip-path: var(--scissor-a);
+  pointer-events: none;
+}
+
+.dress-folder-sheet > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Для Safari фолбэк булева [hidden], не ломающий searchable hidden="until-found" в Chrome/Firefox */
+.dress-tab-panel[hidden]:not([hidden="until-found"]) {
+  display: none !important;
+}
+
+.dress-panel-lead {
+  max-width: 680px;
+  margin: 0 auto 10px !important;
+  font-size: 15.5px !important;
+  line-height: 1.65 !important;
+  color: #1c1517 !important;
+  text-align: center;
+}
+
+.dress-panel-lead.dress-panel-lead-burgundy {
+  color: #681427 !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+}
+
+.dress-panel-sublead {
+  max-width: 660px;
+  margin: 0 auto 18px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
+  color: #493139 !important;
+  text-align: center;
+}
+
+.dress-wb-cta-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 6px auto 4px;
+}
+
+.dress-wb-btn {
+  background-color: #681427 !important;
+  color: #fffaf3 !important;
+  font-size: 15.5px !important;
+  padding: 12px 24px !important;
+  gap: 9px;
+}
+
+.dress-wb-btn:hover {
+  background-color: #8c1d38 !important;
+  color: #ffffff !important;
+}
+
+/* Крупные свотчи ткани с подписью под цветом (14 карточек: 7x2 на ПК, 3x4 + 2 по центру на мобильных) */
+.dress-swatches-large {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  margin: 10px auto 18px !important;
+  max-width: 860px;
+}
+
+.dress-swatches-large .swatch-card {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 8px 8px 10px !important;
+  background-color: #ffffff;
+  border: 1px solid rgba(20, 16, 17, 0.12);
+  box-shadow: 0 4px 12px rgba(24, 6, 11, 0.1);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dress-swatches-large button.swatch-card:hover {
+  transform: translateY(-3px) rotate(0deg) !important;
+  box-shadow: 0 8px 18px rgba(104, 20, 39, 0.18) !important;
+}
+
+.dress-swatches-large .swatch-card:nth-child(odd) {
+  transform: rotate(-1.5deg) !important;
+}
+
+.dress-swatches-large .swatch-card:nth-child(even) {
+  transform: rotate(1.4deg) !important;
+}
+
+/* Стоп-карточки «НЕ ЧЁРНЫЙ» и «НЕ БЕЛЫЙ» с тонкими диагональными линиями от угла до угла (без рамок, режущихся clip-path) */
+.dress-swatches-large .swatch-card.swatch-card-forbidden {
+  cursor: default;
+  background-color: #f4ebe3 !important;
+  border: 0 !important;
+}
+
+.dress-swatches-large .swatch-color {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100% !important;
+  height: 74px !important;
+  margin-bottom: 8px;
+  clip-path: var(--scissor-b);
+  border: 0 !important;
+}
+
+.dress-swatches-large .swatch-color.swatch-color-black {
+  background-color: #161314 !important;
+}
+
+.dress-swatches-large .swatch-color.swatch-color-white {
+  background-color: #ffffff !important;
+}
+
+.dress-swatches-large .swatch-cross-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.dress-swatches-large .swatch-color-black .swatch-cross-lines .cross-ink {
+  stroke: #d63a57;
+  stroke-width: 2px;
+}
+
+.dress-swatches-large .swatch-color-white .swatch-cross-lines .cross-ink {
+  stroke: #7a162d;
+  stroke-width: 1.8px;
+}
+
+.dress-swatches-large .swatch-name {
+  display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 12.5px !important;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  color: #141011 !important;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.dress-swatches-large .swatch-name.swatch-name-forbidden {
+  color: #681427 !important;
+}
+
+.dress-ban-row {
+  margin: 8px auto 16px;
+  text-align: center;
+}
+
+.dress-ban-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background-color: #f6e8eb !important;
+  color: #681427 !important;
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 9px 20px !important;
+  border: 1.5px dashed rgba(104, 20, 39, 0.48) !important;
+  box-shadow: 0 3px 10px rgba(24, 6, 11, 0.08);
+  transform: none !important;
+  clip-path: none !important;
+}
+
+.dress-ban-badge svg {
+  flex-shrink: 0;
+}
+
+.dress-men-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 4px auto 16px;
+}
+
+.dress-men-tags .clip-body {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 7px 14px !important;
+  border: 0 !important;
+}
+
+.dress-men-tags .clip-body.bg-news-typewriter {
+  background-color: #f3ece0 !important;
+  border: 0 !important;
+}
+
+.dress-men-tags .clip-body.dress-tag-ok {
+  background-color: #d3e3ec !important;
+  color: #1d3545 !important;
+  border: 0 !important;
+}
+
+.dress-men-tags .clip-body.dress-tag-no {
+  background-color: #f5dfe4 !important;
+  color: #681427 !important;
+  border: 0 !important;
+}
+
+/* Центральная увеличивающаяся карусель стикеров */
+.dress-carousel {
+  --slide-w: 240px;
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.dress-carousel-controls {
+  position: absolute;
+  inset: 0 0 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.dress-carousel-arrow {
+  pointer-events: auto;
+  appearance: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 0;
+  border: 0;
+  background-color: #681427;
+  color: #fffaf3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  transform: rotate(-2deg);
+  transition: background-color 0.18s ease, color 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
+}
+
+.dress-carousel-arrow[data-direction="next"] {
+  transform: rotate(2deg);
+}
+
+.dress-carousel-arrow:hover:not(:disabled) {
+  background-color: #8c1d38;
+  transform: scale(1.08) rotate(0deg);
+}
+
+.dress-carousel-arrow:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.dress-carousel-arrow:focus-visible {
+  outline: 3px solid #275273;
+  outline-offset: 3px;
+}
+
+.dress-carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  touch-action: manipulation;
+  padding: 36px 0 48px;
+  scrollbar-width: none;
+}
+
+/* Спейсеры по краям трека (с order -2 / 2, чтобы припаркованные слайды лежали внутри границ трека) */
+.dress-carousel-track::before {
+  content: "";
+  order: -2;
+  flex: 0 0 calc(50% - var(--slide-w) / 2 - 16px);
+}
+
+.dress-carousel-track::after {
+  content: "";
+  order: 2;
+  flex: 0 0 calc(50% - var(--slide-w) / 2 - 16px);
+}
+
+/* Бесконечное циклическое перелистывание в обе стороны без дублирования DOM (CSS order parking) */
+.dress-carousel-track > .dress-slide:first-child {
+  order: clamp(0, var(--current) - (var(--children-count, sibling-count()) - 3), 1);
+}
+
+.dress-carousel-track > .dress-slide:last-child {
+  order: calc(-1 * clamp(0, 2 - var(--current), 1));
+}
+
+.dress-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dress-carousel-track {
+    scroll-behavior: smooth;
+  }
+}
+
+.dress-slide {
+  flex: 0 0 var(--slide-w);
+  scroll-snap-align: center;
+  position: relative;
+  z-index: 1;
+  opacity: 0.78;
+  transition: opacity 0.3s ease;
+}
+
+.dress-slide.is-center {
+  z-index: 5;
+  opacity: 1;
+}
+
+.dress-slide-zoom {
+  appearance: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: 100%;
+  height: 390px;
+  padding: 6px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  scale: 0.76;
+  transition: scale 0.34s cubic-bezier(0.22, 0.85, 0.32, 1.12), filter 0.28s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dress-slide.is-center .dress-slide-zoom {
+    scale: 1.14;
+    cursor: zoom-in;
+  }
+
+  .dress-slide:not(.is-center) .dress-slide-zoom:hover {
+    scale: 0.83;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dress-slide,
+  .dress-slide-zoom {
+    transition: none !important;
+    scale: 1 !important;
+  }
+}
+
+.dress-slide-zoom:focus-visible {
+  outline: 3px solid #681427;
+  outline-offset: 4px;
+}
+
+.dress-slide-zoom img {
+  display: block;
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center center;
+  filter: drop-shadow(0 6px 14px rgba(24, 6, 11, 0.22));
+}
+
+.dress-slide.is-center .dress-slide-zoom img {
+  filter: drop-shadow(0 12px 24px rgba(24, 6, 11, 0.32));
+}
+
+.dress-zoom-pill {
+  position: static;
+  flex-shrink: 0;
+  transform: rotate(-1.2deg);
+  padding: 5px 14px;
+  border-radius: 0;
+  background-color: #681427;
+  color: #fffaf3;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.dress-slide.is-center .dress-zoom-pill {
+  opacity: 1;
+}
+
+/* Прямоугольные коллажные штрихи-индикаторы (без скруглений, >= 24x24px тач-зона) */
+.dress-carousel-markers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 6px;
+}
+
+.dress-carousel-dot {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  padding: 9px 5px;
+  border: 0;
+  border-radius: 0;
+  background-color: #a99b91;
+  background-clip: content-box;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.dress-carousel-dot[aria-current="true"] {
+  width: 38px;
+  background-color: #681427;
+}
+
+.dress-carousel-dot:focus-visible {
+  outline: 2px solid #681427;
+  outline-offset: 1px;
+}
+
+.dresscode-section > p.dress-swipe-hint,
+.dress-folder-sheet .dress-swipe-hint,
+.dress-swipe-hint {
+  margin: 10px auto 16px !important;
+  font-family: 'Caveat', cursive !important;
+  font-size: clamp(23px, 2.6vw, 29px) !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+  color: #681427 !important;
+  text-align: center !important;
+}
+
+/* Два бумажных стикера-памятки под папкой дресс-кода */
+.manor-stickers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 980px;
+  margin: 34px auto 0;
+  align-items: stretch;
+}
+
+.manor-stickers-grid .manor-sticker-frame {
+  margin-top: 0 !important;
+  display: flex;
+}
+
+.manor-stickers-grid .manor-sticker-inner {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 auto;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  padding: 22px 26px;
+  text-align: left;
+  line-height: 1.6;
+  transform: rotate(-1.1deg);
+}
+
+.manor-stickers-grid .manor-sticker-inner::before {
+  content: "";
+  position: absolute;
+  inset: 2px 4px 0 4px;
+  z-index: -2;
+  background-color: rgba(46, 24, 18, 0.16);
+  clip-path: var(--scissor-c);
+  transform: translate(1.5px, 4px);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.manor-stickers-grid .manor-sticker-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #d1dcde;
+  clip-path: var(--scissor-c);
+  pointer-events: none;
+}
+
+.manor-stickers-grid .manor-sticker-consult .manor-sticker-inner {
+  transform: rotate(1.1deg);
+}
+
+.manor-stickers-grid .manor-sticker-consult .manor-sticker-inner::before,
+.manor-stickers-grid .manor-sticker-consult .manor-sticker-inner::after {
+  clip-path: var(--scissor-b);
+}
+
+.manor-stickers-grid .manor-sticker-consult .manor-sticker-inner::after {
+  background-color: #f6e4e7;
+}
+
+.manor-stickers-grid .manor-sticker-inner strong {
+  color: #681427;
+}
+
+.applique-pin-note-left {
+  right: auto;
+  left: 22px;
+  transform: rotate(-10deg);
+}
+
+@media (max-width: 780px) {
+  .manor-stickers-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 26px;
+  }
+
+  .manor-stickers-grid .manor-sticker-inner {
+    padding: 18px 20px;
+  }
+
+  .applique-pin-note-left {
+    left: 14px;
+  }
+}
+
+/* Лайтбокс полноэкранного приближения стикера — строгий коллажный стиль без скруглений */
+dialog.dress-lightbox {
+  margin: auto;
+  width: min(94vw, 560px);
+  max-height: 92svh;
+  padding: 0;
+  border: 3px solid #681427;
+  border-radius: 0;
+  background-color: #f3ede3;
+  color: #141011;
+  box-shadow: 0 24px 60px rgba(12, 3, 6, 0.65);
+  overflow: hidden;
+}
+
+dialog.dress-lightbox::backdrop {
+  background: rgba(24, 6, 11, 0.78);
+  backdrop-filter: blur(5px);
+}
+
+.dress-lightbox-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 92svh;
+}
+
+.dress-lightbox-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 2px dashed rgba(104, 20, 39, 0.28);
+  background-color: #eae3d7;
+}
+
+.dress-lightbox-caption {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #493139;
+}
+
+.dress-lightbox-close {
+  appearance: none;
+  min-height: 40px;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 0;
+  clip-path: var(--scissor-b);
+  background-color: #681427;
+  color: #fffaf3;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.dress-lightbox-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 58px 22px;
+  min-height: 320px;
+}
+
+.dress-lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: 74svh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 24px rgba(24, 6, 11, 0.28));
+}
+
+.dress-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  appearance: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 0;
+  border: 0;
+  clip-path: var(--scissor-c);
+  background-color: #681427;
+  color: #fffaf3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.dress-lightbox-nav.is-prev {
+  left: 8px;
+}
+
+.dress-lightbox-nav.is-next {
+  right: 8px;
+}
+
+.dress-lightbox-nav:hover {
+  background-color: #8c1d38;
+}
+
+@media (max-width: 780px) {
+  .dress-gender-tabs {
+    gap: 6px;
+    padding: 0 12px;
+    margin: 0 auto;
+  }
+
+  .dress-tab-btn {
+    flex: 1 1 0;
+    font-size: 14.5px;
+    min-height: 44px;
+    padding: 10px 10px 12px;
+    margin-bottom: -6px;
+  }
+
+  .dress-tab-btn[aria-selected="true"]::before {
+    inset: auto 14px 7px 14px;
+  }
+
+  .dress-folder-body::before {
+    inset: 3px -2px -4px 4px;
+    transform: rotate(0.75deg);
+  }
+
+  .dress-folder-sheet {
+    padding: 24px 14px 22px;
+    box-shadow: none;
+    transform: rotate(-0.25deg);
+  }
+
+  .dress-folder-sheet::before {
+    inset: 5px;
+  }
+
+  /* Сетка 6 колонок на телефоне: основные 12 карточек по span 2 (4 ряда по 3),
+     а 2 стоп-карточки («НЕ ЧЁРНЫЙ» / «НЕ БЕЛЫЙ») ровно по центру в 5-м ряду (колонки 2..3 и 4..5) */
+  .dress-swatches-large {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    max-width: 344px;
+  }
+
+  .dress-swatches-large .swatch-card {
+    grid-column: span 2;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 7px 7px 9px !important;
+  }
+
+  .dress-swatches-large .swatch-card.swatch-forbidden-black {
+    grid-column: 2 / span 2;
+  }
+
+  .dress-swatches-large .swatch-card.swatch-forbidden-white {
+    grid-column: 4 / span 2;
+  }
+
+  .dress-swatches-large .swatch-color {
+    width: 100% !important;
+    height: 66px !important;
+    margin-bottom: 6px;
+  }
+
+  .dress-swatches-large .swatch-name {
+    font-size: 12px !important;
+  }
+
+  .dress-carousel {
+    --slide-w: 50%;
+  }
+
+  .dress-carousel-track {
+    gap: 8px;
+    padding: 30px 0 42px;
+  }
+
+  .dress-carousel-track::before,
+  .dress-carousel-track::after {
+    flex: 0 0 calc(50% - var(--slide-w) / 2 - 8px);
+  }
+
+  .dress-slide-zoom {
+    height: 320px;
+  }
+
+  .dress-carousel-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dress-lightbox-stage {
+    padding: 12px 48px 16px;
+  }
+}
+
+/* ========================================================
+   АНКЕТА ГОСТЯ: БЛОК 5 ОБЯЗАТЕЛЬНЫХ ПЕСЕН + ВАЛИДАЦИЯ :user-invalid
+   ======================================================== */
+#rsvpSongsGroup {
+  overflow: hidden;
+  max-height: 760px;
+  opacity: 1;
+  transition: max-height 0.34s ease, opacity 0.24s ease, margin 0.28s ease;
+}
+
+#rsvpSongsGroup.is-collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  pointer-events: none;
+}
+
+.rsvp-songs-hint {
+  display: block;
+  margin: 8px 0 12px !important;
+  line-height: 1.45;
+}
+
+.rsvp-songs-counter {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 9px;
+  background-color: #ebe2d3;
+  color: #681427;
+  font-family: 'Oswald', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.rsvp-songs-counter.is-complete {
+  background-color: #d8eadc;
+  color: #1c4d2c;
+}
+
+.rsvp-songs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rsvp-song-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.rsvp-song-num {
+  flex: 0 0 26px;
+  padding-top: 12px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #681427;
+  text-align: right;
+  cursor: pointer;
+}
+
+.rsvp-song-input-wrap {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.rsvp-song-input {
+  margin-top: 0 !important;
+}
+
+.rsvp-field-error {
+  display: none;
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8c162e;
+  line-height: 1.35;
+}
+
+/* Показываем ошибку только после взаимодействия пользователя (:user-invalid + фолбэк для старых браузеров) */
+.rsvp-song-input:is(:user-invalid, .user-invalid-fallback) {
+  border-color: #9e1b38 !important;
+  background-color: #fdf1f3 !important;
+}
+
+.rsvp-song-input:is(:user-invalid, .user-invalid-fallback) + .rsvp-field-error {
+  display: block;
+}
+
+.rsvp-song-input:user-valid {
+  border-color: #2c6e44 !important;
+}
+
+/* ========================================================
+   ПРИОРИТЕТ СЛОЯ СТИКЕРОВ: ВСЕГДА ПОВЕРХ КОНТЕНТА,
+   НО ПОД ПЛАВАЮЩЕЙ НАВИГАЦИЕЙ (900), РЕДАКТОРОМ (2000) И КОНВЕРТОМ (99999)
+   ======================================================== */
+.decoration-pair,
+.decorated-section > .decoration-pair,
+.farewell-decor,
+.custom-decor-layer {
+  z-index: 120 !important;
+  pointer-events: none;
+}
+
+.decor-object,
+.decor-object.decor-lace,
+.decoration-pair .decor-object,
+.decoration-pair .decor-lace,
+.custom-decor-layer .decor-custom,
+.flatlay-bouquet {
+  z-index: 125 !important;
+  pointer-events: none;
+}
+
+/* ========================================================
+   ДВЕ ЛОКАЦИИ В БЛОКЕ «МЕСТО ДЕЙСТВИЯ» (МУРАВЬЁВЫХ + БРАТЦЕВО)
+   ======================================================== */
+.venue-locations-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 84px;
+  margin-top: 12px;
+}
+
+.venue-location-block {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 780px;
+  text-align: center;
+}
+
+.venue-location-secondary {
+  padding-bottom: 18px;
+  border-bottom: 0;
+}
+
+.venue-location-kicker {
+  margin: 12px 0 12px;
+}
+
+.venue-kicker-badge {
+  font-size: clamp(16px, 1.85vw, 21px) !important;
+  padding: 7px 20px !important;
+  letter-spacing: 0.05em;
+}
+
+/* Анимированный маршрут-ползунок с машинкой между Усадьбой Муравьёвых и Братцево */
+.venue-route-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: visible;
+}
+
+.venue-route-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.venue-route-track {
+  stroke: rgba(214, 232, 240, 0.34);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 8 7;
+}
+
+.venue-route-progress {
+  stroke: #cfe2eb;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 6px rgba(18, 4, 9, 0.45));
+}
+
+.venue-route-car {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 58px;
+  will-change: transform;
+  filter: drop-shadow(0 4px 10px rgba(18, 4, 9, 0.58));
+  pointer-events: none;
+}
+
+.venue-route-car svg {
+  display: block;
+  width: 106px;
+  height: 56px;
+}
+
+@media (max-width: 780px) {
+  .venue-route-car {
+    width: 78px;
+    height: 42px;
+  }
+
+  .venue-route-car svg {
+    width: 76px;
+    height: 40px;
+  }
+}
+
+.venue-location-kicker {
+  margin-bottom: 10px;
+}
+
+.venue-heading-sub {
+  margin: 8px 0 10px;
+}
+
+.venue-location-desc {
+  font-size: 1.04rem;
+  margin: 14px auto;
+  max-width: 700px;
+  line-height: 1.62;
+  color: #faf5ef !important;
+  font-weight: 500;
+}
+
+.venue-location-actions {
+  justify-content: center;
+  margin-top: 16px;
+}
+
+@media (max-width: 780px) {
+  .venue-locations-stack {
+    gap: 62px;
+  }
+
+  .venue-location-secondary {
+    padding-bottom: 12px;
+  }
+
+  .venue-kicker-badge {
+    font-size: 15px !important;
+    padding: 6px 14px !important;
+  }
+
+  .venue-location-desc {
+    font-size: 0.96rem;
   }
 }

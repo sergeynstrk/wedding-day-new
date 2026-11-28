@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024" fill="none">
+  <g stroke="#000000" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Crescent moon -->
+    <path d="M852 162 C632 184 484 378 514 598 C544 818 750 956 968 910 C802 882 690 730 706 558 C720 402 824 278 968 242 C932 196 894 168 852 162 Z" fill="#ffffff" />
+
+    <!-- Hanging heart from moon tip -->
+    <line x1="964" y1="246" x2="964" y2="378" />
+    <path d="M964 494 C912 454 888 424 888 396 C888 370 908 352 932 352 C948 352 958 362 964 374 C970 362 980 352 996 352 C1020 352 1040 370 1040 396 C1040 424 1016 454 964 494 Z" fill="#ffffff" />
+
+    <!-- Twinkling four-point stars -->
+    <path d="M388 264 L410 326 L472 348 L410 370 L388 432 L366 370 L304 348 L366 326 Z" fill="#ffffff" />
+    <path d="M1142 520 L1162 574 L1216 594 L1162 614 L1142 668 L1122 614 L1068 594 L1122 574 Z" fill="#ffffff" />
+    <path d="M1096 196 L1110 234 L1148 248 L1110 262 L1096 300 L1082 262 L1044 248 L1082 234 Z" fill="#ffffff" />
+
+    <!-- Soft night dots -->
+    <circle cx="412" cy="648" r="18" fill="#ffffff" />
+    <circle cx="604" cy="184" r="15" fill="#ffffff" />
+    <circle cx="1164" cy="396" r="15" fill="#ffffff" />
+    <circle cx="1048" cy="776" r="18" fill="#ffffff" />
+  </g>
+</svg>

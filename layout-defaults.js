@@ -4,25 +4,26 @@ window.WEDDING_LAYOUT_DEFAULTS = {
   "layouts": {
     "desktop": {
       "decoration-01": {
-        "x": 1150,
-        "y": -210,
+        "x": 1222,
+        "y": 1817.1333694458008,
         "scale": 0.88,
         "rotation": 0,
         "flipX": false,
-        "flipY": false
+        "flipY": false,
+        "hidden": false
       },
       "decoration-02": {
-        "x": -280,
-        "y": 426,
+        "x": -211,
+        "y": 2575,
         "scale": 1,
-        "rotation": 17,
+        "rotation": -24,
         "flipX": false,
         "flipY": false,
         "hidden": false
       },
       "decoration-03": {
-        "x": 224,
-        "y": -266,
+        "x": 229,
+        "y": 83,
         "scale": 1.2,
         "rotation": 29,
         "flipX": false,
@@ -30,26 +31,26 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-04": {
-        "x": -831,
-        "y": 174,
-        "scale": 1,
-        "rotation": 0,
-        "flipX": false,
-        "flipY": false,
-        "hidden": true
-      },
-      "decoration-05": {
-        "x": 1192,
-        "y": -141,
-        "scale": 0.82,
-        "rotation": 8,
+        "x": -312,
+        "y": 5781,
+        "scale": 0.65,
+        "rotation": -50,
         "flipX": false,
         "flipY": false,
         "hidden": false
       },
+      "decoration-05": {
+        "x": 1189,
+        "y": -2076,
+        "scale": 0.82,
+        "rotation": 8,
+        "flipX": true,
+        "flipY": false,
+        "hidden": false
+      },
       "decoration-06": {
-        "x": -1212,
-        "y": -117,
+        "x": -1168,
+        "y": -73,
         "scale": 0.75,
         "rotation": -12,
         "flipX": false,
@@ -57,26 +58,26 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-11": {
-        "x": 259,
-        "y": 3001,
-        "scale": 0.85,
+        "x": 226,
+        "y": -211,
+        "scale": 1.15,
         "rotation": 3,
         "flipX": false,
         "flipY": false,
         "hidden": false
       },
       "decoration-12": {
-        "x": 786,
-        "y": 3187,
-        "scale": 0.85,
-        "rotation": 176,
-        "flipX": false,
+        "x": 1152,
+        "y": -215,
+        "scale": 1.1,
+        "rotation": 3,
+        "flipX": true,
         "flipY": false,
         "hidden": false
       },
       "decoration-13": {
-        "x": 1301,
-        "y": -398,
+        "x": 218,
+        "y": 526,
         "scale": 0.76,
         "rotation": 18,
         "flipX": false,
@@ -84,8 +85,8 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-14": {
-        "x": -1297,
-        "y": -92,
+        "x": -338,
+        "y": 1429,
         "scale": 0.78,
         "rotation": 8,
         "flipX": false,
@@ -93,8 +94,8 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-15": {
-        "x": 42,
-        "y": 3,
+        "x": -862,
+        "y": 271,
         "scale": 0.85,
         "rotation": 0,
         "flipX": false,
@@ -102,16 +103,17 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-16": {
-        "x": -135,
-        "y": 12,
-        "scale": 0.92,
-        "rotation": 14,
+        "x": -789,
+        "y": -8103,
+        "scale": 0.8,
+        "rotation": 30,
         "flipX": false,
-        "flipY": false
+        "flipY": false,
+        "hidden": false
       },
       "decoration-19": {
-        "x": 205,
-        "y": 867,
+        "x": 1245,
+        "y": 999,
         "scale": 0.85,
         "rotation": -18,
         "flipX": false,
@@ -119,26 +121,26 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-20": {
-        "x": -1208,
-        "y": -789,
-        "scale": 0.78,
+        "x": -147,
+        "y": -384,
+        "scale": 0.4,
         "rotation": 19,
         "flipX": false,
         "flipY": false,
         "hidden": false
       },
       "decoration-21": {
-        "x": 1281,
-        "y": 984,
-        "scale": 0.78,
+        "x": 207,
+        "y": 1143,
+        "scale": 1.2,
         "rotation": -14,
         "flipX": false,
         "flipY": false,
         "hidden": false
       },
       "decoration-22": {
-        "x": -187,
-        "y": -772,
+        "x": -190,
+        "y": -505,
         "scale": 1.05,
         "rotation": 91,
         "flipX": false,
@@ -146,19 +148,19 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": false
       },
       "decoration-23": {
-        "x": 262,
-        "y": -788,
-        "scale": 0.72,
-        "rotation": 0,
+        "x": 414,
+        "y": 8352,
+        "scale": 0.65,
+        "rotation": 3,
         "flipX": false,
         "flipY": false,
         "hidden": false
       },
       "decoration-24": {
-        "x": -377,
-        "y": -651,
-        "scale": 1.45,
-        "rotation": -1,
+        "x": -561,
+        "y": 811,
+        "scale": 1.2,
+        "rotation": -8,
         "flipX": false,
         "flipY": false,
         "hidden": false
@@ -173,22 +175,110 @@ window.WEDDING_LAYOUT_DEFAULTS = {
         "hidden": true
       },
       "decoration-26": {
-        "x": -827,
-        "y": -1693,
-        "scale": 1.9,
+        "x": -1007,
+        "y": 338,
+        "scale": 1.65,
         "rotation": 88,
         "flipX": false,
         "flipY": false,
         "hidden": false
       },
       "decoration-27": {
-        "x": -228,
-        "y": -5481,
-        "scale": 0.7,
-        "rotation": 126,
+        "x": -173,
+        "y": -5568,
+        "scale": 0.55,
+        "rotation": -119,
         "flipX": false,
         "flipY": false,
-        "hidden": false
+        "hidden": true
+      },
+      "custom-01": {
+        "x": 132,
+        "y": 2401,
+        "scale": 1.5,
+        "rotation": -4,
+        "flipX": false,
+        "flipY": false,
+        "hidden": false,
+        "src": "./assets/keepsakes/lace-strip.webp",
+        "name": "Кружевная лента #2"
+      },
+      "custom-02": {
+        "x": 72,
+        "y": 2546,
+        "scale": 1.45,
+        "rotation": -4,
+        "flipX": false,
+        "flipY": false,
+        "hidden": true,
+        "src": "./assets/keepsakes/lace-strip.webp",
+        "name": "Кружевная лента #3"
+      },
+      "custom-03": {
+        "x": 1006,
+        "y": 2348,
+        "scale": 1.5,
+        "rotation": 3,
+        "flipX": false,
+        "flipY": false,
+        "hidden": true,
+        "src": "./assets/keepsakes/lace-strip.webp",
+        "name": "Кружевная лента #4"
+      },
+      "custom-04": {
+        "x": 875,
+        "y": 9820,
+        "scale": 0.75,
+        "rotation": -1,
+        "flipX": true,
+        "flipY": false,
+        "hidden": false,
+        "src": "./assets/keepsakes/lace-corner.webp",
+        "name": "Кружевной уголок с розами #2"
+      },
+      "custom-05": {
+        "x": 254,
+        "y": 10054,
+        "scale": 0.75,
+        "rotation": -180,
+        "flipX": true,
+        "flipY": false,
+        "hidden": false,
+        "src": "./assets/keepsakes/lace-corner.webp",
+        "name": "Кружевной уголок с розами #3"
+      },
+      "custom-06": {
+        "x": 879,
+        "y": 10054,
+        "scale": 0.75,
+        "rotation": -180,
+        "flipX": false,
+        "flipY": false,
+        "hidden": false,
+        "src": "./assets/keepsakes/lace-corner.webp",
+        "name": "Кружевной уголок с розами #4"
+      },
+      "custom-07": {
+        "x": 889,
+        "y": 9551,
+        "scale": 1.65,
+        "rotation": 91,
+        "flipX": true,
+        "flipY": true,
+        "hidden": false,
+        "src": "./assets/keepsakes/lace-bow-corner.webp",
+        "name": "Уголок кружева с бантом #2"
+      },
+      "custom-08": {
+        "x": 869,
+        "y": 8273,
+        "scale": 1.95,
+        "rotation": -180,
+        "flipX": false,
+        "flipY": true,
+        "hidden": true,
+        "src": "./assets/keepsakes/lace-bow-corner.webp",
+        "name": "Уголок кружева с бантом #3"
       }
     },
     "mobile": {

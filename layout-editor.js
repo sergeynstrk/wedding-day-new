@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const STORAGE_KEY = 'wedding-decor-layout-v5';
+  const STORAGE_KEY = 'wedding-decor-layout-v6';
   const defaults = window.WEDDING_LAYOUT_DEFAULTS?.layouts || {};
   const editing = new URLSearchParams(location.search).get('edit') === '1';
   const canvas = document.querySelector('.magazine-canvas');
@@ -32,8 +32,10 @@
   ];
 
   let layouts = {};
-  try { layouts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
-  if (!layouts || typeof layouts !== 'object' || Array.isArray(layouts)) layouts = {};
+  if (editing) {
+    try { layouts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+    if (!layouts || typeof layouts !== 'object' || Array.isArray(layouts)) layouts = {};
+  }
 
   let customLayer = canvas?.querySelector('.custom-decor-layer') || null;
   function ensureCustomLayer() {
@@ -391,7 +393,7 @@
     const y = clientY + window.scrollY - drag.startY;
     const dx = Math.max(8 - drag.rect.left, Math.min(window.innerWidth - 8 - drag.rect.right, x));
     const dy = Math.max(8 - drag.pageTop, y);
-    update(drag.item, { x: drag.state.x + dx, y: drag.state.y + dy });
+    update(drag.item, { x: Math.round(drag.state.x + dx), y: Math.round(drag.state.y + dy) });
   }
 
   function finishDrag() {

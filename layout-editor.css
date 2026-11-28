@@ -1,6 +1,6 @@
 .layout-editing { scroll-padding-bottom: 200px; }
 .layout-editing body { padding-bottom: 210px; }
-.layout-editing .decoration-pair, .layout-editing .farewell-decor, .layout-editing .custom-decor-layer { z-index: 40 !important; pointer-events: none !important; }
+.layout-editing .decoration-pair, .layout-editing .farewell-decor, .layout-editing .custom-decor-layer { z-index: 140 !important; pointer-events: none !important; }
 .layout-editing .decor-object, .layout-editing .flatlay-bouquet {
   pointer-events: auto !important;
   touch-action: none !important;
@@ -8,7 +8,7 @@
   -webkit-user-select: none !important;
   user-select: none !important;
   cursor: grab;
-  z-index: 50 !important;
+  z-index: 150 !important;
 }
 .layout-editing .flatlay-bouquet img {
   pointer-events: none !important;
